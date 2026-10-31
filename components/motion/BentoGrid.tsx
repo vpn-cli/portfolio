@@ -14,8 +14,6 @@ import { NewsletterTile } from "@/components/tiles/NewsletterTile";
 import { StackTile } from "@/components/tiles/StackTile";
 import { ThemeToggleTile } from "@/components/tiles/ThemeToggleTile";
 import { ContactTile } from "@/components/tiles/ContactTile";
-import { ThreeTile } from "@/components/tiles/ThreeTile";
-import { LiveTile } from "@/components/tiles/LiveTile";
 
 export function BentoGrid() {
   const gridRef = useRef<HTMLDivElement>(null);
@@ -23,116 +21,94 @@ export function BentoGrid() {
   useEffect(() => {
     registerGSAPPlugins();
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return;
-    }
+    const mm = gsap.matchMedia();
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      const grid = gridRef.current;
+      if (!grid) return;
 
-    const grid = gridRef.current;
-    if (!grid) return;
-
-    const tiles = grid.querySelectorAll(".bento-tile");
-
-    const ctx = gsap.context(() => {
+      const tiles = grid.querySelectorAll(".bento-tile");
       gsap.fromTo(
         tiles,
-        { y: 12, opacity: 0 },
+        { y: 20, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          stagger: 0.02,
-          duration: 0.45,
-          ease: "power2.out",
+          duration: 0.6,
+          ease: "power3.out",
+          stagger: 0.04,
           clearProps: "opacity,transform",
         }
       );
-    }, grid);
+    });
 
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
 
   const [projectCashless, projectMono, projectNexus] = siteConfig.projects;
 
   return (
-    <div
-      ref={gridRef}
-      className="w-full max-w-[1360px] mx-auto p-3 sm:p-4 rounded-[32px] sm:rounded-[36px] bg-[#0E0F12] border border-white/[0.07] shadow-2xl transition-colors duration-300"
-    >
-      {/* 
-        At lg (≥1024px, 1440px desktop):
-        Single 12-column grid with exactly 3 calibrated rows: 245px, 245px, 195px.
-        Total grid height = 713px. Fits in 1 viewport at 1440x900!
-      */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-3.5 lg:grid-rows-[245px_245px_195px]">
+    <div className="bento-outer-container">
+      <div ref={gridRef} className="bento-grid-root">
         {/* ================= ROW 1 ================= */}
-        {/* 1. Intro Tile */}
-        <div className="md:col-span-2 lg:col-span-4 h-full min-h-[220px] lg:min-h-0">
+        {/* 1. Intro 5x1 */}
+        <div className="tile-intro h-full w-full">
           <IntroTile className="w-full h-full" />
         </div>
 
-        {/* 2. Phone 1: Cashless */}
-        <div className="md:col-span-1 lg:col-span-3 h-full min-h-[240px] lg:min-h-0">
+        {/* 2. Project A 3x1 */}
+        <div className="tile-project-a h-full w-full">
           <ProjectTile project={projectCashless} className="w-full h-full" />
         </div>
 
-        {/* 3. Phone 2: Mono Pay */}
-        <div className="md:col-span-1 lg:col-span-3 h-full min-h-[240px] lg:min-h-0">
+        {/* 3. Project B 2x1 */}
+        <div className="tile-project-b h-full w-full">
           <ProjectTile project={projectMono} className="w-full h-full" />
         </div>
 
-        {/* 4. Social Cluster (3x2 of 1x1 buttons) */}
-        <div className="md:col-span-2 lg:col-span-2 h-full min-h-[140px] lg:min-h-0">
+        {/* 4. Socials 2x1 (inner 3x2 icon grid) */}
+        <div className="tile-socials h-full w-full">
           <SocialTile className="w-full h-full" />
         </div>
 
         {/* ================= ROW 2 ================= */}
-        {/* 5. Avatar Photo Tile */}
-        <div className="md:col-span-1 lg:col-span-2 h-full min-h-[200px] lg:min-h-0">
+        {/* 5. Portrait 2x1 */}
+        <div className="tile-portrait h-full w-full">
           <AvatarTile className="w-full h-full" />
         </div>
 
-        {/* 6. About Tile */}
-        <div className="md:col-span-1 lg:col-span-3 h-full min-h-[200px] lg:min-h-0">
+        {/* 6. About 4x1 */}
+        <div className="tile-about h-full w-full">
           <AboutTile className="w-full h-full" />
         </div>
 
-        {/* 7. Laptop Flagship Project */}
-        <div className="md:col-span-2 lg:col-span-5 h-full min-h-[220px] lg:min-h-0">
+        {/* 7. Project C 4x1 */}
+        <div className="tile-project-c h-full w-full">
           <ProjectTile project={projectNexus} className="w-full h-full" />
         </div>
 
-        {/* 8. Resources Tile */}
-        <div className="md:col-span-2 lg:col-span-2 h-full min-h-[160px] lg:min-h-0">
+        {/* 8. Resources 2x1 */}
+        <div className="tile-resources h-full w-full">
           <ResourcesTile className="w-full h-full" />
         </div>
 
         {/* ================= ROW 3 ================= */}
-        {/* 9. Newsletter Tile */}
-        <div className="md:col-span-1 lg:col-span-3 h-full min-h-[170px] lg:min-h-0">
+        {/* 9. Newsletter 5x1 */}
+        <div className="tile-newsletter h-full w-full">
           <NewsletterTile className="w-full h-full" />
         </div>
 
-        {/* 10. Three.js Refractive Glass Monolith */}
-        <div className="md:col-span-1 lg:col-span-2 h-full min-h-[170px] lg:min-h-0">
-          <ThreeTile className="w-full h-full" />
-        </div>
-
-        {/* 11. Live Local-Time & Focus */}
-        <div className="md:col-span-1 lg:col-span-2 h-full min-h-[170px] lg:min-h-0">
-          <LiveTile className="w-full h-full" />
-        </div>
-
-        {/* 12. Stack I use */}
-        <div className="md:col-span-1 lg:col-span-2 h-full min-h-[170px] lg:min-h-0">
+        {/* 10. Stack 3x1 */}
+        <div className="tile-stack h-full w-full">
           <StackTile className="w-full h-full" />
         </div>
 
-        {/* 13. Theme Toggle Switch */}
-        <div className="md:col-span-1 lg:col-span-1 h-full min-h-[100px] lg:min-h-0">
+        {/* 11. Theme toggle 2x1 */}
+        <div className="tile-theme h-full w-full">
           <ThemeToggleTile className="w-full h-full" />
         </div>
 
-        {/* 14. Contact / Copy Email Tile */}
-        <div className="md:col-span-1 lg:col-span-2 h-full min-h-[170px] lg:min-h-0">
+        {/* 12. Contact 2x1 */}
+        <div className="tile-contact h-full w-full">
           <ContactTile className="w-full h-full" />
         </div>
       </div>

@@ -32,51 +32,51 @@ export function BentoTile({
     const glow = glowRef.current;
     if (!card || !enableTilt) return;
 
-    if (
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      window.matchMedia("(pointer: coarse)").matches
-    ) {
-      return;
-    }
+    const mm = gsap.matchMedia();
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      if (window.matchMedia("(pointer: coarse)").matches) return;
 
-    const xToRotate = gsap.quickTo(card, "rotateY", { duration: 0.45, ease: "power2.out" });
-    const yToRotate = gsap.quickTo(card, "rotateX", { duration: 0.45, ease: "power2.out" });
-    const scaleTo = gsap.quickTo(card, "scale", { duration: 0.4, ease: "power2.out" });
+      const xToRotate = gsap.quickTo(card, "rotateY", { duration: 0.45, ease: "power2.out" });
+      const yToRotate = gsap.quickTo(card, "rotateX", { duration: 0.45, ease: "power2.out" });
+      const scaleTo = gsap.quickTo(card, "scale", { duration: 0.4, ease: "power2.out" });
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const handleMouseMove = (e: MouseEvent) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
-      const nx = (x / rect.width) * 2 - 1;
-      const ny = (y / rect.height) * 2 - 1;
+        const nx = (x / rect.width) * 2 - 1;
+        const ny = (y / rect.height) * 2 - 1;
 
-      xToRotate(nx * 4);
-      yToRotate(-ny * 4);
-      scaleTo(1.012);
+        xToRotate(nx * 3);
+        yToRotate(-ny * 3);
+        scaleTo(1.02);
 
-      if (glow) {
-        glow.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
-        glow.style.opacity = "1";
-      }
-    };
+        if (glow) {
+          glow.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+          glow.style.opacity = "1";
+        }
+      };
 
-    const handleMouseLeave = () => {
-      xToRotate(0);
-      yToRotate(0);
-      scaleTo(1.0);
-      if (glow) {
-        glow.style.opacity = "0";
-      }
-    };
+      const handleMouseLeave = () => {
+        xToRotate(0);
+        yToRotate(0);
+        scaleTo(1.0);
+        if (glow) {
+          glow.style.opacity = "0";
+        }
+      };
 
-    card.addEventListener("mousemove", handleMouseMove);
-    card.addEventListener("mouseleave", handleMouseLeave);
+      card.addEventListener("mousemove", handleMouseMove);
+      card.addEventListener("mouseleave", handleMouseLeave);
 
-    return () => {
-      card.removeEventListener("mousemove", handleMouseMove);
-      card.removeEventListener("mouseleave", handleMouseLeave);
-    };
+      return () => {
+        card.removeEventListener("mousemove", handleMouseMove);
+        card.removeEventListener("mouseleave", handleMouseLeave);
+      };
+    });
+
+    return () => mm.revert();
   }, [enableTilt]);
 
   return (
