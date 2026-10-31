@@ -2,15 +2,17 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { registerGSAPPlugins, MOTION } from "@/lib/motion";
+import { registerGSAPPlugins } from "@/lib/motion";
 import { siteConfig } from "@/content/site";
 import { IntroTile } from "@/components/tiles/IntroTile";
-import { ThreeTile } from "@/components/tiles/ThreeTile";
 import { ProjectTile } from "@/components/tiles/ProjectTile";
-import { LiveTile } from "@/components/tiles/LiveTile";
-import { AboutTile } from "@/components/tiles/AboutTile";
-import { StackTile } from "@/components/tiles/StackTile";
 import { SocialTile } from "@/components/tiles/SocialTile";
+import { AvatarTile } from "@/components/tiles/AvatarTile";
+import { AboutTile } from "@/components/tiles/AboutTile";
+import { ResourcesTile } from "@/components/tiles/ResourcesTile";
+import { NewsletterTile } from "@/components/tiles/NewsletterTile";
+import { StackTile } from "@/components/tiles/StackTile";
+import { ThemeToggleTile } from "@/components/tiles/ThemeToggleTile";
 import { ContactTile } from "@/components/tiles/ContactTile";
 
 export function BentoGrid() {
@@ -28,82 +30,92 @@ export function BentoGrid() {
 
     const tiles = grid.querySelectorAll(".bento-tile");
 
-    // Staggered entrance animation using our "apple-spring" custom ease
     const ctx = gsap.context(() => {
       gsap.from(tiles, {
-        y: 40,
+        y: 30,
         opacity: 0,
-        scale: 0.96,
-        stagger: {
-          amount: 0.7,
-          from: "start",
-        },
-        duration: MOTION.durations.entrance,
+        scale: 0.97,
+        stagger: 0.05,
+        duration: 0.7,
         ease: "apple-spring",
-        clearProps: "transform,opacity", // Crucial for hover tilt to function without conflicting
+        clearProps: "transform,opacity",
       });
     }, grid);
 
     return () => ctx.revert();
   }, []);
 
-  const [project1, project2, project3] = siteConfig.projects;
+  const [projectCashless, projectMono, projectNexus] = siteConfig.projects;
 
   return (
     <div
       ref={gridRef}
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-5 lg:gap-6 auto-rows-[minmax(180px,auto)]"
+      className="p-3 sm:p-5 lg:p-6 rounded-[36px] bg-[#0E0F12]/80 dark:bg-[#0E0F12]/80 border border-white/[0.06] shadow-2xl backdrop-blur-sm"
     >
-      {/* TILE 1: Intro Narrative (Col Span: 7, Row Span: 2) */}
-      <div className="lg:col-span-7 lg:row-span-2">
-        <IntroTile className="h-full" />
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-3.5 sm:gap-4 lg:gap-5">
+        {/* ================= ROW 1 ================= */}
+        {/* Intro Tile (Hi, I'm Vipin) */}
+        <div className="md:col-span-12 lg:col-span-4 min-h-[300px] flex">
+          <IntroTile className="w-full h-full" />
+        </div>
 
-      {/* TILE 2: 3D Prismatic Core (Col Span: 5, Row Span: 2) */}
-      <div className="lg:col-span-5 lg:row-span-2">
-        <ThreeTile className="h-full min-h-[380px]" />
-      </div>
+        {/* Phone 1: Cashless */}
+        <div className="md:col-span-6 lg:col-span-3 min-h-[300px] flex">
+          <ProjectTile project={projectCashless} className="w-full h-full" />
+        </div>
 
-      {/* TILE 3: Flagship Project Alpha (Col Span: 8, Row Span: 2) */}
-      <div className="lg:col-span-8 lg:row-span-2">
-        <ProjectTile project={project1} isFeatured={true} className="h-full" />
-      </div>
+        {/* Phone 2: Mono Pay */}
+        <div className="md:col-span-6 lg:col-span-3 min-h-[300px] flex">
+          <ProjectTile project={projectMono} className="w-full h-full" />
+        </div>
 
-      {/* TILE 4: Live Time & Sound Wave (Col Span: 4, Row Span: 1) */}
-      <div className="lg:col-span-4 lg:row-span-1">
-        <LiveTile className="h-full" />
-      </div>
+        {/* Social Icons 3x2 Grid */}
+        <div className="md:col-span-12 lg:col-span-2 min-h-[160px] lg:min-h-[300px] flex">
+          <SocialTile className="w-full h-full" />
+        </div>
 
-      {/* TILE 5: About / Ethos (Col Span: 4, Row Span: 1) */}
-      <div className="lg:col-span-4 lg:row-span-1">
-        <AboutTile className="h-full" />
-      </div>
+        {/* ================= ROW 2 ================= */}
+        {/* Avatar / Portrait Card */}
+        <div className="md:col-span-4 lg:col-span-2 min-h-[220px] flex">
+          <AvatarTile className="w-full h-full" />
+        </div>
 
-      {/* TILE 6: Project Beta (Col Span: 4, Row Span: 2) */}
-      <div className="lg:col-span-4 lg:row-span-2">
-        <ProjectTile project={project2} className="h-full" />
-      </div>
+        {/* About Statement Card */}
+        <div className="md:col-span-8 lg:col-span-3 min-h-[220px] flex">
+          <AboutTile className="w-full h-full" />
+        </div>
 
-      {/* TILE 7: Tech Stack Marquee (Col Span: 4, Row Span: 2) */}
-      <div className="lg:col-span-4 lg:row-span-2">
-        <StackTile className="h-full" />
-      </div>
+        {/* Laptop Mockup: Nexus DevFlow */}
+        <div className="md:col-span-12 lg:col-span-5 min-h-[280px] lg:min-h-[220px] flex">
+          <ProjectTile project={projectNexus} className="w-full h-full" />
+        </div>
 
-      {/* TILE 8: Project Gamma (Col Span: 4, Row Span: 2) */}
-      <div className="lg:col-span-4 lg:row-span-2">
-        <ProjectTile project={project3} className="h-full" />
-      </div>
+        {/* Resources Card */}
+        <div className="md:col-span-6 lg:col-span-2 min-h-[220px] flex">
+          <ResourcesTile className="w-full h-full" />
+        </div>
 
-      {/* TILE 9: Social Orbit (Col Span: 6, Row Span: 1) */}
-      <div className="lg:col-span-6 lg:row-span-1">
-        <SocialTile className="h-full" />
-      </div>
+        {/* ================= ROW 3 ================= */}
+        {/* Newsletter / Dev Tips Card */}
+        <div className="md:col-span-12 lg:col-span-5 min-h-[200px] flex">
+          <NewsletterTile className="w-full h-full" />
+        </div>
 
-      {/* TILE 10: Contact Terminal (Col Span: 6, Row Span: 1) */}
-      <div className="lg:col-span-6 lg:row-span-1">
-        <ContactTile className="h-full" />
+        {/* Stack I use */}
+        <div className="md:col-span-8 lg:col-span-3 min-h-[200px] flex">
+          <StackTile className="w-full h-full" />
+        </div>
+
+        {/* Theme Toggle Pill Switch */}
+        <div className="md:col-span-4 lg:col-span-1 min-h-[140px] lg:min-h-[200px] flex">
+          <ThemeToggleTile className="w-full h-full" />
+        </div>
+
+        {/* Have a project in mind? (Contact) */}
+        <div className="md:col-span-12 lg:col-span-3 min-h-[200px] flex">
+          <ContactTile className="w-full h-full" />
+        </div>
       </div>
     </div>
   );
 }
-

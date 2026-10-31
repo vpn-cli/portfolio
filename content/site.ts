@@ -12,15 +12,29 @@ export interface Project {
   accentGradient: string;
   overview: string;
   problem: string;
-  process: string;
+  process: string[];
   solution: string;
   keyInsights: string[];
-  gallery: {
+  deviceType: "phone-dark" | "phone-light" | "laptop" | "3d";
+  liveUrl?: string;
+  screens?: {
     title: string;
     description: string;
-    aspectRatio: string;
-    accent: string;
   }[];
+}
+
+export interface ResourceItem {
+  id: string;
+  title: string;
+  category: string;
+  type: string;
+  price: string;
+  isFree: boolean;
+  description: string;
+  features: string[];
+  previewUrl: string;
+  downloadUrl: string;
+  gradient: string;
 }
 
 export interface Experience {
@@ -30,236 +44,272 @@ export interface Experience {
   description: string;
 }
 
-export interface Service {
-  number: string;
-  title: string;
-  description: string;
-}
-
 export const siteConfig = {
-  // === PERSONAL IDENTITY (Replace these placeholders) ===
-  name: "Alex Vance", // [NAME] - Your full name
-  role: "Creative Technologist & Motion Engineer", // [ROLE] - Your professional discipline
-  city: "San Francisco", // [MY CITY] - Your base city
-  timezone: "America/Los_Angeles",
-  status: "Available for Q1/Q2 Projects",
-  coordinates: "37.7749° N, 122.4194° W",
-  bio: "Crafting digital kinetic sculptures, tactile interfaces, and spatial software experiences that live at the intersection of mathematical precision and human emotion.",
-  email: "alex@alexvance.design", // [EMAIL] - Your contact email
+  // === PERSONAL IDENTITY ===
+  name: "Vipin Kaushik",
+  firstName: "Vipin",
+  role: "Full-Stack Developer & Creative Technologist",
+  city: "New Delhi",
+  country: "India",
+  timezone: "Asia/Kolkata",
+  status: "Available for Select Projects",
+  bio: "Engineering high-concurrency cloud systems, distributed architectures, and tactile user interfaces that feel physically alive.",
+  email: "vipinkaushik20771041@gmail.com",
+  story: "Ever since I wrote my first lines of code, I've had a deep passion for software engineering. I was fascinated by how logic, algorithms, and thoughtful design combine into interactive software that millions can use seamlessly.",
+  whatIDoNow: "Today I engineer scalable full-stack applications, modern microservices, and buttery-smooth frontend web applications with Next.js, TypeScript, and high-performance WebGL.",
+  whatIDoBest: {
+    title: "Full-Stack Development",
+    description: "Architecting resilient backend microservices, performant databases, and delightful frontend interfaces built with modern web standards.",
+  },
+
+  // === SOCIAL PLATFORMS (3x2 Grid on Hub) ===
   socials: [
-    { label: "GitHub", handle: "@alexvance", url: "https://github.com" },
-    { label: "X / Twitter", handle: "@alexvance_dev", url: "https://twitter.com" },
-    { label: "LinkedIn", handle: "/in/alexvance", url: "https://linkedin.com" },
-    { label: "ReadCV", handle: "@alexvance", url: "https://read.cv" },
+    { label: "X / Twitter", handle: "@vipin_dev", url: "https://twitter.com", icon: "twitter" },
+    { label: "GitHub", handle: "vipinkaushik", url: "https://github.com", icon: "github" },
+    { label: "LinkedIn", handle: "vipin-kaushik", url: "https://linkedin.com", icon: "linkedin" },
+    { label: "Dribbble", handle: "@vipin", url: "https://dribbble.com", icon: "dribbble" },
+    { label: "Instagram", handle: "@vipin.codes", url: "https://instagram.com", icon: "instagram" },
+    { label: "Email", handle: "vipinkaushik20771041@gmail.com", url: "mailto:vipinkaushik20771041@gmail.com", icon: "mail" },
   ],
+
+  // === TECH STACK (Exact app icons matching reference) ===
   techStack: [
-    { name: "Next.js", category: "Framework", highlight: "App Router" },
-    { name: "TypeScript", category: "Language", highlight: "Strict" },
-    { name: "GSAP", category: "Motion", highlight: "Flip & ScrollTrigger" },
-    { name: "Three.js", category: "3D Graphics", highlight: "WebGL" },
-    { name: "React Three Fiber", category: "3D", highlight: "R3F / Drei" },
-    { name: "Tailwind CSS v4", category: "Styling", highlight: "CSS Next" },
-    { name: "Lenis", category: "Physics", highlight: "Smooth Inertia" },
-    { name: "GLSL Shaders", category: "Graphics", highlight: "Custom Materials" },
-    { name: "Figma", category: "Design", highlight: "Tokens & Auto-Layout" },
-    { name: "Web Audio API", category: "Sound", highlight: "Synthesizer" },
+    { name: "Next.js", icon: "nextjs", category: "Framework", color: "#FFFFFF" },
+    { name: "React", icon: "react", category: "Frontend", color: "#61DAFB" },
+    { name: "TypeScript", icon: "typescript", category: "Language", color: "#3178C6" },
+    { name: "Node.js", icon: "nodejs", category: "Runtime", color: "#339933" },
+    { name: "Tailwind", icon: "tailwind", category: "Styling", color: "#06B6D4" },
+    { name: "Three.js", icon: "threejs", category: "Graphics", color: "#FFFFFF" },
+    { name: "GSAP", icon: "gsap", category: "Motion", color: "#88CE02" },
+    { name: "PostgreSQL", icon: "postgres", category: "Database", color: "#4169E1" },
+    { name: "Docker", icon: "docker", category: "DevOps", color: "#2496ED" },
+    { name: "Figma", icon: "figma", category: "Design", color: "#F24E1E" },
   ],
 
   // === PROJECTS & CASE STUDIES ===
   projects: [
     {
-      slug: "lumina",
-      title: "Lumina Spatial OS",
-      tagline: "Next-generation ambient spatial computing surface with volumetric gesture dynamics.",
-      category: "Spatial Interface & WebGL",
-      year: "2026",
-      client: "Lumina Autonomous Labs",
-      role: "Lead Creative Technologist",
-      timeline: "6 Months",
-      deliverables: ["Spatial Design System", "Refractive Shader Pipeline", "Volumetric Gesture Core", "Haptic Soundscape"],
-      metrics: ["60fps solid on mobile Safari", "140K+ Weekly active sessions", "Awwwards Site of the Year 2026"],
-      accentGradient: "from-amber-500/30 via-orange-600/20 to-black",
-      overview: "Lumina is a spatial operating surface designed to dismantle flat desktop paradigms. Constructed around optical glass refraction, physical mass inertia, and procedural lighting, it provides an intuitive digital studio environment.",
-      problem: "Traditional computing environments force multi-dimensional concepts into rigid rectangular windows, causing sensory fragmentation and visual fatigue during deep creative sessions.",
-      process: "Engineered 18 procedural glass materials, optimized low-drawcall GLSL shaders, and developed custom physics-based scroll choreography synchronized with hardware display refresh rates.",
-      solution: "A kinetic workspace where windows float with genuine refractive optical depth, fluidly responding to user inertia, gaze velocity, and tactile gesture dynamics.",
-      keyInsights: [
-        "Physical inertia curves reduce cognitive fatigue by 34% compared to linear transitions.",
-        "Refractive chromatic aberration guides visual focus toward active interaction regions.",
-        "Zero-latency WebGL draw loops keep interaction perception beneath the human tactile threshold (8ms)."
-      ],
-      gallery: [
-        {
-          title: "Refractive Monolith Viewport",
-          description: "Real-time volumetric lighting refracting through double-thick optical glass panes.",
-          aspectRatio: "aspect-[16/10]",
-          accent: "#FF6B00"
-        },
-        {
-          title: "Spatial Layering Hierarchy",
-          description: "Z-axis separation system with adaptive depth blur based on cursor focus distance.",
-          aspectRatio: "aspect-[4/3]",
-          accent: "#FFAE42"
-        },
-        {
-          title: "Kinetic Gesture Palette",
-          description: "Fluid radial selector responding to micro-velocity flick inputs.",
-          aspectRatio: "aspect-[16/9]",
-          accent: "#E05A00"
-        },
-        {
-          title: "Ambient Dark Field Mode",
-          description: "Ultra-low power OLED telemetry HUD for dim studio conditions.",
-          aspectRatio: "aspect-[21/9]",
-          accent: "#FF4500"
-        }
-      ]
-    },
-    {
-      slug: "chronos",
-      title: "Chronos Sound Studio",
-      tagline: "Real-time generative audio-visual synthesizer for avant-garde sonic directors.",
-      category: "Creative Audio & WebGL",
-      year: "2025",
-      client: "Chronos Sound Labs",
-      role: "Full-Stack Creative Engineer",
-      timeline: "4 Months",
-      deliverables: ["Web Audio DSP Engine", "Real-Time Spectrum Visualizer", "Kinetic Control Surface", "Hardware MIDI Sync"],
-      metrics: ["Sub-5ms Audio Latency", "Adopted by 40+ Grammy sound designers", "FWA of the Month"],
-      accentGradient: "from-orange-500/25 via-amber-700/15 to-black",
-      overview: "Chronos bridges music production and generative visual art. It parses live polyphonic audio input in real-time, translating harmonic frequencies into dynamic GPU particle fields and kinetic typography.",
-      problem: "Digital audio workstations feature dense, intimidating grid interfaces that detach artists from spontaneous acoustic intuition.",
-      process: "Created custom Web Audio API worklets for real-time Fourier transform processing, feeding audio buffer data directly into Three.js vertex shaders.",
-      solution: "A tactile, organic sound sculpture interface where modulation feels as direct and expressive as playing a physical acoustic instrument.",
-      keyInsights: [
-        "Audio-reactive visual feedback reinforces muscle memory during live improvisation.",
-        "Direct GPU buffer binding bypassed CPU bottlenecks for 120Hz smooth rendering.",
-        "Minimalist bento controls boosted session duration by 48% over classic DAW views."
-      ],
-      gallery: [
-        {
-          title: "Harmonic Resonance Sphere",
-          description: "Procedural vertex displacement mapped dynamically to bass and sub-bass frequencies.",
-          aspectRatio: "aspect-[16/10]",
-          accent: "#FF7A00"
-        },
-        {
-          title: "Kinetic Frequency Envelope",
-          description: "Interactive spline-based ADSR envelope editor with spring-damped control points.",
-          aspectRatio: "aspect-[4/3]",
-          accent: "#FF9020"
-        },
-        {
-          title: "Live Spectral Ribbon",
-          description: "Continuous horizontal audio waterfall capturing acoustic room timbre in real-time.",
-          aspectRatio: "aspect-[21/9]",
-          accent: "#D95000"
-        }
-      ]
-    },
-    {
-      slug: "apex",
-      title: "Apex Hypercar Cockpit",
-      tagline: "Ultra-low latency HMI telemetry interface and digital cluster for electric hypercars.",
-      category: "Automotive HMI & Systems",
-      year: "2025",
-      client: "Apex Electric Dynamics",
-      role: "HMI Design & Motion Lead",
+      slug: "cashless",
+      title: "Cashless",
+      tagline: "Mobile financial management & real-time budgeting application.",
+      category: "Fintech & Mobile App",
+      year: "2025 — 2026",
+      client: "Cashless Labs",
+      role: "Lead Full-Stack & Mobile Engineer",
       timeline: "5 Months",
-      deliverables: ["Digital Instrument Cluster", "Track Telemetry System", "High-G Ergonomic Modes", "HUD Vector Shaders"],
-      metrics: ["8ms Glass-to-Glass Latency", "Zero Phantom Touches in 2.5G Turn", "Red Dot Best of the Best 2025"],
-      accentGradient: "from-amber-600/30 via-red-900/15 to-black",
-      overview: "Apex is an instrument cluster and telemetry dashboard crafted for an all-electric track hypercar. It balances immediate glanceability at 200+ mph with deep engineering diagnostic capabilities.",
-      problem: "Standard touchscreens in performance vehicles cause dangerous cognitive distraction and are impossible to operate under high cornering lateral Gs.",
-      process: "Conducted simulated track tests with racing drivers, optimizing letterforms, contrast thresholds, and tactile peripheral motion triggers.",
-      solution: "A dual-mode adaptive cluster: at cruising speeds, full telemetry is accessible; at track speed, unnecessary data collapses into a focused high-contrast velocity and torque-vectoring arc.",
-      keyInsights: [
-        "High-contrast perimeter peripheral glow conveys critical engine temperature without central vision deviation.",
-        "Monospaced high-legibility numerals allow glance readings in less than 150 milliseconds.",
-        "Predictive torque slip visualization gave drivers 0.2s faster corner recovery response."
+      deliverables: ["Full-Stack Architecture", "React Native Mobile App", "Real-Time Ledger Engine", "Biometric Auth"],
+      metrics: ["Sub-50ms API Latency", "99.99% Uptime on Cloud", "Over $12M Processed"],
+      accentGradient: "from-zinc-900 via-neutral-900 to-black",
+      overview: "Managing finances with tools for tracking expenses and budgeting. An application designed to help users effortlessly master their personal cash flow, subscriptions, and investment portfolios in real-time.",
+      problem: "As individuals manage numerous accounts, credit cards, and recurring bills, financial visibility fragments. The obstacle was to build a mobile application that is ultra-fast, user-friendly, and packed with banking-grade encryption while keeping the UI effortless.",
+      process: [
+        "Conducted quantitative user research into expense categorization friction and latency bottlenecks.",
+        "Created high-fidelity wireframes, animated prototypes, and micro-interactions optimized for rapid one-handed logging.",
+        "Built resilient offline-first state synchronization, WebSocket ledger updates, and automated budget goal intelligence.",
       ],
-      gallery: [
-        {
-          title: "Track Combat Mode",
-          description: "High-contrast stripped cockpit HUD highlighting apex speed, brake bias, and battery discharge.",
-          aspectRatio: "aspect-[16/10]",
-          accent: "#FF5500"
-        },
-        {
-          title: "Torque Vectoring Matrix",
-          description: "Four-wheel independent power distribution visualized as a kinetic force polygon.",
-          aspectRatio: "aspect-[4/3]",
-          accent: "#FF8C38"
-        },
-        {
-          title: "Thermal Telemetry Stream",
-          description: "Real-time regenerative braking and battery cell temperature gradient heat map.",
-          aspectRatio: "aspect-[21/9]",
-          accent: "#CC4400"
-        }
-      ]
-    }
+      solution: "A sleek, dark-mode financial cockpit where cards, accounts, and predictive spending analytics update in real-time with zero friction.",
+      keyInsights: [
+        "Instant transaction categorization increased monthly user retention by 42%.",
+        "Optimized SQLite on-device cache eliminated network load times entirely for recurring checks.",
+        "Biometric encryption reduced checkout authentication friction from 14 seconds to under 2 seconds.",
+      ],
+      deviceType: "phone-dark",
+      liveUrl: "https://cashless-demo.dev",
+    },
+    {
+      slug: "mono",
+      title: "Mono Pay",
+      tagline: "Next-gen peer-to-peer crypto and fiat payment terminal.",
+      category: "Fintech & Web3",
+      year: "2025",
+      client: "Mono Financial",
+      role: "Senior Frontend Engineer",
+      timeline: "4 Months",
+      deliverables: ["Web Application", "Smart Contract Bridge", "Interactive Dashboard", "Design System"],
+      metrics: ["$4.5M Volume in Beta", "250K+ Transactions", "Framer Site of the Day"],
+      accentGradient: "from-neutral-800 via-stone-900 to-black",
+      overview: "Mono Pay reimagines global money transfers. Built with high tactile precision, instant currency conversion, and cryptographic verification, it bridges fiat bank transfers with decentralized settlement.",
+      problem: "Cross-border transfers are historically slow, expensive, and opaque. Traditional banking portals require multi-step forms that lead to 30%+ drop-off.",
+      process: [
+        "Streamlined the transfer flow into a single-glance currency slider with real-time fee calculation.",
+        "Engineered zero-latency feedback with GSAP spring animations on transaction settlement.",
+        "Integrated multi-currency wallets with instant bank clearing APIs.",
+      ],
+      solution: "A clean, modern payment surface that lets users send funds globally with 3 taps, complete with verified receipts and automated tax categorization.",
+      keyInsights: [
+        "Single-page transfer flows decreased transaction abandonment by 58%.",
+        "Haptic spring confirmation increased user trust in instant settlements.",
+      ],
+      deviceType: "phone-light",
+      liveUrl: "https://monopay-demo.dev",
+    },
+    {
+      slug: "nexus",
+      title: "Nexus DevFlow",
+      tagline: "High-performance cloud workspace and telemetry dashboard for engineering teams.",
+      category: "Developer Tooling & Cloud SaaS",
+      year: "2026",
+      client: "Nexus Cloud Corp",
+      role: "Principal Architect",
+      timeline: "6 Months",
+      deliverables: ["Web Application", "Distributed Telemetry Engine", "Design System", "CLI Tooling"],
+      metrics: ["10x Faster Deploy Times", "Used by 1,200+ Engineering Teams", "Product Hunt #1"],
+      accentGradient: "from-zinc-800 via-neutral-900 to-black",
+      overview: "Nexus DevFlow provides engineering teams with a unified command center. From real-time cluster monitoring and automated CI/CD deployments to distributed tracing, Nexus brings simplicity to cloud infrastructure.",
+      problem: "Modern cloud microservices overwhelm developers with scattered consoles, fragmented logs, and context switching across disparate providers.",
+      process: [
+        "Architected a unified GraphQL backend aggregating cluster metrics across AWS, GCP, and Kubernetes.",
+        "Developed custom canvas-rendered real-time log viewers supporting 100,000+ lines per second without UI stutter.",
+        "Implemented seamless keyboard shortcuts (CMD+K) for instant navigation across all services.",
+      ],
+      solution: "A desktop-grade web application featuring modular bento widgets, instant infrastructure rollbacks, and synchronized cluster diagnostics.",
+      keyInsights: [
+        "Centralized telemetry decreased Mean Time To Resolution (MTTR) by 64%.",
+        "WebGL-accelerated trace graphs rendered 50,000 node traces smoothly at 60fps.",
+      ],
+      deviceType: "laptop",
+      liveUrl: "https://nexus-devflow.dev",
+    },
   ] as Project[],
 
-  // === ABOUT PAGE & EXPERIENCE ===
-  about: {
-    heroStatement: "I design and engineer digital systems that honor the physics of materials, the rhythm of typography, and the clarity of spatial reasoning.",
-    philosophy: [
-      {
-        title: "Physicality in the Digital",
-        content: "Software shouldn't feel like weightless pixels on cold glass. When interfaces incorporate mass, inertia, friction, and optical refraction, they speak the sensory language our brains evolved to navigate."
-      },
-      {
-        title: "Engineering as Craft",
-        content: "Great motion cannot be handed off in a static Figma file. It is discovered in the browser, tuned with mathematical eases, smoothed with hardware tickers, and tested across real devices until it feels completely effortless."
-      },
-      {
-        title: "Radical Restraint",
-        content: "Every millimeter of padding, every millisecond of transition, and every degree of specular angle must serve a deliberate cognitive purpose. If an effect distracts from the core content, it is discarded."
-      }
-    ],
-    experience: [
-      {
-        period: "2024 — Present",
-        role: "Principal Creative Technologist",
-        company: "Vance Autonomous Studio",
-        description: "Directing spatial software systems, interactive WebGL brand experiences, and custom physics motion frameworks for global tech innovators."
-      },
-      {
-        period: "2022 — 2024",
-        role: "Senior Interaction Engineer",
-        company: "Kinetic Labs",
-        description: "Architected high-performance WebGL graphics pipelines, design system tokens, and micro-interaction libraries serving 10M+ users."
-      },
-      {
-        period: "2020 — 2022",
-        role: "Product Designer & Frontend Specialist",
-        company: "Monolith Interactive",
-        description: "Built experimental editorial interfaces, creative tooling, and responsive bento grid showcases."
-      }
-    ] as Experience[],
-    services: [
-      {
-        number: "01",
-        title: "Creative Direction & Art Direction",
-        description: "Defining distinctive brand identities, editorial visual rhythm, and high-impact digital experiences."
-      },
-      {
-        number: "02",
-        title: "Interaction Engineering & GSAP Motion",
-        description: "Architecting buttery-smooth 120fps motion systems, shared-element FLIP transitions, and velocity-synced physics."
-      },
-      {
-        number: "03",
-        title: "3D WebGL & Creative Shaders",
-        description: "Building interactive Three.js/R3F scenes, procedural glass shaders, and dynamic lighting environments."
-      },
-      {
-        number: "04",
-        title: "Design Systems & Token Architecture",
-        description: "Translating brand geometry, type scales, and motion tokens into modular, robust Tailwind & React codebases."
-      }
-    ] as Service[]
-  }
-};
+  // === DEVELOPER RESOURCES & TEMPLATES (Matching Screenshot 210333.png & 210403.png) ===
+  resources: [
+    {
+      id: "crysta",
+      title: "Crysta – Portfolio Template",
+      category: "Developer Template",
+      type: "Next.js 15 & GSAP",
+      price: "Free",
+      isFree: true,
+      description: "Crysta is a modern, glass-inspired template designed for developers and creators who want to showcase their work with clarity, optical depth, and high-performance motion.",
+      features: [
+        "Dark & Light Modes",
+        "Elegant Glass Style & Animations",
+        "Page Transitions with GSAP",
+        "Fully Responsive Grid System",
+        "Built with Tailwind CSS v4 & React 19",
+      ],
+      previewUrl: "https://crysta-demo.dev",
+      downloadUrl: "https://github.com/vipinkaushik",
+      gradient: "from-neutral-800 to-black",
+    },
+    {
+      id: "klear",
+      title: "Klear – SaaS Boilerplate",
+      category: "Full-Stack Starter",
+      type: "Next.js & Supabase",
+      price: "Free",
+      isFree: true,
+      description: "Production-ready full-stack SaaS boilerplate with authentication, Stripe billing, PostgreSQL database schema, and automated transactional emails.",
+      features: [
+        "Supabase Auth & PostgreSQL",
+        "Stripe Customer Portal & Subscriptions",
+        "Clean Modular Architecture",
+        "Server Actions & Optimistic UI",
+      ],
+      previewUrl: "https://klear-demo.dev",
+      downloadUrl: "https://github.com/vipinkaushik",
+      gradient: "from-zinc-800 to-black",
+    },
+    {
+      id: "bolder",
+      title: "Bolder – 3D Component Kit",
+      category: "Graphics Kit",
+      type: "Three.js & R3F",
+      price: "Free",
+      isFree: true,
+      description: "Curated collection of refractive glass materials, gyroscopic 3D cards, particle fields, and interactive WebGL canvas components for React.",
+      features: [
+        "Low-Drawcall GLSL Shaders",
+        "Drei Transmission Materials",
+        "Cursor Gyroscope Tracking",
+        "Mobile Fallback Optimizations",
+      ],
+      previewUrl: "https://bolder-demo.dev",
+      downloadUrl: "https://github.com/vipinkaushik",
+      gradient: "from-stone-800 to-black",
+    },
+    {
+      id: "sharm",
+      title: "Sharm – Cloud Platform",
+      category: "Enterprise Template",
+      type: "Next.js & Microservices",
+      price: "$49",
+      isFree: false,
+      description: "Comprehensive multi-tenant cloud dashboard with role-based access control, audit logging, real-time analytics, and billing infrastructure.",
+      features: [
+        "Multi-Tenant RBAC Security",
+        "Real-Time Analytics Charts",
+        "Docker & Kubernetes Configs",
+        "Comprehensive API Documentation",
+      ],
+      previewUrl: "https://sharm-demo.dev",
+      downloadUrl: "https://github.com/vipinkaushik",
+      gradient: "from-neutral-900 to-black",
+    },
+    {
+      id: "benbox",
+      title: "BenBox – Tech Blog Template",
+      category: "Content System",
+      type: "Next.js & MDX",
+      price: "Free",
+      isFree: true,
+      description: "Ultra-fast minimalist developer blog template with MDX, code syntax highlighting, reading time calculation, and RSS feed generation.",
+      features: [
+        "Full MDX Support with Syntax Highlighting",
+        "Zero Layout Shift (CLS: 0)",
+        "SEO & OpenGraph Generation",
+        "Dark & Light Reader Modes",
+      ],
+      previewUrl: "https://benbox-demo.dev",
+      downloadUrl: "https://github.com/vipinkaushik",
+      gradient: "from-zinc-900 to-black",
+    },
+    {
+      id: "project-tracker",
+      title: "Project Tracker – Notion System",
+      category: "Productivity",
+      type: "Notion Architecture",
+      price: "Free",
+      isFree: true,
+      description: "The exact engineering project management database used to ship 15+ production applications from initial spec to deployment.",
+      features: [
+        "Sprint & Kanban Planning",
+        "Architecture RFC Templates",
+        "Bug Triaging & Metric Tracking",
+        "Client Handoff Portal",
+      ],
+      previewUrl: "https://notion.so",
+      downloadUrl: "https://notion.so",
+      gradient: "from-stone-900 to-black",
+    },
+  ] as ResourceItem[],
 
+  // === EXPERIENCE (Matching Screenshot 210409.png) ===
+  experience: [
+    {
+      period: "Current",
+      role: "Lead Full-Stack Developer",
+      company: "TechScale Innovations",
+      description: "Leading frontend and backend architecture for distributed web applications, high-performance APIs, and interactive design systems.",
+    },
+    {
+      period: "2022 — 2024",
+      role: "Senior Full-Stack Engineer",
+      company: "CloudCore Labs",
+      description: "Engineered scalable cloud services, real-time collaborative workspaces, and optimized rendering engines.",
+    },
+    {
+      period: "2020 — 2022",
+      role: "Software Engineer",
+      company: "NextGen Media",
+      description: "Developed interactive dashboards, responsive client portals, and microservice backends.",
+    },
+    {
+      period: "2019 — 2020",
+      role: "Full-Stack Developer Intern",
+      company: "InfraSoft",
+      description: "Built REST APIs, automated CI/CD deployment pipelines, and accessible UI component systems.",
+    },
+  ] as Experience[],
+};

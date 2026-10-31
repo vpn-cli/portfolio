@@ -1,116 +1,75 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import { siteConfig } from "@/content/site";
 import { BentoTile } from "./BentoTile";
-import { ArrowUpRight, Share2 } from "lucide-react";
-import { gsap } from "gsap";
-
-function MagneticSocialButton({
-  label,
-  handle,
-  url,
-}: {
-  label: string;
-  handle: string;
-  url: string;
-}) {
-  const btnRef = useRef<HTMLAnchorElement>(null);
-
-  useEffect(() => {
-    const btn = btnRef.current;
-    if (!btn) return;
-    if (
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      window.matchMedia("(pointer: coarse)").matches
-    ) {
-      return;
-    }
-
-    const xTo = gsap.quickTo(btn, "x", { duration: 0.3, ease: "power2.out" });
-    const yTo = gsap.quickTo(btn, "y", { duration: 0.3, ease: "power2.out" });
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = btn.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      xTo(x * 0.35);
-      yTo(y * 0.35);
-    };
-
-    const handleMouseLeave = () => {
-      xTo(0);
-      yTo(0);
-    };
-
-    btn.addEventListener("mousemove", handleMouseMove);
-    btn.addEventListener("mouseleave", handleMouseLeave);
-
-    return () => {
-      btn.removeEventListener("mousemove", handleMouseMove);
-      btn.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, []);
-
-  return (
-    <a
-      ref={btnRef}
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      data-cursor="pointer"
-      data-cursor-text="Visit"
-      className="group relative flex items-center justify-between px-4 py-3 rounded-2xl bg-white/[0.04] border border-white/[0.08] hover:border-accent/40 hover:bg-accent/10 transition-colors duration-200 overflow-hidden"
-    >
-      {/* Sliding Label Swap */}
-      <div className="relative h-5 overflow-hidden">
-        <span className="block text-sm font-medium text-white/90 transition-transform duration-300 ease-out group-hover:-translate-y-full">
-          {label}
-        </span>
-        <span className="block text-sm font-medium text-accent transition-transform duration-300 ease-out translate-y-0 group-hover:-translate-y-full">
-          {handle}
-        </span>
-      </div>
-
-      <ArrowUpRight className="w-4 h-4 text-white/40 group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
-    </a>
-  );
-}
+import { siteConfig } from "@/content/site";
 
 export function SocialTile({ className = "" }: { className?: string }) {
+  const renderIcon = (type: string) => {
+    switch (type) {
+      case "twitter":
+        return (
+          <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+        );
+      case "github":
+        return (
+          <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+          </svg>
+        );
+      case "linkedin":
+        return (
+          <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+          </svg>
+        );
+      case "dribbble":
+        return (
+          <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm10.165 10.638c-.341-.027-2.784-.188-5.37.525-.236-.511-.482-1.026-.74-1.54 3.018-1.536 4.195-3.342 4.314-3.535 1.13 1.258 1.796 2.877 1.796 4.55zm-3.235-5.91c-.139.215-1.255 1.867-4.108 3.328-1.468-2.67-3.08-4.996-3.27-5.267.778-.266 1.611-.413 2.448-.413 1.866 0 3.593.731 4.93 2.352zm-8.825-1.874c.189.264 1.795 2.57 3.259 5.231-2.909.917-6.046 1.059-6.388 1.074.721-2.675 2.756-4.857 5.259-6.305h-2.13zm-8.257 8.146c.371-.016 3.931-.157 7.158-1.18.254.502.496 1.006.726 1.507-4.161 1.488-5.782 4.607-5.908 4.862-1.157-1.407-1.848-3.176-1.848-5.189h-.128zm3.627 6.486c.142-.265 1.571-2.977 5.768-4.469 1.144 2.974 1.657 5.617 1.737 6.095-2.617 1.072-5.597.51-7.505-1.626zm9.324 1.34c-.092-.511-.595-3.036-1.727-5.922 2.348-.688 4.545-.589 4.868-.571-.247 2.766-1.637 5.168-3.141 6.493z" />
+          </svg>
+        );
+      case "instagram":
+        return (
+          <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+          </svg>
+        );
+      case "mail":
+      default:
+        return (
+          <svg className="w-4 h-4 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+            <rect width="20" height="16" x="2" y="4" rx="2" />
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          </svg>
+        );
+    }
+  };
+
   return (
-    <BentoTile className={className}>
-      <div className="w-full h-full flex flex-col justify-between">
-        {/* Header */}
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/25 flex items-center justify-center text-accent">
-            <Share2 className="w-4 h-4" />
-          </div>
-          <div>
-            <h3 className="text-lg font-bold text-white font-display">Social Orbit</h3>
-            <p className="text-xs text-white/50">Online frequency & writing</p>
-          </div>
-        </div>
-
-        {/* 2x2 Grid of Magnetic Social Buttons */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-auto">
-          {siteConfig.socials.map((social) => (
-            <MagneticSocialButton
-              key={social.label}
-              label={social.label}
-              handle={social.handle}
-              url={social.url}
-            />
+    <BentoTile className={className} noPadding>
+      <div className="w-full h-full p-4 sm:p-5 flex items-center justify-center">
+        {/* 3x2 Grid of Rounded Square Buttons matching Reference */}
+        <div className="grid grid-cols-3 gap-2.5 sm:gap-3 w-full h-full max-w-[260px] mx-auto items-center justify-center">
+          {siteConfig.socials.slice(0, 6).map((item) => (
+            <a
+              key={item.label}
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={item.label}
+              data-cursor="pointer"
+              data-cursor-text={item.label}
+              className="aspect-square flex items-center justify-center rounded-[20px] bg-white/[0.04] dark:bg-white/[0.04] border border-white/[0.08] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-white/[0.22] hover:bg-white/[0.08] transition-all duration-200 group active:scale-95 shadow-sm"
+            >
+              <div className="transition-transform duration-200 group-hover:scale-110">
+                {renderIcon(item.icon)}
+              </div>
+            </a>
           ))}
-        </div>
-
-        {/* Footer */}
-        <div className="text-[11px] text-white/40 pt-3 border-t border-white/[0.06] flex items-center justify-between">
-          <span>Magnetic Target Tracking</span>
-          <span className="font-mono">Direct Links</span>
         </div>
       </div>
     </BentoTile>
   );
 }
-

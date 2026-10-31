@@ -1,33 +1,65 @@
 @import "tailwindcss";
 
 @theme {
-  --color-canvas: #08090C;
-  --color-canvas-subtle: #0E1015;
-  --color-tile: #12141A;
-  --color-tile-hover: #181B22;
+  --color-canvas: var(--bg-canvas);
+  --color-canvas-subtle: var(--bg-canvas-subtle);
+  --color-tile: var(--surface-tile);
+  --color-tile-hover: var(--surface-tile-hover);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-hover: var(--border-hover);
+  --color-border-accent: var(--border-accent);
   --color-accent: #FF6B00;
   --color-accent-glow: #FF8533;
-  --color-accent-deep: #D95500;
-  --color-border-subtle: rgba(255, 255, 255, 0.07);
-  --color-border-hover: rgba(255, 255, 255, 0.18);
-  --color-border-accent: rgba(255, 107, 0, 0.45);
 
-  --font-display: "Syne", system-ui, -apple-system, sans-serif;
+  --font-display: "Syne", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 :root {
   color-scheme: dark;
+  --bg-canvas: #0A0B0E;
+  --bg-canvas-subtle: #121317;
+  --surface-tile: #141519;
+  --surface-tile-hover: #1A1C22;
+  --surface-tile-elevated: #1F2128;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.18);
+  --border-accent: rgba(255, 107, 0, 0.45);
+  --text-primary: #F0F0F2;
+  --text-secondary: #8E929E;
+  --text-tertiary: #525560;
+  --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  --card-shadow-hover: 0 20px 45px -12px rgba(0, 0, 0, 0.7);
+  --card-inner-bevel: inset 0 1px 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+html.light {
+  color-scheme: light;
+  --bg-canvas: #EFF0F3;
+  --bg-canvas-subtle: #E4E6EB;
+  --surface-tile: #FFFFFF;
+  --surface-tile-hover: #F8F9FA;
+  --surface-tile-elevated: #FFFFFF;
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.16);
+  --border-accent: rgba(255, 107, 0, 0.65);
+  --text-primary: #121316;
+  --text-secondary: #5A5E6B;
+  --text-tertiary: #8E929F;
+  --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+  --card-shadow-hover: 0 20px 45px -12px rgba(0, 0, 0, 0.12);
+  --card-inner-bevel: inset 0 1px 1px 0 rgba(255, 255, 255, 1);
 }
 
 html,
 body {
-  background-color: #08090C;
-  color: #F5F5F7;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
   overflow-x: hidden;
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.35s ease, color 0.35s ease;
 }
 
 /* Custom Selection */
@@ -42,7 +74,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #08090C;
+  background: var(--bg-canvas);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -54,24 +86,97 @@ body {
   background: #FF6B00;
 }
 
-/* Glassmorphism utilities */
-.glass-panel {
-  background: rgba(18, 20, 26, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6), inset 0 1px 1px 0 rgba(255, 255, 255, 0.08);
+/* Typography Scale (Directly from references/Screenshot 2026-10-31 210229.png) */
+.type-h1 {
+  font-size: 32px;
+  line-height: 1.4em;
+  letter-spacing: -0.4px;
+  font-weight: 500;
 }
 
-.glass-panel:hover {
-  border-color: rgba(255, 255, 255, 0.18);
-  box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.8), inset 0 1px 2px 0 rgba(255, 255, 255, 0.16);
+.type-h2 {
+  font-size: 28px;
+  line-height: 1.4em;
+  letter-spacing: -0.4px;
+  font-weight: 500;
 }
 
-/* Marquee gradient masks */
+.type-h3 {
+  font-size: 26px;
+  line-height: 1.4em;
+  letter-spacing: -0.4px;
+  font-weight: 500;
+}
+
+.type-h4 {
+  font-size: 22px;
+  line-height: 1.4em;
+  letter-spacing: -0.4px;
+  font-weight: 500;
+}
+
+.type-body1 {
+  font-size: 24px;
+  line-height: 1.5em;
+  letter-spacing: -0.4px;
+  font-weight: 400;
+}
+
+.type-body2 {
+  font-size: 20px;
+  line-height: 1.8em;
+  letter-spacing: -0.2px;
+  font-weight: 400;
+}
+
+.type-body3 {
+  font-size: 18px;
+  line-height: 1.5em;
+  letter-spacing: -0.2px;
+  font-weight: 400;
+}
+
+.type-body4 {
+  font-size: 16px;
+  line-height: 1.4em;
+  letter-spacing: -0.2px;
+  font-weight: 400;
+}
+
+.type-label1 {
+  font-size: 16px;
+  line-height: 1.2em;
+  letter-spacing: 3px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.type-label2 {
+  font-size: 14px;
+  line-height: 1.2em;
+  letter-spacing: 1.2px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* Glass & Card Utilities */
+.bento-surface {
+  background-color: var(--surface-tile);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--card-shadow), var(--card-inner-bevel);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bento-surface:hover {
+  background-color: var(--surface-tile-hover);
+  border-color: var(--border-hover);
+  box-shadow: var(--card-shadow-hover), var(--card-inner-bevel);
+}
+
+/* Marquee Edge Masks */
 .mask-marquee {
-  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
 }
 
 .font-display {

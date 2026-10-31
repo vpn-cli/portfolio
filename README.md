@@ -100,3 +100,4 @@ Simply update the properties in `siteConfig`:
 - **Smooth Inertia:** [Lenis](https://lenis.darkroom.engineering/)
 - **3D Graphics:** [Three.js](https://threejs.org/) & [React Three Fiber](https://r3f.docs.pmnd.rs/)
 - **Icons:** [Lucide React](https://lucide.dev/)
+

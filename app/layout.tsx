@@ -4,11 +4,12 @@ import { siteConfig } from "@/content/site";
 import { SmoothScrollProvider } from "@/components/motion/SmoothScrollProvider";
 import { RouteTransitionProvider } from "@/components/motion/RouteTransition";
 import { CustomCursor } from "@/components/motion/CustomCursor";
+import { ThemeProvider } from "@/components/motion/ThemeProvider";
 
 export const metadata: Metadata = {
   title: `${siteConfig.name} — ${siteConfig.role}`,
   description: siteConfig.bio,
-  metadataBase: new URL("https://alexvance.design"),
+  metadataBase: new URL("https://vipinkaushik.dev"),
   openGraph: {
     title: `${siteConfig.name} — ${siteConfig.role}`,
     description: siteConfig.bio,
@@ -41,13 +42,15 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-[#08090C] text-[#F5F5F7] min-h-screen antialiased selection:bg-[#FF6B00] selection:text-black font-body">
-        <SmoothScrollProvider>
-          <RouteTransitionProvider>
-            <CustomCursor />
-            {children}
-          </RouteTransitionProvider>
-        </SmoothScrollProvider>
+      <body className="min-h-screen antialiased font-body">
+        <ThemeProvider>
+          <SmoothScrollProvider>
+            <RouteTransitionProvider>
+              <CustomCursor />
+              {children}
+            </RouteTransitionProvider>
+          </SmoothScrollProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
