@@ -18,10 +18,10 @@ export function IntroTile({ className = "" }: { className?: string }) {
 
     const ctx = gsap.context(() => {
       gsap.from(el.querySelectorAll(".stagger-fade"), {
-        y: 16,
+        y: 12,
         opacity: 0,
-        stagger: 0.1,
-        duration: 0.7,
+        stagger: 0.08,
+        duration: 0.6,
         ease: "apple-spring",
       });
     }, el);
@@ -32,24 +32,20 @@ export function IntroTile({ className = "" }: { className?: string }) {
   return (
     <BentoTile className={className}>
       <div ref={containerRef} className="w-full h-full flex flex-col justify-between py-1">
-        {/* Main Heading & Bio */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           <h1 className="stagger-fade type-h1 font-display tracking-tight text-[var(--text-primary)]">
             Hi, I'm {siteConfig.firstName} —
           </h1>
 
-          <p className="stagger-fade type-body3 text-[var(--text-secondary)] font-light leading-relaxed max-w-xl">
+          <p className="stagger-fade text-[15px] sm:text-[16px] text-[var(--text-secondary)] font-normal leading-relaxed">
             {siteConfig.role}, currently engineering scalable cloud architectures and interactive web applications based in{" "}
-            <span className="text-[var(--text-primary)] font-normal">{siteConfig.city}</span>.
+            <span className="text-[var(--text-primary)] font-medium">{siteConfig.city}</span>.
           </p>
         </div>
 
-        {/* Live Availability Status */}
-        <div className="stagger-fade pt-4 mt-auto flex items-center gap-2 text-xs font-mono text-[var(--text-secondary)]">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-          </span>
+        {/* Quiet availability notice */}
+        <div className="stagger-fade pt-3 mt-auto flex items-center gap-2 text-[12px] font-mono text-[var(--text-tertiary)]">
+          <span className="w-1.5 h-1.5 rounded-full bg-neutral-400" />
           <span>{siteConfig.status}</span>
         </div>
       </div>

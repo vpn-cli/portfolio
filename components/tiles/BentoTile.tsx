@@ -87,15 +87,15 @@ export function BentoTile({
       data-cursor={cursorText ? "pointer" : undefined}
       data-cursor-text={cursorText}
       style={{ transformStyle: "preserve-3d" }}
-      className={`bento-tile bento-surface group relative rounded-[28px] ${
-        noPadding ? "p-0" : "p-6 sm:p-7"
-      } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 overflow-hidden flex flex-col justify-between ${className}`}
+      className={`bento-tile bento-surface group relative rounded-[24px] ${
+        noPadding ? "p-0" : "p-5 sm:p-6"
+      } focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/40 overflow-hidden flex flex-col justify-between ${className}`}
     >
       {/* Specular Spotlight Glow (Tracks cursor) */}
       <div
         ref={glowRef}
         aria-hidden="true"
-        className="pointer-events-none absolute w-72 h-72 rounded-full bg-gradient-to-r from-accent/15 via-white/5 to-transparent blur-2xl opacity-0 transition-opacity duration-300"
+        className="pointer-events-none absolute w-64 h-64 rounded-full bg-gradient-to-r from-white/8 via-white/3 to-transparent blur-2xl opacity-0 transition-opacity duration-300"
       />
 
       {/* Apple Continuous Squircle Inner Top Bevel */}

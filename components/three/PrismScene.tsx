@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshTransmissionMaterial } from "@react-three/drei";
+import { Float, MeshTransmissionMaterial, Environment } from "@react-three/drei";
 import * as THREE from "three";
 
 function CrystalMonolith({ pointer }: { pointer: { x: number; y: number } }) {
@@ -24,33 +24,31 @@ function CrystalMonolith({ pointer }: { pointer: { x: number; y: number } }) {
       delta * 4
     );
 
-    // Continuous ambient slow yaw + mouse tilt
     meshRef.current.rotation.x = targetRotation.current.x;
     meshRef.current.rotation.y += delta * 0.35 + (targetRotation.current.y - meshRef.current.rotation.y) * 0.08;
-    meshRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.8) * 0.05;
+    meshRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.7) * 0.04;
   });
 
   return (
-    <Float speed={2.5} rotationIntensity={0.2} floatIntensity={0.6}>
-      <mesh ref={meshRef} castShadow receiveShadow scale={1.25}>
-        {/* Chamfered Octahedron / Crystal geometry */}
-        <octahedronGeometry args={[1.5, 0]} />
+    <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
+      <mesh ref={meshRef} castShadow receiveShadow scale={1.3}>
+        <octahedronGeometry args={[1.4, 0]} />
         <MeshTransmissionMaterial
           backside
-          samples={8}
+          samples={6}
           resolution={512}
-          transmission={0.96}
-          roughness={0.08}
+          transmission={0.95}
+          roughness={0.06}
           thickness={1.2}
-          ior={1.6}
-          chromaticAberration={0.35}
-          anisotropy={0.2}
-          distortion={0.15}
-          distortionScale={0.3}
-          temporalDistortion={0.1}
-          color="#FFE9D6"
-          attenuationColor="#FF6B00"
-          attenuationDistance={1.8}
+          ior={1.5}
+          chromaticAberration={0.15}
+          anisotropy={0.1}
+          distortion={0.1}
+          distortionScale={0.2}
+          temporalDistortion={0.05}
+          color="#F5F5F7"
+          attenuationColor="#CCCCCC"
+          attenuationDistance={2}
         />
       </mesh>
     </Float>
@@ -62,7 +60,6 @@ export default function PrismScene() {
   const [inView, setInView] = useState(true);
   const [pointer, setPointer] = useState({ x: 0, y: 0 });
 
-  // IntersectionObserver to pause rendering when offscreen
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -94,12 +91,12 @@ export default function PrismScene() {
       ref={containerRef}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      className="relative w-full h-full min-h-[280px] flex items-center justify-center cursor-grab active:cursor-grabbing overflow-hidden"
+      className="relative w-full h-full min-h-[160px] flex items-center justify-center cursor-grab active:cursor-grabbing overflow-hidden"
     >
       <Canvas
-        camera={{ position: [0, 0, 4.8], fov: 45 }}
-        dpr={[1, 2]} // Cap DPR at 2 for performance
-        frameloop={inView ? "always" : "never"} // Pause offscreen
+        camera={{ position: [0, 0, 4.5], fov: 42 }}
+        dpr={[1, 2]}
+        frameloop={inView ? "always" : "never"}
         gl={{
           antialias: true,
           powerPreference: "high-performance",
@@ -107,25 +104,16 @@ export default function PrismScene() {
         }}
         style={{ width: "100%", height: "100%" }}
       >
-        <ambientLight intensity={0.6} />
-        {/* Warm key light */}
-        <directionalLight position={[4, 5, 3]} intensity={2.2} color="#FFF2E5" />
-        {/* Amber rim backlight */}
-        <pointLight position={[-4, -3, -3]} intensity={4.5} color="#FF6B00" />
-        {/* Cool subtle fill */}
-        <pointLight position={[0, -4, 2]} intensity={0.8} color="#60A5FA" />
+        {/* Environment map for realistic glass refraction and HDR specular highlights */}
+        <Environment preset="city" />
+
+        <ambientLight intensity={0.7} />
+        <directionalLight position={[5, 5, 5]} intensity={2.0} color="#FFFFFF" />
+        <directionalLight position={[-5, -5, -3]} intensity={1.2} color="#AAAAAA" />
+        <pointLight position={[0, 4, 2]} intensity={1.5} color="#FFFFFF" />
 
         <CrystalMonolith pointer={pointer} />
       </Canvas>
-
-      {/* Optical flare ring background */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 flex items-center justify-center -z-10 opacity-30"
-      >
-        <div className="w-56 h-56 rounded-full bg-gradient-to-tr from-accent via-amber-400 to-transparent blur-3xl animate-pulse" />
-      </div>
     </div>
   );
 }
-

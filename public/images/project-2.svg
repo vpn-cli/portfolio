@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#24211D"/>
+      <stop offset="50%" stop-color="#181614"/>
+      <stop offset="100%" stop-color="#0E0D0C"/>
+    </linearGradient>
+    <pattern id="rattanPattern" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M0,14 Q14,0 28,14 Q14,28 0,14" fill="none" stroke="#3D372E" stroke-width="1.8"/>
+      <circle cx="14" cy="14" r="3" fill="#2A251E"/>
+      <rect x="0" y="0" width="28" height="28" fill="none" stroke="#2A251E" stroke-width="0.7"/>
+    </pattern>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="8" dy="35" stdDeviation="28" flood-color="#000000" flood-opacity="0.85"/>
+    </filter>
+  </defs>
+
+  <rect width="600" height="800" fill="url(#bgGrad2)"/>
+  <!-- Cane Wicker / Rattan Texture Grid -->
+  <rect width="600" height="800" fill="url(#rattanPattern)" opacity="0.65"/>
+  <!-- Ambient Sun Flare from top right -->
+  <circle cx="500" cy="150" r="350" fill="#FFE5CC" opacity="0.06"/>
+
+  <!-- Phone Resting with Soft Shadow -->
+  <g transform="translate(195, 175) rotate(3)" filter="url(#shadow2)">
+    <rect x="0" y="0" width="220" height="440" rx="42" fill="#E8E8E8" stroke="#FFFFFF" stroke-width="2"/>
+    <rect x="10" y="10" width="200" height="420" rx="34" fill="#FFFFFF"/>
+    
+    <!-- Dynamic Island -->
+    <rect x="68" y="20" width="64" height="18" rx="9" fill="#1A1A1A"/>
+    
+    <!-- Payment / Transfer UI -->
+    <text x="24" y="74" font-family="system-ui, sans-serif" font-size="9" fill="#888888" font-weight="600" letter-spacing="1">INSTANT SETTLEMENT</text>
+    <text x="24" y="104" font-family="system-ui, sans-serif" font-size="24" fill="#111111" font-weight="700">$4,850.00</text>
+    <text x="24" y="122" font-family="system-ui, sans-serif" font-size="10" fill="#2E7D32" font-weight="600">● Verified on Ledger</text>
+
+    <!-- Transfer Detail Box -->
+    <rect x="20" y="145" width="160" height="100" rx="14" fill="#F6F6F8" stroke="#EAEAEF" stroke-width="1"/>
+    <text x="32" y="172" font-family="system-ui, sans-serif" font-size="10" fill="#777777">Recipient</text>
+    <text x="32" y="190" font-family="system-ui, sans-serif" font-size="12" fill="#111111" font-weight="600">Mono Financial Ltd</text>
+    
+    <line x1="32" y1="205" x2="168" y2="205" stroke="#E5E5EB" stroke-width="1"/>
+    <text x="32" y="226" font-family="system-ui, sans-serif" font-size="10" fill="#777777">Fee: $0.00 (Zero Fee)</text>
+
+    <!-- Action Button -->
+    <rect x="20" y="260" width="160" height="42" rx="12" fill="#111111"/>
+    <text x="64" y="286" font-family="system-ui, sans-serif" font-size="11" fill="#FFFFFF" font-weight="600">Confirm Payment</text>
+  </g>
+</svg>

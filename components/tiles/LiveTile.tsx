@@ -3,11 +3,10 @@
 import { useEffect, useState } from "react";
 import { siteConfig } from "@/content/site";
 import { BentoTile } from "./BentoTile";
-import { Clock, Disc3 } from "lucide-react";
 
 export function LiveTile({ className = "" }: { className?: string }) {
   const [timeString, setTimeString] = useState<string>("--:--:--");
-  const [period, setPeriod] = useState<string>("UTC");
+  const [period, setPeriod] = useState<string>("IST");
 
   useEffect(() => {
     const updateClock = () => {
@@ -25,7 +24,7 @@ export function LiveTile({ className = "" }: { className?: string }) {
         const hour = parts.find((p) => p.type === "hour")?.value || "00";
         const minute = parts.find((p) => p.type === "minute")?.value || "00";
         const second = parts.find((p) => p.type === "second")?.value || "00";
-        const dayPeriod = parts.find((p) => p.type === "dayPeriod")?.value || "AM";
+        const dayPeriod = parts.find((p) => p.type === "dayPeriod")?.value || "PM";
 
         setTimeString(`${hour}:${minute}:${second}`);
         setPeriod(dayPeriod);
@@ -41,54 +40,36 @@ export function LiveTile({ className = "" }: { className?: string }) {
 
   return (
     <BentoTile className={className}>
-      <div className="w-full h-full flex flex-col justify-between">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/25 flex items-center justify-center text-accent">
-              <Clock className="w-4 h-4" />
-            </div>
-            <div>
-              <h3 className="text-sm font-semibold text-white/90">Local Time</h3>
-              <p className="text-[11px] text-white/40">{siteConfig.city} (PST/PDT)</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-medium">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Online</span>
-          </div>
+      <div className="w-full h-full flex flex-col justify-between py-0.5">
+        <div className="flex items-center justify-between">
+          <span className="type-label2 text-neutral-500 font-medium">
+            Local Time
+          </span>
+          <span className="text-[10px] font-mono text-neutral-500">
+            {siteConfig.city}
+          </span>
         </div>
 
-        {/* Large Digital Clock Display */}
-        <div className="my-2">
-          <div className="flex items-baseline gap-2 font-mono">
-            <span className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+        <div className="my-auto py-1">
+          <div className="flex items-baseline gap-1.5 font-mono">
+            <span className="text-2xl sm:text-3xl font-semibold tracking-tight text-[var(--text-primary)]">
               {timeString}
             </span>
-            <span className="text-sm font-semibold text-accent uppercase">{period}</span>
+            <span className="text-xs font-medium text-neutral-500 uppercase">{period}</span>
           </div>
         </div>
 
-        {/* Studio Sound / Ambient Waveform */}
-        <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs text-white/70">
-            <Disc3 className="w-3.5 h-3.5 text-accent animate-spin" style={{ animationDuration: "6s" }} />
-            <span className="truncate max-w-[170px] sm:max-w-[200px]">
-              Studio Focus: Ambient Flow
-            </span>
-          </div>
-
-          {/* Equalizer Bars */}
-          <div className="flex items-end gap-1 h-3.5">
-            {[40, 80, 55, 100, 30].map((h, i) => (
+        {/* Ambient Waveform Audio Indicator */}
+        <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-neutral-500">
+          <span>Focus: Coding</span>
+          <div className="flex items-end gap-1 h-3">
+            {[35, 75, 45, 90, 40].map((h, i) => (
               <span
                 key={i}
-                className="w-1 bg-accent rounded-full animate-pulse"
+                className="w-0.5 bg-neutral-400 rounded-full animate-pulse"
                 style={{
                   height: `${h}%`,
-                  animationDuration: `${0.4 + i * 0.15}s`,
-                  animationDelay: `${i * 0.1}s`,
+                  animationDuration: `${0.5 + i * 0.15}s`,
                 }}
               />
             ))}
@@ -98,4 +79,3 @@ export function LiveTile({ className = "" }: { className?: string }) {
     </BentoTile>
   );
 }
-

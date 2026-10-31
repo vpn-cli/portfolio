@@ -84,7 +84,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
       <div
         ref={overlayRef}
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-[10000] hidden bg-gradient-to-br from-[#FF6B00] via-[#FF8533] to-[#D95500]"
+        className="pointer-events-none fixed inset-0 z-[10000] hidden bg-[#121316] border-b border-white/10"
         style={{ clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" }}
       >
         <div className="absolute inset-0 flex items-center justify-center">
