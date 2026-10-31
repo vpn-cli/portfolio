@@ -5,7 +5,7 @@ import { siteConfig } from "@/content/site";
 import { TransitionLink } from "@/components/motion/RouteTransition";
 import { X, ArrowUpRight, Check, Code2, Sparkles, MapPin } from "lucide-react";
 
-export function CopyEmailButton() {
+function CopyEmailButton() {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
