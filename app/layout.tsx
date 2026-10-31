@@ -1,10 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { siteConfig } from "@/content/site";
 import { SmoothScrollProvider } from "@/components/motion/SmoothScrollProvider";
 import { RouteTransitionProvider } from "@/components/motion/RouteTransition";
 import { CustomCursor } from "@/components/motion/CustomCursor";
 import { ThemeProvider } from "@/components/motion/ThemeProvider";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   title: `${siteConfig.name} — ${siteConfig.role}`,
@@ -33,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark scroll-smooth">
+    <html lang="en" className="dark scroll-smooth" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

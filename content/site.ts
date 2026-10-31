@@ -52,7 +52,7 @@ export const siteConfig = {
   role: "Full-Stack Developer & Creative Technologist",
   city: "New Delhi",
   country: "India",
-  avatar: "/images/avatar.svg",
+  avatar: "/avatar.jpg",
   timezone: "Asia/Kolkata",
   status: "Available for Select Projects",
   bio: "Engineering high-concurrency cloud systems, distributed architectures, and tactile user interfaces that feel physically alive.",
@@ -102,7 +102,7 @@ export const siteConfig = {
       deliverables: ["Full-Stack Architecture", "React Native Mobile App", "Real-Time Ledger Engine", "Biometric Auth"],
       metrics: ["Sub-50ms API Latency", "99.99% Uptime on Cloud", "Over $12M Processed"],
       accentGradient: "from-zinc-900 via-neutral-900 to-black",
-      image: "/images/project-1.svg",
+      image: "/projects/project-a.jpg",
       overview: "Managing finances with tools for tracking expenses and budgeting. An application designed to help users effortlessly master their personal cash flow, subscriptions, and investment portfolios in real-time.",
       problem: "As individuals manage numerous accounts, credit cards, and recurring bills, financial visibility fragments. The obstacle was to build a mobile application that is ultra-fast, user-friendly, and packed with banking-grade encryption while keeping the UI effortless.",
       process: [
@@ -131,7 +131,7 @@ export const siteConfig = {
       deliverables: ["Web Application", "Smart Contract Bridge", "Interactive Dashboard", "Design System"],
       metrics: ["$4.5M Volume in Beta", "250K+ Transactions", "Framer Site of the Day"],
       accentGradient: "from-neutral-800 via-stone-900 to-black",
-      image: "/images/project-2.svg",
+      image: "/projects/project-b.jpg",
       overview: "Mono Pay reimagines global money transfers. Built with high tactile precision, instant currency conversion, and cryptographic verification, it bridges fiat bank transfers with decentralized settlement.",
       problem: "Cross-border transfers are historically slow, expensive, and opaque. Traditional banking portals require multi-step forms that lead to 30%+ drop-off.",
       process: [
@@ -159,7 +159,7 @@ export const siteConfig = {
       deliverables: ["Web Application", "Distributed Telemetry Engine", "Design System", "CLI Tooling"],
       metrics: ["10x Faster Deploy Times", "Used by 1,200+ Engineering Teams", "Product Hunt #1"],
       accentGradient: "from-zinc-800 via-neutral-900 to-black",
-      image: "/images/project-3.svg",
+      image: "/projects/project-c.jpg",
       overview: "Nexus DevFlow provides engineering teams with a unified command center. From real-time cluster monitoring and automated CI/CD deployments to distributed tracing, Nexus brings simplicity to cloud infrastructure.",
       problem: "Modern cloud microservices overwhelm developers with scattered consoles, fragmented logs, and context switching across disparate providers.",
       process: [

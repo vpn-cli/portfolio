@@ -14,19 +14,19 @@
 
 :root {
   color-scheme: dark;
-  --bg-canvas: #090A0C;
-  --bg-canvas-subtle: #0E0F12;
-  --surface-tile: #131417;
-  --surface-tile-hover: #18191E;
-  --surface-tile-elevated: #1D1E24;
-  --border-subtle: rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(255, 255, 255, 0.16);
-  --text-primary: #EAEAEB;
-  --text-secondary: #878A94;
-  --text-tertiary: #52545D;
+  --bg-canvas: #0b0b0b;
+  --bg-canvas-subtle: #0f0f0f;
+  --surface-tile: #151515;
+  --surface-tile-hover: #1c1c1c;
+  --surface-tile-elevated: #1e1e1e;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.14);
+  --text-primary: #f2f2f2;
+  --text-secondary: #8a8a8a;
+  --text-tertiary: #5a5a5a;
   --card-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.6);
   --card-shadow-hover: 0 16px 36px -10px rgba(0, 0, 0, 0.8);
-  --card-inner-bevel: inset 0 1px 1px 0 rgba(255, 255, 255, 0.05);
+  --card-inner-bevel: inset 0 1px 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 html.light {
@@ -166,4 +166,165 @@ body {
   background-color: var(--surface-tile-hover);
   border-color: var(--border-hover);
   box-shadow: var(--card-shadow-hover), var(--card-inner-bevel);
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 22s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Bento Container & Desktop Grid Exact Spec */
+.bento-outer-container {
+  width: calc(100vw - 48px);
+  max-width: 1900px;
+  margin: 24px auto;
+  padding: 16px;
+  border-radius: 32px;
+  background: #0f0f0f;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-sizing: border-box;
+}
+
+@media (min-width: 1440px) {
+  body:has(.bento-outer-container) {
+    overflow: hidden;
+  }
+  .bento-outer-container {
+    height: calc(100vh - 48px);
+    overflow: hidden;
+  }
+  .bento-grid-root {
+    display: grid !important;
+    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+    height: 100% !important;
+    grid-template-rows: repeat(3, minmax(0, calc((100vh - 48px - 32px - 2 * 16px) / 3))) !important;
+    grid-auto-rows: minmax(0, calc((100vh - 48px - 32px - 2 * 16px) / 3)) !important;
+  }
+
+  .bento-grid-root > div {
+    min-height: 0 !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  /* Row 1 */
+  .tile-intro { grid-column: span 5 / span 5; grid-row: 1; }
+  .tile-project-a { grid-column: span 3 / span 3; grid-row: 1; }
+  .tile-project-b { grid-column: span 2 / span 2; grid-row: 1; }
+  .tile-socials { grid-column: span 2 / span 2; grid-row: 1; }
+
+  /* Row 2 */
+  .tile-portrait { grid-column: span 2 / span 2; grid-row: 2; }
+  .tile-about { grid-column: span 4 / span 4; grid-row: 2; }
+  .tile-project-c { grid-column: span 4 / span 4; grid-row: 2; }
+  .tile-resources { grid-column: span 2 / span 2; grid-row: 2; }
+
+  /* Row 3 */
+  .tile-newsletter { grid-column: span 5 / span 5; grid-row: 3; }
+  .tile-stack { grid-column: span 3 / span 3; grid-row: 3; }
+  .tile-theme { grid-column: span 2 / span 2; grid-row: 3; }
+  .tile-contact { grid-column: span 2 / span 2; grid-row: 3; }
+}
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .bento-outer-container {
+    width: calc(100vw - 32px);
+    margin: 16px auto;
+    padding: 16px;
+  }
+  .bento-grid-root {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 16px;
+    grid-auto-rows: minmax(240px, auto);
+  }
+  .tile-intro { grid-column: span 6 / span 6; }
+  .tile-project-a { grid-column: span 3 / span 3; min-height: 260px; }
+  .tile-project-b { grid-column: span 3 / span 3; min-height: 260px; }
+  .tile-portrait { grid-column: span 2 / span 2; min-height: 240px; }
+  .tile-about { grid-column: span 4 / span 4; min-height: 240px; }
+  .tile-project-c { grid-column: span 4 / span 4; min-height: 260px; }
+  .tile-resources { grid-column: span 2 / span 2; min-height: 260px; }
+  .tile-socials { grid-column: span 3 / span 3; min-height: 180px; }
+  .tile-stack { grid-column: span 3 / span 3; min-height: 180px; }
+  .tile-newsletter { grid-column: span 6 / span 6; }
+  .tile-theme { grid-column: span 2 / span 2; min-height: 140px; }
+  .tile-contact { grid-column: span 4 / span 4; min-height: 140px; }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .bento-outer-container {
+    width: calc(100vw - 24px);
+    margin: 12px auto;
+    padding: 12px;
+  }
+  .bento-grid-root {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .tile-intro { grid-column: span 2 / span 2; }
+  .tile-project-a { grid-column: span 1 / span 1; aspect-ratio: 4 / 3; width: 100%; }
+  .tile-project-b { grid-column: span 1 / span 1; aspect-ratio: 4 / 3; width: 100%; }
+  .tile-socials { grid-column: span 2 / span 2; min-height: 140px; }
+  .tile-portrait { grid-column: span 1 / span 1; min-height: 220px; }
+  .tile-about { grid-column: span 1 / span 1; min-height: 220px; }
+  .tile-project-c { grid-column: span 2 / span 2; aspect-ratio: 4 / 3; width: 100%; }
+  .tile-resources { grid-column: span 1 / span 1; min-height: 180px; }
+  .tile-theme { grid-column: span 1 / span 1; min-height: 180px; }
+  .tile-newsletter { grid-column: span 2 / span 2; }
+  .tile-stack { grid-column: span 2 / span 2; }
+  .tile-contact { grid-column: span 2 / span 2; }
+}
+
+@media (max-width: 639px) {
+  .bento-outer-container {
+    width: calc(100vw - 16px);
+    margin: 8px auto;
+    padding: 10px;
+    border-radius: 20px;
+  }
+  .bento-grid-root {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .tile-intro,
+  .tile-project-a,
+  .tile-project-b,
+  .tile-socials,
+  .tile-portrait,
+  .tile-about,
+  .tile-project-c,
+  .tile-resources,
+  .tile-newsletter,
+  .tile-stack,
+  .tile-theme,
+  .tile-contact {
+    grid-column: span 1 / span 1;
+  }
+  .tile-project-a,
+  .tile-project-b,
+  .tile-project-c {
+    aspect-ratio: 4 / 3;
+    width: 100%;
+  }
+  .tile-socials { min-height: 180px; }
+  .tile-portrait { min-height: 280px; }
+  .tile-theme { min-height: 110px; }
 }
