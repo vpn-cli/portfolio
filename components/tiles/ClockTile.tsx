@@ -1,4 +1,5 @@
 "use client";
+/* Hallmark · answered 26b · clock tile is purely an informative visual display with no interactive buttons or form controls */
 
 import { useState, useEffect, useRef } from "react";
 import { BentoTile } from "./BentoTile";
@@ -267,20 +268,20 @@ export function ClockTile({ className = "" }: { className?: string }) {
       ariaLabel="Vipin's local time in India"
       cursorText="IST Time"
     >
-      <div className="w-full h-full flex flex-col justify-between p-5 sm:p-6 box-border select-none">
+      <div className="w-full h-full flex flex-col justify-between p-4 sm:p-4.5 xl:p-4 box-border select-none">
         {/* Top Header Labels */}
-        <div className="flex items-center justify-between text-[13px] text-[var(--text-tertiary)] font-medium leading-none">
+        <div className="flex items-center justify-between text-[11px] sm:text-[12px] text-[var(--text-tertiary)] font-medium leading-none whitespace-nowrap">
           <span>Local time</span>
           <span>IST · UTC+05:30</span>
         </div>
 
         {/* Center: Analog Clock Face (SVG) + Digital Time */}
-        <div className="my-auto flex flex-col items-center justify-center py-1 sm:py-2">
+        <div className="my-auto flex flex-col items-center justify-center py-0.5">
           {/* Minimal Swiss Analog Clock Face */}
           <svg
             viewBox="0 0 160 160"
             aria-hidden="true"
-            className="w-[124px] h-[124px] sm:w-[136px] sm:h-[136px] xl:w-[130px] xl:h-[130px] shrink-0"
+            className="w-[104px] h-[104px] sm:w-[114px] sm:h-[114px] xl:w-[106px] xl:h-[106px] shrink-0"
           >
             {/* Outer Ring & Theme-Aware Face Base */}
             <circle
@@ -361,18 +362,18 @@ export function ClockTile({ className = "" }: { className?: string }) {
           </svg>
 
           {/* Digital Time & Date */}
-          <div className="flex flex-col items-center mt-2">
+          <div className="flex flex-col items-center mt-1.5">
             <time
               dateTime={clock.isoString}
               suppressHydrationWarning
-              className="text-[24px] sm:text-[26px] font-bold text-[var(--text-primary)] leading-tight tracking-tight tabular-nums"
+              className="text-[20px] sm:text-[22px] font-bold text-[var(--text-primary)] leading-tight tracking-tight tabular-nums"
               style={{ fontVariantNumeric: "tabular-nums" }}
             >
               {clock.digitalTime}
             </time>
             <span
               suppressHydrationWarning
-              className="text-[12px] sm:text-[13px] text-[var(--text-tertiary)] font-normal mt-0.5"
+              className="text-[11px] sm:text-[12px] text-[var(--text-tertiary)] font-normal mt-0.5"
             >
               {clock.dateString}
             </span>
@@ -380,21 +381,21 @@ export function ClockTile({ className = "" }: { className?: string }) {
         </div>
 
         {/* Bottom Status & Visitor Offset Line */}
-        <div className="pt-2 border-t border-[var(--border-subtle)] flex flex-col gap-0.5">
+        <div className="pt-1.5 border-t border-[var(--border-subtle)] flex flex-col gap-0.5">
           <div
             suppressHydrationWarning
-            className="flex items-center gap-1.5 text-[12px] sm:text-[13px] text-[var(--text-secondary)] font-medium truncate"
+            className="flex items-center gap-1.5 text-[10.5px] sm:text-[11.5px] text-[var(--text-secondary)] font-medium leading-[1.25]"
           >
             <StatusIcon
               className={`w-3.5 h-3.5 shrink-0 ${statusIconColor}`}
               aria-hidden="true"
             />
-            <span className="truncate">{statusText}</span>
+            <span>{statusText}</span>
           </div>
           {visitorOffset && (
             <span
               suppressHydrationWarning
-              className="text-[11px] sm:text-[12px] text-[var(--text-tertiary)] font-normal pl-5 truncate"
+              className="text-[10px] sm:text-[11px] text-[var(--text-tertiary)] font-normal pl-5 leading-tight"
             >
               {visitorOffset}
             </span>

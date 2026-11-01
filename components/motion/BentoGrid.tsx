@@ -63,7 +63,7 @@ export function BentoGrid() {
       {/* Footer Credit Line */}
       <footer className="w-full pt-3 px-2 flex items-center justify-between text-[13px] text-[var(--text-tertiary)] select-none">
         <span>© {new Date().getFullYear()} Vipin Kaushik</span>
-        <span>Byte — interactive 3D companion</span>
+        <span>Byte: interactive 3D companion</span>
       </footer>
     </div>
   );
