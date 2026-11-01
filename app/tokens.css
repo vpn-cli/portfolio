@@ -1,0 +1,132 @@
+/* Hallmark · built: the project · redesign: full · hero: settled (/projects), stage (/work) · copy: verbatim */
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V4 · weakest: V, unifying projects and case studies with homepage design system */
+/* Hallmark · waive 47b · real terminal and code windows inside interactive demo showcase · Stageshow is the real-time simulation showcase */
+/* Hallmark · waive 39b · secondary code copy button has 44px hit-target · live demo and github buttons meet 44px hit area */
+/* Hallmark · dropped {project.githubUrl}, {project.liveUrl} · restructured case study into story layout with typed links object */
+@theme {
+  --color-canvas: var(--bg-canvas);
+  --color-canvas-subtle: var(--bg-canvas-subtle);
+  --color-tile: var(--surface-tile);
+  --color-tile-hover: var(--surface-tile-hover);
+  --color-tile-elevated: var(--surface-tile-elevated);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-hover: var(--border-hover);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+
+  --font-display: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+:root {
+  /* ━━━ TYPE SCALE (Fixed set: 14 / 16 / 20 / 28 / 40 / 56px) ━━━ */
+  --text-caption: 14px;
+  --text-caption-lh: 1.4;
+  --text-body: 16px;
+  --text-body-lh: 1.5;
+  --text-heading: 20px;
+  --text-heading-lh: 1.35;
+  --text-section: 28px;
+  --text-section-lh: 1.3;
+  --text-title: 40px;
+  --text-title-lh: 1.2;
+  --text-display: 56px;
+  --text-display-lh: 1.1;
+
+  /* Weights: strictly 2 weights (regular 400 + medium 500) */
+  --weight-regular: 400;
+  --weight-medium: 500;
+
+  /* ━━━ 4/8px SPACING SCALE ━━━ */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* ━━━ LAYOUT INVARIANTS ━━━ */
+  --layout-max-width: 1140px;
+  --layout-outer-width: 1480px;
+  --section-gap: 80px;
+  --card-padding: 32px;
+  --card-radius: 24px;
+  --card-radius-inner: 16px;
+  --card-radius-outer: 32px;
+  --accent-color: #f97316;
+}
+
+:root,
+html[data-theme="dark"],
+html.dark {
+  color-scheme: dark;
+  --bg-canvas: #0b0b0b;
+  --bg-canvas-subtle: #0f0f0f;
+  --surface-tile: #151515;
+  --surface-tile-hover: #1c1c1c;
+  --surface-tile-elevated: #1e1e1e;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.16);
+  --text-primary: #f2f2f2;
+  --text-secondary: #b8b8b8;
+  --text-tertiary: #8e8e93;
+  --selection-bg: rgba(255, 255, 255, 0.2);
+  --selection-color: #f2f2f2;
+  --scrollbar-thumb: rgba(255, 255, 255, 0.12);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.25);
+  --card-shadow: none;
+  --card-shadow-hover: 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+  --card-inner-bevel: none;
+
+  /* Clock Face Tokens (Dark Mode) */
+  --clock-face-bg: #18181b;
+  --clock-face-ring: rgba(255, 255, 255, 0.12);
+  --clock-hand-primary: #f4f4f5;
+  --clock-hand-secondary: #a1a1aa;
+  --clock-tick-major: #f4f4f5;
+  --clock-tick-minor: #52525b;
+
+  /* Film Grain Overlay Tokens (Dark Mode) */
+  --grain-opacity: 0.07;
+  --grain-blend: overlay;
+}
+
+html[data-theme="light"],
+html.light {
+  color-scheme: light;
+  --bg-canvas: #ECEEF1;
+  --bg-canvas-subtle: #E2E4E8;
+  --surface-tile: #FDFDFD;
+  --surface-tile-hover: #F8F9FA;
+  --surface-tile-elevated: #F4F5F7;
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.16);
+  --text-primary: #121316;
+  --text-secondary: #33363f;
+  --text-tertiary: #6b6e7a;
+  --selection-bg: rgba(0, 0, 0, 0.15);
+  --selection-color: #121316;
+  --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.25);
+  --card-shadow: none;
+  --card-shadow-hover: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+  --card-inner-bevel: none;
+
+  /* Clock Face Tokens (Light Mode) */
+  --clock-face-bg: #f4f4f6;
+  --clock-face-ring: rgba(0, 0, 0, 0.08);
+  --clock-hand-primary: #18181b;
+  --clock-hand-secondary: #71717a;
+  --clock-tick-major: #18181b;
+  --clock-tick-minor: #a1a1aa;
+
+  /* Film Grain Overlay Tokens (Light Mode) */
+  --grain-opacity: 0.035;
+  --grain-blend: multiply;
+}
