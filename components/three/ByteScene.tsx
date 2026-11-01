@@ -139,8 +139,12 @@ function ByteCharacter({
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
-      // Clear transparent screen
+      // Clear and draw dark rounded screen background
       ctx.clearRect(0, 0, 512, 256);
+      ctx.fillStyle = "#080a0f";
+      ctx.beginPath();
+      ctx.roundRect(6, 6, 500, 244, 58);
+      ctx.fill();
 
       const eyeColor = "#38bdf8"; // Vibrant electric cyan
       const eyeGlowColor = "rgba(56, 189, 248, 0.4)";
@@ -148,22 +152,22 @@ function ByteCharacter({
         theme === "dark" ? "rgba(251, 113, 133, 0.48)" : "rgba(244, 63, 94, 0.38)";
 
       // Gaze offset (bounded within visor)
-      const gx = gaze.x * 30;
-      const gy = gaze.y * 16;
+      const gx = gaze.x * 28;
+      const gy = gaze.y * 15;
 
       const leftEyeX = 186 + gx;
       const rightEyeX = 326 + gx;
-      const eyeY = 116 + gy;
+      const eyeY = 118 + gy;
 
       // Draw Cheek Blush (soft warm glowing ellipses)
       if (expression !== "dizzy") {
         ctx.fillStyle = blushColor;
         ctx.beginPath();
-        ctx.ellipse(126 + gx * 0.4, 146 + gy * 0.4, 22, 11, 0, 0, Math.PI * 2);
+        ctx.ellipse(126 + gx * 0.4, 148 + gy * 0.4, 22, 11, 0, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.beginPath();
-        ctx.ellipse(386 + gx * 0.4, 146 + gy * 0.4, 22, 11, 0, 0, Math.PI * 2);
+        ctx.ellipse(386 + gx * 0.4, 148 + gy * 0.4, 22, 11, 0, 0, Math.PI * 2);
         ctx.fill();
       }
 
@@ -621,52 +625,36 @@ function ByteCharacter({
           />
         </mesh>
 
-        {/* Visor Screen with soft molded bezel */}
-        <group position={[0, 0.04, 0.62]}>
-          {/* Molded Outer Bezel */}
+        {/* Glossy Dark Rounded Visor covering the front */}
+        <group position={[0, 0.04, 0.66]}>
           <RoundedBox
-            args={[1.18, 0.66, 0.16]}
-            radius={0.26}
+            args={[1.16, 0.64, 0.22]}
+            radius={0.24}
             smoothness={16}
             castShadow
           >
             <meshPhysicalMaterial
-              color={isDark ? "#15181f" : "#ece7dd"}
-              roughness={0.5}
-              metalness={0.04}
+              color="#08090d"
+              roughness={0.1}
+              metalness={0.12}
+              clearcoat={1.0}
+              clearcoatRoughness={0.06}
             />
           </RoundedBox>
 
-          {/* Glossy Dark Visor Screen */}
-          <group position={[0, 0, 0.03]}>
-            <RoundedBox
-              args={[1.12, 0.60, 0.12]}
-              radius={0.22}
-              smoothness={16}
-            >
-              <meshPhysicalMaterial
-                color="#08090d"
-                roughness={0.1}
-                metalness={0.12}
-                clearcoat={1.0}
-                clearcoatRoughness={0.06}
+          {/* Dynamic 2D Canvas Screen Texture (The expressive glowing face) */}
+          {faceTexture && (
+            <mesh position={[0, 0, 0.113]}>
+              <planeGeometry args={[1.12, 0.60]} />
+              <meshBasicMaterial
+                map={faceTexture}
+                transparent
+                toneMapped={false}
+                opacity={0.98}
+                depthWrite={false}
               />
-            </RoundedBox>
-
-            {/* Dynamic 2D Canvas Screen Texture (The expressive glowing face) */}
-            {faceTexture && (
-              <mesh position={[0, 0, 0.065]}>
-                <planeGeometry args={[1.08, 0.56]} />
-                <meshBasicMaterial
-                  map={faceTexture}
-                  transparent
-                  toneMapped={false}
-                  opacity={0.98}
-                  depthWrite={false}
-                />
-              </mesh>
-            )}
-          </group>
+            </mesh>
+          )}
         </group>
 
         {/* Antenna System (Collar + Spring-Wobbling Stalk + Glowing Ball) */}
@@ -686,7 +674,7 @@ function ByteCharacter({
             <mesh position={[0, 0.13, 0]}>
               <cylinderGeometry args={[0.018, 0.022, 0.24, 32]} />
               <meshPhysicalMaterial
-                color={isDark ? "#333844" : "#c4beaf"}
+                color={isDark ? "#333844" : "#b0aba0"}
                 roughness={0.4}
                 metalness={0.1}
               />
@@ -696,9 +684,9 @@ function ByteCharacter({
             <mesh ref={antennaBallMeshRef} position={[0, 0.28, 0]} castShadow>
               <sphereGeometry args={[0.095, 36, 36]} />
               <meshPhysicalMaterial
-                color={isDark ? "#38bdf8" : "#fbbf24"}
-                emissive={isDark ? "#0284c7" : "#f59e0b"}
-                emissiveIntensity={isCharging ? 3.0 : isDark ? 0.9 : 0.6}
+                color="#38bdf8"
+                emissive="#0284c7"
+                emissiveIntensity={isCharging ? 3.0 : isDark ? 0.9 : 0.7}
                 roughness={0.2}
                 metalness={0.05}
               />
