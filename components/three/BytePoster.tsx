@@ -12,11 +12,11 @@ export default function BytePoster() {
       aria-hidden="true"
     >
       {/* Top Header Labels - matching ByteScene */}
-      <div className="absolute top-4 left-5 right-5 flex items-center justify-between pointer-events-none z-20">
+      <div className="absolute top-3.5 left-4 right-4 flex items-center justify-between pointer-events-none z-20 gap-2">
         <span className="text-[13px] font-medium text-[var(--text-secondary)] shrink-0">
           Byte
         </span>
-        <span className="text-[12px] sm:text-[13px] text-[var(--text-tertiary)] whitespace-nowrap">
+        <span className="text-[12px] sm:text-[13px] text-[var(--text-tertiary)] truncate text-right">
           desk companion
         </span>
       </div>
@@ -160,9 +160,9 @@ export default function BytePoster() {
       </div>
 
       {/* Bottom Footer Labels - matching ByteScene */}
-      <div className="absolute bottom-3 left-5 right-5 flex items-center justify-between pointer-events-none z-20 text-[13px] text-[var(--text-tertiary)]">
-        <span>say hi 👋</span>
-        <span>active</span>
+      <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between pointer-events-none z-20 text-[12.5px] sm:text-[13px] text-[var(--text-tertiary)] gap-2">
+        <span className="truncate">say hi 👋</span>
+        <span className="shrink-0 text-right">active</span>
       </div>
     </div>
   );
