@@ -22,7 +22,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>("dark");
 
   useEffect(() => {
-    // Check saved local theme or system preference
+    // Check URL override, saved local theme, or system preference
+    const params = new URLSearchParams(window.location.search);
+    const themeParam = params.get("theme") as Theme | null;
+    if (themeParam === "light" || themeParam === "dark") {
+      setThemeState(themeParam);
+      applyTheme(themeParam);
+      return;
+    }
+
     const saved = localStorage.getItem("portfolio-theme") as Theme | null;
     if (saved === "light" || saved === "dark") {
       setThemeState(saved);

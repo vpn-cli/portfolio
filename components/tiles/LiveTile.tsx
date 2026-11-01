@@ -60,13 +60,13 @@ export function LiveTile({ className = "" }: { className?: string }) {
         </div>
 
         {/* Ambient Waveform Audio Indicator */}
-        <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-neutral-500">
+        <div className="pt-2 border-t border-black/[0.08] dark:border-white/[0.06] flex items-center justify-between text-[11px] text-[var(--text-secondary)]">
           <span>Focus: Coding</span>
           <div className="flex items-end gap-1 h-3">
             {[35, 75, 45, 90, 40].map((h, i) => (
               <span
                 key={i}
-                className="w-0.5 bg-neutral-400 rounded-full animate-pulse"
+                className="w-0.5 bg-neutral-500 dark:bg-neutral-400 rounded-full animate-pulse"
                 style={{
                   height: `${h}%`,
                   animationDuration: `${0.5 + i * 0.15}s`,

@@ -1,15 +1,10 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import "./globals.css";
 import { siteConfig } from "@/content/site";
 import { SmoothScrollProvider } from "@/components/motion/SmoothScrollProvider";
 import { RouteTransitionProvider } from "@/components/motion/RouteTransition";
 import { CustomCursor } from "@/components/motion/CustomCursor";
 import { ThemeProvider } from "@/components/motion/ThemeProvider";
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-};
 
 export const metadata: Metadata = {
   title: `${siteConfig.name} — ${siteConfig.role}`,

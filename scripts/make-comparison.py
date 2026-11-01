@@ -33,3 +33,4 @@ comp.paste(build_resized, (20, y_build + header_h))
 comp.save("public/comparisons/comparison-1920.png")
 comp.save(r"C:\Users\vipin\.gemini\antigravity\brain\3b0db8d7-f7c8-4719-a29a-0bca32b694d1\comparison-1920.png")
 print("Saved comparison-1920.png")
+

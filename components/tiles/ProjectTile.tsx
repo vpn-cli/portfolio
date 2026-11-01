@@ -32,7 +32,7 @@ export function ProjectTile({
 
         {/* Floating Circular Arrow Pill (Fades / moves in on hover) */}
         <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0">
-          <div className="w-9 h-9 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-lg">
+          <div className="w-9 h-9 rounded-full bg-white/80 dark:bg-black/60 backdrop-blur-md border border-black/10 dark:border-white/20 flex items-center justify-center text-neutral-900 dark:text-white shadow-lg">
             <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </div>
         </div>
