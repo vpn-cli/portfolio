@@ -36,5 +36,7 @@ next-env.d.ts
 # local screenshots and visual diffs
 /public/screenshots/
 /public/comparisons/
+/shots/
+lighthouse-*.json
 
 
