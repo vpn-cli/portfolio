@@ -29,7 +29,7 @@ To make this portfolio 100% authentically yours, execute the following four focu
 | :--- | :--- | :--- |
 | **Portrait Avatar** (`public/avatar.jpg`) | Synthetic vector illustration | High-resolution editorial or outdoor photograph of Vipin Kaushik (can use cropped `public/images/moi.jpeg` or studio headshot). |
 | **Hero Bio** (`content/site.ts`) | Generic full-stack description | *"Engineering high-concurrency cloud systems, distributed architectures, and tactile user interfaces that feel physically alive."* |
-| **Social Links** (`content/site.ts`) | Generic handles (`@vipin_dev`, `@vipin`) | Verified personal handles: <br>• **GitHub:** `https://github.com/vpn-cli` <br>• **LinkedIn:** `https://linkedin.com/in/your-linkedin-slug` <br>• **X / Twitter:** `https://x.com/your-handle` <br>• **Email:** `vipinkaushik20771041@gmail.com` |
+| **Social Links** (`content/site.ts`) | Generic handles (`@vipin_dev`, `@vipin`) | Verified personal handles: <br>• **GitHub:** `https://github.com/vpn-cli` <br>• **LinkedIn:** `https://www.linkedin.com/in/vpnk2003` <br>• **X / Twitter:** `https://x.com/your-handle` <br>• **Email:** `vipinkaushik20771041@gmail.com` |
 | **Location & Timezone** (`content/site.ts`) | Configured | `New Delhi, India` (`Asia/Kolkata`, UTC+5:30) with real-time digital clock display. |
 | **Curriculum Vitae / Resume** | None | Add a downloadable `public/resume.pdf` with a quick link button in the navigation header and About page. |
 
