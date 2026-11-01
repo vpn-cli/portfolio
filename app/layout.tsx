@@ -1,10 +1,19 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import dynamic from "next/dynamic";
 import "./globals.css";
 import { siteConfig } from "@/content/site";
 import { SmoothScrollProvider } from "@/components/motion/SmoothScrollProvider";
 import { RouteTransitionProvider } from "@/components/motion/RouteTransition";
-import { CustomCursor } from "@/components/motion/CustomCursor";
 import { ThemeProvider } from "@/components/motion/ThemeProvider";
+import { ClientCursor } from "@/components/motion/ClientCursor";
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: `${siteConfig.name} — ${siteConfig.role}`,
@@ -33,20 +42,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark scroll-smooth" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="en" className={`dark scroll-smooth ${inter.variable}`} suppressHydrationWarning>
       <body className="min-h-screen antialiased font-body">
         <ThemeProvider>
           <SmoothScrollProvider>
             <RouteTransitionProvider>
-              <CustomCursor />
+              <ClientCursor />
               {children}
             </RouteTransitionProvider>
           </SmoothScrollProvider>

@@ -19,7 +19,7 @@ export async function generateMetadata({
   if (!project) return { title: "Project Not Found" };
 
   return {
-    title: `${project.title} — ${siteConfig.name}`,
+    title: `${project.title} · ${siteConfig.name}`,
     description: project.tagline,
   };
 }

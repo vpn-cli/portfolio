@@ -1,27 +1,31 @@
-export interface Project {
-  slug: string;
+import { projects, CaseStudy } from "@/data/projects";
+
+export type Project = CaseStudy;
+export type { CaseStudy };
+
+export interface ProjectDecision {
   title: string;
-  tagline: string;
-  category: string;
-  year: string;
-  client: string;
+  description: string;
+}
+
+export interface ProjectArchitectureStep {
+  id: string;
+  label: string;
   role: string;
-  timeline: string;
-  deliverables: string[];
-  metrics: string[];
-  accentGradient: string;
-  image: string;
-  overview: string;
-  problem: string;
-  process: string[];
-  solution: string;
-  keyInsights: string[];
-  deviceType: "phone-dark" | "phone-light" | "laptop" | "3d";
-  liveUrl?: string;
-  screens?: {
-    title: string;
-    description: string;
-  }[];
+  tech: string;
+}
+
+export interface ProjectMetricResult {
+  value: string;
+  label: string;
+  source: string;
+}
+
+export interface ProjectCodeSnippet {
+  filename: string;
+  language: string;
+  code: string;
+  explanation?: string;
 }
 
 export interface ResourceItem {
@@ -49,29 +53,26 @@ export const siteConfig = {
   // === PERSONAL IDENTITY ===
   name: "Vipin Kaushik",
   firstName: "Vipin",
-  role: "Full-Stack Developer & Creative Technologist",
+  role: "Full-Stack Developer & Backend Systems Engineer",
   city: "New Delhi",
   country: "India",
   avatar: "/avatar.jpg",
   timezone: "Asia/Kolkata",
-  status: "Available for Select Projects",
-  bio: "Engineering high-concurrency cloud systems, distributed architectures, and tactile user interfaces that feel physically alive.",
   email: "vipinkaushik20771041@gmail.com",
-  story: "Ever since I wrote my first lines of code, I've had a deep passion for software engineering. I was fascinated by how logic, algorithms, and thoughtful design combine into interactive software that millions can use seamlessly.",
-  whatIDoNow: "Today I engineer scalable full-stack applications, modern microservices, and buttery-smooth frontend web applications with Next.js, TypeScript, and high-performance WebGL.",
+  // TODO: Customize exact job-seeker availability wording
+  status: "Open to SDE roles · Immediate availability",
+  bio: "I build full-stack web applications and the backend systems behind them, mostly with Next.js, Node.js, and PostgreSQL.",
+  story: "I focus on distributed systems, real-time data streaming, and scalable web architectures built with modern web standards.",
+  whatIDoNow: "Today I build full-stack applications with Next.js, TypeScript, and Node.js, backed by PostgreSQL and event-driven Kafka message queues.",
   whatIDoBest: {
-    title: "Full-Stack Development",
-    description: "Architecting resilient backend microservices, performant databases, and delightful frontend interfaces built with modern web standards.",
+    title: "Full-Stack & Backend Systems",
+    description: "Building distributed systems, real-time WebSocket pipelines, and reliable microservices architectures.",
   },
 
-  // === SOCIAL PLATFORMS (3x2 Grid on Hub) ===
+  // === SOCIAL PLATFORMS (GitHub & LinkedIn) ===
   socials: [
-    { label: "X / Twitter", handle: "@vipin_dev", url: "https://twitter.com", icon: "twitter" },
     { label: "GitHub", handle: "vpn-cli", url: "https://github.com/vpn-cli", icon: "github" },
-    { label: "LinkedIn", handle: "vipin-kaushik", url: "https://linkedin.com", icon: "linkedin" },
-    { label: "Dribbble", handle: "@vipin", url: "https://dribbble.com", icon: "dribbble" },
-    { label: "Instagram", handle: "@vipin.codes", url: "https://instagram.com", icon: "instagram" },
-    { label: "Email", handle: "vipinkaushik20771041@gmail.com", url: "mailto:vipinkaushik20771041@gmail.com", icon: "mail" },
+    { label: "LinkedIn", handle: "vpnk2003", url: "https://www.linkedin.com/in/vpnk2003", icon: "linkedin" },
   ],
 
   // === TECH STACK (Exact app icons matching reference) ===
@@ -89,95 +90,7 @@ export const siteConfig = {
   ],
 
   // === PROJECTS & CASE STUDIES ===
-  projects: [
-    {
-      slug: "llms-txt",
-      title: "LLMS.txt Checker",
-      tagline: "Technical auditing & Answer Engine Optimization (AEO) tool for AI crawlers.",
-      category: "AI Agent Tooling & Verification",
-      year: "2026",
-      client: "Open Source / GitHub",
-      role: "Creator & Lead Architect",
-      timeline: "Ongoing",
-      deliverables: ["AST Markdown Parser", "Concurrent URL Crawler", "Soft-404 & SPA Detector", "10-Point AEO Heuristic"],
-      metrics: ["Deterministic AST Parsing", "Bounded 5MB Stream Safety", "10-Point AEO Quality Heuristic"],
-      accentGradient: "from-zinc-900 via-neutral-900 to-black",
-      image: "/projects/llms-txt.jpg",
-      overview: "I built this checker to answer a simple, practical question: if an AI crawler discovers your website through its llms.txt file, is that file actually usable? The tool cuts through ambiguity to verify if a site's implementation is structurally sound, machine-readable, and fundamentally useful to an agentic system.",
-      problem: "A URL returning a 200 OK doesn't mean much on its own. Empty Single-Page App (SPA) shells and soft-404 templates often return 200 headers while presenting zero readable content to AI web crawlers.",
-      process: [
-        "Constructed an AST parser using unified and remark-parse to validate Markdown hierarchy without fragile regex.",
-        "Built a controlled concurrent URL crawler utilizing p-limit with bounded stream limits to prevent crawler exhaustion.",
-        "Engineered soft-404 detection that compares llms.txt responses against randomized non-existent paths.",
-        "Formulated a deterministic 10-point AEO heuristic measuring evidence attribution, statistics, and verifiable quotations.",
-      ],
-      solution: "A technical auditing platform that validates authenticity, checks HTTP resolutions, inspects DOM payloads with Cheerio, and generates prioritized technical fix reports.",
-      keyInsights: [
-        "Over 40% of tested domains return soft-404 SPA shells falsely classified as successful.",
-        "AST-based validation catches nested link syntax errors invisible to basic text scanners.",
-      ],
-      deviceType: "phone-dark",
-      liveUrl: "https://github.com/vpn-cli/llms_txt_checker",
-    },
-    {
-      slug: "sockets",
-      title: "Sockets Engine",
-      tagline: "High-throughput real-time WebSocket communication & broadcast pipeline.",
-      category: "Distributed Systems & Real-Time",
-      year: "2026",
-      client: "Open Source / GitHub",
-      role: "Backend & Systems Engineer",
-      timeline: "Ongoing",
-      deliverables: ["WebSocket Server Engine", "Real-Time Broadcast Pipeline", "Connection State Machine", "Binary Payload Serialization"],
-      metrics: ["Sub-5ms Broadcast Latency", "10,000+ Concurrent Connections", "0% Packet Loss"],
-      accentGradient: "from-neutral-800 via-stone-900 to-black",
-      image: "/projects/sockets.jpg",
-      overview: "A lightweight, resilient WebSocket server and broadcasting architecture built to power low-latency bidirectional messaging, real-time telemetry streaming, and instant peer synchronization.",
-      problem: "Traditional polling and HTTP overhead create latency bottlenecks and excessive CPU churn when delivering real-time telemetry and synchronous notifications.",
-      process: [
-        "Implemented high-performance connection pooling with the native ws WebSocket library in Node.js.",
-        "Engineered zero-allocation message broadcast loops iterating through open client connections.",
-        "Integrated client lifecycle state tracking (connecting, open, closing, closed) with automated disconnection cleanup.",
-      ],
-      solution: "A reliable, zero-bloat real-time event pipeline delivering sub-5ms broadcast times and rock-solid state management.",
-      keyInsights: [
-        "Direct socket broadcasting reduced telemetry transmission overhead by 88% compared to HTTP polling.",
-        "Explicit connection state validation prevents socket buffer leaks under network interruption.",
-      ],
-      deviceType: "phone-light",
-      liveUrl: "https://github.com/vpn-cli/sockets",
-    },
-    {
-      slug: "appforge",
-      title: "AppForge",
-      tagline: "Highly-scalable metadata-driven generative web application runtime & AI copilot.",
-      category: "Generative AI & App Engine",
-      year: "2026",
-      client: "AppForge Platform / GitHub",
-      role: "Principal Full-Stack Architect",
-      timeline: "2026",
-      deliverables: ["Graphical AST Compiler", "AI Copilot Workspace", "Dynamic Postgres Sync Engine", "Semantic Caching Pipeline"],
-      metrics: ["<1.2s AST Compilation", "Llama-3.3-70B Pipeline", "300+ Edge Nodes Secured"],
-      accentGradient: "from-zinc-800 via-neutral-900 to-black",
-      image: "/projects/appforge.jpg",
-      overview: "AppForge interprets natural language prompts via large language models, compiles them into a mathematically sound graphical JSON AST, and dynamically renders enterprise-grade B2B applications instantaneously directly inside the Web DOM.",
-      problem: "Traditional web applications require developers to hardcode layouts, map databases, and bind REST endpoints manually. Building and iterating prototypes takes days or weeks of repetitive setup.",
-      process: [
-        "Architected an AI prompt-to-AST compilation pipeline routing requests to Llama-3.3-70B on Groq LPU with <1.2s inference.",
-        "Built serverless semantic caching with Upstash Redis to serve repeated prompt topologies with near-zero latency.",
-        "Engineered a dynamic Postgres sync engine that executes runtime DDL on Supabase to provision tables on the fly.",
-        "Implemented background event streaming into Upstash Kafka for decoupled telemetry and audit trails.",
-        "Secured edge routing with Clerk authentication middleware across 300+ edge locations.",
-      ],
-      solution: "A desktop-grade generative application workspace where anyone can describe an enterprise tool and watch it compile, migrate a database, and deploy live in seconds.",
-      keyInsights: [
-        "Semantic caching on Upstash Redis cut repetitive generation costs by 68%.",
-        "AST-driven dynamic rendering completely eliminated arbitrary code execution risks.",
-      ],
-      deviceType: "laptop",
-      liveUrl: "https://github.com/vpn-cli/appforge",
-    },
-  ] as Project[],
+  projects: projects as Project[],
 
   // === DEVELOPER RESOURCES & TEMPLATES (Matching Screenshot 210333.png & 210403.png) ===
   resources: [
@@ -191,7 +104,7 @@ export const siteConfig = {
       description: "Crysta is a modern, glass-inspired template designed for developers and creators who want to showcase their work with clarity, optical depth, and high-performance motion.",
       features: [
         "Dark & Light Modes",
-        "Elegant Glass Style & Animations",
+        "Clean Minimalist Style & Animations",
         "Page Transitions with GSAP",
         "Fully Responsive Grid System",
         "Built with Tailwind CSS v4 & React 19",
