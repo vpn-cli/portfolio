@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1200px;
+      height: 750px;
+      background: #09090b;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #fafafa;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 20px;
+    }
+    .title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .badge {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 12px;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border-radius: 9999px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .metrics {
+      display: flex;
+      gap: 24px;
+      font-size: 14px;
+      color: #a1a1aa;
+    }
+    .diagram-container {
+      display: grid;
+      grid-template-columns: 240px 1fr 260px;
+      gap: 32px;
+      align-items: center;
+      margin: 32px 0;
+    }
+    .card {
+      background: #141519;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #f4f4f5;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: #71717a;
+      line-height: 1.4;
+    }
+    .cluster-box {
+      background: #18181b;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 28px;
+      position: relative;
+    }
+    .cluster-header {
+      font-size: 13px;
+      font-weight: 600;
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .kafka-pipeline {
+      background: #27272a;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .topic-pill {
+      background: #3f3f46;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #e4e4e7;
+    }
+    .footer-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: #71717a;
+      font-size: 13px;
+    }
+    .stack-tags {
+      display: flex;
+      gap: 10px;
+    }
+    .stack-tag {
+      background: #1c1d22;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 12px;
+      color: #d4d4d8;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="title">
+      <span>StreamMart</span>
+      <span class="badge">Event-Driven Microservices</span>
+    </div>
+    <div class="metrics">
+      <span>Transactional Outbox: Active</span>
+      <span>•</span>
+      <span>Message Broker: Kafka 3.4</span>
+      <span>•</span>
+      <span>PostgreSQL: Neon Serverless</span>
+    </div>
+  </div>
+
+  <div class="diagram-container">
+    <div class="card">
+      <div class="card-title">Next.js Client & API Gateway</div>
+      <div class="card-desc">Reverse proxy with unified JWT validation, rate limiting, and SSL termination on port 8080.</div>
+      <div style="font-size: 12px; color: #38bdf8; margin-top: 8px;">→ Routes REST requests to internal cluster</div>
+    </div>
+
+    <div class="cluster-box">
+      <div class="cluster-header">
+        <span>Apache Kafka Message Bus & Outbox Worker</span>
+        <span style="color: #4ade80;">● Decoupled Pipeline</span>
+      </div>
+
+      <div class="kafka-pipeline">
+        <div>
+          <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">payment-service (Transactional Outbox)</div>
+          <div style="font-size: 12px; color: #a1a1aa;">Atomically inserts payment + event into outbox_events</div>
+        </div>
+        <div class="topic-pill">topic: payment-successful</div>
+      </div>
+
+      <div class="kafka-pipeline">
+        <div>
+          <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">order-service (Consumer & Processor)</div>
+          <div style="font-size: 12px; color: #a1a1aa;">Listens to Kafka events, updates order status, triggers delivery</div>
+        </div>
+        <div class="topic-pill">topic: order-fulfilled</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Downstream Services</div>
+      <div class="card-desc">
+        <strong>Analytics Worker:</strong> Ingests sales metrics.<br><br>
+        <strong>Email Notification:</strong> Sends asynchronous confirmation receipts with zero lag.
+      </div>
+      <div style="font-size: 12px; color: #4ade80; margin-top: 8px;">Guaranteed at-least-once delivery</div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <div class="stack-tags">
+      <span class="stack-tag">Node.js</span>
+      <span class="stack-tag">Express</span>
+      <span class="stack-tag">Apache Kafka</span>
+      <span class="stack-tag">Docker Compose</span>
+      <span class="stack-tag">Drizzle ORM</span>
+      <span class="stack-tag">Neon PostgreSQL</span>
+    </div>
+    <div>github.com/vpn-cli/StreamMart</div>
+  </div>
+</body>
+</html>
+
