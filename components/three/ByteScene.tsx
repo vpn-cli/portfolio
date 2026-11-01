@@ -19,17 +19,26 @@ interface HeartParticle {
   maxLife: number;
 }
 
-interface SleepZParticle {
-  id: number;
-  x: number;
-  y: number;
-  z: number;
-  vx: number;
-  vy: number;
-  scale: number;
-  opacity: number;
-  life: number;
-  maxLife: number;
+function ResponsiveCamera({ margin = 1.28 }: { margin?: number }) {
+  const { camera, size } = useThree();
+
+  useEffect(() => {
+    const cam = camera as THREE.PerspectiveCamera;
+    const aspect = size.width / Math.max(1, size.height);
+    const vFov = (cam.fov * Math.PI) / 180;
+    // Bounding box of Byte is roughly height 1.8, width 2.2
+    const fitHeightDist = (1.8 / 2) / Math.tan(vFov / 2);
+    const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
+    const fitWidthDist = (2.2 / 2) / Math.tan(hFov / 2);
+
+    const dist = margin * Math.max(fitHeightDist, fitWidthDist);
+
+    cam.position.set(0, 0.04, Math.max(3.8, dist));
+    cam.lookAt(0, 0, 0);
+    cam.updateProjectionMatrix();
+  }, [camera, size.width, size.height, margin]);
+
+  return null;
 }
 
 type FaceExpression =
