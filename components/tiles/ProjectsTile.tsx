@@ -1,69 +1,211 @@
 "use client";
 
+import { useState } from "react";
+import Image from "next/image";
 import { BentoTile } from "./BentoTile";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ExternalLink } from "lucide-react";
+import { SiGithub } from "react-icons/si";
 import { usePageTransition } from "@/components/motion/RouteTransition";
+
+interface ProjectItem {
+  id: string;
+  slug: string;
+  title: string;
+  tagline: string;
+  stack: string[];
+  image: string;
+  videoUrl?: string;
+  videoPoster?: string;
+  repoUrl: string;
+  liveUrl: string;
+}
+
+const projectsList: ProjectItem[] = [
+  {
+    id: "appforge",
+    slug: "appforge",
+    title: "AppForge",
+    tagline:
+      "Generative AI runtime compiling LLM-streamed JSON ASTs into Next.js UI in sub-800ms.",
+    stack: ["Next.js 15", "Groq", "Kafka", "Redis", "Zod"],
+    image: "/projects/appforge-live.png",
+    videoUrl: "/videos/appforge/brag.webm",
+    videoPoster: "/videos/appforge/brag.jpg",
+    repoUrl: "https://github.com/vpn-cli/appforge",
+    liveUrl: "https://appforge-studios.vercel.app",
+  },
+  {
+    id: "stream-mart",
+    slug: "stream-mart",
+    title: "StreamMart",
+    tagline:
+      "Event-driven e-commerce microservices backend with Kafka and Transactional Outbox pattern.",
+    stack: ["Node.js", "Kafka", "PostgreSQL", "Docker", "Drizzle"],
+    image: "/projects/stream-mart.png",
+    repoUrl: "https://github.com/vpn-cli/StreamMart",
+    liveUrl: "https://github.com/vpn-cli/StreamMart#architecture--workflow",
+  },
+  {
+    id: "sportz",
+    slug: "sockets",
+    title: "Sportz",
+    tagline:
+      "Real-time analytical sports engine serving sub-80ms WebSocket updates with PostgreSQL & Drizzle.",
+    stack: ["Next.js 15", "WebSockets", "PostgreSQL", "Drizzle"],
+    image: "/stageshow-sockets-dark.png",
+    videoUrl: "/videos/sockets/brag.webm",
+    videoPoster: "/videos/sockets/brag.jpg",
+    repoUrl: "https://github.com/vpn-cli/sockets",
+    liveUrl: "https://sportz-rho.vercel.app",
+  },
+];
 
 export function ProjectsTile({ className = "" }: { className?: string }) {
   const { navigateWithWipe } = usePageTransition();
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  const activeProject = projectsList[activeIdx];
 
   return (
-    <BentoTile className={className} cursorText="View projects">
-      <div
-        onClick={() => navigateWithWipe("/projects")}
-        className="w-full h-full flex flex-col justify-between cursor-pointer group select-none relative overflow-hidden"
-      >
+    <BentoTile className={className} cursorText="View work" noPadding>
+      <div className="w-full h-full flex flex-col justify-between p-5 sm:p-6 overflow-hidden">
         {/* Top Header */}
-        <div className="z-20 relative">
-          <span className="text-[12px] sm:text-[13px] tracking-wider uppercase text-[var(--text-tertiary)] block mb-1 font-medium font-mono">
-            PROJECTS
-          </span>
-          <h2 className="text-[20px] sm:text-[23px] xl:text-[25px] 2xl:text-[28px] font-medium text-[var(--text-primary)] leading-[1.2] tracking-tight group-hover:text-black dark:group-hover:text-white transition-colors duration-200">
+        <div className="flex items-center justify-between mb-3 z-20">
+          <h2 className="text-[20px] font-bold text-[var(--text-primary)] leading-tight tracking-tight">
             Selected work
           </h2>
-        </div>
-
-        {/* Fanned / Layered Mockups Showcase */}
-        <div className="relative w-full flex-1 flex items-center justify-center my-auto min-h-[150px] sm:min-h-[180px] xl:min-h-[200px] 2xl:min-h-[240px] overflow-hidden py-1">
-          {/* 1. Laptop (Back layer, centered) */}
-          <div className="relative z-10 w-[72%] sm:w-[75%] max-w-[400px] aspect-[16/10] rounded-lg sm:rounded-xl overflow-hidden shadow-xl border border-black/15 dark:border-white/10 bg-neutral-900 transition-all duration-500 ease-out group-hover:scale-[1.03] group-hover:-translate-y-1.5">
-            <img
-              src="/projects/appforge.jpg"
-              alt="AppForge SaaS dashboard mockup"
-              className="w-full h-full object-cover object-top transition-transform duration-500 ease-out"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-          </div>
-
-          {/* 2. Left Phone (Overlapping in front on the left, angled -6deg) */}
-          <div className="absolute z-20 left-[6%] sm:left-[10%] bottom-0 sm:bottom-1 w-[26%] sm:w-[28%] max-w-[95px] sm:max-w-[130px] xl:max-w-[145px] aspect-[9/16] rounded-md sm:rounded-xl overflow-hidden shadow-2xl border border-black/25 dark:border-white/15 bg-neutral-950 transition-all duration-500 ease-out -rotate-6 group-hover:-rotate-12 group-hover:-translate-x-3.5 group-hover:-translate-y-1.5 group-hover:scale-105">
-            <img
-              src="/projects/llms-txt.jpg"
-              alt="LLMS.txt mobile preview"
-              className="w-full h-full object-cover object-center transition-transform duration-500 ease-out"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
-          </div>
-
-          {/* 3. Right Phone (Overlapping in front on the right, angled +6deg) */}
-          <div className="absolute z-30 right-[6%] sm:right-[10%] bottom-0 sm:bottom-1 w-[26%] sm:w-[28%] max-w-[95px] sm:max-w-[130px] xl:max-w-[145px] aspect-[9/16] rounded-md sm:rounded-xl overflow-hidden shadow-2xl border border-black/25 dark:border-white/15 bg-neutral-950 transition-all duration-500 ease-out rotate-6 group-hover:rotate-12 group-hover:translate-x-3.5 group-hover:-translate-y-1.5 group-hover:scale-105">
-            <img
-              src="/projects/sockets.jpg"
-              alt="Sockets mobile preview"
-              className="w-full h-full object-cover object-center transition-transform duration-500 ease-out"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
-          </div>
-        </div>
-
-        {/* Bottom Bar matching About / Resources arrow button */}
-        <div className="pt-2 mt-auto flex items-center justify-end gap-2.5 z-20 relative">
-          <span className="text-xs sm:text-sm font-medium text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] transition-colors">
-            View projects
+          <span className="text-[13px] text-[var(--text-tertiary)] font-medium">
+            3 flagship systems
           </span>
-          <div className="w-10 h-10 rounded-full bg-neutral-100 group-hover:bg-neutral-200/80 border border-black/[0.08] group-hover:border-black/20 text-neutral-700 group-hover:text-black dark:bg-white/[0.05] dark:group-hover:bg-white/[0.1] dark:border-white/[0.08] dark:group-hover:border-white/20 dark:text-neutral-300 dark:group-hover:text-white flex items-center justify-center transition-all duration-200 shadow-sm shrink-0">
-            <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </div>
+
+        {/* Real Screenshot / Video Loop Preview */}
+        <div
+          onClick={() => navigateWithWipe(`/work/${activeProject.slug}`)}
+          className="relative w-full aspect-[16/9] max-h-[160px] sm:max-h-[190px] xl:max-h-[210px] rounded-xl overflow-hidden border border-transparent bg-[var(--surface-tile-elevated)] cursor-pointer group/preview"
+        >
+          {projectsList.map((project, idx) => (
+            <div
+              key={project.id}
+              className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
+                idx === activeIdx ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+              }`}
+            >
+              {project.videoUrl ? (
+                <video
+                  src={project.videoUrl}
+                  poster={project.videoPoster || project.image}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="w-full h-full object-cover object-top transition-transform duration-300 group-hover/preview:scale-[1.02]"
+                />
+              ) : (
+                <Image
+                  src={project.image}
+                  alt={`${project.title} preview`}
+                  fill
+                  sizes="(max-width: 640px) 90vw, 480px"
+                  className="object-cover object-top transition-transform duration-300 group-hover/preview:scale-[1.02]"
+                />
+              )}
+            </div>
+          ))}
+
           </div>
+
+        {/* Project Selector Tabs */}
+        <div className="my-2.5 flex flex-col gap-1.5">
+          {projectsList.map((project, idx) => {
+            const isActive = idx === activeIdx;
+
+            return (
+              <div
+                key={project.id}
+                onMouseEnter={() => setActiveIdx(idx)}
+                onClick={() => navigateWithWipe(`/work/${project.slug}`)}
+                className={`py-2 px-2.5 rounded-lg transition-colors cursor-pointer flex flex-col gap-1 ${
+                  isActive
+                    ? "bg-[var(--surface-tile-elevated)]"
+                    : "hover:bg-[var(--surface-tile-hover)]"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full ${
+                        isActive ? "bg-sky-500" : "bg-neutral-500"
+                      }`}
+                    />
+                    <span
+                      className={`text-[16px] font-bold ${
+                        isActive
+                          ? "text-[var(--text-primary)]"
+                          : "text-[var(--text-secondary)]"
+                      }`}
+                    >
+                      {project.title}
+                    </span>
+                  </div>
+
+                  {/* Direct Links (Repo & Live) */}
+                  <div
+                    className="flex items-center gap-2"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <a
+                      href={project.repoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`${project.title} GitHub repository`}
+                      className="p-1 rounded-md text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-tile)] transition-colors"
+                    >
+                      <SiGithub className="w-3.5 h-3.5" />
+                    </a>
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`${project.title} live demo`}
+                      className="p-1 rounded-md text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-tile)] transition-colors"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+                </div>
+
+                {/* Plain description */}
+                <p className="text-[16px] text-[var(--text-secondary)] line-clamp-1 leading-normal">
+                  {project.tagline}
+                </p>
+
+                {/* Stack tags */}
+                <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
+                  {project.stack.map((tech) => (
+                    <span
+                      key={tech}
+                      className="text-[13px] px-1.5 py-0.5 rounded bg-[var(--surface-tile)] text-[var(--text-tertiary)] border border-transparent"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Footer: View all case studies */}
+        <div className="pt-1 mt-auto flex items-center justify-between ">
+          <button
+            onClick={() => navigateWithWipe("/projects")}
+            type="button"
+            className="text-[13px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+          >
+            <span>All projects & case studies</span>
+            <ArrowUpRight className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
     </BentoTile>

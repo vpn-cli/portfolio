@@ -42,10 +42,10 @@ export function LiveTile({ className = "" }: { className?: string }) {
     <BentoTile className={className}>
       <div className="w-full h-full flex flex-col justify-between py-0.5">
         <div className="flex items-center justify-between">
-          <span className="type-label2 text-neutral-500 font-medium">
+          <span className="type-label2 text-[var(--text-tertiary)] font-medium">
             Local Time
           </span>
-          <span className="text-[10px] font-mono text-neutral-500">
+          <span className="text-[10px] font-mono text-[var(--text-tertiary)]">
             {siteConfig.city}
           </span>
         </div>
@@ -55,18 +55,18 @@ export function LiveTile({ className = "" }: { className?: string }) {
             <span className="text-2xl sm:text-3xl font-semibold tracking-tight text-[var(--text-primary)]">
               {timeString}
             </span>
-            <span className="text-xs font-medium text-neutral-500 uppercase">{period}</span>
+            <span className="text-xs font-medium text-[var(--text-tertiary)]">{period}</span>
           </div>
         </div>
 
         {/* Ambient Waveform Audio Indicator */}
-        <div className="pt-2 border-t border-black/[0.08] dark:border-white/[0.06] flex items-center justify-between text-[11px] text-[var(--text-secondary)]">
+        <div className="pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between text-[11px] text-[var(--text-secondary)]">
           <span>Focus: Coding</span>
           <div className="flex items-end gap-1 h-3">
             {[35, 75, 45, 90, 40].map((h, i) => (
               <span
                 key={i}
-                className="w-0.5 bg-neutral-500 dark:bg-neutral-400 rounded-full animate-pulse"
+                className="w-0.5 bg-[var(--text-tertiary)] rounded-full motion-safe:animate-pulse"
                 style={{
                   height: `${h}%`,
                   animationDuration: `${0.5 + i * 0.15}s`,

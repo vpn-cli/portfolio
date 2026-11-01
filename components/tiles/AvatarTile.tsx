@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { BentoTile } from "./BentoTile";
 import { siteConfig } from "@/content/site";
 import { usePageTransition } from "@/components/motion/RouteTransition";
@@ -13,12 +14,15 @@ export function AvatarTile({ className = "" }: { className?: string }) {
         onClick={() => navigateWithWipe("/about")}
         className="w-full h-full relative cursor-pointer overflow-hidden rounded-[24px] group"
       >
-        <img
+        <Image
           src={siteConfig.avatar}
           alt={siteConfig.name}
-          className="absolute inset-0 w-full h-full object-cover object-[center_40%] transition-transform duration-500 group-hover:scale-105"
+          fill
+          loading="lazy"
+          sizes="(max-width: 640px) 100vw, 240px"
+          className="object-cover object-[center_40%]"
+          quality={85}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
       </div>
     </BentoTile>
   );

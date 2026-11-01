@@ -9,10 +9,10 @@ export function ThreeTile({ className = "" }: { className?: string }) {
       <div className="w-full h-full relative overflow-hidden flex flex-col justify-between p-4">
         {/* Subtle Header */}
         <div className="flex items-center justify-between z-20">
-          <span className="text-[11px] font-mono uppercase tracking-wider text-neutral-500">
+          <span className="text-[11px] text-[var(--text-secondary)] font-medium">
             Interactive 3D
           </span>
-          <span className="text-[10px] font-mono text-neutral-600">
+          <span className="text-[10px] text-[var(--text-tertiary)]">
             R3F / Glass
           </span>
         </div>
@@ -23,7 +23,7 @@ export function ThreeTile({ className = "" }: { className?: string }) {
         </div>
 
         {/* Footer */}
-        <div className="z-20 pt-1 text-[10px] font-mono text-neutral-600 flex items-center justify-between">
+        <div className="z-20 pt-1 text-[10px] text-[var(--text-tertiary)] flex items-center justify-between">
           <span>Drag to refract</span>
           <span>512px / HDR</span>
         </div>
