@@ -1,17 +1,13 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CustomEase } from "gsap/CustomEase";
-import { Flip } from "gsap/Flip";
-import { Observer } from "gsap/Observer";
-import { SplitText } from "gsap/SplitText";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
 let isRegistered = false;
 
 export function registerGSAPPlugins() {
   if (typeof window === "undefined" || isRegistered) return;
   
-  gsap.registerPlugin(ScrollTrigger, CustomEase, Flip, Observer, SplitText, ScrollToPlugin);
+  gsap.registerPlugin(ScrollTrigger, CustomEase);
 
   // Register Custom Eases
   try {

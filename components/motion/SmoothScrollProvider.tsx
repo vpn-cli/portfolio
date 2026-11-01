@@ -2,9 +2,6 @@
 
 import { useEffect, useRef, createContext, useContext, useState } from "react";
 import Lenis from "lenis";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { registerGSAPPlugins } from "@/lib/motion";
 
 interface LenisContextValue {
   lenis: Lenis | null;
@@ -19,46 +16,49 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    registerGSAPPlugins();
-
     // Respect user's reduced-motion preference
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) {
       return;
     }
 
-    const lenis = new Lenis({
-      duration: 1.15,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.5,
-      autoRaf: false,
-    });
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    let idleId: number | null = null;
 
-    lenisRef.current = lenis;
-    setLenisInstance(lenis);
+    const initLenis = () => {
+      if (lenisRef.current) return;
+      const lenis = new Lenis({
+        duration: 1.15,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: "vertical",
+        gestureOrientation: "vertical",
+        smoothWheel: true,
+        wheelMultiplier: 1.0,
+        touchMultiplier: 1.5,
+        autoRaf: true,
+      });
 
-    // Synchronize ScrollTrigger
-    lenis.on("scroll", () => {
-      ScrollTrigger.update();
-    });
-
-    // Synchronize GSAP Ticker
-    const tickerCallback = (time: number) => {
-      lenis.raf(time * 1000);
+      lenisRef.current = lenis;
+      setLenisInstance(lenis);
     };
 
-    gsap.ticker.add(tickerCallback);
-    gsap.ticker.lagSmoothing(0);
+    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+      idleId = (window as unknown as { requestIdleCallback: (cb: () => void, opts: { timeout: number }) => number })
+        .requestIdleCallback(initLenis, { timeout: 2500 });
+    } else {
+      timer = setTimeout(initLenis, 600);
+    }
 
     return () => {
-      gsap.ticker.remove(tickerCallback);
-      lenis.destroy();
-      lenisRef.current = null;
-      setLenisInstance(null);
+      if (timer) clearTimeout(timer);
+      if (idleId !== null && typeof window !== "undefined" && "cancelIdleCallback" in window) {
+        (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(idleId);
+      }
+      if (lenisRef.current) {
+        lenisRef.current.destroy();
+        lenisRef.current = null;
+        setLenisInstance(null);
+      }
     };
   }, []);
 
@@ -68,4 +68,3 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     </LenisContext.Provider>
   );
 }
-

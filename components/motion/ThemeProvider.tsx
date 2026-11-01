@@ -12,8 +12,8 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: "dark",
-  toggleTheme: () => {},
-  setTheme: () => {},
+  toggleTheme: () => { },
+  setTheme: () => { },
 });
 
 export const useTheme = () => useContext(ThemeContext);
@@ -21,39 +21,57 @@ export const useTheme = () => useContext(ThemeContext);
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>("dark");
 
-  useEffect(() => {
-    // Check URL override, saved local theme, or system preference
-    const params = new URLSearchParams(window.location.search);
-    const themeParam = params.get("theme") as Theme | null;
-    if (themeParam === "light" || themeParam === "dark") {
-      setThemeState(themeParam);
-      applyTheme(themeParam);
-      return;
-    }
-
-    const saved = localStorage.getItem("portfolio-theme") as Theme | null;
-    if (saved === "light" || saved === "dark") {
-      setThemeState(saved);
-      applyTheme(saved);
-    } else {
-      applyTheme("dark");
-    }
-  }, []);
-
   const applyTheme = (t: Theme) => {
     const root = document.documentElement;
     if (t === "light") {
       root.classList.remove("dark");
       root.classList.add("light");
+      root.setAttribute("data-theme", "light");
+      root.style.colorScheme = "light";
     } else {
       root.classList.remove("light");
       root.classList.add("dark");
+      root.setAttribute("data-theme", "dark");
+      root.style.colorScheme = "dark";
     }
   };
 
+  useEffect(() => {
+    // Check URL override, saved local theme, or system preference
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const themeParam = params.get("theme") as Theme | null;
+      if (themeParam === "light" || themeParam === "dark") {
+        setThemeState(themeParam);
+        applyTheme(themeParam);
+        return;
+      }
+    } catch {
+      // ignore URLSearchParams errors
+    }
+
+    try {
+      const saved = localStorage.getItem("portfolio-theme") as Theme | null;
+      if (saved === "light" || saved === "dark") {
+        setThemeState(saved);
+        applyTheme(saved);
+        return;
+      }
+    } catch {
+      // ignore localStorage errors
+    }
+
+    // Default to dark mode
+    applyTheme("dark");
+  }, []);
+
   const setTheme = (t: Theme) => {
     setThemeState(t);
-    localStorage.setItem("portfolio-theme", t);
+    try {
+      localStorage.setItem("portfolio-theme", t);
+    } catch {
+      // ignore localStorage errors
+    }
     applyTheme(t);
   };
 
