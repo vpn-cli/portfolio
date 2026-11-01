@@ -16,18 +16,18 @@ if (!fs.existsSync(outDir)) {
       { name: '1024', width: 1024, height: 768 },
       { name: 'mobile', width: 390, height: 844 },
     ]) {
+      console.log(`Capturing ${theme} ${vp.name}...`);
       const context = await browser.newContext({
         viewport: { width: vp.width, height: vp.height },
         deviceScaleFactor: 2,
       });
       const page = await context.newPage();
-      await page.goto(`http://localhost:3005/?theme=${theme}`, { waitUntil: 'domcontentloaded' });
-      await page.waitForSelector('.tile-byte', { timeout: 10000 });
-      await page.waitForTimeout(1000);
+      await page.goto(`http://localhost:3005/?theme=${theme}`, { waitUntil: 'load' });
+      await page.waitForTimeout(2000);
 
       const byteTile = page.locator('.tile-byte');
-      await byteTile.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(800);
+      await byteTile.scrollIntoViewIfNeeded().catch(() => {});
+      await page.waitForTimeout(1200);
 
       const shotPath = path.join(outDir, `byte-${theme}-${vp.name}.png`);
       await byteTile.screenshot({ path: shotPath });
@@ -44,5 +44,5 @@ if (!fs.existsSync(outDir)) {
   }
 
   await browser.close();
-  console.log('Capture finished!');
+  console.log('Capture finished successfully!');
 })();
