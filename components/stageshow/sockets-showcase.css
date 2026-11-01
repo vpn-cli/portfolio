@@ -1,0 +1,286 @@
+.ss-ws-stage {
+  --ws-gutter: 18px;
+}
+
+.ss-ws-stage .ss-stage {
+  overflow: hidden;
+  background: var(--ss-well, #141416);
+}
+
+/* Hero Window inside Stage */
+.ss-ws-window {
+  position: absolute;
+  inset: var(--ws-gutter);
+  box-shadow: var(--ss-shadow-hero, 0 16px 36px -12px rgba(0, 0, 0, 0.5));
+}
+
+.ss-ws-window .ss-window__body {
+  height: calc(100% - 38px);
+  display: flex;
+}
+
+/* Two-column workspace inside Window */
+.ss-ws-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  width: 100%;
+  height: 100%;
+  background: #090a0d;
+}
+
+.ss-ws-grid[data-layout="compact"] {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+}
+
+/* Left: Terminal Column */
+.ss-ws-terminal-col {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  background: #090a0d;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.ss-ws-term-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ss-ws-term-title {
+  font-size: 11px;
+  color: #8b8f9e;
+  letter-spacing: -0.2px;
+}
+
+.ss-ws-term-badge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: rgba(34, 197, 94, 0.12);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ss-ws-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: #22c55e;
+}
+
+.ss-ws-term-body {
+  flex: 1;
+  padding: 12px 14px;
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 1.65;
+  color: #c9cdd8;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 6px;
+}
+
+.ss-ws-log-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.ss-ws-window .ss-window__url {
+  font-size: 11.5px !important;
+  color: var(--text-primary) !important;
+  background: var(--surface-tile-elevated) !important;
+  border: 1px solid var(--border-subtle) !important;
+}
+
+.ss-ws-log-time {
+  color: #9ca3af;
+  font-size: 11.5px;
+  flex-shrink: 0;
+}
+
+.ss-ws-tag {
+  font-weight: 500;
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  text-transform: none;
+}
+
+.ss-ws-tag-upgrade { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+.ss-ws-tag-client { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+.ss-ws-tag-sub { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+.ss-ws-tag-db { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+.ss-ws-tag-bcast { background: rgba(236, 72, 153, 0.15); color: #f472b6; }
+.ss-ws-tag-ping { background: rgba(107, 114, 128, 0.2); color: #9ca3af; }
+
+.ss-ws-log-msg {
+  color: #d1d5db;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ss-ws-log-meta {
+  color: #60a5fa;
+  font-weight: 500;
+}
+
+.ss-ws-log-latency {
+  color: #34d399;
+  font-weight: 600;
+}
+
+/* Right: Dashboard Column */
+.ss-ws-dash-col {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 14px;
+  background: #111216;
+  overflow: hidden;
+}
+
+.ss-ws-dash-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 10px;
+}
+
+.ss-ws-dash-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f3f4f6;
+  letter-spacing: -0.2px;
+}
+
+.ss-ws-dash-arcjet {
+  font-size: 11px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #9ca3af;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+/* Metric Stats Row */
+.ss-ws-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.ss-ws-stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ss-ws-stat-label {
+  font-size: 11px;
+  color: #9ca3af;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.ss-ws-stat-val {
+  font-size: 16px;
+  font-weight: 600;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #f3f4f6;
+  letter-spacing: -0.4px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.ss-ws-stat-unit {
+  font-size: 11px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+/* Sparkline Chart Container */
+.ss-ws-chart-wrap {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ss-ws-chart-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: #9ca3af;
+}
+
+.ss-ws-chart-now {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #34d399;
+  font-weight: 600;
+  font-size: 11.5px;
+}
+
+/* Channel Subscription Row */
+.ss-ws-channel-card {
+  margin-top: auto;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ss-ws-chan-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ss-ws-chan-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f3f4f6;
+}
+
+.ss-ws-chan-sub {
+  font-size: 11.5px;
+  color: #8b8f9e;
+}
+
+.ss-ws-chan-badge {
+  font-size: 11px;
+  font-weight: 600;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
