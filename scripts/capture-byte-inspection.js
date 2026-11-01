@@ -21,12 +21,13 @@ if (!fs.existsSync(outDir)) {
         deviceScaleFactor: 2,
       });
       const page = await context.newPage();
-      await page.goto(`http://localhost:3005/?theme=${theme}`, { waitUntil: 'networkidle' });
-      await page.waitForTimeout(1200);
+      await page.goto(`http://localhost:3005/?theme=${theme}`, { waitUntil: 'domcontentloaded' });
+      await page.waitForSelector('.tile-byte', { timeout: 10000 });
+      await page.waitForTimeout(1000);
 
       const byteTile = page.locator('.tile-byte');
       await byteTile.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(600);
+      await page.waitForTimeout(800);
 
       const shotPath = path.join(outDir, `byte-${theme}-${vp.name}.png`);
       await byteTile.screenshot({ path: shotPath });
