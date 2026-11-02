@@ -21,6 +21,27 @@ const nextConfig = {
       },
     ];
   },
+  async rewrites() {
+    const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com';
+    const isEu = posthogHost.includes('eu.i.posthog.com') || posthogHost.includes('eu.posthog.com');
+    const assetHost = isEu ? 'https://eu-assets.i.posthog.com' : 'https://us-assets.i.posthog.com';
+    const apiHost = isEu ? 'https://eu.i.posthog.com' : 'https://us.i.posthog.com';
+
+    return [
+      {
+        source: '/ingest/static/:path*',
+        destination: `${assetHost}/static/:path*`,
+      },
+      {
+        source: '/ingest/:path*',
+        destination: `${apiHost}/:path*`,
+      },
+      {
+        source: '/ingest/decide',
+        destination: `${apiHost}/decide`,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

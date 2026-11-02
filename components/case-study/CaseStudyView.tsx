@@ -16,6 +16,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { SiGithub } from "react-icons/si";
+import { trackEvent } from "@/lib/analytics";
 
 import { TableOfContents } from "./TableOfContents";
 import { CaseStudyHero } from "./CaseStudyHero";
@@ -35,6 +36,10 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
     (m) => !m.isTodo && !m.isConfig
   );
   const [showMetaDetails, setShowMetaDetails] = useState(false);
+
+  useEffect(() => {
+    trackEvent("case_study_view", { project: project.slug });
+  }, [project.slug]);
 
   // Esc key navigates back to /projects
   useEffect(() => {
@@ -243,6 +248,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                       href={liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => trackEvent("demo_click", { project: project.slug })}
                       className="min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-sm transition-opacity shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
                     >
                       <ExternalLink className="w-4 h-4" aria-hidden="true" />
@@ -256,6 +262,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                       href={githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => trackEvent("source_click", { project: project.slug })}
                       className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-sm font-medium text-[var(--text-primary)] transition-colors shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
                     >
                       <SiGithub className="w-4 h-4" aria-hidden="true" />

@@ -7,6 +7,7 @@ import { SmoothScrollProvider } from "@/components/motion/SmoothScrollProvider";
 import { RouteTransitionProvider } from "@/components/motion/RouteTransition";
 import { ThemeProvider } from "@/components/motion/ThemeProvider";
 import { ClientCursor } from "@/components/motion/ClientCursor";
+import { PostHogProvider } from "@/components/providers/PostHogProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -44,14 +45,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={`dark scroll-smooth ${inter.variable}`} suppressHydrationWarning>
       <body className="min-h-screen antialiased font-body">
-        <ThemeProvider>
-          <SmoothScrollProvider>
-            <RouteTransitionProvider>
-              <ClientCursor />
-              {children}
-            </RouteTransitionProvider>
-          </SmoothScrollProvider>
-        </ThemeProvider>
+        <PostHogProvider>
+          <ThemeProvider>
+            <SmoothScrollProvider>
+              <RouteTransitionProvider>
+                <ClientCursor />
+                {children}
+              </RouteTransitionProvider>
+            </SmoothScrollProvider>
+          </ThemeProvider>
+        </PostHogProvider>
       </body>
     </html>
   );

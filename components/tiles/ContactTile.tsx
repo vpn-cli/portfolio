@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { BentoTile } from "./BentoTile";
 import { ArrowUpRight, Copy, Check, Mail, Sun, Moon } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 interface LocalTimeState {
   timeStr: string;
@@ -68,6 +69,7 @@ export function ContactTile({ className = "" }: { className?: string }) {
   }, []);
 
   const handleCopy = async () => {
+    trackEvent("email_copy");
     try {
       await navigator.clipboard.writeText(email);
       setCopied(true);
@@ -164,6 +166,7 @@ export function ContactTile({ className = "" }: { className?: string }) {
           <div className="flex items-center gap-3">
             <a
               href={mailUrl}
+              onClick={() => trackEvent("send_mail_click")}
               className="min-h-[44px] w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-transparent hover:border-[var(--border-hover)] text-[13px] sm:text-[14px] font-medium text-[var(--text-primary)] transition-colors active:scale-98 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
             >
               <Mail className="w-4 h-4 text-[var(--text-secondary)]" aria-hidden="true" />

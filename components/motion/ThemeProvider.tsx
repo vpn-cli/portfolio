@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 type Theme = "dark" | "light";
 
@@ -77,6 +78,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const toggleTheme = () => {
     const next = theme === "dark" ? "light" : "dark";
+    trackEvent("theme_toggle", { theme: next });
     setTheme(next);
   };
 

@@ -7,6 +7,7 @@ import { BentoTile } from "./BentoTile";
 import { ArrowUpRight } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 import { usePageTransition } from "@/components/motion/RouteTransition";
+import { trackEvent } from "@/lib/analytics";
 
 interface TeaserProject {
   id: string;
@@ -128,10 +129,14 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
 
         {/* Preview area (~60% of card height): fills area edge to edge with card's inner radius */}
         <div
-          onClick={() => navigateWithWipe(`/work/${activeProject.slug}`)}
+          onClick={() => {
+            trackEvent("project_click", { project: activeProject.title, where: "teaser" });
+            navigateWithWipe(`/work/${activeProject.slug}`);
+          }}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
+              trackEvent("project_click", { project: activeProject.title, where: "teaser" });
               navigateWithWipe(`/work/${activeProject.slug}`);
             }
           }}
@@ -182,10 +187,14 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                 key={project.id}
                 onMouseEnter={() => setActiveIdx(idx)}
                 onFocus={() => setActiveIdx(idx)}
-                onClick={() => navigateWithWipe(`/work/${project.slug}`)}
+                onClick={() => {
+                  trackEvent("project_click", { project: project.title, where: "teaser" });
+                  navigateWithWipe(`/work/${project.slug}`);
+                }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
+                    trackEvent("project_click", { project: project.title, where: "teaser" });
                     navigateWithWipe(`/work/${project.slug}`);
                   }
                 }}
@@ -222,19 +231,30 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                     rel="noopener noreferrer"
                     title={`${project.title} GitHub repository`}
                     aria-label={`${project.title} GitHub repository`}
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      trackEvent("source_click", { project: project.title });
+                    }}
                     onKeyDown={(e) => e.stopPropagation()}
                     className="w-7 h-7 flex items-center justify-center rounded-md text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-tile)] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400"
                   >
                     <SiGithub className="w-4 h-4" />
                   </a>
-                  <div
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     title={`Open ${project.title}`}
                     aria-label={`Open ${project.title}`}
-                    className="w-7 h-7 flex items-center justify-center rounded-md text-[var(--text-secondary)] group-hover/row:text-[var(--text-primary)] transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      trackEvent("demo_click", { project: project.title });
+                    }}
+                    onKeyDown={(e) => e.stopPropagation()}
+                    className="w-7 h-7 flex items-center justify-center rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-tile)] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400"
                   >
                     <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5" />
-                  </div>
+                  </a>
                 </div>
 
                 {/* Thin progress bar along bottom edge for active row (replaces left border) */}

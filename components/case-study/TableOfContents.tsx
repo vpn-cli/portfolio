@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 export interface TocItem {
   id: string;
@@ -20,6 +21,18 @@ export function TableOfContents() {
   const [activeId, setActiveId] = useState<string>("hook");
   const [progress, setProgress] = useState(0);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const lastTrackedSection = useRef<string>("");
+
+  useEffect(() => {
+    if (activeId && activeId !== lastTrackedSection.current) {
+      lastTrackedSection.current = activeId;
+      if (typeof window !== "undefined") {
+        const pathParts = window.location.pathname.split("/");
+        const slug = pathParts[pathParts.length - 1] || "unknown";
+        trackEvent("case_study_section_view", { project: slug, section: activeId });
+      }
+    }
+  }, [activeId]);
 
   useEffect(() => {
     const handleScroll = () => {

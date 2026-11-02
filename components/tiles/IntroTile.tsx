@@ -4,6 +4,7 @@ import { siteConfig } from "@/content/site";
 import { BentoTile } from "./BentoTile";
 import { useTheme } from "@/components/motion/ThemeProvider";
 import { Sun, Moon } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 export function IntroTile({ className = "" }: { className?: string }) {
   const { theme, toggleTheme } = useTheme();
@@ -50,6 +51,7 @@ export function IntroTile({ className = "" }: { className?: string }) {
 
           <a
             href={`mailto:${siteConfig.email}?subject=Opportunity%20Inquiry`}
+            onClick={() => trackEvent("send_mail_click")}
             className="text-[13px] font-medium px-3.5 py-1.5 rounded-full bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-transparent text-[var(--text-primary)] transition-colors active:scale-95 cursor-pointer"
           >
             Get in touch

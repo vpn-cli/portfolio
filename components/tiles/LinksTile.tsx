@@ -4,6 +4,7 @@ import { BentoTile } from "./BentoTile";
 import { SiGithub, SiLinkedin } from "react-icons/si";
 import { FileText, ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/content/site";
+import { trackEvent } from "@/lib/analytics";
 
 interface LinkRowItem {
   id: string;
@@ -64,6 +65,13 @@ export function LinksTile({ className = "" }: { className?: string }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={item.ariaLabel}
+            onClick={() => {
+              if (item.id === "resume") {
+                trackEvent("resume_click");
+              } else if (item.id === "github" || item.id === "linkedin") {
+                trackEvent("social_click", { platform: item.id });
+              }
+            }}
             className="group/row min-h-0 w-full flex-1 flex items-center justify-between px-2.5 sm:px-3 xl:px-4 rounded-xl bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-transparent transition-[background-color,transform] duration-150 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 gap-2"
           >
             {/* 1. Left: Icon + Text */}
