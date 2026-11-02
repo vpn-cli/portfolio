@@ -1,0 +1,26 @@
+# AppForge — AI Full-Stack App Generator Launch Video Share Copy
+
+## Post Copy (LinkedIn / X)
+Most AI app generators give you mock HTML in an iframe.
+
+I wanted something that acts like a real software team:
+Type a prompt → get real PostgreSQL DDL executed against Supabase, typed React components picked from a strict zero-eval registry, and an asynchronous event queue over Upstash Kafka.
+
+From prompt to fully provisioned runtime in <1.2s powered by Llama-3.3-70B on Groq LPUs.
+
+Watch the 20-second architecture breakdown:
+• Deterministic React Component Registry (0 arbitrary eval / Function calls)
+• Supabase PostgreSQL live schema migrations via dynamic DDL
+• Upstash Kafka distributed pipeline decoupling ingestion from UI
+
+Live app: https://appforge.dev (or your deployment URL)
+Source code: https://github.com/vpn-cli/appforge
+
+---
+
+## Music Licensing & Attribution
+Track: Happy Beats Business Moves Vol. 12
+Composer: Sascha Ende
+Source: https://ende.app
+License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+Attribution requirement: "Music: Sascha Ende, ende.app (CC BY 4.0)"

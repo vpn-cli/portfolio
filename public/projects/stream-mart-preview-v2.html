@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1200px;
+      height: 675px;
+      background: #090a0f;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #f1f3f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      overflow: hidden;
+    }
+    .window {
+      width: 100%;
+      height: 100%;
+      background: #11131a;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+    }
+    .window-header {
+      height: 56px;
+      background: #161822;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+    .window-dots {
+      display: flex;
+      gap: 10px;
+    }
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green { background: #10b981; }
+    .window-title {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cluster-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.28);
+      color: #34d399;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      letter-spacing: 0.02em;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #34d399;
+    }
+    .content {
+      flex: 1;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      background: radial-gradient(circle at 50% 0%, rgba(30, 41, 59, 0.25) 0%, transparent 70%), #0d0f15;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .metric-card {
+      background: #141721;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .metric-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .metric-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: #f8fafc;
+      letter-spacing: -0.02em;
+    }
+    .metric-sub {
+      font-size: 13px;
+      color: #38bdf8;
+      font-weight: 500;
+    }
+    .console-panel {
+      flex: 1;
+      background: #0b0c11;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 14px;
+      padding: 20px 24px;
+      font-family: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+      font-size: 15px;
+      line-height: 1.8;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+    .log-line {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .log-time {
+      color: #64748b;
+      font-size: 13px;
+    }
+    .log-tag {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+    }
+    .tag-outbox { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .tag-kafka { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .tag-worker { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .tag-ack { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .log-text {
+      color: #e2e8f0;
+      font-weight: 500;
+    }
+    .highlight {
+      color: #ffffff;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <div class="window-header">
+      <div class="window-dots">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+      </div>
+      <div class="window-title">
+        <span>StreamMart</span>
+        <span style="color: #64748b;">/</span>
+        <span style="color: #94a3b8; font-weight: 500;">Kafka Cluster & Outbox Engine</span>
+      </div>
+      <div class="cluster-status">
+        <div class="pulse-dot"></div>
+        <span>KAFKA CONNECTED · 0ms LAG</span>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">Event Bus</div>
+          <div class="metric-value">Apache Kafka 3.4</div>
+          <div class="metric-sub">Topic: order.events (3 Partitions)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Pattern</div>
+          <div class="metric-value">Transactional Outbox</div>
+          <div class="metric-sub">Neon PostgreSQL + Drizzle ORM</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Delivery Guarantee</div>
+          <div class="metric-value">100% At-Least-Once</div>
+          <div class="metric-sub">0 Dropped · Instant Recovery</div>
+        </div>
+      </div>
+
+      <div class="console-panel">
+        <div class="log-line">
+          <span class="log-time">[14:02:10.104]</span>
+          <span class="log-tag tag-outbox">OUTBOX</span>
+          <span class="log-text">Atomic SQL transaction committed in PostgreSQL <span class="highlight">(outbox_event #8841)</span></span>
+        </div>
+        <div class="log-line">
+          <span class="log-time">[14:02:10.108]</span>
+          <span class="log-tag tag-kafka">KAFKA</span>
+          <span class="log-text">Producer published payload to topic <span class="highlight">'order.created'</span> [P:0, O:1924]</span>
+        </div>
+        <div class="log-line">
+          <span class="log-time">[14:02:10.119]</span>
+          <span class="log-tag tag-worker">WORKER</span>
+          <span class="log-text">Payment Service consumed event → Stripe authorization completed</span>
+        </div>
+        <div class="log-line">
+          <span class="log-time">[14:02:10.127]</span>
+          <span class="log-tag tag-ack">ACK</span>
+          <span class="log-text">Outbox worker updated state <span class="highlight">'PROCESSED'</span> with zero message loss</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,4 @@
+A 200 OK does not mean your llms.txt is usable. I built the LLMS.txt Checker to AST-parse markdown hierarchy, detect soft-404 SPA shells, and score AI extractability with a deterministic 10-point heuristic.
+
+Source: github.com/vpn-cli/llms_txt_checker
+Music: Sascha Ende, ende.app (CC BY 4.0)

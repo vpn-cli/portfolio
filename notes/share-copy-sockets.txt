@@ -1,0 +1,5 @@
+HTTP polling chokes on live sports. Persistent sockets don't. Sportz pushes score mutations and commentary frames over persistent WebSockets with sub-second latency, guarded by Arcjet rate limiting.
+
+Live demo: sportz-rho.vercel.app
+Source: github.com/vpn-cli/sockets
+Music: Sascha Ende, ende.app (CC BY 4.0)
