@@ -14,7 +14,7 @@ export default function ProjectsPage() {
     <main className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-primary)] p-3 sm:p-5 lg:p-8 flex flex-col items-center">
       {/* Outer Bento Shell matching homepage container system */}
       <div className="w-full max-w-[var(--layout-outer-width)] rounded-[var(--card-radius-outer)] bg-[var(--bg-canvas-subtle)] border border-[var(--border-subtle)] p-6 sm:p-10 lg:p-12 shadow-md flex flex-col items-center">
-        
+
         {/* Top Navigation Bar */}
         <div className="w-full max-w-[var(--layout-max-width)] flex items-center justify-between mb-8 sm:mb-10">
           <Link
