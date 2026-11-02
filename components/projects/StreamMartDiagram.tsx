@@ -14,7 +14,7 @@ const STEPS = [
     meta: "POST /api/orders",
     tech: "Express & Zod",
     icon: Layers,
-    log: "[14:28:01.102] INGEST  POST /api/orders received · payload validated",
+    log: "[14:28:01.102] REQUEST  POST /api/orders received · payload validated",
   },
   {
     id: "outbox",
@@ -30,7 +30,7 @@ const STEPS = [
     meta: "topic: order.created",
     tech: "Apache Kafka",
     icon: Radio,
-    log: "[14:28:01.116] KAFKA   Dispatcher pushed event to 'order.created' (p:1)",
+    log: "[14:28:01.116] KAFKA    Producer published event to 'order.created' (p:1)",
   },
   {
     id: "consumer",

@@ -80,7 +80,7 @@ export function ProjectCardPreview({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const inView = entry.isIntersecting && entry.intersectionRatio >= 0.5;
+        const inView = entry.isIntersecting;
         setIsInView(inView);
 
         const video = videoRef.current;
@@ -95,7 +95,7 @@ export function ProjectCardPreview({
         }
       },
       {
-        threshold: [0, 0.5, 1.0],
+        threshold: 0.15,
       }
     );
 
@@ -106,7 +106,7 @@ export function ProjectCardPreview({
   return (
     <div
       ref={containerRef}
-      className="w-full lg:w-[58%] shrink-0 rounded-[var(--card-radius-inner)] overflow-hidden bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] group-hover:border-[var(--border-hover)] shadow-sm transition-[border-color,transform] duration-300 ease-out group-hover:scale-[1.012] flex flex-col"
+      className="w-full lg:w-[60%] shrink-0 rounded-xl overflow-hidden bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] group-hover:border-[var(--border-hover)] shadow-sm transition-[border-color,transform] duration-200 ease-out motion-safe:group-hover:scale-[1.01] flex flex-col"
     >
       {/* Stageshow Window Chrome Header */}
       <div className="h-8 px-3.5 bg-[var(--surface-tile)] border-b border-[var(--border-subtle)] flex items-center justify-between shrink-0 select-none">
