@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>StreamMart Architecture Diagram</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1600px;
+      height: 900px;
+      background: #090a0f;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #f1f3f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      overflow: hidden;
+    }
+    .window {
+      width: 100%;
+      height: 100%;
+      background: #11131a;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+    }
+    .window-header {
+      height: 60px;
+      background: #161822;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+    }
+    .window-dots {
+      display: flex;
+      gap: 10px;
+    }
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green { background: #10b981; }
+    .window-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+    }
+    .badge-diagram {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #f1f5f9;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 6px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .content {
+      flex: 1;
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: radial-gradient(circle at 50% 0%, rgba(30, 41, 59, 0.25) 0%, transparent 70%), #0d0f15;
+      gap: 20px;
+    }
+    .ingress-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .card {
+      background: #141721;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 18px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 105px;
+    }
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-family: ui-monospace, monospace;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #f8fafc;
+      margin-top: 4px;
+    }
+    .card-sub {
+      font-size: 12px;
+      font-family: ui-monospace, monospace;
+      color: #38bdf8;
+      margin-top: 4px;
+    }
+    .service-boundary {
+      border: 2px dashed rgba(245, 158, 11, 0.35);
+      background: rgba(245, 158, 11, 0.03);
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .boundary-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+      padding-bottom: 10px;
+    }
+    .boundary-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fbbf24;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 0.02em;
+    }
+    .boundary-source {
+      font-size: 12px;
+      font-family: ui-monospace, monospace;
+      color: #94a3b8;
+    }
+    .boundary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .broker-row {
+      background: #141721;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .broker-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .broker-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #f8fafc;
+    }
+    .broker-file {
+      font-size: 12px;
+      font-family: ui-monospace, monospace;
+      color: #94a3b8;
+    }
+    .topic-pill {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+      font-family: ui-monospace, monospace;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 8px;
+      letter-spacing: 0.03em;
+    }
+    .consumers-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .footer-caption {
+      font-size: 12px;
+      font-family: ui-monospace, monospace;
+      color: #64748b;
+      text-align: center;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <div class="window-header">
+      <div class="window-dots">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+      </div>
+      <div class="window-title">
+        <span>stream-mart</span>
+        <span style="color: #64748b;">/</span>
+        <span style="color: #94a3b8; font-weight: 500;">Transactional Outbox Architecture</span>
+      </div>
+      <div class="badge-diagram">Diagram</div>
+    </div>
+
+    <div class="content">
+      <!-- Ingress: Client & API Gateway -->
+      <div class="ingress-row">
+        <div class="card">
+          <div class="card-meta">
+            <span>Client UI · Port 3000</span>
+            <span>client/src/app/page.jsx:11</span>
+          </div>
+          <div class="card-title">Next.js Client UI</div>
+          <div class="card-sub">POST http://localhost:8080/api/payment (JWT Bearer)</div>
+        </div>
+
+        <div class="card">
+          <div class="card-meta">
+            <span>API Gateway · Port 8080</span>
+            <span>api-gateway/index.js:13-24</span>
+          </div>
+          <div class="card-title">API Gateway (Reverse Proxy)</div>
+          <div class="card-sub">Verifies JWT, sets x-user-id → routes to payment-service:8000</div>
+        </div>
+      </div>
+
+      <!-- Service Boundary: payment-service owns outbox -->
+      <div class="service-boundary">
+        <div class="boundary-header">
+          <div class="boundary-label">
+            <span>★ SERVICE BOUNDARY: payment-service (Port 8000)</span>
+            <span style="font-size: 11px; font-weight: 600; color: #f59e0b; background: rgba(245, 158, 11, 0.1); padding: 2px 8px; border-radius: 4px;">OWNS TRANSACTIONAL OUTBOX</span>
+          </div>
+          <div class="boundary-source">payment-service/index.js &amp; worker.js</div>
+        </div>
+
+        <div class="boundary-grid">
+          <div class="card">
+            <div class="card-meta">
+              <span>REST Endpoint</span>
+              <span>index.js:33</span>
+            </div>
+            <div class="card-title">POST / (Checkout Handler)</div>
+            <div class="card-sub">Receives proxy, coordinates db.transaction()</div>
+          </div>
+
+          <div class="card">
+            <div class="card-meta">
+              <span>Neon PostgreSQL</span>
+              <span>db/schema.js:11</span>
+            </div>
+            <div class="card-title">outbox_events Table</div>
+            <div class="card-sub">Atomic SQL commit with payments table</div>
+          </div>
+
+          <div class="card">
+            <div class="card-meta">
+              <span>Relay Worker</span>
+              <span>worker.js:21</span>
+            </div>
+            <div class="card-title">Outbox Relay Worker</div>
+            <div class="card-sub">setInterval(5s) polls unpublished rows → Kafka</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apache Kafka Broker -->
+      <div class="broker-row">
+        <div class="broker-info">
+          <div class="broker-name">Apache Kafka Message Broker</div>
+          <div class="broker-file">kafka/admin.js:13 &amp; docker-compose.yml:12</div>
+        </div>
+        <div class="topic-pill">Topic: payment-successful</div>
+      </div>
+
+      <!-- Downstream Consumers -->
+      <div class="consumers-row">
+        <div class="card">
+          <div class="card-meta">
+            <span>Consumer Group: order-service</span>
+            <span>order-service/index.js:25</span>
+          </div>
+          <div class="card-title">Order Service</div>
+          <div class="card-sub">Subscribes to 'payment-successful' → writes order to PostgreSQL</div>
+        </div>
+
+        <div class="card">
+          <div class="card-meta">
+            <span>Consumer Group: analytic-service</span>
+            <span>analytic-service/index.js:21</span>
+          </div>
+          <div class="card-title">Analytic Service</div>
+          <div class="card-sub">Subscribes to 'payment-successful' → records user cart spend</div>
+        </div>
+      </div>
+
+      <!-- Honest Caption -->
+      <div class="footer-caption">
+        Diagram shows only the transactional outbox flow (Payment Service → Kafka topic 'payment-successful' → Order &amp; Analytic consumers); subsequent direct Kafka publishes by order-service and email-service are omitted.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

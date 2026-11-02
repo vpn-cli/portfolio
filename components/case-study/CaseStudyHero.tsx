@@ -69,7 +69,7 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
       <div className="w-full space-y-2.5">
         <StreamMartDiagram />
         <p className="text-xs text-[var(--text-tertiary)] font-mono text-center">
-          {clip?.caption || "Diagram: Transactional outbox event flow through Apache Kafka cluster."}
+          {clip?.caption || "Diagram shows only the transactional outbox flow (Payment Service → Kafka topic 'payment-successful' → Order & Analytic consumers); direct publish flows omitted."}
         </p>
       </div>
     );

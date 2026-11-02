@@ -423,7 +423,7 @@ function broadcastToMatch(matchId, payload) {
       mp4: "/videos/stream-mart/brag.mp4",
       webm: "/videos/stream-mart/brag.webm",
       poster: "/projects/stream-mart/stream-mart-diagram.webp",
-      caption: "Diagram: Transactional outbox event flow and decoupled microservice communication.",
+      caption: "Diagram shows only the transactional outbox flow (Payment Service → Kafka topic 'payment-successful' → Order & Analytic consumers); direct publish flows omitted.",
     },
     problemVisualCaption: "Synchronous HTTP cascades versus asynchronous Kafka outbox events.",
     links: {

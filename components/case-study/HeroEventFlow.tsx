@@ -256,10 +256,10 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
                 <Database className="w-3.5 h-3.5 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
               <div className="font-mono text-xs font-medium text-[var(--text-primary)] truncate">
-                Postgres Outbox
+                Payment Outbox
               </div>
               <span className="text-[10px] text-[var(--text-secondary)] font-mono block mt-0.5">
-                Atomic transaction
+                payments & outbox_events
               </span>
             </div>
 
@@ -279,7 +279,7 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
                 Apache Kafka
               </div>
               <span className="text-[10px] text-[var(--text-secondary)] font-mono block mt-0.5">
-                Orders partition
+                payment-successful
               </span>
             </div>
 
@@ -292,11 +292,11 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="font-mono text-[10px] text-[var(--text-tertiary)]">04 · WORKERS</span>
+                <span className="font-mono text-[10px] text-[var(--text-tertiary)]">04 · CONSUMERS</span>
                 <CheckCircle2 className="w-3.5 h-3.5 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
               <div className="flex items-center justify-between text-[10px] font-mono">
-                <span className="text-[var(--text-secondary)] truncate">Payment / Mail</span>
+                <span className="text-[var(--text-secondary)] truncate">Order & Analytics</span>
                 <span className="text-emerald-500 font-medium shrink-0">Done</span>
               </div>
             </div>

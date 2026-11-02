@@ -102,12 +102,21 @@ This document catalogs every captured visual asset for Sportz, AppForge, and Str
   1. `stream-mart-outbox-terminal.webp`: DELETED. Generated artificially from `public/projects/stream-mart-flow.html` via Playwright crop without running real microservices.
   2. `stream-mart-mobile.webp`: DELETED. Generated artificially from mobile viewport crop of `stream-mart-flow.html`.
 - **Allowed Visuals Implemented**:
-  1. **Architecture & Event-Flow Diagram**: Directly derived from `README.md` lines 18-36 (Mermaid) and `docker-compose.yml`. Clearly labeled "Diagram" on the page. Every box and arrow matches a file in the repo (`client/src/app/page.jsx`, `api-gateway/index.js`, `payment-service/index.js`, `payment-service/db/schema.js`, `payment-service/worker.js`, `kafka/admin.js`, `order-service/index.js`, `analytic-service/index.js`, `email-service/index.js`).
+  1. **Architecture & Transactional Outbox Diagram**: Strictly derived from `StreamMart` codebase verification. Clearly labeled "Diagram" on the page. The diagram highlights the transactional outbox flow exclusively (payment-service owns outbox_events → Kafka topic 'payment-successful' → Order & Analytic consumers; downstream direct Kafka publishes by order-service and email-service are omitted).
+     - **Verified Label → Source File Mapping**:
+       - **Client Ingress**: `client/src/app/page.jsx#L11` (POST /api/payment with JWT Bearer)
+       - **API Gateway (Route & Reverse Proxy)**: `api-gateway/index.js#L13-L24` & `api-gateway/auth.middleware.js#L5-L32` (routes to payment-service:8000)
+       - **Payment Service Endpoint (DB Tx Initiator)**: `payment-service/index.js#L33-L57` (`app.post("/")` initiates `db.transaction()` inserting into `payments` & `outbox_events`)
+       - **Outbox Schema (Table Owner)**: `payment-service/db/schema.js#L11-L17` (`outbox_events` table)
+       - **Relay Worker (Host & Loop)**: `payment-service/worker.js#L21-L61` (started in `payment-service/index.js#L74`, polls unpublished events every 5s and publishes to Kafka)
+       - **Kafka Message Broker**: `kafka/admin.js#L13-L15` (Topic: `payment-successful`)
+       - **Order Service Consumer**: `order-service/index.js#L25-L54` (subscribes to `payment-successful`, persists order to DB)
+       - **Analytic Service Consumer**: `analytic-service/index.js#L21-L40` (subscribes to `payment-successful`, logs cart telemetry)
   2. **Real Code Excerpts with Copy**: Displayed in `InteractiveArchitecture.tsx` and `StreamMartDiagram.tsx` with file paths, syntax highlighting, and clipboard copy buttons. These replace all fake terminal windows.
-     - Outbox write inside DB transaction: `payment-service/index.js#L45-L61`
-     - Relay/publisher worker loop: `payment-service/worker.js#L29-L53`
+     - Outbox write inside DB transaction: `payment-service/index.js#L33-L57`
+     - Relay/publisher worker loop: `payment-service/worker.js#L21-L61`
      - Kafka topic administrator: `kafka/admin.js#L10-L19`
-     - Async Order consumer: `order-service/index.js#L25-L60`
+     - Async Order consumer: `order-service/index.js#L25-L54`
      - API Gateway reverse proxy: `api-gateway/index.js#L13-L24`
   3. **Sample Output Check**: Checked `d:\Projects\StreamMart\README.md`. It contains no sample CLI/terminal output, so no quotes were fabricated.
 
