@@ -8,6 +8,7 @@ if (!fs.existsSync(videoDir)) {
 }
 
 (async () => {
+  console.log('Launching browser for Byte interaction demo recording...');
   const browser = await chromium.launch({ channel: 'msedge', headless: true });
   
   const context = await browser.newContext({
@@ -16,100 +17,132 @@ if (!fs.existsSync(videoDir)) {
       size: { width: 1280, height: 720 },
     },
     viewport: { width: 1280, height: 720 },
+    deviceScaleFactor: 2,
   });
 
   const page = await context.newPage();
+  const PORT = process.env.PORT || 3005;
 
-  async function runDemoForTheme(theme) {
-    console.log(`Starting Byte demo in ${theme} mode...`);
-    await page.goto(`http://localhost:3002/?theme=${theme}`, { waitUntil: 'networkidle' });
-    await page.waitForTimeout(1500);
+  console.log(`Navigating to http://localhost:${PORT}/ ...`);
+  await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'load' });
+  await page.waitForTimeout(2000);
 
-    const byteTile = page.locator('.tile-byte');
-    await byteTile.scrollIntoViewIfNeeded();
-    const box = await byteTile.boundingBox();
-    if (!box) {
-      console.error('Byte tile bounding box not found!');
-      return;
-    }
+  const byteTile = page.locator('.tile-byte');
+  await byteTile.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(1000);
 
-    const centerX = box.x + box.width / 2;
-    const centerY = box.y + box.height / 2;
-
-    // 1. Eye Tracking: Smooth circular / diagonal gaze movements across page
-    console.log(' - Eye tracking demo');
-    await page.mouse.move(centerX - 350, centerY - 150, { steps: 20 });
-    await page.waitForTimeout(400);
-    await page.mouse.move(centerX + 350, centerY - 150, { steps: 25 });
-    await page.waitForTimeout(400);
-    await page.mouse.move(centerX + 300, centerY + 200, { steps: 25 });
-    await page.waitForTimeout(400);
-    await page.mouse.move(centerX - 300, centerY + 200, { steps: 25 });
-    await page.waitForTimeout(400);
-
-    // 2. Hover: Move cursor directly over Byte (perks up!)
-    console.log(' - Hover perk up');
-    await page.mouse.move(centerX, centerY, { steps: 20 });
-    await page.waitForTimeout(700);
-
-    // 3. Poke: Click once -> Squish, happy "^ ^" eyes, floating hearts!
-    console.log(' - Poke reaction');
-    await page.mouse.click(centerX, centerY);
-    await page.waitForTimeout(1400);
-
-    // 4. Drag: Rotate Byte slightly with inertia
-    console.log(' - Drag interaction');
-    await page.mouse.move(centerX, centerY);
-    await page.mouse.down();
-    await page.mouse.move(centerX + 70, centerY - 20, { steps: 15 });
-    await page.waitForTimeout(200);
-    await page.mouse.up();
-    await page.waitForTimeout(1000);
-
-    // 5. Rapid pokes: 4 quick clicks -> Dizzy spirals + wobbly spin!
-    console.log(' - Rapid pokes (dizzy)');
-    await page.mouse.click(centerX, centerY);
-    await page.waitForTimeout(120);
-    await page.mouse.click(centerX, centerY);
-    await page.waitForTimeout(120);
-    await page.mouse.click(centerX, centerY);
-    await page.waitForTimeout(120);
-    await page.mouse.click(centerX, centerY);
-    // Observe dizzy spin & recovery
-    await page.waitForTimeout(2600);
-
-    // 6. Sleep: trigger sleepy state
-    console.log(' - Sleep state');
-    await page.evaluate(() => window.dispatchEvent(new CustomEvent('byte-sleep')));
-    await page.waitForTimeout(2200);
-
-    // 7. Wake up: Move cursor across screen -> Startled hop & wake!
-    console.log(' - Wake up');
-    await page.mouse.move(centerX + 250, centerY - 100, { steps: 15 });
-    await page.waitForTimeout(1400);
+  const box = await byteTile.boundingBox();
+  if (!box) {
+    throw new Error('Byte tile bounding box not found!');
   }
 
-  // Run Dark Mode demo
-  await runDemoForTheme('dark');
+  const cx = box.x + box.width / 2;
+  const cy = box.y + box.height / 2;
 
-  // Run Light Mode demo
-  await runDemoForTheme('light');
+  console.log('--- 1. Ambient Eye & Head Tracking ---');
+  // Smooth sweep across screen
+  await page.mouse.move(cx - 300, cy - 120, { steps: 20 });
+  await page.waitForTimeout(400);
+  await page.mouse.move(cx + 300, cy - 120, { steps: 25 });
+  await page.waitForTimeout(400);
+  await page.mouse.move(cx + 250, cy + 180, { steps: 20 });
+  await page.waitForTimeout(400);
+  await page.mouse.move(cx - 250, cy + 180, { steps: 20 });
+  await page.waitForTimeout(500);
 
-  console.log('Demo completed! Closing page and saving video...');
+  console.log('--- 2. Link Hover Glance ---');
+  // Hover over another tile / button on page
+  const projectLink = page.locator('a[href*="github"], a[href*="linkedin"], button').first();
+  if (await projectLink.count() > 0) {
+    const lBox = await projectLink.boundingBox();
+    if (lBox) {
+      await page.mouse.move(lBox.x + lBox.width / 2, lBox.y + lBox.height / 2, { steps: 20 });
+      await page.waitForTimeout(1000);
+    }
+  }
+
+  console.log('--- 3. Hover Perk-Up ---');
+  await page.mouse.move(cx, cy, { steps: 20 });
+  await page.waitForTimeout(800);
+
+  console.log('--- 4. Poke (Squash & Stretch + Hearts + "hehe") ---');
+  await page.mouse.click(cx, cy);
+  await page.waitForTimeout(1500);
+
+  console.log('--- 5. Double Click (Wave Arm + "hi!" Speech Bubble) ---');
+  await page.mouse.click(cx, cy);
+  await page.waitForTimeout(150);
+  await page.mouse.click(cx, cy);
+  await page.waitForTimeout(1800);
+
+  console.log('--- 6. Rapid Pokes (4x -> Dizzy Spiral Eyes + Spin) ---');
+  for (let i = 0; i < 4; i++) {
+    await page.mouse.click(cx, cy);
+    await page.waitForTimeout(110);
+  }
+  // Let dizzy spin and recovery head-shake play
+  await page.waitForTimeout(2600);
+
+  console.log('--- 7. Long Press (Charging Glow -> Happy 360 Spin Jump) ---');
+  await page.mouse.move(cx, cy);
+  await page.mouse.down();
+  // Hold for 900ms to trigger charging state
+  await page.waitForTimeout(950);
+  // Release to trigger big spin jump
+  await page.mouse.up();
+  await page.waitForTimeout(1800);
+
+  console.log('--- 8. Drag + Fling Interaction ---');
+  await page.mouse.move(cx, cy);
+  await page.mouse.down();
+  await page.mouse.move(cx - 60, cy + 10, { steps: 10 });
+  await page.waitForTimeout(150);
+  // Fling fast to the right
+  await page.mouse.move(cx + 120, cy, { steps: 4 });
+  await page.mouse.up();
+  await page.waitForTimeout(2000);
+
+  console.log('--- 9. Sleep State & Wakeup ---');
+  // Trigger sleep via custom event
+  await page.evaluate(() => window.dispatchEvent(new CustomEvent('byte-sleep')));
+  await page.waitForTimeout(2200);
+  // Wake up with cursor movement
+  await page.mouse.move(cx - 200, cy - 80, { steps: 15 });
+  await page.waitForTimeout(1500);
+
+  console.log('--- 10. Theme Toggle Reactions (Yawn / Stretch) ---');
+  // Toggle to dark mode -> yawn reaction
+  const themeToggle = page.locator('button[aria-label*="theme" i], button[title*="theme" i], .theme-toggle').first();
+  if (await themeToggle.count() > 0) {
+    await themeToggle.click();
+    await page.waitForTimeout(1800);
+    // Toggle back to light mode -> stretch reaction
+    await themeToggle.click();
+    await page.waitForTimeout(1800);
+  }
+
+  console.log('--- 11. "byte" Easter Egg (Happy Dance) ---');
+  await page.mouse.move(cx, cy + 150); // move away from inputs
+  await page.keyboard.type('byte', { delay: 100 });
+  await page.waitForTimeout(2200);
+
+  console.log('All demo steps completed! Finalizing video...');
   await page.close();
   await context.close();
   await browser.close();
 
-  // Find the saved video file and rename to byte-demo.webm
+  // Find latest recorded video and rename
   const files = fs.readdirSync(videoDir).filter(f => f.endsWith('.webm'));
   if (files.length > 0) {
-    const latest = files[files.length - 1];
-    const finalPath = path.join(videoDir, 'byte-demo.webm');
+    files.sort((a, b) => {
+      return fs.statSync(path.join(videoDir, b)).mtimeMs - fs.statSync(path.join(videoDir, a)).mtimeMs;
+    });
+    const latest = files[0];
+    const finalPath = path.join(videoDir, 'byte-interactions.webm');
     if (fs.existsSync(finalPath)) {
       fs.unlinkSync(finalPath);
     }
-    fs.renameSync(path.join(videoDir, latest), finalPath);
-    console.log(`Video saved successfully: ${finalPath}`);
+    fs.copyFileSync(path.join(videoDir, latest), finalPath);
+    console.log(`Demo video successfully saved to: ${finalPath}`);
   }
 })();
-
