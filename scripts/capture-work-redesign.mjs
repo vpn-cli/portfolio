@@ -44,7 +44,7 @@ const themes = ["dark", "light"];
         }
       });
 
-      await page.goto(`http://localhost:3000/work?theme=${theme}`, {
+      await page.goto(`http://localhost:3000/projects?theme=${theme}`, {
         waitUntil: "domcontentloaded",
       });
 
@@ -67,7 +67,8 @@ const themes = ["dark", "light"];
       // Wait 1.5s for poster images and dynamic diagram to settle
       await page.waitForTimeout(1500);
 
-      const shotPath = path.join(outDir, `work-${vp.name}-${theme}.png`);
+      const fileName = `projects-${vp.width}-${theme}.png`;
+      const shotPath = path.join(outDir, fileName);
       await page.screenshot({ path: shotPath, fullPage: true });
       console.log(`Saved ${shotPath} (CSS 200: ${cssOk})`);
 
