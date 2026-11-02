@@ -59,8 +59,8 @@ export const siteConfig = {
   avatar: "/avatar.jpg",
   timezone: "Asia/Kolkata",
   email: "vipinkaushik20771041@gmail.com",
-  // TODO: Customize exact job-seeker availability wording
-  status: "Open to SDE roles · Immediate availability",
+  // Availability line per resume
+  status: "Graduating April 2027 · open to SDE roles",
   bio: "I build full-stack web applications and the backend systems behind them, mostly with Next.js, Node.js, and PostgreSQL.",
   story: "I focus on distributed systems, real-time data streaming, and scalable web architectures built with modern web standards.",
   whatIDoNow: "Today I build full-stack applications with Next.js, TypeScript, and Node.js, backed by PostgreSQL and event-driven Kafka message queues.",
@@ -214,31 +214,19 @@ export const siteConfig = {
     },
   ] as ResourceItem[],
 
-  // === EXPERIENCE (Matching Screenshot 210409.png) ===
+  // === EXPERIENCE ===
   experience: [
     {
-      period: "Current",
-      role: "Lead Full-Stack Developer",
-      company: "TechScale Innovations",
-      description: "Leading frontend and backend architecture for distributed web applications, high-performance APIs, and interactive design systems.",
-    },
-    {
-      period: "2022 — 2024",
-      role: "Senior Full-Stack Engineer",
-      company: "CloudCore Labs",
-      description: "Engineered scalable cloud services, real-time collaborative workspaces, and optimized rendering engines.",
-    },
-    {
-      period: "2020 — 2022",
-      role: "Software Engineer",
-      company: "NextGen Media",
-      description: "Developed interactive dashboards, responsive client portals, and microservice backends.",
-    },
-    {
-      period: "2019 — 2020",
+      period: "May 2026 – Jul 2026",
       role: "Full-Stack Developer Intern",
-      company: "InfraSoft",
-      description: "Built REST APIs, automated CI/CD deployment pipelines, and accessible UI component systems.",
+      company: "Clairvyn AI",
+      description: "AI floor-planning platform. Built Next.js UI panels, a Paytm subscription paywall, GitHub Actions + Docker deploys to AWS EC2, and fixed N+1 queries in Node.js pipelines.",
+    },
+    {
+      period: "Mar 2025 – May 2025",
+      role: "Frontend Engineering Intern",
+      company: "Unnati",
+      description: "SME onboarding platform. Built an admin dashboard, a reusable React design system, and accessible (WCAG 2.1) components.",
     },
   ] as Experience[],
 };
