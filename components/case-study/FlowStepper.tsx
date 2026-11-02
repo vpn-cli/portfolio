@@ -5,8 +5,22 @@ import { CaseStudy } from "@/data/projects";
 import { CodeHighlight } from "./CodeHighlight";
 import { ArrowLeft, ArrowRight, Terminal } from "lucide-react";
 
+interface FlowStepItem {
+  step: number;
+  title: string;
+  actor: string;
+  description: string;
+  codeSnippet?: {
+    filename: string;
+    language: string;
+    code: string;
+    explanation?: string;
+  };
+  logLine?: string;
+}
+
 interface FlowStepperProps {
-  steps: CaseStudy["flowSteps"];
+  steps: FlowStepItem[];
 }
 
 export function FlowStepper({ steps }: FlowStepperProps) {

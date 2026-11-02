@@ -3,8 +3,22 @@
 import { CaseStudy } from "@/data/projects";
 import { GitBranch, ArrowRight } from "lucide-react";
 
+interface JourneyChapter {
+  chapter: string;
+  timeline: string;
+  title: string;
+  narrative: string;
+  decision?: {
+    title: string;
+    problem: string;
+    options: string[];
+    chosen: string;
+    tradeoff: string;
+  };
+}
+
 interface JourneyTimelineProps {
-  journey: CaseStudy["journey"];
+  journey: JourneyChapter[];
 }
 
 export function JourneyTimeline({ journey }: JourneyTimelineProps) {

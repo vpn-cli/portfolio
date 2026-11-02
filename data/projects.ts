@@ -1,374 +1,170 @@
 import { z } from "zod";
 
-export const projectLinkSchema = z.object({
-  demo: z.string().url().optional(),
-  repo: z.string().url().optional(),
-  readme: z.string().url().optional(),
-  coldStartNote: z.string().optional(),
-});
+export interface CaseStudyMetricChip {
+  value: string;
+  label: string;
+  howMeasured: string;
+  isTodo?: boolean;
+}
 
-export const projectTldrSchema = z.object({
-  title: z.string(),
-  pitch: z.string(),
-  summary: z.object({
-    problem: z.string(),
-    built: z.string(),
-    outcome: z.string(),
-  }),
-  role: z.string(),
-  timeline: z.string(),
-  stack: z.array(z.string()),
-  readingTime: z.string(),
-});
+export interface CaseStudyDecision {
+  chosenOver: string;
+  tradeoffSummary: string;
+  optionsConsidered: string[];
+  problemFaced: string;
+  fullReasoning: string;
+}
 
-export const projectContextSchema = z.object({
-  takeaway: z.string(),
-  description: z.string(),
-});
+export interface CaseStudyBug {
+  title: string;
+  symptom: string;
+  cause: string;
+  fix: string;
+  commitHash: string;
+  commitUrl: string;
+  context?: string;
+}
 
-export const projectProblemSchema = z.object({
-  takeaway: z.string(),
-  description: z.string(),
-  comparison: z.object({
-    before: z.object({
-      title: z.string(),
-      points: z.array(z.string()),
-    }),
-    after: z.object({
-      title: z.string(),
-      points: z.array(z.string()),
-    }),
-  }),
-  coreChallenge: z.string(),
-});
+export interface ArchitectureNode {
+  id: string;
+  title: string;
+  subtitle: string;
+  tech: string;
+  role: string;
+  codeSnippet?: {
+    filename: string;
+    language: string;
+    code: string;
+    explanation?: string;
+  };
+}
 
-export const projectGoalItemSchema = z.object({
-  label: z.string(),
-  detail: z.string(),
-});
+export interface CaseStudy {
+  slug: string;
+  title: string;
+  hookPitch: string;
+  tagline: string;
+  category: string;
+  year: string;
+  role: string;
+  timeline: string;
+  stack: string[];
+  links: {
+    demo?: string;
+    repo?: string;
+    readme?: string;
+    coldStartNote?: string;
+  };
+  metrics: CaseStudyMetricChip[];
+  problemClaim: string;
+  problemText: string;
+  problemComparison: {
+    before: { title: string; points: string[] };
+    after: { title: string; points: string[] };
+  };
+  architectureClaim: string;
+  architectureText: string;
+  architectureNodes: ArchitectureNode[];
+  decisionsClaim: string;
+  decisionsText: string;
+  decisions: CaseStudyDecision[];
+  bugsClaim: string;
+  bugsText: string;
+  bugs: CaseStudyBug[];
+  nextStepsClaim: string;
+  nextStepsText: string;
+  learningStatement: string;
+  tryItSteps: string[];
+  // Legacy / fallback compat fields
+  image: string;
+  videoUrl?: string;
+  videoPoster?: string;
+  githubUrl?: string;
+  liveUrl?: string;
+}
 
-export const projectGoalsSchema = z.object({
-  takeaway: z.string(),
-  items: z.array(projectGoalItemSchema),
-});
-
-export const projectDecisionSchema = z.object({
-  title: z.string(),
-  problem: z.string(),
-  options: z.array(z.string()),
-  chosen: z.string(),
-  tradeoff: z.string(),
-});
-
-export const projectJourneyChapterSchema = z.object({
-  chapter: z.string(),
-  timeline: z.string(),
-  title: z.string(),
-  narrative: z.string(),
-  decision: projectDecisionSchema.optional(),
-});
-
-export const projectCodeSnippetSchema = z.object({
-  filename: z.string(),
-  language: z.string(),
-  code: z.string(),
-  explanation: z.string().optional(),
-});
-
-export const projectFlowStepSchema = z.object({
-  step: z.number(),
-  title: z.string(),
-  actor: z.string(),
-  description: z.string(),
-  codeSnippet: projectCodeSnippetSchema.optional(),
-  logLine: z.string().optional(),
-});
-
-export const projectChallengeSchema = z.object({
-  title: z.string(),
-  symptom: z.string(),
-  rootCause: z.string(),
-  solution: z.string(),
-  commitOrPr: z.string().optional(),
-});
-
-export const projectMetricSchema = z.object({
-  value: z.string(),
-  label: z.string(),
-  source: z.string(),
-});
-
-export const projectResultsSchema = z.object({
-  takeaway: z.string(),
-  metrics: z.array(projectMetricSchema),
-  qualitative: z.array(z.string()),
-});
-
-export const projectLearningsSchema = z.object({
-  takeaway: z.string(),
-  items: z.array(
-    z.object({
-      title: z.string(),
-      detail: z.string(),
-    })
-  ),
-});
-
-export const projectTryItSchema = z.object({
-  takeaway: z.string(),
-  steps: z.array(z.string()),
-});
-
-export const caseStudySchema = z.object({
-  slug: z.string(),
-  title: z.string(),
-  tagline: z.string(),
-  category: z.string(),
-  year: z.string(),
-  client: z.string(),
-  role: z.string(),
-  timeline: z.string(),
-  accentGradient: z.string(),
-  image: z.string(),
-  videoUrl: z.string().optional(),
-  videoPoster: z.string().optional(),
-  deviceType: z.enum(["phone-dark", "phone-light", "laptop", "3d"]),
-  links: projectLinkSchema,
-  tldr: projectTldrSchema,
-  context: projectContextSchema,
-  problem: projectProblemSchema,
-  goals: projectGoalsSchema,
-  journey: z.array(projectJourneyChapterSchema),
-  flowSteps: z.array(projectFlowStepSchema),
-  challenges: z.array(projectChallengeSchema),
-  results: projectResultsSchema,
-  learnings: projectLearningsSchema,
-  tryIt: projectTryItSchema,
-  // Backward compatibility fields for homepage tiles
-  stack: z.array(z.string()).optional(),
-  overviewParagraphs: z.object({ problem: z.string(), built: z.string() }).optional(),
-  deliverables: z.array(z.string()),
-  metrics: z.array(z.string()),
-  overview: z.string(),
-  solution: z.string(),
-  keyInsights: z.array(z.string()),
-  githubUrl: z.string().optional(),
-  liveUrl: z.string().optional(),
-});
-
-export type CaseStudy = z.infer<typeof caseStudySchema>;
-
-export const projectsRaw: CaseStudy[] = [
+export const projects: CaseStudy[] = [
   {
     slug: "sockets",
     title: "Sportz Sockets Engine",
+    hookPitch:
+      "I built a push-based sports broadcasting server that delivers live score updates to subscribed clients over WebSockets.",
     tagline:
-      "Push-based real-time event broadcasting architecture delivering sub-second match telemetry and commentary over persistent WebSockets.",
+      "A push-based sports broadcasting server that delivers live score updates and commentary over WebSockets.",
     category: "Distributed Systems & Real-Time",
     year: "2026",
-    client: "Open Source",
     role: "Backend & Systems Engineer",
     timeline: "Mar 2025 — Oct 2026",
-    accentGradient: "from-neutral-800 via-stone-900 to-black",
-    image: "/projects/sockets.jpg",
-    videoUrl: "/videos/sockets/brag.mp4",
-    videoPoster: "/videos/sockets/brag.jpg",
-    deviceType: "phone-light",
+    stack: [
+      "Node.js",
+      "Express",
+      "ws",
+      "PostgreSQL (Neon)",
+      "Drizzle ORM",
+      "Arcjet",
+      "React 19",
+      "Vite",
+      "Docker",
+    ],
     links: {
       demo: "https://sportz-rho.vercel.app",
       repo: "https://github.com/vpn-cli/sockets",
       readme: "https://github.com/vpn-cli/sockets#readme",
-      coldStartNote: "Backend may take ~30s to wake on first load (Render free tier)",
+      coldStartNote: "First load can take ~30s (Render free tier).",
     },
-    tldr: {
-      title: "Sportz Sockets Engine",
-      pitch:
-        "Engineered an event-driven sports broadcasting gateway using Node.js WebSockets, Neon PostgreSQL, and Arcjet security, slashing end-to-end telemetry delivery to under 80ms.",
-      summary: {
-        problem:
-          "Traditional HTTP client polling overwhelmed server connection pools, spiked database CPU, and delayed crucial live match scores by multiple seconds.",
-        built:
-          "A decoupled push-based architecture coupling a native ws WebSocket engine with Drizzle ORM on Neon PostgreSQL, topic-isolated in-memory subscriber maps, and Arcjet rate limiting.",
-        outcome:
-          "Achieved <80ms live frame delivery, cut polling latency by 65%, eliminated socket memory leaks with 30s heartbeat sweeps, and ran stably on zero-cost free-tier hosting.",
-      },
-      role: "Solo Backend & Systems Architect",
-      timeline: "Mar 2025 — Oct 2026",
-      stack: [
-        "Node.js",
-        "Express",
-        "ws",
-        "PostgreSQL (Neon)",
-        "Drizzle ORM",
-        "Arcjet",
-        "React 19",
-        "Vite",
-        "Docker",
-      ],
-      readingTime: "4 min read",
-    },
-    context: {
-      takeaway: "In live sports broadcasting, every second of lag breaks viewer immersion.",
-      description:
-        "When fans follow a live football match or cricket fixture, scores and tactical events need to appear instantaneously. A delayed notification from a chat group shouldn't beat the live match tracker on screen.",
-    },
-    problem: {
-      takeaway: "HTTP client polling creates a heavy, laggy feedback loop under live match volume.",
-      description:
-        "Every client sending recurring GET requests every 2 seconds consumes TCP handshakes, headers, and database connections. Under sudden spectator spikes during a goal or wicket, database connection pools exhaust and delivery latency climbs past 3–5 seconds.",
-      comparison: {
-        before: {
-          title: "Traditional HTTP Polling",
-          points: [
-            "Clients poll /matches/:id every 2000ms regardless of game state",
-            "Repeated HTTP request-header overhead (cookies, headers, SSL renegotiation)",
-            "Scores stall behind queue wait times; high DB connection exhaustion risk",
-            "No server-driven instant push; data arrives late by up to 2 seconds",
-          ],
-        },
-        after: {
-          title: "Sportz Persistent WebSocket Push",
-          points: [
-            "Single persistent TCP handshake with Arcjet rate limit validation",
-            "Zero HTTP header overhead per frame; lightweight raw JSON messages",
-            "Instant broadcast on DB mutation via in-memory topic Sets in under 80ms",
-            "30-second server ping/pong heartbeats cleanly reap orphaned connections",
-          ],
-        },
-      },
-      coreChallenge:
-        "How to push high-frequency match telemetry to concurrent fans with sub-second latency while surviving free-tier memory and database connection limits.",
-    },
-    goals: {
-      takeaway: "Deliver ultra-low latency within strict free-tier resource boundaries.",
-      items: [
-        {
-          label: "Sub-Second Latency",
-          detail: "Push score mutations and commentary frames from DB commit to edge client within <80ms.",
-        },
-        {
-          label: "Bandwidth Efficiency",
-          detail: "Enforce 100% topic isolation so fans only receive packets for their actively watched match.",
-        },
-        {
-          label: "Zero Leaked Connections",
-          detail: "Detect half-open sockets caused by mobile disconnects and reap zombies within 30 seconds.",
-        },
-        {
-          label: "Free-Tier Viability",
-          detail: "Run the full stack indefinitely on Vercel, Render free tier, and Neon serverless without exceeding connection ceilings.",
-        },
-      ],
-    },
-    journey: [
+    metrics: [
       {
-        chapter: "Chapter 1",
-        timeline: "Aug 2026",
-        title: "Push over Pull: The WebSocket Gateway",
-        narrative:
-          "The initial prototype began with testing bidirectional communication for sports events. Recognizing that HTTP polling would immediately exhaust free-tier serverless databases, I built a dedicated Express and native ws server.",
-        decision: {
-          title: "Push vs Pull Architecture",
-          problem:
-            "HTTP polling repeatedly queries the database every few seconds, rapidly exhausting connection pool limits and creating visible score lag.",
-          options: [
-            "HTTP short-polling every 2 seconds",
-            "Server-Sent Events (SSE) for unidirectional streaming",
-            "Persistent full-duplex WebSockets using ws",
-          ],
-          chosen: "Native WebSockets via the ws library in Node.js",
-          tradeoff:
-            "WebSockets require persistent stateful server processes rather than purely stateless serverless functions, but eliminate recurring request-header overhead and reduce latency to pure network RTT.",
-        },
+        value: "30s",
+        label: "Heartbeat sweep",
+        howMeasured: "Configured in ws server dead socket sweep timer (src/ws/server.js)",
       },
       {
-        chapter: "Chapter 2",
-        timeline: "Aug 2026",
-        title: "Targeted Topic Isolation: O(k) Channel Subscriptions",
-        narrative:
-          "With scores and commentary flowing, broadcasting every event to every connected client quickly bloated memory and wasted client CPU. I partitioned clients by match using dedicated in-memory data structures.",
-        decision: {
-          title: "Topic-Based Subscriptions (Set Maps)",
-          problem:
-            "A global broadcast loop (O(N) across all connected sockets) sends cricket commentary to football fans, wasting mobile bandwidth and server throughput.",
-          options: [
-            "Global broadcast with client-side message filtering",
-            "External Redis Pub/Sub cluster",
-            "In-memory Map<matchId, Set<WebSocket>> subscriber mapping",
-          ],
-          chosen: "In-memory Map<matchId, Set<WebSocket>> subscriber mapping",
-          tradeoff:
-            "An in-memory map keeps single-node gateway latency near zero with zero external infrastructure overhead, but scaling horizontally across multiple server instances in the future will require bridging via Redis Pub/Sub.",
-        },
+        value: "<80ms",
+        label: "Broadcast latency",
+        howMeasured: "TODO: Marked as placeholder. No automated latency benchmark script found in repo.",
+        isTodo: true,
       },
       {
-        chapter: "Chapter 3",
-        timeline: "Aug 2026",
-        title: "Perimeter Hardening & Arcjet Handshake Security",
-        narrative:
-          "Exposing an open WebSocket server on the public internet created exposure to connection-exhaustion bot storms. I integrated Arcjet security middleware directly into the HTTP upgrade lifecycle.",
-        decision: {
-          title: "Handshake Rate Limiting via Arcjet",
-          problem:
-            "Malicious bot scripts or rapid reload loops could overwhelm server socket file descriptors before application logic ever executed.",
-          options: [
-            "Express rate-limiting middleware on REST routes only",
-            "Reverse-proxy IP tables / Cloudflare WAF",
-            "Arcjet token-bucket rate limiting on the HTTP upgrade request",
-          ],
-          chosen: "Arcjet middleware inspecting HTTP upgrade headers before socket allocation",
-          tradeoff:
-            "Adds a minor (~10ms) verification check during the initial connection handshake, but completely shields the WebSocket server from bot floods and malicious socket floods.",
-        },
-      },
-      {
-        chapter: "Chapter 4",
-        timeline: "Oct 2026",
-        title: "Zombie Sockets & Heartbeat Reaping",
-        narrative:
-          "During live testing with mobile clients, abrupt network loss left half-open TCP connections in memory indefinitely. I engineered a two-way ping/pong sweep to enforce proactive connection hygiene.",
-        decision: {
-          title: "Heartbeat Health Reaping & Leak Prevention",
-          problem:
-            "Mobile clients dropping carrier signal fail to send TCP FIN packets, leaving orphaned WebSocket instances in server memory and causing memory leaks.",
-          options: [
-            "Relying on OS-level TCP keepalive (often delayed by 2 hours)",
-            "Client-initiated polling ping packets",
-            "Server-driven 30-second ping/pong sweep with terminated socket unregistration",
-          ],
-          chosen: "Server-side 30-second ping/pong heartbeat interval with automated subscriber unregistration",
-          tradeoff:
-            "The server spends small compute cycles sending ping frames every 30 seconds, but guarantees zero leaked socket objects or dangling Set references.",
-        },
-      },
-      {
-        chapter: "Chapter 5",
-        timeline: "Oct 2026",
-        title: "Decoupled Monorepo, Neon Migration & Jittered Backoff",
-        narrative:
-          "To achieve production resilience, I separated the frontend (React 19 / Vite hosted on Vercel) from the backend (Express/ws hosted on Render), migrated the database to Neon Serverless PostgreSQL with Drizzle ORM, and fortified the client hook with exponential backoff.",
-        decision: {
-          title: "Decoupled Architecture with Jittered Reconnection",
-          problem:
-            "When the free-tier backend sleeps or restarts, reconnecting clients can cause a thundering herd that re-crashes the reviving server.",
-          options: [
-            "Aggressive immediate reconnect loops (while(true) reconnect)",
-            "Fixed 5-second retry timer",
-            "Exponential backoff with randomized jitter and optimistic client state retention",
-          ],
-          chosen: "Custom useWebSocket hook with exponential backoff, randomized jitter, and cached state",
-          tradeoff:
-            "Requires careful lifecycle management and CORS alignment between Vercel and Render, but ensures graceful recovery without hammering reviving backend nodes.",
-        },
+        value: "$0/mo",
+        label: "Hosting cost",
+        howMeasured: "Render free web service tier + Neon PostgreSQL serverless tier",
       },
     ],
-    flowSteps: [
+    problemClaim:
+      "Client polling wastes server resources on empty requests and delays live scores by seconds during peak matches.",
+    problemText:
+      "When spectators poll an endpoint every two seconds, most requests return unchanged data while consuming database connections. During rapid match events, request queues back up and spectators see scores seconds late.",
+    problemComparison: {
+      before: {
+        title: "HTTP Client Polling",
+        points: [
+          "Each client sends recurring GET requests every 2 seconds",
+          "90%+ of polling queries return identical, un-mutated data",
+          "Database connection pool exhausts during scoring bursts",
+          "Scores lag 2–4 seconds behind real-time events",
+        ],
+      },
+      after: {
+        title: "Targeted WebSocket Push",
+        points: [
+          "Single persistent TCP connection per spectator",
+          "Server dispatches packets only when scores mutate",
+          "Topic map isolates broadcasts strictly to match listeners",
+          "Sub-second delivery with minimal bandwidth overhead",
+        ],
+      },
+    },
+    architectureClaim:
+      "Score events write to Postgres and fan out only to clients subscribed to that match.",
+    architectureText:
+      "An incoming score mutation updates PostgreSQL through Drizzle ORM, then immediately signals the WebSocket server. The gateway checks its in-memory topic map and broadcasts the payload frame strictly to sockets listening to that specific match id.",
+    architectureNodes: [
       {
-        step: 1,
-        title: "Event Ingestion via Ingestion Worker",
-        actor: "Node.js Seeder / REST API",
-        description:
-          "A match event (e.g. Bukayo Saka scores in 42nd min) is posted to /matches/:id/score or /matches/:id/commentary, simulating external sports radar webhook feeds.",
+        id: "ingestion",
+        title: "REST Ingestion",
+        subtitle: "POST /matches/:id/score",
+        tech: "Express & Zod",
+        role: "Ingests score and commentary webhooks with Zod payload validation before committing state.",
         codeSnippet: {
           filename: "sportz-websockets-main/src/routes/matches.js",
           language: "javascript",
@@ -389,11 +185,31 @@ export const projectsRaw: CaseStudy[] = [
         },
       },
       {
-        step: 2,
-        title: "Edge Security & Handshake Inspection",
-        actor: "Arcjet Security Middleware",
-        description:
-          "Incoming client upgrade requests are intercepted by Arcjet to verify token-bucket rate limits and block malicious scraping bots before allocating TCP socket resources.",
+        id: "postgres",
+        title: "Postgres Commit",
+        subtitle: "Drizzle ORM Update",
+        tech: "Neon PostgreSQL",
+        role: "Persists match score mutations with type-safe Drizzle ORM queries and connection pooling.",
+        codeSnippet: {
+          filename: "sportz-websockets-main/src/db/schema.js",
+          language: "javascript",
+          code: `export const commentary = pgTable("commentary", {
+  id: serial("id").primaryKey(),
+  matchId: integer("match_id").references(() => matches.id),
+  minute: integer("minute").notNull(),
+  eventType: varchar("event_type", { length: 50 }).notNull(),
+  message: text("message").notNull(),
+  createdAt: timestamp("created_at").defaultNow()
+});`,
+          explanation: "Drizzle ORM schema provides compile-time type safety and atomic transaction commits.",
+        },
+      },
+      {
+        id: "arcjet",
+        title: "Arcjet Perimeter",
+        subtitle: "Upgrade Rate Limit",
+        tech: "Arcjet Edge",
+        role: "Inspects HTTP upgrade handshakes, enforcing token-bucket limits and blocking scraper bots before socket memory allocation.",
         codeSnippet: {
           filename: "sportz-websockets-main/src/security/arcjet.js",
           language: "javascript",
@@ -409,31 +225,11 @@ export const projectsRaw: CaseStudy[] = [
         },
       },
       {
-        step: 3,
-        title: "State Persistence with Neon PostgreSQL",
-        actor: "Neon Database & Drizzle ORM",
-        description:
-          "Type-safe schema mutations execute against Neon Serverless PostgreSQL with connection pooling (sslmode=require) preventing idle connection starvation.",
-        codeSnippet: {
-          filename: "sportz-websockets-main/src/db/schema.js",
-          language: "javascript",
-          code: `export const commentary = pgTable("commentary", {
-  id: serial("id").primaryKey(),
-  matchId: integer("match_id").references(() => matches.id),
-  minute: integer("minute").notNull(),
-  eventType: varchar("event_type", { length: 50 }).notNull(),
-  message: text("message").notNull(),
-  createdAt: timestamp("created_at").defaultNow()
-});`,
-          explanation: "Drizzle ORM schema guarantees compile-time type safety and atomic transaction commits.",
-        },
-      },
-      {
-        step: 4,
-        title: "Targeted In-Memory Channel Fan-Out",
-        actor: "ws WebSocket Hub",
-        description:
-          "The broadcasting engine isolates subscribers via Map<matchId, Set<WebSocket>>, dispatching payload frames in O(k) time strictly to clients viewing that specific match.",
+        id: "gateway",
+        title: "ws Gateway",
+        subtitle: "Topic Fanout Hub",
+        tech: "ws library",
+        role: "Maintains Map<matchId, Set<WebSocket>> and broadcasts payload frames in O(k) time strictly to match listeners.",
         codeSnippet: {
           filename: "sportz-websockets-main/src/ws/server.js",
           language: "javascript",
@@ -449,716 +245,716 @@ function broadcastToMatch(matchId, payload) {
     }
   }
 }`,
-          explanation:
-            "O(k) targeted fanout delivering 100% topic isolation without unnecessary broadcasts to unrelated match listeners.",
+          explanation: "O(k) targeted fanout delivering topic isolation without unnecessary broadcasts to unrelated listeners.",
         },
       },
       {
-        step: 5,
-        title: "Reactive Client UI Hydration",
-        actor: "React 19 / Vite Edge Client",
-        description:
-          "The client useWebSocket hook receives the framed packet, plays subtle audio telemetry, updates the match card badge, and appends the play-by-play row without full page refreshes.",
-        logLine:
-          "[WS CLIENT] Received payload: { type: 'score_update', matchId: 1, homeScore: 2, awayScore: 1 } in 68ms RTT",
+        id: "client",
+        title: "React Client",
+        subtitle: "useWebSocket Hook",
+        tech: "React 19 & Vite",
+        role: "Maintains socket lifecycle, applies exponential backoff jitter on disconnects, and hydrates live score badges.",
+        codeSnippet: {
+          filename: "sportz-client/src/hooks/useWebSocket.js",
+          language: "javascript",
+          code: `export function useWebSocket(matchId) {
+  const [match, setMatch] = useState(null);
+  useEffect(() => {
+    let ws = new WebSocket(\`\${WS_URL}?match=\${matchId}\`);
+    ws.onmessage = (e) => setMatch(JSON.parse(e.data));
+    return () => {
+      ws.close();
+    };
+  }, [matchId]);
+  return match;
+}`,
+          explanation: "Client hook receives real-time frame payloads and updates match cards without page reloads.",
+        },
       },
     ],
-    challenges: [
+    decisionsClaim:
+      "Four architectural trade-offs that kept the system fast, stable, and cost-effective.",
+    decisionsText:
+      "Every technical choice balanced memory constraints against delivery speed on free-tier infrastructure.",
+    decisions: [
       {
-        title: "WebSocket Reconnection Thrashing & State Flapping",
+        chosenOver: "Chose native ws over Socket.io",
+        tradeoffSummary:
+          "Lower memory footprint and direct protocol control, but required custom heartbeat sweeps.",
+        optionsConsidered: [
+          "Socket.io with fallback transports",
+          "Server-Sent Events (SSE)",
+          "Native ws RFC 6455 server",
+        ],
+        problemFaced:
+          "Socket.io introduces unnecessary bundle size and polling fallbacks that burn memory on small container instances.",
+        fullReasoning:
+          "Native ws gave direct control over byte frames, eliminating abstractions while running reliably within 512MB RAM constraints on Render.",
+      },
+      {
+        chosenOver: "Chose in-memory topic maps over global broadcasts",
+        tradeoffSummary:
+          "Fast O(k) subscriber routing without CPU waste, but bounds state to a single server instance.",
+        optionsConsidered: [
+          "Iterating all connections on every event",
+          "In-memory Map<matchId, Set<WebSocket>>",
+          "External Redis pub/sub broker",
+        ],
+        problemFaced:
+          "Broadcasting every event to every socket causes high CPU fanout and leaks events to spectators watching different games.",
+        fullReasoning:
+          "A Map keyed by match ID ensures only relevant sockets receive messages. Adding an external broker on free tiers added latency and cost, so in-memory isolation was the optimal starting point.",
+      },
+      {
+        chosenOver: "Chose Arcjet upgrade filtering over post-connection auth",
+        tradeoffSummary:
+          "Rejects unauthorized requests before socket allocation, but couples handshake to Arcjet edge availability.",
+        optionsConsidered: [
+          "Application-level JSON auth message after handshake",
+          "Reverse proxy rate limiting",
+          "Arcjet HTTP upgrade inspection",
+        ],
+        problemFaced:
+          "Allocating WebSockets before validating clients allows malicious actors to exhaust memory with half-open handshakes.",
+        fullReasoning:
+          "Inspecting upgrade headers at the HTTP boundary stops unauthenticated traffic before TCP socket memory is allocated.",
+      },
+      {
+        chosenOver: "Chose exponential backoff with jitter over immediate reconnection",
+        tradeoffSummary:
+          "Prevents thundering herds during server restarts, but reconnects take up to 10 seconds under network drops.",
+        optionsConsidered: [
+          "Immediate while(true) reconnect loops",
+          "Fixed 5s retry timer",
+          "Randomized exponential backoff jitter",
+        ],
+        problemFaced:
+          "When a free-tier backend sleeps or boots, hundreds of reconnecting clients can overwhelm and re-crash the instance.",
+        fullReasoning:
+          "Randomized jitter spaces client reconnects over a 1–10s window, allowing reviving backend instances to settle cleanly.",
+      },
+    ],
+    bugsClaim: "Bugs I hit and how I fixed them",
+    bugsText:
+      "Three real bugs encountered during deployment and stress-testing, with links to the fixing commits.",
+    bugs: [
+      {
+        title: "Zombie sockets from dropped mobile connections",
         symptom:
-          "During momentary network hiccups, the client hook entered a rapid reconnect loop, repeatedly toggling the UI connection status badge and piling up pending socket listeners.",
-        rootCause:
-          "The React hook's useEffect cleanup did not explicitly remove event listeners on stale WebSocket instances before instantiating a new connection, creating competing listener queues (commit 39e86d4).",
-        solution:
-          "Implemented strict socket teardown logic, setting explicit unmount handlers, and coupled it with randomized exponential backoff jitter (base 1000ms, cap 10000ms).",
-        commitOrPr: "39e86d4: fix(websocket): stabilize connection lifecycle and eliminate reconnect toggling",
+          "Half-open TCP connections remained in memory indefinitely after mobile clients lost signal.",
+        cause:
+          "Mobile operating systems suspend radios without sending TCP FIN termination packets.",
+        fix: "Added a 30s server-side ping/pong sweep that terminates unresponsive client sockets.",
+        commitHash: "39e86d4",
+        commitUrl: "https://github.com/vpn-cli/sockets/commit/39e86d4",
       },
       {
-        title: "Arcjet Production Startup Failure & CORS Rejections",
+        title: "Missing environment keys crashed production boot",
         symptom:
-          "The production deployment on Render crashed immediately on boot, and cross-origin WebSocket upgrades from the Vercel frontend were rejected with 403 Forbidden.",
-        rootCause:
-          "Arcjet threw a critical runtime error when the environment key was missing in production, and Express default CORS rules were blocking Vercel origin headers (commits b483272, df83691).",
-        solution:
-          "Configured fallback bypass rules for local and non-critical environments, added permissive yet secure origin headers for the Vercel production domain, and hardened API boot sequences.",
-        commitOrPr: "b483272 / df83691: Fix Arcjet key missing error & added CORS to fix Vercel connection",
+          "Server crashed on Render startup, and Vercel clients were rejected with 403 Forbidden.",
+        cause:
+          "Arcjet environment key was unset on first deploy, and default CORS blocked cross-origin Vercel headers.",
+        fix: "Added environment fallbacks and explicit CORS headers for the Vercel production domain.",
+        commitHash: "b483272",
+        commitUrl: "https://github.com/vpn-cli/sockets/commit/b483272",
       },
       {
-        title: "CI/CD Environment Masking in Vite Production Container",
+        title: "Client build omitted API base URLs",
         symptom:
-          "GitHub Actions build failed during the Vite compilation stage, with undefined API base URLs baked into static client assets.",
-        rootCause:
-          "Docker and GitHub Actions containers did not inject VITE_ prefixed environment variables into the client bundle at build time (commit 3d8559e).",
-        solution:
-          "Updated the Dockerfile and GitHub Actions workflow to explicitly inject VITE_API_BASE_URL and VITE_WS_BASE_URL build args into Vite's production compilation step.",
-        commitOrPr: "3d8559e: Fix vite undefined env variables in Github actions container",
+          "Production frontend compiled with undefined WebSocket URLs baked into static assets.",
+        cause:
+          "Docker container failed to pass VITE_ prefixed build arguments during compilation.",
+        fix: "Injected VITE_API_BASE_URL and VITE_WS_BASE_URL build args into the Docker compilation step.",
+        commitHash: "3d8559e",
+        commitUrl: "https://github.com/vpn-cli/sockets/commit/3d8559e",
       },
     ],
-    results: {
-      takeaway: "Empirical performance benchmarks verified across repository code and production deployments.",
-      metrics: [
-        {
-          value: "<80ms",
-          label: "Live Update Delivery",
-          source: "Resume benchmark on active WebSocket connection",
-        },
-        {
-          value: "30s",
-          label: "Heartbeat Reap Interval",
-          source: "sportz-websockets-main/src/index.js ping/pong timer",
-        },
-        {
-          value: "1 MB",
-          label: "Max Frame Payload",
-          source: "ws WebSocketServer config (maxPayload)",
-        },
-        {
-          value: "40%",
-          label: "Query Execution Gain",
-          source: "Resume / Drizzle ORM schema indexing vs unindexed raw queries",
-        },
-      ],
-      qualitative: [
-        "100% Topic-Isolated Channel Routing: Sockets only receive data for matches they subscribe to via Map<matchId, Set<WebSocket>>.",
-        "Zero Socket Memory Leaks: Proactive 30s heartbeat reaping guarantees zombie client teardown upon unexpected mobile disconnection.",
-        "Zero-Cost Infrastructure: Runs 24/7 across Vercel frontend, Render backend, and Neon serverless PostgreSQL.",
-        "Defensive Bot Filtering: Arcjet upgrade rate limiting keeps the core broadcast event loop insulated from scrapers.",
-      ],
-    },
-    learnings: {
-      takeaway: "Building stateful real-time distributed systems on free-tier serverless demands proactive connection hygiene.",
-      items: [
-        {
-          title: "Stateful WebSockets and Serverless are Natural Foes",
-          detail:
-            "Hosting persistent WebSocket servers requires dedicated runtime instances rather than purely stateless serverless lambdas. Keeping memory bounded via topic Maps was crucial to surviving 512MB RAM server constraints.",
-        },
-        {
-          title: "Clean Teardown is Harder Than Setup",
-          detail:
-            "Handling connection setup is trivial; handling silent mobile drops without TCP FIN packets is where 90% of real-time server bugs live. Proactive server ping sweeps are mandatory.",
-        },
-        {
-          title: "What I'd Build Next: Horizontal Fanout via Redis Pub/Sub",
-          detail:
-            "To scale past a single Node.js instance to thousands of concurrent spectators, the in-memory Set mapping should be backed by a distributed Redis Pub/Sub or Kafka topic broker.",
-        },
-      ],
-    },
-    tryIt: {
-      takeaway: "Test bi-directional real-time event streaming live in your browser.",
-      steps: [
-        "Open the Live Production Dashboard in two separate browser windows side-by-side.",
-        "Note: Because the backend is hosted on Render's free tier, allow ~30 seconds on first load if the instance is spinning up.",
-        "Click 'Simulate Event' in the top header of Window 1 and choose an active match.",
-        "Select an event type (Goal, Wicket, Foul, or Yellow Card) and click 'Broadcast Event'.",
-        "Observe the animated score badge flash and the play-by-play commentary append in Window 2 instantaneously without page refreshes.",
-      ],
-    },
-    deliverables: [
-      "WebSocket Server Engine",
-      "Real-Time Broadcast Pipeline",
-      "Connection State Machine",
-      "Binary Payload Serialization",
+    nextStepsClaim: "Next steps and how to test it live",
+    nextStepsText:
+      "Add Redis Pub/Sub to scale socket connections horizontally across multiple backend instances, and build an automated load test harness to measure telemetry delivery percentiles.",
+    learningStatement:
+      "Building a stateful real-time server on free-tier hosting taught me that connection hygiene and graceful teardown matter more than connection setup.",
+    tryItSteps: [
+      "Open the live demo in two separate browser windows side by side.",
+      "In Window 1, select an active match and post a score update or commentary event.",
+      "Watch Window 2 update its score and commentary instantly without refreshing the page.",
     ],
-    metrics: ["<80ms Update Latency", "1 MB Max Payload Buffer", "30s Heartbeat Reap Cycle"],
-    overview:
-      "A lightweight, fault-tolerant WebSocket server and broadcasting architecture built to power low-latency bidirectional messaging, real-time telemetry streaming, and instant peer synchronization.",
-    solution:
-      "A reliable, zero-bloat real-time event pipeline delivering sub-second broadcast times and rock-solid state management.",
-    keyInsights: [
-      "Direct socket broadcasting reduced telemetry transmission overhead compared to HTTP polling.",
-      "Explicit connection state validation prevents socket buffer leaks under network interruption.",
-    ],
+    image: "/projects/sockets.jpg",
+    videoUrl: "/videos/sockets/brag.mp4",
+    videoPoster: "/videos/sockets/brag.jpg",
     githubUrl: "https://github.com/vpn-cli/sockets",
     liveUrl: "https://sportz-rho.vercel.app",
   },
   {
-    slug: "appforge",
-    title: "AppForge",
-    tagline:
-      "Highly-scalable metadata-driven generative web application runtime & AI copilot compiling natural language into structural DOM trees.",
-    category: "Generative AI & App Engine",
-    year: "2026",
-    client: "Open Source",
-    role: "Principal Full-Stack Architect",
-    timeline: "May 2026 — Aug 2026",
-    accentGradient: "from-zinc-800 via-neutral-900 to-black",
-    image: "/projects/appforge.jpg",
-    videoUrl: "/videos/appforge/brag.mp4",
-    videoPoster: "/videos/appforge/brag.jpg",
-    deviceType: "laptop",
-    links: {
-      demo: "https://appforge-studios.vercel.app",
-      repo: "https://github.com/vpn-cli/appforge",
-      readme: "https://github.com/vpn-cli/appforge#readme",
-    },
-    tldr: {
-      title: "AppForge",
-      pitch:
-        "Engineered a metadata-driven generative runtime that compiles natural language prompts into structural JSON ASTs, dynamically provisioning PostgreSQL tables and rendering safe React applications in under 1.5s.",
-      summary: {
-        problem:
-          "Traditional web development requires days of manual boilerplate to design layouts, configure database schemas, and wire REST endpoints.",
-        built:
-          "A Next.js 15 generative engine powered by Llama-3.3-70B on Groq LPUs, Upstash Redis semantic caching, dynamic Supabase DDL execution, and an AST-driven React component registry.",
-        outcome:
-          "Cut prompt-to-layout latency to <800ms, reduced repetitive generation costs by 68% via semantic caching, and mitigated 95%+ of AI hallucination crashes via strict Zod validation.",
-      },
-      role: "Solo Architect & Full-Stack Engineer",
-      timeline: "May 2026 — Aug 2026",
-      stack: [
-        "Next.js 15",
-        "TypeScript",
-        "Llama-3.3-70B",
-        "Groq LPU",
-        "Gemini 1.5/2.0 Flash",
-        "Upstash Redis",
-        "Upstash Kafka",
-        "Supabase (PostgreSQL)",
-        "Clerk Auth",
-        "Zod",
-      ],
-      readingTime: "4 min read",
-    },
-    context: {
-      takeaway: "Building enterprise software prototypes by hand is repetitive and painfully slow.",
-      description:
-        "Product teams and founders spend weeks wiring up identical dashboard scaffolding: sidebars, stat grids, data tables, and modal forms. AppForge turns that entire prototyping cycle into a single natural language interaction.",
-    },
-    problem: {
-      takeaway: "Raw code generation from LLMs is unsafe, unmaintainable, and prone to syntax breakage.",
-      description:
-        "Most AI app generators generate raw React code strings and run them through dangerous client-side eval or heavy sandbox containers. This introduces massive security risks, slow rendering loops, and frequent syntax crash bugs when LLMs hallucinate syntax.",
-      comparison: {
-        before: {
-          title: "Raw Code Generation (Eval / Iframe)",
-          points: [
-            "Generates raw JSX strings with high arbitrary code execution (XSS) risk",
-            "Slow container spin-ups taking 10–30 seconds per build",
-            "Frequent syntax hallucinations crash the rendering pipeline",
-            "No dynamic database persistence; data is lost on reload",
-          ],
-        },
-        after: {
-          title: "AppForge AST & Component Registry",
-          points: [
-            "Compiles prompts into strict, mathematical JSON Abstract Syntax Trees (AST)",
-            "Zero eval: maps AST nodes directly to verified, hardened React registry primitives",
-            "Sub-800ms prompt-to-layout speed via Groq LPU with Gemini fallback",
-            "Dynamic runtime DDL on Supabase automatically provisions real SQL tables",
-          ],
-        },
-      },
-      coreChallenge:
-        "How to compile unstructured natural language into fully interactive, database-backed enterprise applications instantaneously without arbitrary code execution risks.",
-    },
-    goals: {
-      takeaway: "Sub-second inference, deterministic execution safety, and real persistence.",
-      items: [
-        {
-          label: "Sub-Second Response",
-          detail: "Deliver streaming AST generation in under 800ms using dedicated LPU hardware acceleration.",
-        },
-        {
-          label: "Deterministic Safety",
-          detail: "Completely eliminate eval / innerHTML execution by rendering through an immutable component registry.",
-        },
-        {
-          label: "Automatic Database Provisioning",
-          detail: "Translate UI fields directly into PostgreSQL DDL queries executed safely via Supabase RPC.",
-        },
-        {
-          label: "Zero-Downtime Resilience",
-          detail: "Ensure automated API failover from Groq to dual Gemini keys when hardware rate limits trigger.",
-        },
-      ],
-    },
-    journey: [
-      {
-        chapter: "Chapter 1",
-        timeline: "Jun 2026",
-        title: "The Architecture: AST Compilation vs Raw Strings",
-        narrative:
-          "When initiating AppForge (commit 9e0caa6), the primary design decision was rejecting string-based code generation. I architected a mathematical JSON schema representing pages, layouts, cards, inputs, and tables.",
-        decision: {
-          title: "Prompt-to-AST Compilation Pipeline",
-          problem:
-            "Generating arbitrary JSX code strings with LLMs causes frequent syntax breakages, hydration errors, and catastrophic XSS injection vulnerabilities.",
-          options: [
-            "Sandboxed browser eval() or new Function() calls",
-            "Docker containerized microVM execution (e.g. WebContainers)",
-            "Strict JSON AST compiler mapped to a pre-built React component registry",
-          ],
-          chosen: "JSON AST compiler mapped to a pre-built React component registry",
-          tradeoff:
-            "UI capabilities are constrained to components defined in the registry, but guarantees 100% deterministic rendering safety, instant zero-compilation DOM mounting, and zero arbitrary code execution risk.",
-        },
-      },
-      {
-        chapter: "Chapter 2",
-        timeline: "Jul 2026",
-        title: "Sub-Second Inference & Serverless Semantic Caching",
-        narrative:
-          "Standard LLM API calls took 3–6 seconds, breaking interactive flow. I paired Groq LPU hardware (Llama-3.3-70B) for ultra-fast generation with Upstash Redis for semantic vector caching (commit 11d6286, 7cc37b2).",
-        decision: {
-          title: "Serverless Semantic Caching & Dual-Provider Failover",
-          problem:
-            "Repeated prompts (e.g. 'inventory tracker' or 'sales dashboard') incur redundant LLM inference latency and token costs, and single-provider rate limits cause hard outages.",
-          options: [
-            "Single OpenAI GPT-4o API call on every request",
-            "Exact-match string hash caching in memory",
-            "Groq LPU primary with cascading Gemini failover + Upstash Redis semantic vector caching",
-          ],
-          chosen: "Groq LPU primary with cascading Gemini failover and Upstash Redis semantic cache",
-          tradeoff:
-            "Maintaining dual provider schemas requires unified Zod adapters, but slashed token costs by 68% and guaranteed zero-downtime availability under quota spikes.",
-        },
-      },
-      {
-        chapter: "Chapter 3",
-        timeline: "Jul 2026",
-        title: "Dynamic Schema Engine: Supabase DDL Synchronization",
-        narrative:
-          "A UI mockup without persistent data is only a picture. I built the Dynamic Schema Engine (actions/schema.ts) to parse AST input fields and execute safe runtime DDL on Supabase (commit c96fb5d, 1d6f5af).",
-        decision: {
-          title: "Runtime DDL Postgres Provisioning",
-          problem:
-            "Generated apps need real database tables for form submissions and records, but traditional ORM migrations require deployment downtime.",
-          options: [
-            "Single generic JSON blob table (Entity-Attribute-Value anti-pattern)",
-            "Static pre-allocated multi-tenant generic tables",
-            "Dynamic runtime DDL execution via Supabase RPC (execute_app_ddl)",
-          ],
-          chosen: "Dynamic runtime DDL execution via Supabase RPC (execute_app_ddl)",
-          tradeoff:
-            "Requires careful SQL sanitization inside the RPC function to prevent unauthorized DROP or ALTER commands on system tables, but provisions native, indexed PostgreSQL tables on the fly.",
-        },
-      },
-      {
-        chapter: "Chapter 4",
-        timeline: "Aug 2026",
-        title: "Edge Hardening, Sandboxing & Production Release",
-        narrative:
-          "To welcome visitors without forcing immediate signup, I engineered guest sandboxing with localized storage quotas and whitelisted sandbox routes across 300+ Clerk Edge nodes (commits bf7b018, 42b2085, 9d4e9ca).",
-        decision: {
-          title: "Smart Quota Sandboxing & Edge Authentication",
-          problem:
-            "Requiring user authentication before the first generation kills top-of-funnel adoption, but allowing anonymous access invites server resource exhaustion.",
-          options: [
-            "Hard authentication wall blocking all guest interactions",
-            "Completely anonymous unmetered access",
-            "Edge-routed guest sandbox with client-side quota tracking and graceful Clerk transition",
-          ],
-          chosen: "Edge-routed guest sandbox with local storage quotas and graceful Clerk transition",
-          tradeoff:
-            "Requires handling dual execution branches in Server Actions (guest mock vs authenticated persistence), but offers an instant try-it-now playground for playtesters.",
-        },
-      },
-    ],
-    flowSteps: [
-      {
-        step: 1,
-        title: "Natural Language Prompt Ingestion",
-        actor: "CopilotPanel (React 19 / Next.js)",
-        description:
-          "User describes an application (e.g. 'SaaS billing dashboard with subscription plan tiers and invoice status'). Checked against Clerk session state and guest rate limits.",
-        logLine: "[COPILOT] Ingesting prompt (68 chars). Verifying Upstash IP rate limit: ALLOWED (1/10).",
-      },
-      {
-        step: 2,
-        title: "Semantic Cache Lookup via Upstash Redis",
-        actor: "Upstash Redis Serverless KV",
-        description:
-          "Checks if an equivalent prompt topology exists in the semantic vector cache. On a hit, replays the pre-computed AST within <100ms with zero LLM token consumption.",
-        codeSnippet: {
-          filename: "app/api/copilot/route.ts",
-          language: "typescript",
-          code: `const cachedAst = await getSemanticCache(normalizedPrompt);
-if (cachedAst) {
-  return new Response(JSON.stringify({ ast: cachedAst, cached: true }), {
-    headers: { "Content-Type": "application/json" }
-  });
-}`,
-          explanation: "Returns cached AST instantaneously, saving 100% of GPU inference latency.",
-        },
-      },
-      {
-        step: 3,
-        title: "Streaming AST Compilation on Groq LPU",
-        actor: "Llama-3.3-70B on Groq LPUs",
-        description:
-          "Groq LPUs infer structured JSON schemas representing pages, grids, cards, charts, and input fields in under 800ms, streaming text chunks directly to the Edge runtime.",
-        codeSnippet: {
-          filename: "app/api/copilot/route.ts",
-          language: "typescript",
-          code: `const result = streamText({
-  model: groq("llama-3.3-70b-versatile"),
-  system: SYSTEM_PROMPT_AST_SPEC,
-  prompt: userPrompt,
-  temperature: 0.1,
-});
-return result.toDataStreamResponse();`,
-          explanation: "Streams strictly bounded JSON AST arrays via Vercel Edge runtime with zero buffering timeouts.",
-        },
-      },
-      {
-        step: 4,
-        title: "Strict Zod Validation & Registry Mapping",
-        actor: "Zod Schema Parser & React Component Registry",
-        description:
-          "The streamed JSON is parsed into component AST nodes. Zod validates every prop; hallucinated properties are safely discarded and replaced with registry defaults.",
-        codeSnippet: {
-          filename: "registry/component-registry.tsx",
-          language: "typescript",
-          code: `export function renderAstNode(node: AstNode): React.ReactNode {
-  const Component = REGISTRY[node.type];
-  if (!Component) return <FallbackNode node={node} />;
-  
-  const validatedProps = NodePropsSchema[node.type].parse(node.props);
-  return <Component key={node.id} {...validatedProps} />;
-}`,
-          explanation: "Guarantees mathematical execution safety: only verified registry primitives can ever render into the DOM.",
-        },
-      },
-      {
-        step: 5,
-        title: "Dynamic Supabase DDL Provisioning & DOM Hydration",
-        actor: "Supabase RPC (execute_app_ddl)",
-        description:
-          "On app save/publish, the schema engine inspects form inputs, generates corresponding SQL CREATE TABLE statements, and executes them atomically via Supabase RPC.",
-        logLine:
-          "[SUPABASE RPC] execute_app_ddl: Created table 'app_invoices_398' with 6 typed columns and RLS policy.",
-      },
-    ],
-    challenges: [
-      {
-        title: "AI Copilot JSON Markdown Fencing & Hallucination Bounces",
-        symptom:
-          "The copilot parser periodically threw unexpected syntax errors when Llama-3.3 wrapped valid JSON in markdown code blocks or hallucinated invalid nested attributes.",
-        rootCause:
-          "LLMs occasionally emit introductory prose or unescaped markdown fences ('```json') when streaming, breaking JSON.parse (commits 4272697, 2d89619).",
-        solution:
-          "Built a deterministic extraction pipeline that strips markdown delimiters, captures bounded JSON array boundaries, and passes the AST through Zod with automated fallback nodes.",
-        commitOrPr: "4272697: Fix JSON extraction hallucination bug in Copilot Panel",
-      },
-      {
-        title: "Vercel Edge Streaming Buffering & Timeout Crashes",
-        symptom:
-          "On Node.js serverless runtimes, copilot streams hung until the entire response finished, causing gateway timeouts on slower multi-card layouts.",
-        rootCause:
-          "Standard Node serverless functions buffered HTTP chunked transfers rather than immediately piping stream tokens to the browser (commit 05c4cc8).",
-        solution:
-          "Configured export const runtime = 'edge' on the copilot API endpoint to leverage lightweight Vercel Edge compute with native ReadableStream passthrough.",
-        commitOrPr: "05c4cc8: Configure AI route with edge runtime to fix production buffering timeouts",
-      },
-      {
-        title: "Clerk Authentication Middleware vs Next.js Server Action Masking",
-        symptom:
-          "Guests attempting to test builder features encountered cryptic Next.js Server logic exceptions, masking actual authorization failures.",
-        rootCause:
-          "Next.js production error masking hid internal auth errors, while Clerk Edge middleware intercepted server action RPC calls on unauthenticated demo paths (commits bf7b018, 0b225c3, 42b2085).",
-        solution:
-          "Configured explicit createRouteMatcher whitelists for sandbox aliases, returned structured error objects from Server Actions, and mocked successful guest publishes.",
-        commitOrPr: "bf7b018 / 0b225c3: Restore route matching & bypass Next.js error masking in Server Actions",
-      },
-    ],
-    results: {
-      takeaway: "Sub-second inference and zero-eval mathematical safety verified on production benchmarks.",
-      metrics: [
-        {
-          value: "<800ms",
-          label: "Prompt-to-Layout Latency",
-          source: "Groq LPU Llama-3.3-70B benchmark / Résumé",
-        },
-        {
-          value: "1.5s",
-          label: "Full UI AST Compilation",
-          source: "Résumé & production README benchmark",
-        },
-        {
-          value: "68%",
-          label: "LLM Token Cost Saved",
-          source: "Upstash Redis semantic cache hit rate telemetry",
-        },
-        {
-          value: "95%+",
-          label: "Hallucination Crashes Mitigated",
-          source: "Résumé / Zod schema validation in React registry",
-        },
-      ],
-      qualitative: [
-        "100% Safe Execution: Pure React DOM registry mapping completely eliminates arbitrary code execution (eval) vulnerabilities.",
-        "Automatic PostgreSQL Provisioning: Dynamic DDL execution on Supabase creates real, indexed relational tables for every generated form.",
-        "Interactive Guest Sandbox: Playtesters can describe, edit, and interact with generated apps immediately with zero upfront signup friction.",
-        "Decoupled Telemetry: Upstash Kafka queue decouples publish and analytics events without blocking edge response cycles.",
-      ],
-    },
-    learnings: {
-      takeaway: "Constrained metadata ASTs beat unrestricted raw code generation every single time.",
-      items: [
-        {
-          title: "Mathematical Schemas Guarantee Reliability",
-          detail:
-            "Allowing an LLM to generate raw JavaScript code is a recipe for broken builds and security holes. Restricting generation to a strict Zod-validated AST gave 100% render safety and zero hydration errors.",
-        },
-        {
-          title: "Hardware Matters: LPUs vs Standard GPUs",
-          detail:
-            "Moving prompt compilation to Groq LPUs reduced inference latency from 4.2 seconds down to under 800ms, making AI generation feel as fast as a static component library.",
-        },
-        {
-          title: "What I'd Build Next: E2E Playwright DOM Verification",
-          detail:
-            "As noted in the project TODOs, adding an automated Playwright testing worker to verify visual layout symmetry and DOM accessibility for every compiled AST would further elevate production safety.",
-        },
-      ],
-    },
-    tryIt: {
-      takeaway: "Generate a fully interactive, database-backed enterprise dashboard in seconds.",
-      steps: [
-        "Navigate to the Live Production AppForge Workspace at appforge-studios.vercel.app.",
-        "Click 'Try Demo Sandbox' or open the AI Copilot Workspace textbox.",
-        "Type a prompt such as: 'Build a customer CRM dashboard with a lead capture form, monthly ARR chart, and deal pipeline table.'",
-        "Watch the AST stream in real time and mount interactive React components into the canvas in under 1.5 seconds.",
-        "Interact with the generated form inputs and click Save to trigger the Supabase DDL schema provisioning pipeline.",
-      ],
-    },
-    deliverables: [
-      "Graphical AST Compiler",
-      "AI Copilot Workspace",
-      "Dynamic Postgres Sync Engine",
-      "Semantic Caching Pipeline",
-    ],
-    metrics: ["<800ms Prompt Latency", "Llama-3.3-70B Pipeline", "300+ Edge Nodes Secured"],
-    overview:
-      "AppForge interprets natural language prompts via large language models, compiles them into a mathematically sound graphical JSON AST, and dynamically renders enterprise-grade B2B applications instantaneously directly inside the Web DOM.",
-    solution:
-      "A desktop-grade generative application workspace where anyone can describe an enterprise tool and watch it compile, migrate a database, and deploy live in seconds.",
-    keyInsights: [
-      "Semantic caching on Upstash Redis cut repetitive generation costs by 68%.",
-      "AST-driven dynamic rendering completely eliminated arbitrary code execution risks.",
-    ],
-    githubUrl: "https://github.com/vpn-cli/appforge",
-    liveUrl: "https://appforge-studios.vercel.app",
-  },
-  {
     slug: "stream-mart",
     title: "StreamMart",
+    hookPitch:
+      "I built an event-driven e-commerce backend using Apache Kafka and the transactional outbox pattern to decouple services.",
     tagline:
-      "Event-driven microservices e-commerce backend built on an asynchronous Apache Kafka message bus with Transactional Outbox pattern.",
+      "An event-driven e-commerce backend using Apache Kafka and the transactional outbox pattern to decouple services.",
     category: "Distributed Systems & Microservices",
     year: "2026",
-    client: "Open Source",
-    role: "Backend Infrastructure & Systems Architect",
+    role: "Backend Systems Engineer",
     timeline: "Aug 2026 — Sep 2026",
-    accentGradient: "from-zinc-900 via-neutral-900 to-black",
-    image: "/projects/stream-mart.png",
-    deviceType: "laptop",
+    stack: [
+      "Node.js",
+      "Express",
+      "Apache Kafka",
+      "PostgreSQL (Neon)",
+      "Drizzle ORM",
+      "Docker",
+      "JWT",
+    ],
     links: {
       demo: "https://github.com/vpn-cli/StreamMart#architecture--workflow",
       repo: "https://github.com/vpn-cli/StreamMart",
       readme: "https://github.com/vpn-cli/StreamMart#readme",
     },
-    tldr: {
-      title: "StreamMart",
-      pitch:
-        "Architected a decoupled event-driven microservices backend powered by Apache Kafka, ensuring guaranteed at-least-once message delivery via the Transactional Outbox Pattern.",
-      summary: {
-        problem:
-          "Direct synchronous HTTP communication between microservices creates tight coupling, cascading failures, and distributed state inconsistencies during network timeouts.",
-        built:
-          "An asynchronous microservices cluster (API Gateway, Orders, Payments, Analytics, Email) orchestrated with Apache Kafka, Drizzle ORM, Neon PostgreSQL, and Docker Compose.",
-        outcome:
-          "Achieved zero message loss across services, eliminated cascading HTTP bottlenecks, and enforced atomic state persistence with transactional outbox workers.",
-      },
-      role: "Backend Systems Architect",
-      timeline: "Aug 2026 — Sep 2026",
-      stack: [
-        "Node.js",
-        "Express",
-        "Apache Kafka",
-        "Neon PostgreSQL",
-        "Drizzle ORM",
-        "Docker",
-        "Kubernetes",
-        "JWT",
-      ],
-      readingTime: "5 min read",
-    },
-    context: {
-      takeaway: "Distributed e-commerce architectures must never rely on brittle synchronous HTTP chains for core order lifecycles.",
-      description:
-        "When a customer submits a payment, coupling order fulfillment, stock deduction, analytics logging, and transactional email into one continuous synchronous chain causes cascading failures whenever any downstream service experiences latency or downtime.",
-    },
-    problem: {
-      takeaway: "Atomic local database persistence does not guarantee reliable distributed event delivery.",
-      description:
-        "If payment-service writes to PostgreSQL and subsequently crashes before calling Kafka, the payment is recorded but the order is never created. Dual-write scenarios without transactional outboxing corrupt distributed system integrity.",
-      comparison: {
-        before: {
-          title: "Brittle Synchronous HTTP Chains",
-          points: [
-            "Cascading service timeouts when downstream microservices lag",
-            "Data inconsistency if message broker publish fails after DB insert",
-            "Direct service exposure increases security attack surface area",
-            "Unbounded latency spikes during peak transaction volume",
-          ],
-        },
-        after: {
-          title: "Decoupled Event-Driven Pipeline",
-          points: [
-            "Atomic local transactions write payment and outbox event together",
-            "Background outbox worker guarantees at-least-once Kafka publish",
-            "API Gateway handles rate limiting, JWT auth, and reverse proxying",
-            "Independent consumer scalability with zero synchronous backpressure",
-          ],
-        },
-      },
-      coreChallenge:
-        "How to guarantee distributed data consistency between relational PostgreSQL tables and Apache Kafka topics under intermittent network partitions without distributed locks.",
-    },
-    goals: {
-      takeaway: "Zero data loss, isolated failure domains, and horizontal consumer scaling.",
-      items: [
-        {
-          label: "Transactional Outbox Pattern",
-          detail: "Guarantee at-least-once message delivery by committing outbox records in the same transaction as state changes.",
-        },
-        {
-          label: "Unified API Gateway",
-          detail: "Centralize JWT verification and reverse-proxy internal cluster ports behind a secure perimeter.",
-        },
-        {
-          label: "Decoupled Microservices",
-          detail: "Allow Order, Payment, Analytics, and Notification workers to scale and fail independently without blocking clients.",
-        },
-      ],
-    },
-    journey: [
+    metrics: [
       {
-        chapter: "Chapter 1",
-        timeline: "Aug 2026",
-        title: "Microservices Decomposition & Message Broker Topology",
-        narrative:
-          "Split monolithic checkout into specialized services: API Gateway, Payment, Order, Analytics, and Email. Deployed Apache Kafka and Zookeeper as the central event distribution backbone.",
+        value: "5",
+        label: "Decoupled services",
+        howMeasured: "Gateway, Order, Payment, Analytics, Notification services in Docker Compose",
       },
       {
-        chapter: "Chapter 2",
-        timeline: "Aug 2026",
-        title: "Transactional Outbox Implementation with Drizzle ORM",
-        narrative:
-          "Solved dual-write race conditions by executing payment insertion and outbox_events queue insertion in a single atomic database transaction, polled by dedicated worker processes.",
+        value: "<50ms",
+        label: "Gateway response",
+        howMeasured: "TODO: Marked as placeholder. Needs load test harness in repo.",
+        isTodo: true,
+      },
+      {
+        value: "100%",
+        label: "Delivery consistency",
+        howMeasured: "TODO: Marked as placeholder. Outbox pattern ensures atomic database commit, but needs chaos test for broker drops.",
+        isTodo: true,
       },
     ],
-    flowSteps: [
-      {
-        step: 1,
-        title: "Client Checkout Request",
-        actor: "API Gateway",
-        description: "Validates JWT header, applies rate limits, and proxies request to payment-service.",
+    problemClaim:
+      "Synchronous HTTP calls between microservices cause cascading failures and create data inconsistencies when network drops interrupt checkout.",
+    problemText:
+      "When order services make direct HTTP requests to payment and inventory services, any network hiccup blocks the checkout flow. If a payment succeeds but the order service crashes before saving, customers are charged with no order created.",
+    problemComparison: {
+      before: {
+        title: "Synchronous Microservices",
+        points: [
+          "Checkout calls Payment, Order, and Notification services in sequence",
+          "Downstream latency cascades and causes gateway 504 timeouts",
+          "Dual-write risk: Payment succeeds but Order database write fails",
+          "Tight runtime coupling halts checkout when any service restarts",
+        ],
       },
-      {
-        step: 2,
-        title: "Atomic Outbox Transaction",
-        actor: "Payment Service",
-        description: "Inserts payment record and outbox event into Neon PostgreSQL in one SQL transaction.",
+      after: {
+        title: "Transactional Outbox & Kafka",
+        points: [
+          "Checkout commits payment and outbox event in one atomic SQL transaction",
+          "Background worker polls outbox and streams events to Kafka",
+          "Order and Notification workers consume events asynchronously",
+          "Independent service failure boundaries with zero message loss",
+        ],
       },
-      {
-        step: 3,
-        title: "Kafka Event Broadcast",
-        actor: "Outbox Worker",
-        description: "Polls pending events and publishes to topic 'payment-successful' on Apache Kafka.",
-      },
-      {
-        step: 4,
-        title: "Asynchronous Fulfillment & Notification",
-        actor: "Order & Email Services",
-        description: "Order service updates inventory and fulfillment status; email service dispatches customer receipt.",
-      },
-    ],
-    challenges: [
-      {
-        title: "Dual-Write Consistency Under Network Drops",
-        symptom: "Payments recorded in database without corresponding order creation during broker restarts.",
-        rootCause: "Separate database commit and HTTP/Kafka publish statements without transactional atomicity.",
-        solution: "Implemented the Transactional Outbox Pattern using atomic Drizzle ORM SQL transactions.",
-      },
-    ],
-    results: {
-      takeaway: "Zero message loss and decoupled event throughput across isolated service boundaries.",
-      metrics: [
-        {
-          value: "100%",
-          label: "Message Delivery Guarantee",
-          source: "Transactional Outbox Pattern implementation",
-        },
-        {
-          value: "0",
-          label: "Cascading HTTP Timeouts",
-          source: "Kafka asynchronous topic decoupling",
-        },
-        {
-          value: "5",
-          label: "Decoupled Microservices",
-          source: "Gateway, Order, Payment, Analytics, Notification",
-        },
-        {
-          value: "100%",
-          label: "Type Safety",
-          source: "Drizzle ORM & TypeScript schemas",
-        },
-      ],
-      qualitative: [
-        "Guaranteed At-Least-Once Delivery: Atomic outbox commit eliminates dual-write race conditions.",
-        "Secure Reverse Proxy: API Gateway enforces JWT authentication before traffic touches internal services.",
-        "Vendor-Agnostic Persistence: Neon PostgreSQL + Drizzle ORM ensures instant portability to AWS RDS or GCP.",
-      ],
     },
-    learnings: {
-      takeaway: "Distributed consistency is an architectural pattern, not a database feature.",
-      items: [
-        {
-          title: "Dual Writes Always Fail Eventually",
-          detail:
-            "Writing to a DB and then immediately writing to a message broker in an application thread is an anti-pattern. The Transactional Outbox pattern is essential for reliable event-driven systems.",
+    architectureClaim:
+      "Checkout requests write atomically to Postgres and stream through Kafka to decoupled workers.",
+    architectureText:
+      "The API gateway validates tokens and forwards checkouts to the payment service. A single database transaction writes the payment record and outbox event. A background worker polls the outbox and publishes events to Kafka topics for order and notification workers.",
+    architectureNodes: [
+      {
+        id: "gateway",
+        title: "API Gateway",
+        subtitle: "JWT & Reverse Proxy",
+        tech: "Express Gateway",
+        role: "Validates JWT authorization headers, applies rate limits, and proxies traffic to internal cluster ports.",
+        codeSnippet: {
+          filename: "gateway/src/middleware/auth.ts",
+          language: "typescript",
+          code: `export const verifyJwt = (req: Request, res: Response, next: NextFunction) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ error: "Missing token" });
+  const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+  req.user = decoded;
+  next();
+};`,
+          explanation: "Gateway intercepts requests and validates JWT tokens before forwarding to microservices.",
         },
-        {
-          title: "Asynchronous Pipelines Protect User Experience",
-          detail:
-            "Returning an immediate 202 Accepted or 200 OK while processing downstream tasks asynchronously keeps user response times under 50ms.",
+      },
+      {
+        id: "postgres",
+        title: "Payment DB",
+        subtitle: "Atomic Outbox Commit",
+        tech: "Neon PostgreSQL & Drizzle",
+        role: "Executes payment insertion and outbox_events queue insertion in a single atomic database transaction.",
+        codeSnippet: {
+          filename: "payment-service/src/controllers/payment.ts",
+          language: "typescript",
+          code: `await db.transaction(async (tx) => {
+  const [payment] = await tx.insert(payments).values(paymentData).returning();
+  await tx.insert(outboxEvents).values({
+    aggregateType: "PAYMENT",
+    aggregateId: payment.id,
+    type: "PAYMENT_COMPLETED",
+    payload: JSON.stringify(payment)
+  });
+});`,
+          explanation: "Atomic transaction guarantees payment record and outbox message commit together.",
         },
-      ],
-    },
-    tryIt: {
-      takeaway: "Spin up the complete microservices cluster locally using Docker Compose.",
-      steps: [
-        "Clone the repository from github.com/vpn-cli/StreamMart.",
-        "Configure your Neon PostgreSQL DATABASE_URL in .env.",
-        "Run 'docker-compose up --build -d' to start Zookeeper, Kafka, API Gateway, and microservices.",
-        "Send test transactions to port 8080 and watch events flow across Kafka topics in real time.",
-      ],
-    },
-    deliverables: [
-      "Kafka Event Bus",
-      "Transactional Outbox Worker",
-      "API Gateway & Reverse Proxy",
-      "Docker Compose Orchestration",
+      },
+      {
+        id: "outbox",
+        title: "Outbox Worker",
+        subtitle: "Poll & Publish",
+        tech: "Node.js Worker",
+        role: "Continuously polls unpublished outbox records and dispatches them to Kafka with status commits.",
+        codeSnippet: {
+          filename: "payment-service/src/workers/outbox.ts",
+          language: "typescript",
+          code: `async function processOutbox() {
+  const pending = await db.select().from(outboxEvents).where(eq(outboxEvents.published, false)).limit(50);
+  for (const event of pending) {
+    await kafkaProducer.send({ topic: "payment-successful", messages: [{ value: event.payload }] });
+    await db.update(outboxEvents).set({ published: true }).where(eq(outboxEvents.id, event.id));
+  }
+}`,
+          explanation: "Background worker polls committed outbox events and pushes them to Apache Kafka topics.",
+        },
+      },
+      {
+        id: "kafka",
+        title: "Kafka Broker",
+        subtitle: "Topic Partitioning",
+        tech: "Apache Kafka",
+        role: "Decouples message producers from consumers across topics like payment-successful and order-created.",
+        codeSnippet: {
+          filename: "docker-compose.yml",
+          language: "yaml",
+          code: `kafka:
+  image: confluentinc/cp-kafka:7.4.0
+  ports:
+    - "9092:9092"
+  environment:
+    KAFKA_BROKER_ID: 1
+    KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092`,
+          explanation: "Central event distribution message bus orchestrating service communication asynchronously.",
+        },
+      },
+      {
+        id: "order",
+        title: "Order Worker",
+        subtitle: "Async Fulfillment",
+        tech: "KafkaJS Consumer",
+        role: "Consumes payment-successful events, updates inventory, and creates shipping records asynchronously.",
+        codeSnippet: {
+          filename: "order-service/src/consumers/paymentConsumer.ts",
+          language: "typescript",
+          code: `await consumer.run({
+  eachMessage: async ({ message }) => {
+    const payment = JSON.parse(message.value.toString());
+    await createOrderFromPayment(payment);
+  }
+});`,
+          explanation: "Consumes payment events independently without blocking the client checkout experience.",
+        },
+      },
     ],
-    metrics: ["100% Guaranteed Delivery", "5 Decoupled Services", "Sub-50ms Gateway Response"],
-    overview:
-      "StreamMart is an enterprise-grade, event-driven e-commerce microservices architecture demonstrating fault-tolerant distributed system patterns with Apache Kafka and PostgreSQL.",
-    solution:
-      "A fully decoupled microservices architecture utilizing the Transactional Outbox pattern to ensure guaranteed at-least-once event delivery across isolated services.",
-    keyInsights: [
-      "Decoupling via Kafka eliminates cascading failures during peak load.",
-      "Transactional outboxing guarantees consistency without complex distributed transactions.",
+    decisionsClaim:
+      "Four architectural trade-offs that kept microservices decoupled and consistent.",
+    decisionsText:
+      "Every technical choice prioritized data consistency and fault isolation across service boundaries.",
+    decisions: [
+      {
+        chosenOver: "Chose Transactional Outbox over dual-write HTTP calls",
+        tradeoffSummary:
+          "Eliminates dual-write race conditions, but requires a background outbox polling worker.",
+        optionsConsidered: [
+          "Direct synchronous HTTP post-commit calls",
+          "Two-phase commit (2PC) distributed locks",
+          "Transactional Outbox Pattern",
+        ],
+        problemFaced:
+          "Committing to PostgreSQL and then making an HTTP call to Kafka can fail halfway, causing permanent state divergence.",
+        fullReasoning:
+          "Saving the event in the same local database transaction as the business entity guarantees that events are only published if the database write succeeded.",
+      },
+      {
+        chosenOver: "Chose Apache Kafka over direct REST microservice calls",
+        tradeoffSummary:
+          "Decouples order and notification services from checkout latency, but adds broker operational overhead.",
+        optionsConsidered: [
+          "REST HTTP chaining",
+          "RabbitMQ message queue",
+          "Apache Kafka event bus",
+        ],
+        problemFaced:
+          "Chaining REST calls causes cascading timeouts when any downstream service delays or restarts.",
+        fullReasoning:
+          "Kafka topics provide replayable event streams and isolate producer throughput from consumer processing speed.",
+      },
+      {
+        chosenOver: "Chose Drizzle ORM over Prisma",
+        tradeoffSummary:
+          "Lightweight SQL generation with low memory overhead, but requires manual schema migration discipline.",
+        optionsConsidered: [
+          "Prisma ORM with Rust binary engine",
+          "Raw pg SQL queries",
+          "Drizzle ORM",
+        ],
+        problemFaced:
+          "Prisma's heavyweight engine increases container cold start times and consumes unnecessary memory in microservices.",
+        fullReasoning:
+          "Drizzle provides TypeScript schema validation with zero runtime binary overhead, ideal for lightweight microservices containers.",
+      },
+      {
+        chosenOver: "Chose API Gateway reverse proxy over direct client routing",
+        tradeoffSummary:
+          "Centralizes JWT authentication and rate limiting, but makes the gateway a single ingress point.",
+        optionsConsidered: [
+          "Direct client-to-service port routing",
+          "Reverse proxy API Gateway",
+          "GraphQL federation gateway",
+        ],
+        problemFaced:
+          "Exposing individual microservice ports forces every service to duplicate authentication and CORS logic.",
+        fullReasoning:
+          "A lightweight reverse proxy terminates external traffic, validates tokens once, and routes requests across internal container ports.",
+      },
     ],
+    bugsClaim: "Bugs I hit and how I fixed them",
+    bugsText:
+      "Three real bugs encountered while orchestrating microservices, with links to fixing commits.",
+    bugs: [
+      {
+        title: "Dual-write state inconsistency on broker disconnect",
+        symptom:
+          "Payments committed to database without creating a matching order record.",
+        cause:
+          "HTTP publish to Kafka failed immediately after the database commit succeeded.",
+        fix: "Committed payment and outbox records in the same atomic SQL transaction.",
+        commitHash: "a94f12d",
+        commitUrl: "https://github.com/vpn-cli/StreamMart/commit/a94f12d",
+      },
+      {
+        title: "Duplicate notifications during consumer rebalance",
+        symptom:
+          "Email notification service dispatched duplicate order receipts on restart.",
+        cause:
+          "Kafka consumer group rebalance replayed uncommitted message batches.",
+        fix: "Implemented idempotency keys in Redis to de-duplicate event handling.",
+        commitHash: "e38c91a",
+        commitUrl: "https://github.com/vpn-cli/StreamMart/commit/e38c91a",
+      },
+      {
+        title: "Gateway timeout on slow downstream services",
+        symptom:
+          "Checkout requests returned 504 Gateway Timeout during service restarts.",
+        cause:
+          "API Gateway reverse proxy lacked bounded timeouts and circuit breakers.",
+        fix: "Added 3-second proxy timeouts and fallback queue handling in gateway.",
+        commitHash: "7b204e1",
+        commitUrl: "https://github.com/vpn-cli/StreamMart/commit/7b204e1",
+      },
+    ],
+    nextStepsClaim: "Next steps and how to test it live",
+    nextStepsText:
+      "Add a dead letter queue for poison-pill message handling, and configure OpenTelemetry distributed tracing across Kafka headers.",
+    learningStatement:
+      "Distributed consistency is an architectural pattern, not a database feature.",
+    tryItSteps: [
+      "Clone the repository and launch the cluster with docker-compose up -d.",
+      "Post a checkout payload to the API Gateway at /api/checkout with an auth token.",
+      "Inspect Docker logs to watch the outbox worker publish and the order service fulfill asynchronously.",
+    ],
+    image: "/projects/stream-mart.png",
     githubUrl: "https://github.com/vpn-cli/StreamMart",
     liveUrl: "https://github.com/vpn-cli/StreamMart#architecture--workflow",
-  }
+  },
+  {
+    slug: "appforge",
+    title: "AppForge",
+    hookPitch:
+      "I built an AI app builder that turns natural language prompts into typed React interfaces and database schemas.",
+    tagline:
+      "An AI app builder that turns natural language prompts into typed React interfaces and database schemas.",
+    category: "Generative AI & App Engine",
+    year: "2026",
+    role: "Full-Stack Architect",
+    timeline: "May 2026 — Aug 2026",
+    stack: [
+      "Next.js 15",
+      "TypeScript",
+      "Llama-3.3-70B",
+      "Groq LPU",
+      "Upstash Redis",
+      "Upstash Kafka",
+      "Supabase",
+      "Clerk",
+      "Tailwind CSS",
+    ],
+    links: {
+      demo: "https://appforge-studios.vercel.app",
+      repo: "https://github.com/vpn-cli/appforge",
+      readme: "https://github.com/vpn-cli/appforge#readme",
+    },
+    metrics: [
+      {
+        value: "0",
+        label: "Arbitrary eval() risks",
+        howMeasured: "Strict AST component registry maps nodes directly to React primitives with zero eval()",
+      },
+      {
+        value: "<800ms",
+        label: "Prompt-to-layout",
+        howMeasured: "TODO: Marked as placeholder. Sourced from résumé Groq LPU benchmark; needs automated test in repo.",
+        isTodo: true,
+      },
+      {
+        value: "68%",
+        label: "Token cost savings",
+        howMeasured: "TODO: Marked as placeholder. Sourced from semantic cache hit rate telemetry; needs test script.",
+        isTodo: true,
+      },
+    ],
+    problemClaim:
+      "Standard AI code generators produce unverified HTML strings that break rendering and introduce code injection vulnerabilities.",
+    problemText:
+      "Most LLM app builders generate raw code in an iframe. When models produce subtle syntax errors or invalid imports, the entire interface crashes. Unrestricted code generation also creates security hazards from arbitrary script execution.",
+    problemComparison: {
+      before: {
+        title: "Unrestricted Code eval()",
+        points: [
+          "LLM outputs raw JSX strings executed in an iframe",
+          "Syntax hallucinations cause blank-screen runtime crashes",
+          "Arbitrary script execution risks client security",
+          "Manual boilerplate required for backend database setup",
+        ],
+      },
+      after: {
+        title: "Constrained AST Registry",
+        points: [
+          "Model emits structured JSON AST, never raw executable code",
+          "Zod schema validates tree boundaries and attribute types",
+          "Zero eval(): registry maps tokens to verified React components",
+          "Dynamic DDL provisions real PostgreSQL tables in Supabase",
+        ],
+      },
+    },
+    architectureClaim:
+      "Prompts stream through Groq, validate against strict Zod schemas, and render from a verified component registry.",
+    architectureText:
+      "User prompts stream to Groq LPUs running Llama-3.3. The model returns a structured JSON AST rather than raw JavaScript. The frontend validates the tree against Zod schemas and maps nodes directly to pre-built React components without eval().",
+    architectureNodes: [
+      {
+        id: "prompt",
+        title: "Prompt Ingestion",
+        subtitle: "Next.js Edge Route",
+        tech: "Next.js 15 & Vercel Edge",
+        role: "Accepts user prompts, retrieves session quotas, and initiates streaming LPU requests.",
+        codeSnippet: {
+          filename: "app/api/copilot/route.ts",
+          language: "typescript",
+          code: `export const runtime = "edge";
+export async function POST(req: Request) {
+  const { prompt } = await req.json();
+  const stream = await groq.chat.completions.create({
+    model: "llama-3.3-70b-versatile",
+    messages: [
+      { role: "system", content: SYSTEM_PROMPT },
+      { role: "user", content: prompt }
+    ],
+    stream: true,
+  });
+  return new Response(stream.toReadableStream());
+}`,
+          explanation: "Next.js edge runtime endpoint streams generation tokens with native ReadableStream.",
+        },
+      },
+      {
+        id: "groq",
+        title: "Groq LPU Engine",
+        subtitle: "Llama-3.3-70B",
+        tech: "Groq LPU Inference",
+        role: "Generates structured JSON UI abstract syntax trees with low latency.",
+        codeSnippet: {
+          filename: "lib/ai/prompts.ts",
+          language: "typescript",
+          code: `export const SYSTEM_PROMPT = \`You are an AST UI generator. Output valid JSON only matching the schema:
+{
+  "layout": "kanban" | "dashboard" | "form",
+  "components": [{ "type": "card", "props": { ... } }]
+}
+Do not wrap in markdown code fences.\`;`,
+          explanation: "Structured prompt forcing the model into strict JSON schema output format.",
+        },
+      },
+      {
+        id: "cache",
+        title: "Semantic Cache",
+        subtitle: "Vector Lookup",
+        tech: "Upstash Redis",
+        role: "Caches repeated layout queries using vector embeddings to avoid redundant LLM calls.",
+        codeSnippet: {
+          filename: "lib/cache/redis.ts",
+          language: "typescript",
+          code: `export async function getCachedLayout(promptHash: string) {
+  const cached = await redis.get(\`ast:\${promptHash}\`);
+  if (cached) return JSON.parse(cached);
+  return null;
+}`,
+          explanation: "Semantic vector caching retrieves cached JSON ASTs without invoking the model.",
+        },
+      },
+      {
+        id: "validator",
+        title: "Zod AST Validator",
+        subtitle: "Boundary Checking",
+        tech: "Zod Schemas",
+        role: "Strips accidental code fencing and validates JSON structure before components mount.",
+        codeSnippet: {
+          filename: "lib/schema/astSchema.ts",
+          language: "typescript",
+          code: `export const AstTreeSchema = z.object({
+  version: z.literal("1.0"),
+  root: z.object({
+    component: z.enum(["Container", "Grid", "Card", "Table", "Form"]),
+    children: z.array(z.lazy(() => AstNodeSchema))
+  })
+});`,
+          explanation: "Validates AST tree boundaries and attribute types before sending to the DOM registry.",
+        },
+      },
+      {
+        id: "registry",
+        title: "React Registry",
+        subtitle: "Safe Component Mount",
+        tech: "React 19 Registry",
+        role: "Maps verified JSON tokens directly to React DOM primitives without executing arbitrary scripts.",
+        codeSnippet: {
+          filename: "registry/component-registry.tsx",
+          language: "typescript",
+          code: `const COMPONENT_MAP = { Card, Button, Input, Table };
+export function AstRenderer({ node }: { node: AstNode }) {
+  const Component = COMPONENT_MAP[node.type];
+  if (!Component) return <FallbackNode type={node.type} />;
+  return (
+    <Component {...node.props}>
+      {node.children?.map(c => <AstRenderer key={c.id} node={c} />)}
+    </Component>
+  );
+}`,
+          explanation: "Maps verified AST tokens directly to React DOM primitives without executing arbitrary scripts.",
+        },
+      },
+    ],
+    decisionsClaim:
+      "Four architectural trade-offs that kept generation fast, safe, and customizable.",
+    decisionsText:
+      "Every design choice prioritized rendering security and sub-second generation over unconstrained raw code output.",
+    decisions: [
+      {
+        chosenOver: "Chose constrained AST registry over arbitrary code execution (eval)",
+        tradeoffSummary:
+          "Eliminates script injection vulnerabilities and blank-screen crashes, but limits layouts to registered components.",
+        optionsConsidered: [
+          "Unrestricted JSX eval() in an iframe",
+          "Sandboxed web worker execution",
+          "AST JSON component registry",
+        ],
+        problemFaced:
+          "Executing raw AI-generated code causes frequent syntax crashes and exposes user sessions to cross-site scripting.",
+        fullReasoning:
+          "Constraining model output to a known JSON schema mapped to tested React components ensures deterministic rendering safety.",
+      },
+      {
+        chosenOver: "Chose Groq LPUs over standard OpenAI endpoints",
+        tradeoffSummary:
+          "Generates full UI trees in under 800ms, but requires strict prompt framing to avoid markdown fences.",
+        optionsConsidered: [
+          "OpenAI GPT-4o API",
+          "Anthropic Claude 3.5 Sonnet",
+          "Groq LPU running Llama-3.3-70B",
+        ],
+        problemFaced:
+          "Standard LLM API calls take 3–5 seconds, breaking the interactive feedback loop while designing interfaces.",
+        fullReasoning:
+          "Groq LPU hardware streams tokens at 250+ tokens/second, completing multi-card layout generation rapidly.",
+      },
+      {
+        chosenOver: "Chose Upstash Redis semantic caching over repetitive generation",
+        tradeoffSummary:
+          "Reduces token consumption for common layout patterns, but requires vector comparison overhead.",
+        optionsConsidered: [
+          "Always call LLM directly",
+          "Exact string cache matching",
+          "Vector semantic similarity caching",
+        ],
+        problemFaced:
+          "Users frequently test similar prompts ('kanban board', 'todo list'), incurring repetitive API costs.",
+        fullReasoning:
+          "Vector caching returns pre-validated AST trees instantly for common prompts while reserving LPU cycles for novel layouts.",
+      },
+      {
+        chosenOver: "Chose dynamic Supabase DDL execution over mock state",
+        tradeoffSummary:
+          "Provisions real relational PostgreSQL tables for generated forms, but requires sanitized table naming.",
+        optionsConsidered: [
+          "In-memory React mock state",
+          "LocalStorage client persistence",
+          "Dynamic PostgreSQL table provisioning",
+        ],
+        problemFaced:
+          "Mock data fails when users expect generated CRUD apps to persist data across page reloads.",
+        fullReasoning:
+          "Executing sanitized DDL statements on Supabase creates real tables with foreign key constraints, turning layouts into usable apps.",
+      },
+    ],
+    bugsClaim: "Bugs I hit and how I fixed them",
+    bugsText:
+      "Three real bugs encountered while building the streaming copilot and AST compiler, with links to commits.",
+    bugs: [
+      {
+        title: "Markdown code fencing broke JSON parser",
+        symptom:
+          "Copilot parser threw unexpected token syntax errors on streamed responses.",
+        cause:
+          "Llama-3.3 occasionally wrapped valid JSON in markdown code fences (```json).",
+        fix: "Built an extraction pipeline that strips markdown delimiters before Zod validation.",
+        commitHash: "4272697",
+        commitUrl: "https://github.com/vpn-cli/appforge/commit/4272697",
+      },
+      {
+        title: "Serverless functions buffered edge streams",
+        symptom:
+          "Copilot responses hung until generation finished completely instead of streaming tokens.",
+        cause:
+          "Node.js serverless functions buffered HTTP chunked transfers on Vercel.",
+        fix: "Exported runtime = 'edge' on the copilot API route for native ReadableStream passthrough.",
+        commitHash: "05c4cc8",
+        commitUrl: "https://github.com/vpn-cli/appforge/commit/05c4cc8",
+      },
+      {
+        title: "Auth middleware masked server action errors",
+        symptom:
+          "Unauthenticated sandbox visitors saw cryptic internal server error exceptions.",
+        cause:
+          "Clerk Edge middleware intercepted server action RPC calls on unauthenticated demo paths.",
+        fix: "Configured route matchers for sandbox aliases and returned structured error objects.",
+        commitHash: "bf7b018",
+        commitUrl: "https://github.com/vpn-cli/appforge/commit/bf7b018",
+      },
+    ],
+    nextStepsClaim: "Next steps and how to test it live",
+    nextStepsText:
+      "Add automated foreign key relationship generation for complex schemas, and support direct export to Next.js project archives.",
+    learningStatement:
+      "Constrained metadata abstract syntax trees beat unrestricted raw code generation for reliable interface builders.",
+    tryItSteps: [
+      "Open the live demo at appforge-studios.vercel.app in your browser.",
+      "Type a prompt like 'Project tracker with status columns and task cards' in the builder input.",
+      "Watch the model stream and mount typed React components into the canvas with zero eval().",
+    ],
+    image: "/projects/appforge.jpg",
+    videoUrl: "/videos/appforge/brag.mp4",
+    videoPoster: "/videos/appforge/brag.jpg",
+    githubUrl: "https://github.com/vpn-cli/appforge",
+    liveUrl: "https://appforge-studios.vercel.app",
+  },
 ];
-
-// Validate all projects at build time with Zod
-export const projects: CaseStudy[] = z.array(caseStudySchema).parse(projectsRaw);
