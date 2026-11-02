@@ -49,7 +49,7 @@ const POSTER: LlmsTxtState = {
     { name: "Machine Readability", score: "9/10" },
     { name: "Token Density", score: "9/10" },
   ],
-  logMsg: "AEO Audit Complete: 42/42 links verified in 480ms.",
+  logMsg: "AEO Audit Complete: 42/42 links verified in 450ms.",
 };
 
 async function script(a: Act<LlmsTxtState>) {

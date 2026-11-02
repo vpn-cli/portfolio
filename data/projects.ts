@@ -5,6 +5,7 @@ export interface CaseStudyMetricChip {
   label: string;
   howMeasured: string;
   isTodo?: boolean;
+  isConfig?: boolean;
 }
 
 export interface CaseStudyDecision {
@@ -133,6 +134,7 @@ export const projects: CaseStudy[] = [
         value: "30s",
         label: "Heartbeat sweep",
         howMeasured: "Configured in ws server dead socket sweep timer (src/ws/server.js)",
+        isConfig: true,
       },
       {
         value: "<80ms",
@@ -144,6 +146,7 @@ export const projects: CaseStudy[] = [
         value: "$0/mo",
         label: "Hosting cost",
         howMeasured: "Render free web service tier + Neon PostgreSQL serverless tier",
+        isConfig: true,
       },
     ],
     problemClaim: "Polling wastes server resources and delays live scores",
@@ -433,16 +436,19 @@ function broadcastToMatch(matchId, payload) {
         value: "5",
         label: "Docker Compose services",
         howMeasured: "docker-compose.yml lines 4-54: payment-service, order-service, email-service, analytic-service, client",
+        isConfig: true,
       },
       {
         value: "3",
         label: "Kafka event topics",
         howMeasured: "kafka/admin.js lines 13-17: payment-successful, order-successful, email-successful",
+        isConfig: true,
       },
       {
         value: "At-least-once",
         label: "Delivery guarantee",
         howMeasured: "README.md line 51 & payment-service/worker.js: atomic SQL outbox commit with persistent background polling and retry",
+        isConfig: true,
       },
     ],
     problemClaim: "Dual-write inconsistency between database commits and broker dispatch",
@@ -759,6 +765,7 @@ await consumer.run({
         value: "0",
         label: "Arbitrary eval() risks",
         howMeasured: "Strict AST component registry maps nodes directly to React primitives with zero eval()",
+        isConfig: true,
       },
       {
         value: "<800ms",

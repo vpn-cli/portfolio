@@ -28,6 +28,12 @@ import { NextStepsSection } from "./NextStepsSection";
 export function CaseStudyView({ project }: { project: CaseStudy }) {
   const router = useRouter();
   const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
+
+  // Filter out all TODO (unsourced) metrics and configuration values.
+  // Only verified outcome/result metrics render. If none exist, render no metric row.
+  const verifiedMetrics = (project.metrics || []).filter(
+    (m) => !m.isTodo && !m.isConfig
+  );
   const [showMetaDetails, setShowMetaDetails] = useState(false);
 
   // Esc key navigates back to /projects
@@ -143,54 +149,51 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                 <CaseStudyHero project={project} />
               </div>
 
-              {/* Max 3 Metric Chips with Measurement Tooltips */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {project.metrics.slice(0, 3).map((metric, idx) => (
-                  <div
-                    key={idx}
-                    className="relative rounded-xl p-4 bg-[var(--surface-tile)] border border-[var(--border-subtle)] flex flex-col justify-between"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-lg sm:text-xl font-medium text-[var(--text-primary)]">
-                          {metric.value}
-                        </span>
-                        {metric.isTodo && (
-                          <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-                            TODO
+              {/* Metric Chips with Measurement Tooltips (only verified result metrics; no row if empty) */}
+              {verifiedMetrics.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {verifiedMetrics.slice(0, 3).map((metric, idx) => (
+                    <div
+                      key={idx}
+                      className="relative rounded-xl p-4 bg-[var(--surface-tile)] border border-[var(--border-subtle)] flex flex-col justify-between"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-lg sm:text-xl font-medium text-[var(--text-primary)]">
+                            {metric.value}
                           </span>
-                        )}
+                        </div>
+
+                        {/* Tooltip trigger button */}
+                        <button
+                          type="button"
+                          onClick={() => setActiveTooltip(activeTooltip === idx ? null : idx)}
+                          onMouseEnter={() => setActiveTooltip(idx)}
+                          onMouseLeave={() => setActiveTooltip(null)}
+                          className="text-[var(--text-tertiary)] hover:text-[var(--text-primary)] p-1 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                          aria-label={`How ${metric.label} was measured`}
+                        >
+                          <HelpCircle className="w-3.5 h-3.5" aria-hidden="true" />
+                        </button>
                       </div>
 
-                      {/* Tooltip trigger button */}
-                      <button
-                        type="button"
-                        onClick={() => setActiveTooltip(activeTooltip === idx ? null : idx)}
-                        onMouseEnter={() => setActiveTooltip(idx)}
-                        onMouseLeave={() => setActiveTooltip(null)}
-                        className="text-[var(--text-tertiary)] hover:text-[var(--text-primary)] p-1 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
-                        aria-label={`How ${metric.label} was measured`}
-                      >
-                        <HelpCircle className="w-3.5 h-3.5" aria-hidden="true" />
-                      </button>
+                      <span className="text-xs text-[var(--text-secondary)] mt-1 block">
+                        {metric.label}
+                      </span>
+
+                      {/* Measurement Tooltip Box */}
+                      {activeTooltip === idx && (
+                        <div className="absolute left-2 right-2 bottom-full mb-2 p-3 rounded-lg bg-[var(--surface-tile-elevated)] border border-[var(--border-hover)] text-[11px] text-[var(--text-secondary)] shadow-lg z-30 animate-in fade-in duration-150">
+                          <span className="font-medium text-[var(--text-primary)] block mb-0.5">
+                            How measured:
+                          </span>
+                          {metric.howMeasured}
+                        </div>
+                      )}
                     </div>
-
-                    <span className="text-xs text-[var(--text-secondary)] mt-1 block">
-                      {metric.label}
-                    </span>
-
-                    {/* Measurement Tooltip Box */}
-                    {activeTooltip === idx && (
-                      <div className="absolute left-2 right-2 bottom-full mb-2 p-3 rounded-lg bg-[var(--surface-tile-elevated)] border border-[var(--border-hover)] text-[11px] text-[var(--text-secondary)] shadow-lg z-30 animate-in fade-in duration-150">
-                        <span className="font-medium text-[var(--text-primary)] block mb-0.5">
-                          How measured:
-                        </span>
-                        {metric.howMeasured}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
 
               {/* Meta Row: Role · Timeline · Stack Details Expander */}
               <div className="pt-3 border-t border-[var(--border-subtle)] text-xs">

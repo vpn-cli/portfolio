@@ -36,6 +36,12 @@ export default async function ProjectPage({
     notFound();
   }
 
-  return <CaseStudyView project={project} />;
+  // Filter out all TODO (unsourced) metrics so they are never rendered or serialized into HTML
+  const sanitizedProject = {
+    ...project,
+    metrics: project.metrics.filter((m) => !m.isTodo),
+  };
+
+  return <CaseStudyView project={sanitizedProject} />;
 }
 

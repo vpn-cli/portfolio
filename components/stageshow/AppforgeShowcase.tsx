@@ -62,7 +62,7 @@ const INITIAL: AppforgeState = {
 const POSTER: AppforgeState = {
   status: "LIVE_AST",
   inferenceTime: "1.18s (Groq LPU)",
-  cacheSaved: "68% Saved (Redis)",
+  cacheSaved: "Active (Redis)",
   ddlTables: "3 Tables Synced",
   columns: [
     {
@@ -109,7 +109,7 @@ async function script(a: Act<AppforgeState>) {
   // Beat 2: Upstash Redis semantic cache hit
   await a.set((s) => ({
     ...s,
-    cacheSaved: "68% Saved (Upstash Cache Hit)",
+    cacheSaved: "Cache Hit (Upstash)",
     ddlTables: "Applying runtime DDL on Supabase...",
   }));
   await a.wait(700);
