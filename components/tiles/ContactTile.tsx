@@ -10,7 +10,7 @@ interface LocalTimeState {
   statusText: string;
 }
 
-function getIstStatus(mockHour?: number | null): LocalTimeState {
+function getIstStatus(): LocalTimeState {
   const now = new Date();
 
   // Extract hour in Asia/Kolkata (0..23)
@@ -19,27 +19,15 @@ function getIstStatus(mockHour?: number | null): LocalTimeState {
     hour: "numeric",
     hourCycle: "h23",
   });
-  const realHour = parseInt(hourFormatter.format(now), 10);
-  const hour24 = typeof mockHour === "number" ? mockHour : realHour;
+  const hour24 = parseInt(hourFormatter.format(now), 10);
 
   // Format 12-hour time without seconds
-  let timeStr: string;
-  if (typeof mockHour === "number") {
-    const h12 = hour24 % 12 || 12;
-    const ampm = hour24 >= 12 ? "PM" : "AM";
-    const minPart = new Intl.DateTimeFormat("en-US", {
-      timeZone: "Asia/Kolkata",
-      minute: "2-digit",
-    }).format(now);
-    timeStr = `${h12}:${minPart} ${ampm}`;
-  } else {
-    timeStr = new Intl.DateTimeFormat("en-US", {
-      timeZone: "Asia/Kolkata",
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    }).format(now);
-  }
+  const timeStr = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Kolkata",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  }).format(now);
 
   // Sun from 08:00 to 19:59 IST, Moon otherwise
   const isSun = hour24 >= 8 && hour24 < 20;
@@ -59,13 +47,8 @@ export function ContactTile({ className = "" }: { className?: string }) {
   const [timeState, setTimeState] = useState<LocalTimeState | null>(null);
 
   useEffect(() => {
-    // Check optional query param for manual mocking / testing (?mockHour=23)
-    const params = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
-    const mockParam = params?.get("mockHour");
-    const mockHour = mockParam !== null && mockParam !== undefined ? parseInt(mockParam, 10) : null;
-
     const update = () => {
-      setTimeState(getIstStatus(mockHour));
+      setTimeState(getIstStatus());
     };
     update();
 
@@ -120,21 +103,21 @@ export function ContactTile({ className = "" }: { className?: string }) {
           </h3>
 
           {/* Inlined Local Time & Status */}
-          <div className="flex items-center gap-2 text-[15px] sm:text-[16px] text-[var(--text-secondary)] min-h-[24px]">
+          <div className="flex items-start sm:items-center gap-2 text-[14px] sm:text-[15px] xl:text-[16px] text-[var(--text-secondary)] min-h-[24px] leading-snug sm:leading-normal">
             {timeState ? (
               <>
                 {timeState.isSun ? (
-                  <Sun className="w-4 h-4 shrink-0 text-[var(--text-secondary)]" aria-hidden="true" />
+                  <Sun className="w-4 h-4 shrink-0 mt-[2px] sm:mt-0 text-[var(--text-secondary)]" aria-hidden="true" />
                 ) : (
-                  <Moon className="w-4 h-4 shrink-0 text-[var(--text-secondary)]" aria-hidden="true" />
+                  <Moon className="w-4 h-4 shrink-0 mt-[2px] sm:mt-0 text-[var(--text-secondary)]" aria-hidden="true" />
                 )}
                 <span className="tabular-nums">
                   {timeState.timeStr} in India · {timeState.statusText}
                 </span>
               </>
             ) : (
-              <span className="invisible select-none inline-flex items-center gap-2" aria-hidden="true">
-                <span className="w-4 h-4 shrink-0 inline-block" />
+              <span className="invisible select-none inline-flex items-start sm:items-center gap-2" aria-hidden="true">
+                <span className="w-4 h-4 shrink-0 mt-[2px] sm:mt-0 inline-block" />
                 <span>9:27 AM in India · usually replies within a day</span>
               </span>
             )}
