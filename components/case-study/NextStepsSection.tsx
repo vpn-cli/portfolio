@@ -83,7 +83,7 @@ export function NextStepsSection({
             aria-expanded={showDetails}
             aria-controls="try-it-details"
           >
-            <span>{showDetails ? "Hide verification steps" : "View step-by-step test instructions & takeaway"}</span>
+            <span>{showDetails ? "Hide test steps" : "View test steps & takeaway"}</span>
             <ChevronDown
               className={`w-3.5 h-3.5 transition-transform duration-200 ${showDetails ? "rotate-180" : ""}`}
               aria-hidden="true"

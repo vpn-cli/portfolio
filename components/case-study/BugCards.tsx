@@ -86,7 +86,7 @@ export function BugCards({ bugs }: BugCardsProps) {
                 aria-expanded={isExpanded}
                 aria-controls={panelId}
               >
-                <span>{isExpanded ? "Hide details" : "View full symptom & fix details"}</span>
+                <span>{isExpanded ? "Hide details" : "View details"}</span>
                 <ChevronDown
                   className={`w-3.5 h-3.5 transition-transform duration-200 ${
                     isExpanded ? "rotate-180" : ""

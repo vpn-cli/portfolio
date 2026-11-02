@@ -13,6 +13,7 @@ import {
   FileText,
   Mail,
   HelpCircle,
+  ChevronDown,
 } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 
@@ -27,6 +28,7 @@ import { NextStepsSection } from "./NextStepsSection";
 export function CaseStudyView({ project }: { project: CaseStudy }) {
   const router = useRouter();
   const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
+  const [showMetaDetails, setShowMetaDetails] = useState(false);
 
   // Esc key navigates back to /projects
   useEffect(() => {
@@ -190,21 +192,34 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                 ))}
               </div>
 
-              {/* Meta Row: Role · Timeline · Stack (All shown, no "+4") */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-[var(--border-subtle)] text-xs">
-                <div>
-                  <span className="text-[11px] text-[var(--text-tertiary)] block mb-1">Role</span>
-                  <span className="font-medium text-[var(--text-primary)]">{project.role}</span>
+              {/* Meta Row: Role · Timeline · Stack Details Expander */}
+              <div className="pt-3 border-t border-[var(--border-subtle)] text-xs">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 text-[var(--text-secondary)]">
+                    <span className="font-medium text-[var(--text-primary)]">{project.role}</span>
+                    <span className="text-[var(--border-subtle)]" aria-hidden="true">·</span>
+                    <span>{project.timeline}</span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowMetaDetails(!showMetaDetails)}
+                    aria-expanded={showMetaDetails}
+                    aria-controls="hook-meta-details"
+                    className="min-h-[36px] text-xs font-mono text-[var(--text-tertiary)] hover:text-[var(--text-primary)] inline-flex items-center gap-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                  >
+                    <span>{showMetaDetails ? "Hide stack" : `Stack (${project.stack.length})`}</span>
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                        showMetaDetails ? "rotate-180" : ""
+                      }`}
+                      aria-hidden="true"
+                    />
+                  </button>
                 </div>
 
-                <div>
-                  <span className="text-[11px] text-[var(--text-tertiary)] block mb-1">Timeline</span>
-                  <span className="font-medium text-[var(--text-primary)]">{project.timeline}</span>
-                </div>
-
-                <div>
-                  <span className="text-[11px] text-[var(--text-tertiary)] block mb-1.5">Stack</span>
-                  <div className="flex flex-wrap gap-1.5">
+                {showMetaDetails && (
+                  <div id="hook-meta-details" className="pt-3 mt-3 border-t border-[var(--border-subtle)] flex flex-wrap gap-1.5 animate-in fade-in duration-150">
                     {project.stack.map((tech, idx) => (
                       <span
                         key={idx}
@@ -214,7 +229,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                       </span>
                     ))}
                   </div>
-                </div>
+                )}
               </div>
 
               {/* CTAs on ONE row + Cold Start Note */}
@@ -258,12 +273,6 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                     </a>
                   )}
                 </div>
-
-                {project.links.coldStartNote && (
-                  <p className="text-xs text-[var(--text-tertiary)] pt-1">
-                    {project.links.coldStartNote}
-                  </p>
-                )}
               </div>
             </section>
 
@@ -311,38 +320,32 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
             </section>
 
             {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                4. DECISIONS I MADE (CLAIM + ≤50 WORDS + 4 COMPACT ROWS)
+                4. DECISIONS I MADE (CLAIM + 4 COMPACT ROWS)
                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
             <section id="decisions" aria-label="Key engineering decisions" className="space-y-6">
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-tertiary)]">
                   04 · Decisions I Made
                 </span>
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
                   {project.decisionsClaim}
                 </h2>
-                <p className="type-body4 text-[var(--text-secondary)] leading-relaxed max-w-[65ch]">
-                  {project.decisionsText}
-                </p>
               </div>
 
               <DecisionRows decisions={project.decisions} />
             </section>
 
             {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                5. BUGS I HIT (CLAIM + ≤50 WORDS + 3 COMPACT CARDS WITH COMMITS)
+                5. BUGS I HIT (CLAIM + 3 COMPACT CARDS WITH COMMITS)
                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
             <section id="bugs" aria-label="Bugs and fixes" className="space-y-6">
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-tertiary)]">
                   05 · Bugs I Fixed
                 </span>
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
                   {project.bugsClaim}
                 </h2>
-                <p className="type-body4 text-[var(--text-secondary)] leading-relaxed max-w-[65ch]">
-                  {project.bugsText}
-                </p>
               </div>
 
               <BugCards bugs={project.bugs} />

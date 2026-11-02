@@ -14,7 +14,7 @@ async function inspectSportz() {
   await page.goto("https://sportz-rho.vercel.app", { waitUntil: "networkidle", timeout: 60000 });
 
   console.log("Page loaded. Title:", await page.title());
-  
+
   // Wait up to 60s for backend or live indicators
   console.log("Waiting up to 30s to allow backend to wake...");
   await page.waitForTimeout(5000);

@@ -32,7 +32,7 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
       ([entry]) => {
         if (!videoRef.current) return;
         if (entry.isIntersecting && !motionQuery.matches) {
-          videoRef.current.play().catch(() => {});
+          videoRef.current.play().catch(() => { });
           setIsPlaying(true);
         } else {
           videoRef.current.pause();
@@ -55,7 +55,7 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
   const togglePlayback = () => {
     if (!videoRef.current) return;
     if (videoRef.current.paused) {
-      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => { });
     } else {
       videoRef.current.pause();
       setIsPlaying(false);

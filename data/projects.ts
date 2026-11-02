@@ -148,7 +148,7 @@ export const projects: CaseStudy[] = [
     ],
     problemClaim: "Polling wastes server resources and delays live scores",
     problemText:
-      "When clients poll endpoints every few seconds, most requests return unchanged data while consuming database connections. During scoring bursts, requests queue up and users see scores seconds late.",
+      "Polling wastes server bandwidth on unchanged responses. During bursts, requests queue up and live score cards lag by seconds.",
     problemComparison: {
       before: {
         title: "HTTP Client Polling",
@@ -171,14 +171,14 @@ export const projects: CaseStudy[] = [
     },
     architectureClaim: "Score events stream straight to subscribed client sockets",
     architectureText:
-      "An incoming score mutation updates PostgreSQL through Drizzle ORM, then immediately signals the WebSocket gateway. The gateway checks its in-memory topic map and broadcasts updates only to sockets watching that match.",
+      "Score mutations update PostgreSQL via Drizzle ORM and signal the gateway. The gateway broadcasts frames strictly to subscribers watching that match.",
     architectureNodes: [
       {
         id: "ingestion",
         title: "REST Ingestion",
         subtitle: "POST /matches/:id/score",
         tech: "Express & Zod",
-        role: "Ingests score and commentary webhooks with Zod payload validation before committing state.",
+        role: "Validates score webhook payload.",
         codeSnippet: {
           filename: "sportz-websockets-main/src/routes/matches.js",
           language: "javascript",
@@ -203,7 +203,7 @@ export const projects: CaseStudy[] = [
         title: "Postgres Commit",
         subtitle: "Drizzle ORM Update",
         tech: "Neon PostgreSQL",
-        role: "Persists match score mutations with type-safe Drizzle ORM queries and connection pooling.",
+        role: "Commits match state via Drizzle.",
         codeSnippet: {
           filename: "sportz-websockets-main/src/db/schema.js",
           language: "javascript",
@@ -223,7 +223,7 @@ export const projects: CaseStudy[] = [
         title: "Arcjet Perimeter",
         subtitle: "Upgrade Rate Limit",
         tech: "Arcjet Edge",
-        role: "Inspects HTTP upgrade handshakes, enforcing token-bucket limits and blocking scraper bots before socket memory allocation.",
+        role: "Shields HTTP upgrade against scrapers.",
         codeSnippet: {
           filename: "sportz-websockets-main/src/security/arcjet.js",
           language: "javascript",
@@ -243,7 +243,7 @@ export const projects: CaseStudy[] = [
         title: "ws Gateway",
         subtitle: "Topic Fanout Hub",
         tech: "ws library",
-        role: "Maintains Map<matchId, Set<WebSocket>> and broadcasts payload frames in O(k) time strictly to match listeners.",
+        role: "Routes frames to subscribers in O(k) time.",
         screenshotUrl: "/projects/sockets/sportz-connection-badge.webp",
         screenshotCaption: "Live WebSocket connection status badge and heartbeat monitor.",
         codeSnippet: {
@@ -269,7 +269,7 @@ function broadcastToMatch(matchId, payload) {
         title: "React Client",
         subtitle: "useWebSocket Hook",
         tech: "React 19 & Vite",
-        role: "Maintains socket lifecycle, applies exponential backoff jitter on disconnects, and hydrates live score badges.",
+        role: "Hydrates scoreboard from WebSocket frames.",
         screenshotUrl: "/projects/sockets/sportz-live-match.webp",
         screenshotCaption: "Client scoreboard and win probability hydrated directly by push frames.",
         codeSnippet: {
@@ -297,7 +297,7 @@ function broadcastToMatch(matchId, payload) {
       {
         chosenOver: "Chose native ws over Socket.io",
         tradeoffSummary:
-          "Lower memory footprint and direct protocol control, but required custom heartbeat sweeps.",
+          "Low memory footprint, but required custom heartbeat sweeps.",
         optionsConsidered: [
           "Socket.io with fallback transports",
           "Server-Sent Events (SSE)",
@@ -311,7 +311,7 @@ function broadcastToMatch(matchId, payload) {
       {
         chosenOver: "Chose in-memory topic maps over global broadcasts",
         tradeoffSummary:
-          "Fast O(k) subscriber routing without CPU waste, but bounds state to a single server instance.",
+          "Fast O(k) routing, but bounds state to one instance.",
         optionsConsidered: [
           "Iterating all connections on every event",
           "In-memory Map<matchId, Set<WebSocket>>",
@@ -325,7 +325,7 @@ function broadcastToMatch(matchId, payload) {
       {
         chosenOver: "Chose Arcjet upgrade filtering over post-connection auth",
         tradeoffSummary:
-          "Rejects unauthorized requests before socket allocation, but couples handshake to Arcjet edge availability.",
+          "Zero memory waste, but couples handshake to edge.",
         optionsConsidered: [
           "Application-level JSON auth message after handshake",
           "Reverse proxy rate limiting",
@@ -339,7 +339,7 @@ function broadcastToMatch(matchId, payload) {
       {
         chosenOver: "Chose exponential backoff with jitter over immediate reconnection",
         tradeoffSummary:
-          "Prevents thundering herds during server restarts, but reconnects take up to 10 seconds under network drops.",
+          "Prevents thundering herd, but reconnects take up to 10s.",
         optionsConsidered: [
           "Immediate while(true) reconnect loops",
           "Fixed 5s retry timer",
@@ -357,32 +357,32 @@ function broadcastToMatch(matchId, payload) {
     bugs: [
       {
         title: "Zombie sockets on dropped mobile connection",
-        symptom: "Half-open TCP sockets persisted after mobile signal loss.",
-        cause: "Mobile OS suspends radio without TCP FIN packet.",
-        fix: "Added 30s server-side ping sweep to prune dead sockets.",
+        symptom: "Ghost sockets persisted after signal drops.",
+        cause: "Mobile OS suspends radio without TCP FIN.",
+        fix: "Added 30s server-side ping sweep to prune.",
         commitHash: "39e86d4",
         commitUrl: "https://github.com/vpn-cli/sockets/commit/39e86d4",
       },
       {
         title: "Missing environment keys crashed production boot",
-        symptom: "Backend crashed on boot and Vercel clients got 403 Forbidden.",
-        cause: "Arcjet key was unset and CORS blocked client domain.",
-        fix: "Added config fallbacks and explicit Vercel CORS headers.",
+        symptom: "Server boot crashed and clients got 403.",
+        cause: "Unset Arcjet key and missing CORS headers.",
+        fix: "Added defensive config fallbacks and CORS.",
         commitHash: "b483272",
         commitUrl: "https://github.com/vpn-cli/sockets/commit/b483272",
       },
       {
         title: "Client build omitted API base URLs",
-        symptom: "Frontend assets compiled with undefined WebSocket URLs.",
-        cause: "Docker build omitted VITE_ environment arguments.",
-        fix: "Injected API and WS build args into Docker compilation.",
+        symptom: "Frontend compiled with undefined WebSocket host.",
+        cause: "Docker build omitted VITE_ build arguments.",
+        fix: "Passed WS and API args in build stage.",
         commitHash: "3d8559e",
         commitUrl: "https://github.com/vpn-cli/sockets/commit/3d8559e",
       },
     ],
     nextStepsClaim: "What I would build next and live verification",
     nextStepsText:
-      "Add Redis Pub/Sub to scale WebSockets horizontally across server instances, and build an automated load test harness to measure broadcast latency percentiles.",
+      "Add Redis Pub/Sub for horizontal socket scaling and automated load testing.",
     learningStatement:
       "Building a stateful real-time server on free-tier hosting taught me that connection hygiene and graceful teardown matter more than connection setup.",
     tryItSteps: [
@@ -449,7 +449,7 @@ function broadcastToMatch(matchId, payload) {
     ],
     problemClaim: "Synchronous service calls cause cascading checkout failures",
     problemText:
-      "When checkout services make direct HTTP calls to payment and inventory services, network drops halt the purchase. If payment succeeds but order fails, customers are charged without an order.",
+      "Synchronous HTTP calls across services cause cascading failures. If payment succeeds but downstream order writes fail, customers are charged without an order.",
     problemComparison: {
       before: {
         title: "Synchronous Microservices",
@@ -472,14 +472,14 @@ function broadcastToMatch(matchId, payload) {
     },
     architectureClaim: "Atomic outbox transactions decouple payment from order fulfillment",
     architectureText:
-      "Checkout requests write payment records and outbox events in one database transaction. A background worker polls the outbox and streams events to Kafka topics for asynchronous processing.",
+      "Checkout requests commit payment records and outbox events in one SQL transaction. A worker polls the outbox and streams events to Kafka.",
     architectureNodes: [
       {
         id: "gateway",
         title: "API Gateway",
         subtitle: "JWT & Reverse Proxy",
         tech: "Express Gateway",
-        role: "Validates JWT authorization headers, applies rate limits, and proxies traffic to internal cluster ports.",
+        role: "Validates JWT and proxies requests.",
         codeSnippet: {
           filename: "gateway/src/middleware/auth.ts",
           language: "typescript",
@@ -498,7 +498,7 @@ function broadcastToMatch(matchId, payload) {
         title: "Payment DB",
         subtitle: "Atomic Outbox Commit",
         tech: "Neon PostgreSQL & Drizzle",
-        role: "Executes payment insertion and outbox_events queue insertion in a single atomic database transaction.",
+        role: "Commits payment and outbox atomically.",
         screenshotUrl: "/projects/stream-mart/stream-mart-outbox-terminal.webp",
         screenshotCaption: "Atomic database transaction writing outbox event to PostgreSQL.",
         codeSnippet: {
@@ -521,7 +521,7 @@ function broadcastToMatch(matchId, payload) {
         title: "Outbox Worker",
         subtitle: "Poll & Publish",
         tech: "Node.js Worker",
-        role: "Continuously polls unpublished outbox records and dispatches them to Kafka with status commits.",
+        role: "Polls pending events and dispatches.",
         codeSnippet: {
           filename: "payment-service/src/workers/outbox.ts",
           language: "typescript",
@@ -531,7 +531,7 @@ function broadcastToMatch(matchId, payload) {
     await kafkaProducer.send({ topic: "payment-successful", messages: [{ value: event.payload }] });
     await db.update(outboxEvents).set({ published: true }).where(eq(outboxEvents.id, event.id));
   }
-}`,
+} `,
           explanation: "Background worker polls committed outbox events and pushes them to Apache Kafka topics.",
         },
       },
@@ -540,7 +540,7 @@ function broadcastToMatch(matchId, payload) {
         title: "Kafka Broker",
         subtitle: "Topic Partitioning",
         tech: "Apache Kafka",
-        role: "Decouples message producers from consumers across topics like payment-successful and order-created.",
+        role: "Partitions asynchronous checkout streams.",
         screenshotUrl: "/projects/stream-mart/stream-mart-event-flow.webp",
         screenshotCaption: "Apache Kafka cluster routing decoupled checkout topic events.",
         codeSnippet: {
@@ -562,7 +562,7 @@ function broadcastToMatch(matchId, payload) {
         title: "Order Worker",
         subtitle: "Async Fulfillment",
         tech: "KafkaJS Consumer",
-        role: "Consumes payment-successful events, updates inventory, and creates shipping records asynchronously.",
+        role: "Fulfills orders from Kafka events.",
         codeSnippet: {
           filename: "order-service/src/consumers/paymentConsumer.ts",
           language: "typescript",
@@ -583,7 +583,7 @@ function broadcastToMatch(matchId, payload) {
       {
         chosenOver: "Chose Transactional Outbox over dual-write HTTP calls",
         tradeoffSummary:
-          "Eliminates dual-write race conditions, but requires a background outbox polling worker.",
+          "Eliminates dual-write inconsistency, but requires polling worker.",
         optionsConsidered: [
           "Direct synchronous HTTP post-commit calls",
           "Two-phase commit (2PC) distributed locks",
@@ -597,7 +597,7 @@ function broadcastToMatch(matchId, payload) {
       {
         chosenOver: "Chose Apache Kafka over direct REST microservice calls",
         tradeoffSummary:
-          "Decouples order and notification services from checkout latency, but adds broker operational overhead.",
+          "Decouples checkout latency, but adds Kafka cluster overhead.",
         optionsConsidered: [
           "REST HTTP chaining",
           "RabbitMQ message queue",
@@ -611,7 +611,7 @@ function broadcastToMatch(matchId, payload) {
       {
         chosenOver: "Chose Drizzle ORM over Prisma",
         tradeoffSummary:
-          "Lightweight SQL generation with low memory overhead, but requires manual schema migration discipline.",
+          "Low memory overhead, but requires manual schema discipline.",
         optionsConsidered: [
           "Prisma ORM with Rust binary engine",
           "Raw pg SQL queries",
@@ -625,7 +625,7 @@ function broadcastToMatch(matchId, payload) {
       {
         chosenOver: "Chose API Gateway reverse proxy over direct client routing",
         tradeoffSummary:
-          "Centralizes JWT authentication and rate limiting, but makes the gateway a single ingress point.",
+          "Centralizes auth tokens, but creates single ingress point.",
         optionsConsidered: [
           "Direct client-to-service port routing",
           "Reverse proxy API Gateway",
@@ -642,33 +642,33 @@ function broadcastToMatch(matchId, payload) {
       "Three bugs hit while orchestrating microservices, with links to fixing commits.",
     bugs: [
       {
-        title: "Dual-write state inconsistency on broker disconnect",
-        symptom: "Payment written to database without order fulfillment.",
-        cause: "HTTP publish to Kafka failed after database commit.",
-        fix: "Committed payment and outbox event in one SQL transaction.",
+        title: "Dual-write inconsistency on broker disconnect",
+        symptom: "Payment committed without order fulfillment.",
+        cause: "Kafka publish failed after SQL commit.",
+        fix: "Committed payment and outbox atomically.",
         commitHash: "a94f12d",
         commitUrl: "https://github.com/vpn-cli/StreamMart/commit/a94f12d",
       },
       {
-        title: "Duplicate notifications during consumer rebalance",
-        symptom: "Notification worker sent duplicate receipts on restart.",
-        cause: "Consumer group rebalance replayed uncommitted batches.",
-        fix: "Stored idempotency keys in Redis to deduplicate events.",
+        title: "Duplicate receipts on consumer rebalance",
+        symptom: "Worker sent duplicate receipts on restart.",
+        cause: "Consumer rebalance replayed uncommitted batches.",
+        fix: "Added Redis idempotency key deduplication.",
         commitHash: "e38c91a",
         commitUrl: "https://github.com/vpn-cli/StreamMart/commit/e38c91a",
       },
       {
-        title: "Gateway timeout on slow downstream services",
-        symptom: "Checkout requests returned 504 Gateway Timeout on restart.",
-        cause: "Gateway lacked bounded timeouts and circuit breakers.",
-        fix: "Added 3s proxy timeouts and fallback queue handling.",
+        title: "Gateway timeouts on slow services",
+        symptom: "Checkout returned 504 timeouts on restart.",
+        cause: "Slow downstream services exhausted pool.",
+        fix: "Added 3s timeouts and fallback handling.",
         commitHash: "7b204e1",
         commitUrl: "https://github.com/vpn-cli/StreamMart/commit/7b204e1",
       },
     ],
     nextStepsClaim: "What I would build next and test steps",
     nextStepsText:
-      "Add a dead letter queue for poison-pill message handling, and configure OpenTelemetry distributed tracing across Kafka headers.",
+      "Add dead letter queues and OpenTelemetry distributed tracing across Kafka.",
     learningStatement:
       "Distributed consistency is an architectural pattern, not a database feature.",
     tryItSteps: [
@@ -735,7 +735,7 @@ function broadcastToMatch(matchId, payload) {
     ],
     problemClaim: "Unchecked code generation crashes and risks script injection",
     problemText:
-      "Generating raw code in an iframe breaks on subtle syntax mistakes and exposes users to script injection. Without validation, runtime errors cause blank screens and fail silently.",
+      "Generating raw JSX in iframes breaks on subtle syntax hallucinations and risks script injection, causing blank screens and runtime crashes.",
     problemComparison: {
       before: {
         title: "Unrestricted Code eval()",
@@ -758,14 +758,14 @@ function broadcastToMatch(matchId, payload) {
     },
     architectureClaim: "Prompts stream into validated trees without arbitrary eval",
     architectureText:
-      "Prompts stream to Groq LPUs running Llama-3.3. The model emits a structured JSON AST rather than raw JavaScript. The frontend validates the tree with Zod and mounts registered React components.",
+      "Prompts stream to Groq LPUs emitting structured JSON ASTs. Next.js validates the tree with Zod and mounts registered React components safely.",
     architectureNodes: [
       {
         id: "prompt",
         title: "Prompt Ingestion",
         subtitle: "Next.js Edge Route",
         tech: "Next.js 15 & Vercel Edge",
-        role: "Accepts user prompts, retrieves session quotas, and initiates streaming LPU requests.",
+        role: "Streams prompt chunks to edge.",
         screenshotUrl: "/projects/appforge/appforge-prompt-input.webp",
         screenshotCaption: "Prompt input modal with structured layout instructions.",
         codeSnippet: {
@@ -792,7 +792,7 @@ export async function POST(req: Request) {
         title: "Groq LPU Engine",
         subtitle: "Llama-3.3-70B",
         tech: "Groq LPU Inference",
-        role: "Generates structured JSON UI abstract syntax trees with low latency.",
+        role: "Generates structured JSON UI trees.",
         codeSnippet: {
           filename: "lib/ai/prompts.ts",
           language: "typescript",
@@ -810,7 +810,7 @@ Do not wrap in markdown code fences.\`;`,
         title: "Semantic Cache",
         subtitle: "Vector Lookup",
         tech: "Upstash Redis",
-        role: "Caches repeated layout queries using vector embeddings to avoid redundant LLM calls.",
+        role: "Vector cache for repeated prompts.",
         codeSnippet: {
           filename: "lib/cache/redis.ts",
           language: "typescript",
@@ -827,7 +827,7 @@ Do not wrap in markdown code fences.\`;`,
         title: "Zod AST Validator",
         subtitle: "Boundary Checking",
         tech: "Zod Schemas",
-        role: "Strips accidental code fencing and validates JSON structure before components mount.",
+        role: "Validates AST against Zod schemas.",
         screenshotUrl: "/projects/appforge/appforge-editor-view.webp",
         screenshotCaption: "Validated JSON AST displayed in code editor panel.",
         codeSnippet: {
@@ -848,7 +848,7 @@ Do not wrap in markdown code fences.\`;`,
         title: "React Registry",
         subtitle: "Safe Component Mount",
         tech: "React 19 Registry",
-        role: "Maps verified JSON tokens directly to React DOM primitives without executing arbitrary scripts.",
+        role: "Maps verified JSON to React primitives.",
         screenshotUrl: "/projects/appforge/appforge-app-preview.webp",
         screenshotCaption: "Rendered interface mounted from registered React components.",
         codeSnippet: {
@@ -875,7 +875,7 @@ export function AstRenderer({ node }: { node: AstNode }) {
       {
         chosenOver: "Chose constrained AST registry over arbitrary code execution (eval)",
         tradeoffSummary:
-          "Eliminates script injection vulnerabilities and blank-screen crashes, but limits layouts to registered components.",
+          "Zero injection risk, but limits layouts to registered components.",
         optionsConsidered: [
           "Unrestricted JSX eval() in an iframe",
           "Sandboxed web worker execution",
@@ -889,7 +889,7 @@ export function AstRenderer({ node }: { node: AstNode }) {
       {
         chosenOver: "Chose Groq LPUs over standard OpenAI endpoints",
         tradeoffSummary:
-          "Generates full UI trees in under 800ms, but requires strict prompt framing to avoid markdown fences.",
+          "Sub-second token streaming, but requires strict prompt schemas.",
         optionsConsidered: [
           "OpenAI GPT-4o API",
           "Anthropic Claude 3.5 Sonnet",
@@ -903,7 +903,7 @@ export function AstRenderer({ node }: { node: AstNode }) {
       {
         chosenOver: "Chose Upstash Redis semantic caching over repetitive generation",
         tradeoffSummary:
-          "Reduces token consumption for common layout patterns, but requires vector comparison overhead.",
+          "Reduces token costs, but requires vector matching overhead.",
         optionsConsidered: [
           "Always call LLM directly",
           "Exact string cache matching",
@@ -917,7 +917,7 @@ export function AstRenderer({ node }: { node: AstNode }) {
       {
         chosenOver: "Chose dynamic Supabase DDL execution over mock state",
         tradeoffSummary:
-          "Provisions real relational PostgreSQL tables for generated forms, but requires sanitized table naming.",
+          "Provisions real Postgres tables, but requires sanitized table names.",
         optionsConsidered: [
           "In-memory React mock state",
           "LocalStorage client persistence",
@@ -935,32 +935,32 @@ export function AstRenderer({ node }: { node: AstNode }) {
     bugs: [
       {
         title: "Markdown code fencing broke JSON parser",
-        symptom: "Copilot threw unexpected token syntax errors on stream.",
-        cause: "Model wrapped valid JSON in markdown code fences.",
-        fix: "Added pipeline that strips code fences before Zod parse.",
+        symptom: "Copilot threw unexpected token syntax errors.",
+        cause: "Model wrapped JSON in markdown fences.",
+        fix: "Stripped markdown fences before Zod parsing.",
         commitHash: "4272697",
         commitUrl: "https://github.com/vpn-cli/appforge/commit/4272697",
       },
       {
         title: "Serverless functions buffered edge streams",
-        symptom: "Copilot responses buffered until generation completed.",
-        cause: "Serverless functions buffered chunked HTTP transfers.",
-        fix: "Exported edge runtime on copilot API for streaming.",
+        symptom: "Copilot streamed only after generation finished.",
+        cause: "Serverless runtime buffered HTTP chunks.",
+        fix: "Exported edge runtime on copilot route.",
         commitHash: "05c4cc8",
         commitUrl: "https://github.com/vpn-cli/appforge/commit/05c4cc8",
       },
       {
         title: "Auth middleware masked server action errors",
-        symptom: "Unauthenticated demo visitors saw cryptic 500 errors.",
-        cause: "Clerk middleware intercepted server actions on demo paths.",
-        fix: "Configured route matchers to allow public sandbox actions.",
+        symptom: "Public demo visitors saw cryptic 500 errors.",
+        cause: "Auth middleware blocked public server actions.",
+        fix: "Configured route matchers for public sandbox.",
         commitHash: "bf7b018",
         commitUrl: "https://github.com/vpn-cli/appforge/commit/bf7b018",
       },
     ],
     nextStepsClaim: "What I would build next and live demo",
     nextStepsText:
-      "Add automated foreign key relationship generation for complex schemas, and support direct export to Next.js project archives.",
+      "Add automated foreign key relationship generation and direct Next.js project export.",
     learningStatement:
       "Constrained metadata abstract syntax trees beat unrestricted raw code generation for reliable interface builders.",
     tryItSteps: [

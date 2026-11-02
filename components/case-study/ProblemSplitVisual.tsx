@@ -110,10 +110,10 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
               <div className="py-1">
                 <span className="text-xs text-[var(--text-secondary)] font-mono block">
                   {slug === "sockets"
-                    ? "90%+ of polling queries return unchanged state."
+                    ? "90% identical responses"
                     : slug === "stream-mart"
-                    ? "Payment succeeds but downstream order write fails."
-                    : "Syntax hallucination causes blank-screen crash."}
+                    ? "Uncommitted order write"
+                    : "Unchecked script execution"}
                 </span>
               </div>
             </div>
@@ -121,7 +121,7 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
 
           <div className="pt-2 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-tertiary)] flex items-center gap-1.5 font-mono">
             <XCircle className="w-3.5 h-3.5 text-neutral-400 dark:text-neutral-500 shrink-0" aria-hidden="true" />
-            <span>High latency · Connection pool spikes</span>
+            <span>High latency</span>
           </div>
         </div>
 
@@ -170,10 +170,10 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
               <div className="py-1">
                 <span className="text-xs text-emerald-500 font-mono block">
                   {slug === "sockets"
-                    ? "Dispatches frames strictly on database mutations."
+                    ? "Push on database mutation"
                     : slug === "stream-mart"
-                    ? "Payment and outbox event commit in one SQL transaction."
-                    : "Model emits JSON tokens mapped directly to React DOM."}
+                    ? "Atomic SQL transaction"
+                    : "Typed JSON to React AST"}
                 </span>
               </div>
             </div>
@@ -181,7 +181,7 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
 
           <div className="pt-2 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-primary)] flex items-center gap-1.5 font-mono">
             <CheckCircle2 className="w-3.5 h-3.5 text-[var(--text-primary)] shrink-0" aria-hidden="true" />
-            <span>Sub-second delivery · Minimal bandwidth overhead</span>
+            <span>Sub-second delivery</span>
           </div>
         </div>
       </div>
@@ -200,7 +200,7 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
           aria-expanded={showDetails}
           aria-controls="problem-details-panel"
         >
-          <span>{showDetails ? "Hide comparison details" : "View technical comparison details"}</span>
+          <span>{showDetails ? "Hide comparison" : "View comparison"}</span>
           <ChevronDown
             className={`w-3.5 h-3.5 transition-transform duration-200 ${showDetails ? "rotate-180" : ""}`}
             aria-hidden="true"

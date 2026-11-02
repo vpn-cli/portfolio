@@ -57,26 +57,25 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
       aria-label={`${title} system architecture visual simulation`}
     >
       {/* Top Bar: Visual label + Optional Video toggle */}
-      <div className="flex items-center justify-between pb-4 mb-4 border-b border-[var(--border-subtle)] text-xs text-[var(--text-tertiary)]">
+      <div className="flex items-center justify-between pb-3 mb-3 border-b border-[var(--border-subtle)] text-xs text-[var(--text-tertiary)]">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-[var(--text-primary)]" aria-hidden="true" />
           <span className="font-medium text-[var(--text-primary)]">
             {slug === "sockets"
-              ? "Live Event Flow & Topic Isolation"
+              ? "Event Flow"
               : slug === "stream-mart"
-              ? "Transactional Outbox Event Pipeline"
-              : "Prompt-to-DOM AST Compilation Pipeline"}
+              ? "Outbox Pipeline"
+              : "AST Pipeline"}
           </span>
-          <span className="hidden sm:inline">· Loops every 4s</span>
         </div>
 
         <button
           type="button"
           onClick={() => setShowVideo(!showVideo)}
-          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
         >
-          <Film className="w-3.5 h-3.5" aria-hidden="true" />
-          <span>{showVideo ? "Show diagram" : "Watch 20s video"}</span>
+          <Film className="w-3 h-3" aria-hidden="true" />
+          <span>{showVideo ? "Diagram" : "Video"}</span>
         </button>
       </div>
 
@@ -246,94 +245,85 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
         </div>
       ) : slug === "stream-mart" ? (
         /* ━━━ STREAMMART EVENT FLOW ━━━ */
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-center">
             {/* Stage 1: Checkout POST */}
             <div
-              className={`rounded-xl p-4 border transition-all duration-300 ${
+              className={`rounded-xl p-3.5 border transition-all duration-300 ${
                 phase === 0
                   ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-md"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] opacity-85"
               }`}
             >
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-mono text-[11px] text-[var(--text-tertiary)]">01 · INGRESS</span>
-                <Server className="w-4 h-4 text-[var(--text-primary)]" aria-hidden="true" />
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="font-mono text-[10px] text-[var(--text-tertiary)]">01 · INGRESS</span>
+                <Server className="w-3.5 h-3.5 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
-              <div className="font-mono text-xs font-medium text-[var(--text-primary)]">
+              <div className="font-mono text-xs font-medium text-[var(--text-primary)] truncate">
                 API Gateway
               </div>
-              <p className="text-[11px] text-[var(--text-secondary)] mt-1">
-                Validates JWT & proxies checkout request
-              </p>
+              <span className="text-[10px] text-[var(--text-secondary)] font-mono block mt-0.5">
+                JWT auth & proxy
+              </span>
             </div>
 
             {/* Stage 2: Atomic Outbox Transaction */}
             <div
-              className={`rounded-xl p-4 border transition-all duration-300 ${
+              className={`rounded-xl p-3.5 border transition-all duration-300 ${
                 phase === 1
                   ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-md"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] opacity-85"
               }`}
             >
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-mono text-[11px] text-[var(--text-tertiary)]">02 · ATOMIC DB</span>
-                <Database className="w-4 h-4 text-[var(--text-primary)]" aria-hidden="true" />
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="font-mono text-[10px] text-[var(--text-tertiary)]">02 · ATOMIC DB</span>
+                <Database className="w-3.5 h-3.5 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
-              <div className="font-mono text-xs font-medium text-[var(--text-primary)]">
+              <div className="font-mono text-xs font-medium text-[var(--text-primary)] truncate">
                 Postgres Outbox
               </div>
-              <p className="text-[11px] text-[var(--text-secondary)] mt-1">
-                Order + outbox_events in one SQL transaction
-              </p>
+              <span className="text-[10px] text-[var(--text-secondary)] font-mono block mt-0.5">
+                Atomic transaction
+              </span>
             </div>
 
             {/* Stage 3: Kafka Message Broker */}
             <div
-              className={`rounded-xl p-4 border transition-all duration-300 ${
+              className={`rounded-xl p-3.5 border transition-all duration-300 ${
                 phase === 2
                   ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-md"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] opacity-85"
               }`}
             >
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-mono text-[11px] text-[var(--text-tertiary)]">03 · BROKER</span>
-                <Radio className="w-4 h-4 text-[var(--text-primary)]" aria-hidden="true" />
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="font-mono text-[10px] text-[var(--text-tertiary)]">03 · BROKER</span>
+                <Radio className="w-3.5 h-3.5 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
-              <div className="font-mono text-xs font-medium text-[var(--text-primary)]">
+              <div className="font-mono text-xs font-medium text-[var(--text-primary)] truncate">
                 Apache Kafka
               </div>
-              <p className="text-[11px] text-[var(--text-secondary)] mt-1">
-                Topic &apos;orders-stream&apos; partitions event
-              </p>
+              <span className="text-[10px] text-[var(--text-secondary)] font-mono block mt-0.5">
+                Orders partition
+              </span>
             </div>
 
             {/* Stage 4: Async Consumers */}
             <div
-              className={`rounded-xl p-4 border transition-all duration-300 space-y-2 ${
+              className={`rounded-xl p-3.5 border transition-all duration-300 space-y-1.5 ${
                 phase === 3
                   ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-md"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] opacity-85"
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="font-mono text-[11px] text-[var(--text-tertiary)]">04 · WORKERS</span>
-                <CheckCircle2 className="w-4 h-4 text-[var(--text-primary)]" aria-hidden="true" />
+                <span className="font-mono text-[10px] text-[var(--text-tertiary)]">04 · WORKERS</span>
+                <CheckCircle2 className="w-3.5 h-3.5 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
-              <div className="p-2 rounded bg-[var(--surface-tile-elevated)] text-[11px] flex justify-between">
-                <span className="text-[var(--text-primary)] font-medium">Payment Worker</span>
-                <span className="font-mono text-[10px] text-emerald-500">Processed</span>
-              </div>
-              <div className="p-2 rounded bg-[var(--surface-tile-elevated)] text-[11px] flex justify-between">
-                <span className="text-[var(--text-primary)] font-medium">Email Worker</span>
-                <span className="font-mono text-[10px] text-emerald-500">Sent receipt</span>
+              <div className="flex items-center justify-between text-[10px] font-mono">
+                <span className="text-[var(--text-secondary)] truncate">Payment / Mail</span>
+                <span className="text-emerald-500 font-medium shrink-0">Done</span>
               </div>
             </div>
-          </div>
-
-          <div className="p-3 rounded-lg bg-[var(--surface-tile)] border border-[var(--border-subtle)] text-xs text-[var(--text-secondary)]">
-            <strong className="text-[var(--text-primary)] font-medium">Zero dual-write loss:</strong>{" "}
-            Because the outbox event commits in the exact same database transaction as the order, no message is lost even if the Kafka broker experiences brief restarts.
           </div>
         </div>
       ) : (

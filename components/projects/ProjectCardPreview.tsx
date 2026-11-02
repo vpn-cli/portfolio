@@ -26,19 +26,19 @@ export function ProjectCardPreview({
   const previewVideo =
     slug === "sockets"
       ? {
-          mp4: "/projects/sockets/sportz-live-score-update.mp4",
-          webm: "/projects/sockets/sportz-live-score-update.webm",
-          poster: "/projects/sockets/sportz-live-score-update-poster.webp",
-          image: "/projects/sockets/sportz-live-match.webp",
-        }
+        mp4: "/projects/sockets/sportz-live-score-update.mp4",
+        webm: "/projects/sockets/sportz-live-score-update.webm",
+        poster: "/projects/sockets/sportz-live-score-update-poster.webp",
+        image: "/projects/sockets/sportz-live-match.webp",
+      }
       : slug === "appforge"
-      ? {
+        ? {
           mp4: "/projects/appforge/appforge-prompt-to-app.mp4",
           webm: "/projects/appforge/appforge-prompt-to-app.webm",
           poster: "/projects/appforge/appforge-prompt-to-app-poster.webp",
           image: "/projects/appforge/appforge-app-preview.webp",
         }
-      : {
+        : {
           mp4: null,
           webm: null,
           poster: "/projects/stream-mart/stream-mart-event-flow.webp",
@@ -75,7 +75,7 @@ export function ProjectCardPreview({
       video
         .play()
         .then(() => setIsPlaying(true))
-        .catch(() => {});
+        .catch(() => { });
     }
   };
 
@@ -98,7 +98,7 @@ export function ProjectCardPreview({
         video
           .play()
           .then(() => setIsPlaying(true))
-          .catch(() => {});
+          .catch(() => { });
       } else {
         video.pause();
         setIsPlaying(false);
@@ -119,9 +119,8 @@ export function ProjectCardPreview({
         fill
         sizes="(max-width: 1024px) 100vw, 560px"
         priority={priority}
-        className={`object-cover object-top transition-opacity duration-300 ${
-          isPlaying ? "opacity-0" : "opacity-100"
-        }`}
+        className={`object-cover object-top transition-opacity duration-300 ${isPlaying ? "opacity-0" : "opacity-100"
+          }`}
       />
 
       {/* Video Loop if available */}
@@ -133,9 +132,8 @@ export function ProjectCardPreview({
           loop
           preload="none"
           poster={previewVideo.poster}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
-            isPlaying ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${isPlaying ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
           aria-label={`${title} preview clip`}
         >
           {previewVideo.webm && <source src={previewVideo.webm} type="video/webm" />}
@@ -149,11 +147,10 @@ export function ProjectCardPreview({
           <button
             type="button"
             onClick={handleManualPlay}
-            className={`min-h-[36px] px-3 py-1.5 rounded-full text-xs font-medium border shadow-sm transition-[background-color,border-color,color] duration-200 flex items-center gap-1.5 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
-              isPlaying
+            className={`min-h-[36px] px-3 py-1.5 rounded-full text-xs font-medium border shadow-sm transition-[background-color,border-color,color] duration-200 flex items-center gap-1.5 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${isPlaying
                 ? "bg-[var(--text-primary)] text-[var(--bg-canvas)] border-[var(--border-hover)]"
                 : "bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border-[var(--border-subtle)] hover:border-[var(--border-hover)]"
-            }`}
+              }`}
             aria-label={isPlaying ? "Pause preview" : `Watch ${title} preview`}
           >
             {isPlaying ? (

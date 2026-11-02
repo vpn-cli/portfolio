@@ -130,11 +130,10 @@ export function TableOfContents() {
                   <button
                     type="button"
                     onClick={() => scrollTo(sec.id)}
-                    className={`block w-full text-left py-1.5 text-xs transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${
-                      isActive
+                    className={`block w-full text-left py-1.5 text-xs transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${isActive
                         ? "font-medium text-[var(--text-primary)] translate-x-1"
                         : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-                    }`}
+                      }`}
                   >
                     <span className="text-[11px] font-mono text-[var(--text-tertiary)] mr-1.5">
                       0{idx + 1}
