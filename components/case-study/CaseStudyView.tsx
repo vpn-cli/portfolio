@@ -17,7 +17,7 @@ import {
 import { SiGithub } from "react-icons/si";
 
 import { TableOfContents } from "./TableOfContents";
-import { HeroEventFlow } from "./HeroEventFlow";
+import { CaseStudyHero } from "./CaseStudyHero";
 import { ProblemSplitVisual } from "./ProblemSplitVisual";
 import { InteractiveArchitecture } from "./InteractiveArchitecture";
 import { DecisionRows } from "./DecisionRows";
@@ -136,9 +136,9 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                 </p>
               </div>
 
-              {/* Hero Visual: Animated Event-Flow Diagram */}
+              {/* Hero Visual: Real Application Clip / Pipeline (Dominates >50% Viewport) */}
               <div className="w-full">
-                <HeroEventFlow slug={project.slug} title={project.title} />
+                <CaseStudyHero project={project} />
               </div>
 
               {/* Max 3 Metric Chips with Measurement Tooltips */}
@@ -287,6 +287,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                 before={project.problemComparison.before}
                 after={project.problemComparison.after}
                 slug={project.slug}
+                caption={project.problemVisualCaption}
               />
             </section>
 
@@ -334,7 +335,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
             <section id="bugs" aria-label="Bugs and fixes" className="space-y-6">
               <div className="space-y-3">
                 <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-tertiary)]">
-                  05 · Debugging
+                  05 · Bugs I Fixed
                 </span>
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
                   {project.bugsClaim}
@@ -353,7 +354,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
             <section id="next" aria-label="Next steps and live verification" className="space-y-6">
               <div className="space-y-3">
                 <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-tertiary)]">
-                  06 · Next Steps
+                  06 · Try It
                 </span>
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
                   {project.nextStepsClaim}

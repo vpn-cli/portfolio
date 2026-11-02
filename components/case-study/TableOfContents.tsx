@@ -12,8 +12,8 @@ export const TOC_SECTIONS: TocItem[] = [
   { id: "problem", label: "The problem" },
   { id: "architecture", label: "How it works" },
   { id: "decisions", label: "Decisions" },
-  { id: "bugs", label: "Bugs I hit" },
-  { id: "next", label: "Next steps & Try it" },
+  { id: "bugs", label: "Bugs I fixed" },
+  { id: "next", label: "Try it" },
 ];
 
 export function TableOfContents() {

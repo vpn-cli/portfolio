@@ -31,6 +31,8 @@ export interface ArchitectureNode {
   subtitle: string;
   tech: string;
   role: string;
+  screenshotUrl?: string;
+  screenshotCaption?: string;
   codeSnippet?: {
     filename: string;
     language: string;
@@ -49,6 +51,13 @@ export interface CaseStudy {
   role: string;
   timeline: string;
   stack: string[];
+  heroClip?: {
+    mp4: string;
+    webm: string;
+    poster: string;
+    caption: string;
+  };
+  problemVisualCaption?: string;
   links: {
     demo?: string;
     repo?: string;
@@ -106,6 +115,13 @@ export const projects: CaseStudy[] = [
       "Vite",
       "Docker",
     ],
+    heroClip: {
+      mp4: "/projects/sockets/sportz-live-score-update.mp4",
+      webm: "/projects/sockets/sportz-live-score-update.webm",
+      poster: "/projects/sockets/sportz-live-score-update-poster.webp",
+      caption: "Live score updates and win probability broadcasted over WebSockets.",
+    },
+    problemVisualCaption: "Client polling versus instant WebSocket push delivery.",
     links: {
       demo: "https://sportz-rho.vercel.app",
       repo: "https://github.com/vpn-cli/sockets",
@@ -130,10 +146,9 @@ export const projects: CaseStudy[] = [
         howMeasured: "Render free web service tier + Neon PostgreSQL serverless tier",
       },
     ],
-    problemClaim:
-      "Client polling wastes server resources on empty requests and delays live scores by seconds during peak matches.",
+    problemClaim: "Polling wastes server resources and delays live scores",
     problemText:
-      "When spectators poll an endpoint every two seconds, most requests return unchanged data while consuming database connections. During rapid match events, request queues back up and spectators see scores seconds late.",
+      "When clients poll endpoints every few seconds, most requests return unchanged data while consuming database connections. During scoring bursts, requests queue up and users see scores seconds late.",
     problemComparison: {
       before: {
         title: "HTTP Client Polling",
@@ -154,10 +169,9 @@ export const projects: CaseStudy[] = [
         ],
       },
     },
-    architectureClaim:
-      "Score events write to Postgres and fan out only to clients subscribed to that match.",
+    architectureClaim: "Score events stream straight to subscribed client sockets",
     architectureText:
-      "An incoming score mutation updates PostgreSQL through Drizzle ORM, then immediately signals the WebSocket server. The gateway checks its in-memory topic map and broadcasts the payload frame strictly to sockets listening to that specific match id.",
+      "An incoming score mutation updates PostgreSQL through Drizzle ORM, then immediately signals the WebSocket gateway. The gateway checks its in-memory topic map and broadcasts updates only to sockets watching that match.",
     architectureNodes: [
       {
         id: "ingestion",
@@ -230,6 +244,8 @@ export const projects: CaseStudy[] = [
         subtitle: "Topic Fanout Hub",
         tech: "ws library",
         role: "Maintains Map<matchId, Set<WebSocket>> and broadcasts payload frames in O(k) time strictly to match listeners.",
+        screenshotUrl: "/projects/sockets/sportz-connection-badge.webp",
+        screenshotCaption: "Live WebSocket connection status badge and heartbeat monitor.",
         codeSnippet: {
           filename: "sportz-websockets-main/src/ws/server.js",
           language: "javascript",
@@ -254,6 +270,8 @@ function broadcastToMatch(matchId, payload) {
         subtitle: "useWebSocket Hook",
         tech: "React 19 & Vite",
         role: "Maintains socket lifecycle, applies exponential backoff jitter on disconnects, and hydrates live score badges.",
+        screenshotUrl: "/projects/sockets/sportz-live-match.webp",
+        screenshotCaption: "Client scoreboard and win probability hydrated directly by push frames.",
         codeSnippet: {
           filename: "sportz-client/src/hooks/useWebSocket.js",
           language: "javascript",
@@ -272,8 +290,7 @@ function broadcastToMatch(matchId, payload) {
         },
       },
     ],
-    decisionsClaim:
-      "Four architectural trade-offs that kept the system fast, stable, and cost-effective.",
+    decisionsClaim: "Four technical choices that kept memory usage low",
     decisionsText:
       "Every technical choice balanced memory constraints against delivery speed on free-tier infrastructure.",
     decisions: [
@@ -334,9 +351,9 @@ function broadcastToMatch(matchId, payload) {
           "Randomized jitter spaces client reconnects over a 1–10s window, allowing reviving backend instances to settle cleanly.",
       },
     ],
-    bugsClaim: "Bugs I hit and how I fixed them",
+    bugsClaim: "Three production bugs and how I fixed them",
     bugsText:
-      "Three real bugs encountered during deployment and stress-testing, with links to the fixing commits.",
+      "Three bugs hit during deployment and stress testing, with links to fixing commits.",
     bugs: [
       {
         title: "Zombie sockets from dropped mobile connections",
@@ -369,9 +386,9 @@ function broadcastToMatch(matchId, payload) {
         commitUrl: "https://github.com/vpn-cli/sockets/commit/3d8559e",
       },
     ],
-    nextStepsClaim: "Next steps and how to test it live",
+    nextStepsClaim: "What I would build next and live verification",
     nextStepsText:
-      "Add Redis Pub/Sub to scale socket connections horizontally across multiple backend instances, and build an automated load test harness to measure telemetry delivery percentiles.",
+      "Add Redis Pub/Sub to scale WebSockets horizontally across server instances, and build an automated load test harness to measure broadcast latency percentiles.",
     learningStatement:
       "Building a stateful real-time server on free-tier hosting taught me that connection hygiene and graceful teardown matter more than connection setup.",
     tryItSteps: [
@@ -405,6 +422,13 @@ function broadcastToMatch(matchId, payload) {
       "Docker",
       "JWT",
     ],
+    heroClip: {
+      mp4: "/videos/stream-mart/brag.mp4",
+      webm: "/videos/stream-mart/brag.webm",
+      poster: "/projects/stream-mart/stream-mart-event-flow.webp",
+      caption: "Transactional outbox event flow through Apache Kafka cluster.",
+    },
+    problemVisualCaption: "Synchronous HTTP cascades versus asynchronous Kafka outbox events.",
     links: {
       demo: "https://github.com/vpn-cli/StreamMart#architecture--workflow",
       repo: "https://github.com/vpn-cli/StreamMart",
@@ -429,10 +453,9 @@ function broadcastToMatch(matchId, payload) {
         isTodo: true,
       },
     ],
-    problemClaim:
-      "Synchronous HTTP calls between microservices cause cascading failures and create data inconsistencies when network drops interrupt checkout.",
+    problemClaim: "Synchronous service calls cause cascading checkout failures",
     problemText:
-      "When order services make direct HTTP requests to payment and inventory services, any network hiccup blocks the checkout flow. If a payment succeeds but the order service crashes before saving, customers are charged with no order created.",
+      "When checkout services make direct HTTP calls to payment and inventory services, network drops halt the purchase. If payment succeeds but order fails, customers are charged without an order.",
     problemComparison: {
       before: {
         title: "Synchronous Microservices",
@@ -453,10 +476,9 @@ function broadcastToMatch(matchId, payload) {
         ],
       },
     },
-    architectureClaim:
-      "Checkout requests write atomically to Postgres and stream through Kafka to decoupled workers.",
+    architectureClaim: "Atomic outbox transactions decouple payment from order fulfillment",
     architectureText:
-      "The API gateway validates tokens and forwards checkouts to the payment service. A single database transaction writes the payment record and outbox event. A background worker polls the outbox and publishes events to Kafka topics for order and notification workers.",
+      "Checkout requests write payment records and outbox events in one database transaction. A background worker polls the outbox and streams events to Kafka topics for asynchronous processing.",
     architectureNodes: [
       {
         id: "gateway",
@@ -483,6 +505,8 @@ function broadcastToMatch(matchId, payload) {
         subtitle: "Atomic Outbox Commit",
         tech: "Neon PostgreSQL & Drizzle",
         role: "Executes payment insertion and outbox_events queue insertion in a single atomic database transaction.",
+        screenshotUrl: "/projects/stream-mart/stream-mart-outbox-terminal.webp",
+        screenshotCaption: "Atomic database transaction writing outbox event to PostgreSQL.",
         codeSnippet: {
           filename: "payment-service/src/controllers/payment.ts",
           language: "typescript",
@@ -495,7 +519,7 @@ function broadcastToMatch(matchId, payload) {
     payload: JSON.stringify(payment)
   });
 });`,
-          explanation: "Atomic transaction guarantees payment record and outbox message commit together.",
+          explanation: "Atomic transaction ensures payment record and outbox message commit together.",
         },
       },
       {
@@ -523,6 +547,8 @@ function broadcastToMatch(matchId, payload) {
         subtitle: "Topic Partitioning",
         tech: "Apache Kafka",
         role: "Decouples message producers from consumers across topics like payment-successful and order-created.",
+        screenshotUrl: "/projects/stream-mart/stream-mart-event-flow.webp",
+        screenshotCaption: "Apache Kafka cluster routing decoupled checkout topic events.",
         codeSnippet: {
           filename: "docker-compose.yml",
           language: "yaml",
@@ -556,8 +582,7 @@ function broadcastToMatch(matchId, payload) {
         },
       },
     ],
-    decisionsClaim:
-      "Four architectural trade-offs that kept microservices decoupled and consistent.",
+    decisionsClaim: "Four architectural choices that protected data consistency",
     decisionsText:
       "Every technical choice prioritized data consistency and fault isolation across service boundaries.",
     decisions: [
@@ -573,7 +598,7 @@ function broadcastToMatch(matchId, payload) {
         problemFaced:
           "Committing to PostgreSQL and then making an HTTP call to Kafka can fail halfway, causing permanent state divergence.",
         fullReasoning:
-          "Saving the event in the same local database transaction as the business entity guarantees that events are only published if the database write succeeded.",
+          "Saving the event in the same local database transaction as the business entity ensures that events are only published if the database write succeeded.",
       },
       {
         chosenOver: "Chose Apache Kafka over direct REST microservice calls",
@@ -618,9 +643,9 @@ function broadcastToMatch(matchId, payload) {
           "A lightweight reverse proxy terminates external traffic, validates tokens once, and routes requests across internal container ports.",
       },
     ],
-    bugsClaim: "Bugs I hit and how I fixed them",
+    bugsClaim: "Three distributed system bugs and their fixes",
     bugsText:
-      "Three real bugs encountered while orchestrating microservices, with links to fixing commits.",
+      "Three bugs hit while orchestrating microservices, with links to fixing commits.",
     bugs: [
       {
         title: "Dual-write state inconsistency on broker disconnect",
@@ -653,7 +678,7 @@ function broadcastToMatch(matchId, payload) {
         commitUrl: "https://github.com/vpn-cli/StreamMart/commit/7b204e1",
       },
     ],
-    nextStepsClaim: "Next steps and how to test it live",
+    nextStepsClaim: "What I would build next and test steps",
     nextStepsText:
       "Add a dead letter queue for poison-pill message handling, and configure OpenTelemetry distributed tracing across Kafka headers.",
     learningStatement:
@@ -689,6 +714,13 @@ function broadcastToMatch(matchId, payload) {
       "Clerk",
       "Tailwind CSS",
     ],
+    heroClip: {
+      mp4: "/projects/appforge/appforge-prompt-to-app.mp4",
+      webm: "/projects/appforge/appforge-prompt-to-app.webm",
+      poster: "/projects/appforge/appforge-prompt-to-app-poster.webp",
+      caption: "Prompt streams into verified React components with zero eval.",
+    },
+    problemVisualCaption: "Prompt input versus validated component tree generation.",
     links: {
       demo: "https://appforge-studios.vercel.app",
       repo: "https://github.com/vpn-cli/appforge",
@@ -713,10 +745,9 @@ function broadcastToMatch(matchId, payload) {
         isTodo: true,
       },
     ],
-    problemClaim:
-      "Standard AI code generators produce unverified HTML strings that break rendering and introduce code injection vulnerabilities.",
+    problemClaim: "Unchecked code generation crashes and risks script injection",
     problemText:
-      "Most LLM app builders generate raw code in an iframe. When models produce subtle syntax errors or invalid imports, the entire interface crashes. Unrestricted code generation also creates security hazards from arbitrary script execution.",
+      "Generating raw code in an iframe breaks on subtle syntax mistakes and exposes users to script injection. Without validation, runtime errors cause blank screens and fail silently.",
     problemComparison: {
       before: {
         title: "Unrestricted Code eval()",
@@ -737,10 +768,9 @@ function broadcastToMatch(matchId, payload) {
         ],
       },
     },
-    architectureClaim:
-      "Prompts stream through Groq, validate against strict Zod schemas, and render from a verified component registry.",
+    architectureClaim: "Prompts stream into validated trees without arbitrary eval",
     architectureText:
-      "User prompts stream to Groq LPUs running Llama-3.3. The model returns a structured JSON AST rather than raw JavaScript. The frontend validates the tree against Zod schemas and maps nodes directly to pre-built React components without eval().",
+      "Prompts stream to Groq LPUs running Llama-3.3. The model emits a structured JSON AST rather than raw JavaScript. The frontend validates the tree with Zod and mounts registered React components.",
     architectureNodes: [
       {
         id: "prompt",
@@ -748,6 +778,8 @@ function broadcastToMatch(matchId, payload) {
         subtitle: "Next.js Edge Route",
         tech: "Next.js 15 & Vercel Edge",
         role: "Accepts user prompts, retrieves session quotas, and initiates streaming LPU requests.",
+        screenshotUrl: "/projects/appforge/appforge-prompt-input.webp",
+        screenshotCaption: "Prompt input modal with structured layout instructions.",
         codeSnippet: {
           filename: "app/api/copilot/route.ts",
           language: "typescript",
@@ -808,6 +840,8 @@ Do not wrap in markdown code fences.\`;`,
         subtitle: "Boundary Checking",
         tech: "Zod Schemas",
         role: "Strips accidental code fencing and validates JSON structure before components mount.",
+        screenshotUrl: "/projects/appforge/appforge-editor-view.webp",
+        screenshotCaption: "Validated JSON AST displayed in code editor panel.",
         codeSnippet: {
           filename: "lib/schema/astSchema.ts",
           language: "typescript",
@@ -827,6 +861,8 @@ Do not wrap in markdown code fences.\`;`,
         subtitle: "Safe Component Mount",
         tech: "React 19 Registry",
         role: "Maps verified JSON tokens directly to React DOM primitives without executing arbitrary scripts.",
+        screenshotUrl: "/projects/appforge/appforge-app-preview.webp",
+        screenshotCaption: "Rendered interface mounted from registered React components.",
         codeSnippet: {
           filename: "registry/component-registry.tsx",
           language: "typescript",
@@ -844,10 +880,9 @@ export function AstRenderer({ node }: { node: AstNode }) {
         },
       },
     ],
-    decisionsClaim:
-      "Four architectural trade-offs that kept generation fast, safe, and customizable.",
+    decisionsClaim: "Four design choices that kept rendering safe",
     decisionsText:
-      "Every design choice prioritized rendering security and sub-second generation over unconstrained raw code output.",
+      "Every design choice prioritized rendering safety and sub-second generation over unconstrained raw code output.",
     decisions: [
       {
         chosenOver: "Chose constrained AST registry over arbitrary code execution (eval)",
@@ -906,9 +941,9 @@ export function AstRenderer({ node }: { node: AstNode }) {
           "Executing sanitized DDL statements on Supabase creates real tables with foreign key constraints, turning layouts into usable apps.",
       },
     ],
-    bugsClaim: "Bugs I hit and how I fixed them",
+    bugsClaim: "Three parser bugs and how I fixed them",
     bugsText:
-      "Three real bugs encountered while building the streaming copilot and AST compiler, with links to commits.",
+      "Three bugs hit while building the streaming copilot and AST compiler, with links to commits.",
     bugs: [
       {
         title: "Markdown code fencing broke JSON parser",
@@ -941,7 +976,7 @@ export function AstRenderer({ node }: { node: AstNode }) {
         commitUrl: "https://github.com/vpn-cli/appforge/commit/bf7b018",
       },
     ],
-    nextStepsClaim: "Next steps and how to test it live",
+    nextStepsClaim: "What I would build next and live demo",
     nextStepsText:
       "Add automated foreign key relationship generation for complex schemas, and support direct export to Next.js project archives.",
     learningStatement:
