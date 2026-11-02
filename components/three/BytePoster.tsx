@@ -17,7 +17,7 @@ export default function BytePoster() {
           Byte
         </span>
         <span className="text-[12px] sm:text-[13px] text-[var(--text-tertiary)] truncate text-right">
-          desk companion
+          <span className="hidden xl:inline">desk </span>companion
         </span>
       </div>
 

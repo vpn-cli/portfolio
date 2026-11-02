@@ -19,6 +19,19 @@ interface HeartParticle {
   maxLife: number;
 }
 
+interface SleepZParticle {
+  id: number;
+  x: number;
+  y: number;
+  z: number;
+  vx: number;
+  vy: number;
+  scale: number;
+  opacity: number;
+  life: number;
+  maxLife: number;
+}
+
 function ResponsiveCamera({ margin = 1.28 }: { margin?: number }) {
   const { camera, size } = useThree();
 
@@ -1346,7 +1359,7 @@ export default function ByteScene() {
           Byte
         </span>
         <span className="text-[12px] sm:text-[13px] text-[var(--text-tertiary)] truncate text-right">
-          desk companion
+          <span className="hidden xl:inline">desk </span>companion
         </span>
       </div>
 
@@ -1355,7 +1368,7 @@ export default function ByteScene() {
         <div
           role="status"
           aria-live="polite"
-          className="absolute top-12 z-30 px-3 py-1 rounded-full bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] shadow-md text-xs font-medium text-[var(--text-primary)] pointer-events-none animate-bounce"
+          className="absolute top-12 z-30 px-3 py-1 rounded-full bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] shadow-sm text-xs font-medium text-[var(--text-primary)] pointer-events-none motion-safe:transition-opacity motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-out motion-reduce:transition-none"
         >
           {speechBubble}
         </div>
