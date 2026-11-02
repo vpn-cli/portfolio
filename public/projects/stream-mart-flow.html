@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>StreamMart Architecture & Event Flow</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1600px;
+      height: 900px;
+      background: #090a0f;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #f1f3f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 36px;
+      overflow: hidden;
+    }
+    .window {
+      width: 100%;
+      height: 100%;
+      background: #0d0f17;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+    .window-header {
+      height: 56px;
+      background: #131622;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+    }
+    .window-dots {
+      display: flex;
+      gap: 10px;
+    }
+    .dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #ef4444; opacity: 0.85; }
+    .dot-yellow { background: #f59e0b; opacity: 0.85; }
+    .dot-green { background: #10b981; opacity: 0.85; }
+    .window-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .window-title .sub {
+      color: #94a3b8;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .cluster-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.28);
+      color: #34d399;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      letter-spacing: 0.02em;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 8px #34d399;
+    }
+    .content {
+      flex: 1;
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      background: radial-gradient(circle at 50% 0%, rgba(30, 41, 59, 0.25) 0%, transparent 70%), #0d0f17;
+    }
+    
+    /* Flow diagram: Order -> PostgreSQL Outbox -> Kafka Bus -> Payment Service */
+    .flow-pipeline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #111420;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px 24px;
+    }
+    .flow-node {
+      flex: 1;
+      background: #171b2a;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+    }
+    .flow-node.highlight {
+      border-color: rgba(245, 158, 11, 0.4);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, #171b2a 100%);
+    }
+    .node-header {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .flow-node.highlight .node-header {
+      color: #fbbf24;
+    }
+    .node-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #f8fafc;
+      letter-spacing: -0.01em;
+    }
+    .node-meta {
+      font-size: 12px;
+      color: #64748b;
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+    }
+    .flow-arrow {
+      color: #64748b;
+      font-size: 20px;
+      font-weight: 300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+    }
+
+    /* Streaming event console */
+    .console-panel {
+      flex: 1;
+      background: #090a10;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 20px 24px;
+      font-family: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+      font-size: 14px;
+      line-height: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .console-header {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #64748b;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .log-line {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .log-time {
+      color: #64748b;
+      font-size: 13px;
+    }
+    .log-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 5px;
+      letter-spacing: 0.05em;
+    }
+    .tag-outbox { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .tag-kafka { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .tag-worker { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .tag-ack { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .log-text {
+      color: #cbd5e1;
+    }
+    .highlight-text {
+      color: #ffffff;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <div class="window-header">
+      <div class="window-dots">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+      </div>
+      <div class="window-title">
+        <span>StreamMart</span>
+        <span style="color: #475569;">·</span>
+        <span class="sub">Event-Driven Architecture & Outbox Pipeline</span>
+      </div>
+      <div class="cluster-status">
+        <div class="pulse-dot"></div>
+        <span>KAFKA 3.4 · 100% AT-LEAST-ONCE</span>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- 4-step Pipeline flow -->
+      <div class="flow-pipeline">
+        <div class="flow-node">
+          <div class="node-header">Step 1 · Ingestion</div>
+          <div class="node-title">Order Service</div>
+          <div class="node-meta">POST /api/orders</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="node-header">Step 2 · Atomic Outbox</div>
+          <div class="node-title">PostgreSQL DB</div>
+          <div class="node-meta">outbox_events table</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node highlight">
+          <div class="node-header">Step 3 · Message Bus</div>
+          <div class="node-title">Kafka Cluster</div>
+          <div class="node-meta">topic: order.created</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="node-header">Step 4 · Consumer</div>
+          <div class="node-title">Payment Service</div>
+          <div class="node-meta">Stripe SDK + ACK</div>
+        </div>
+      </div>
+
+      <!-- Live events console -->
+      <div class="console-panel">
+        <div class="console-header">
+          <span>Live Kafka Event Stream (Zero Message Loss)</span>
+          <span>Consumer Group: payment-workers</span>
+        </div>
+        <div class="log-line">
+          <span class="log-time">[14:28:01.102]</span>
+          <span class="log-tag tag-outbox">OUTBOX</span>
+          <span class="log-text">Atomic transaction committed in PostgreSQL <span class="highlight-text">(outbox_event #9240)</span></span>
+        </div>
+        <div class="log-line">
+          <span class="log-time">[14:28:01.106]</span>
+          <span class="log-tag tag-kafka">KAFKA</span>
+          <span class="log-text">Dispatcher pushed payload to <span class="highlight-text">'order.created'</span> [partition: 1, offset: 4891]</span>
+        </div>
+        <div class="log-line">
+          <span class="log-time">[14:28:01.118]</span>
+          <span class="log-tag tag-worker">WORKER</span>
+          <span class="log-text">Payment Service consumed event → Stripe authorization token verified</span>
+        </div>
+        <div class="log-line">
+          <span class="log-time">[14:28:01.125]</span>
+          <span class="log-tag tag-ack">ACK</span>
+          <span class="log-text">Outbox worker marked <span class="highlight-text">'PROCESSED'</span> with zero distributed state divergence</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

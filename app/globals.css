@@ -183,6 +183,15 @@ body::after {
   }
 }
 
+@keyframes teaser-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 .animate-marquee {
   display: flex;
   width: max-content;
