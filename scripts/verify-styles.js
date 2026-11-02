@@ -60,3 +60,4 @@ const { chromium } = require('playwright-core');
     process.exit(1);
   }
 })();
+
