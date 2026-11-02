@@ -38,7 +38,7 @@ async function runLogin() {
   console.log("Please log in in the open browser window. Waiting for session...");
 
   const startTime = Date.now();
-  const MAX_WAIT_MS = 10 * 60 * 1000; // 10 minutes
+  const MAX_WAIT_MS = 2 * 60 * 60 * 1000; // 2 hours
 
   while (Date.now() - startTime < MAX_WAIT_MS) {
     const currentUrl = page.url();

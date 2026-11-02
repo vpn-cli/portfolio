@@ -56,6 +56,7 @@ export function BentoTile({
   };
 
   const handlePointerLeave = () => {
+    if (!enableTilt) return;
     const card = cardRef.current;
     if (card) {
       card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
@@ -67,7 +68,9 @@ export function BentoTile({
 
   const tileClasses = `bento-tile bento-surface group relative rounded-[24px] ${
     noPadding ? "" : "p-5 sm:p-6"
-  } focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 overflow-hidden flex flex-col justify-between transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transform-none ${className}`;
+  } focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 overflow-hidden flex flex-col justify-between ${
+    enableTilt ? "transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transform-none" : ""
+  } ${className}`;
 
   const tileContent = (
     <div className="relative z-10 w-full h-full flex flex-col justify-between">
@@ -88,7 +91,7 @@ export function BentoTile({
         data-cursor-text={cursorText}
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
-        style={{ transformStyle: "preserve-3d" }}
+        style={{ transformStyle: enableTilt ? "preserve-3d" : undefined }}
         className={tileClasses}
       >
         {tileContent}
@@ -106,7 +109,7 @@ export function BentoTile({
       data-cursor-text={cursorText}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      style={{ transformStyle: "preserve-3d" }}
+      style={{ transformStyle: enableTilt ? "preserve-3d" : undefined }}
       className={tileClasses}
     >
       {tileContent}

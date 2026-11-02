@@ -324,7 +324,6 @@ body::after {
   .tile-projects {
     grid-column: 4 / 6;
     grid-row: 1 / 3;
-    min-height: 500px;
   }
 
   .tile-links,
