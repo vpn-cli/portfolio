@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#181a20" />
+      <stop offset="100%" stop-color="#0f1013" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#g1)"/>
+  <circle cx="400" cy="300" r="180" fill="none" stroke="#2d313a" stroke-width="2"/>
+  <circle cx="400" cy="300" r="120" fill="none" stroke="#f97316" stroke-width="1.5" stroke-dasharray="6 8"/>
+  <line x1="120" y1="300" x2="680" y2="300" stroke="#262932" stroke-width="1.5"/>
+  <line x1="400" y1="60" x2="400" y2="540" stroke="#262932" stroke-width="1.5"/>
+  <rect x="330" y="230" width="140" height="140" fill="#f97316" fill-opacity="0.12" stroke="#f97316" stroke-width="1.5" transform="rotate(45 400 300)"/>
+  <circle cx="400" cy="300" r="4" fill="#fb923c"/>
+  <text x="36" y="565" font-family="system-ui, sans-serif" font-size="13" font-weight="500" fill="#64748b" letter-spacing="1.5">01 · VECTOR FLOW &amp; AXIS</text>
+</svg>

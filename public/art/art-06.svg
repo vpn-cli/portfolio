@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="g6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1418" />
+      <stop offset="100%" stop-color="#100a0d" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#g6)"/>
+  <circle cx="400" cy="300" r="150" fill="none" stroke="#f43f5e" stroke-width="1.5"/>
+  <circle cx="350" cy="300" r="120" fill="none" stroke="#fb7185" stroke-width="1" stroke-dasharray="6 6"/>
+  <circle cx="450" cy="300" r="120" fill="none" stroke="#fda4af" stroke-width="1" stroke-dasharray="3 5"/>
+  <circle cx="400" cy="300" r="6" fill="#f43f5e"/>
+  <text x="36" y="565" font-family="system-ui, sans-serif" font-size="13" font-weight="500" fill="#64748b" letter-spacing="1.5">06 · ORBITAL DUALITY</text>
+</svg>

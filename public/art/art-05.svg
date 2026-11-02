@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="g5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#181520" />
+      <stop offset="100%" stop-color="#0c0914" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#g5)"/>
+  <line x1="80" y1="480" x2="720" y2="480" stroke="#332a45" stroke-width="2"/>
+  <line x1="220" y1="480" x2="220" y2="180" stroke="#8b5cf6" stroke-width="2.5"/>
+  <line x1="320" y1="480" x2="320" y2="240" stroke="#a78bfa" stroke-width="2"/>
+  <line x1="420" y1="480" x2="420" y2="110" stroke="#c4b5fd" stroke-width="3"/>
+  <line x1="520" y1="480" x2="520" y2="300" stroke="#7c3aed" stroke-width="1.5"/>
+  <line x1="620" y1="480" x2="620" y2="210" stroke="#6d28d9" stroke-width="2"/>
+  <circle cx="420" cy="110" r="6" fill="#c4b5fd"/>
+  <text x="36" y="565" font-family="system-ui, sans-serif" font-size="13" font-weight="500" fill="#64748b" letter-spacing="1.5">05 · HARMONIC CADENCE</text>
+</svg>
