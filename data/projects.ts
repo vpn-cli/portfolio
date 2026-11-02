@@ -749,9 +749,9 @@ await consumer.run({
       "Tailwind CSS",
     ],
     heroClip: {
-      mp4: "/projects/appforge/appforge-prompt-to-app.mp4",
-      webm: "/projects/appforge/appforge-prompt-to-app.webm",
-      poster: "/projects/appforge/appforge-prompt-to-app-poster.webp",
+      mp4: "/projects/appforge/appforge-ask-ai-dashboard.mp4",
+      webm: "/projects/appforge/appforge-ask-ai-dashboard.webm",
+      poster: "/projects/appforge/appforge-ask-ai-dashboard-poster.webp",
       caption: "Prompt streams into verified React components with zero eval.",
     },
     problemVisualCaption: "Prompt input versus validated component tree generation.",

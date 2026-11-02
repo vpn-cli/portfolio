@@ -31,9 +31,9 @@ const PROJECT_WORK_META: Record<
   },
   appforge: {
     index: "03",
-    stackLine: "Next.js · React 19 · Groq LPU",
+    stackLine: "Next.js · React · Groq",
     description:
-      "An AI tool streaming natural language prompts into typed React components without runtime code evaluation.",
+      "Describe an app in plain English and get a working React UI.",
   },
 };
 

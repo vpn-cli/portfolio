@@ -38,11 +38,11 @@ const PREVIEW_CONFIGS: Record<string, PreviewConfig> = {
     isDiagram: true,
   },
   appforge: {
-    chromeTitle: "appforge.dev — Copilot Studio",
+    chromeTitle: "appforge-studios.vercel.app",
     statusBadge: { label: "READY" },
-    videoMp4: "/projects/appforge/appforge-prompt-to-app.mp4",
-    videoWebm: "/projects/appforge/appforge-prompt-to-app.webm",
-    poster: "/projects/appforge/appforge-prompt-to-app-poster.webp",
+    videoMp4: "/projects/appforge/appforge-ask-ai-dashboard.mp4",
+    videoWebm: "/projects/appforge/appforge-ask-ai-dashboard.webm",
+    poster: "/projects/appforge/appforge-ask-ai-dashboard-poster.webp",
   },
 };
 
