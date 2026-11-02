@@ -70,7 +70,7 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
       {/* ━━━ TOPOLOGY GRID (CLICK ANY NODE TO INSPECT) ━━━ */}
       <div className="rounded-[var(--card-radius)] bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] p-4 sm:p-5 shadow-sm">
         <div className="flex items-center justify-between text-xs text-[var(--text-tertiary)] pb-3 mb-3 border-b border-[var(--border-subtle)]">
-          <span className="font-medium text-[var(--text-primary)]">System Topology</span>
+          <span className="font-medium text-[var(--text-primary)]">Architecture</span>
           <span className="hidden sm:inline">Select stage to inspect pipeline runtime</span>
         </div>
 

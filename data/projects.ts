@@ -481,7 +481,7 @@ function broadcastToMatch(matchId, payload) {
       {
         id: "gateway",
         title: "API Gateway",
-        subtitle: "JWT Ingress & Reverse Proxy",
+        subtitle: "API gateway (JWT auth)",
         tech: "Express 5 & http-proxy-middleware",
         role: "Validates bearer token and reverse-proxies requests on port 8080.",
         codeSnippet: {
@@ -670,7 +670,7 @@ await consumer.run({
       {
         chosenOver: "Chose API Gateway reverse proxy over direct client routing",
         tradeoffSummary:
-          "Centralizes auth tokens, but creates single ingress point.",
+          "Centralizes auth tokens, but creates a single entry point.",
         optionsConsidered: [
           "Direct client-to-service port routing",
           "Reverse proxy API Gateway",

@@ -252,7 +252,7 @@ await consumer.run({
 const PHASES = [
   {
     step: 1,
-    title: "1. REST Checkout & JWT Ingress",
+    title: "1. REST Checkout & API Gateway",
     activeId: "client",
     targetId: "gateway",
     description: "Next.js UI submits checkout to API Gateway (Port 8080) with Bearer token.",

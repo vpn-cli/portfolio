@@ -232,7 +232,7 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
               }`}
             >
               <div className="flex items-center justify-between mb-1.5">
-                <span className="font-mono text-[10px] text-[var(--text-tertiary)]">01 · INGRESS</span>
+                <span className="font-mono text-[10px] text-[var(--text-tertiary)]">01 · Request</span>
                 <Server className="w-3.5 h-3.5 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
               <div className="font-mono text-xs font-medium text-[var(--text-primary)] truncate">
