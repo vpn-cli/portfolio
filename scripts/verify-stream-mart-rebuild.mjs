@@ -19,7 +19,8 @@ async function verify() {
     }
   });
 
-  const res = await page.goto("http://localhost:3000/work/stream-mart", {
+  const targetUrl = process.env.PORT_URL || "http://localhost:3000/work/stream-mart";
+  const res = await page.goto(targetUrl, {
     waitUntil: "networkidle",
   });
 
@@ -71,7 +72,7 @@ async function verify() {
     colorScheme: "dark",
   });
   const mobilePage = await mobileContext.newPage();
-  await mobilePage.goto("http://localhost:3000/work/stream-mart", { waitUntil: "networkidle" });
+  await mobilePage.goto(targetUrl, { waitUntil: "networkidle" });
   await mobilePage.screenshot({ path: path.join(shotsDir, "stream-mart-mobile.png"), fullPage: true });
   console.log("Saved: shots/stream-mart-verification/stream-mart-mobile.png");
 

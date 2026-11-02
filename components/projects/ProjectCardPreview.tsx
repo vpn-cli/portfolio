@@ -153,8 +153,7 @@ export function ProjectCardPreview({
               src={config.poster}
               alt={`${title} live capture`}
               loading={priority ? "eager" : "lazy"}
-              // @ts-expect-error fetchpriority attribute
-              fetchpriority={priority ? "high" : "auto"}
+              fetchPriority={priority ? "high" : "auto"}
               className="absolute inset-0 w-full h-full object-cover object-top"
             />
 
