@@ -25,6 +25,6 @@
 
 ## Honesty in project content
 - Every metric, feature, number and claim about my projects must come from the project's repo, its README, my real screenshots or recordings, or something I told you. If you can't find a source, write TODO and list it in your report. Never invent one.
-- Never build fake or "faux" UI to represent my projects. Use real screenshots and recordings. If a project has no UI (StreamMart), use a real terminal capture or a diagram, labeled as a diagram.
+- Stageshow may be used for presentation: framing, staging, motion and transitions. The screens shown inside must be my real captures (/public/projects/<slug>/) or an exact recreation of a real screen from the live app or repo, with real copy and real data shape. No invented screens, features, numbers or URLs. No localhost anywhere. StreamMart has no UI: its preview animates the real architecture from the repo and is labeled as a diagram.
 - If you don't know what a project's UI shows, open the live site or read the repo before designing anything for it.
 
