@@ -77,16 +77,25 @@ export const siteConfig = {
 
   // === TECH STACK (Exact app icons matching reference) ===
   techStack: [
-    { name: "Next.js", icon: "nextjs", category: "Framework", color: "#FFFFFF" },
-    { name: "React", icon: "react", category: "Frontend", color: "#61DAFB" },
+    // Core languages & frameworks
     { name: "TypeScript", icon: "typescript", category: "Language", color: "#3178C6" },
-    { name: "Node.js", icon: "nodejs", category: "Runtime", color: "#339933" },
-    { name: "Tailwind", icon: "tailwind", category: "Styling", color: "#06B6D4" },
-    { name: "Three.js", icon: "threejs", category: "Graphics", color: "#FFFFFF" },
-    { name: "GSAP", icon: "gsap", category: "Motion", color: "#88CE02" },
+    { name: "JavaScript", icon: "javascript", category: "Language", color: "#F7DF1E" },
+    { name: "React", icon: "react", category: "Frontend", color: "#61DAFB" },
+    { name: "Next.js", icon: "nextjs", category: "Framework", color: "#000000" },
+    { name: "Node.js", icon: "nodejs", category: "Runtime", color: "#5FA04E" },
+    // Backend & data
+    { name: "Express", icon: "express", category: "Backend", color: "#0A0A0A" },
     { name: "PostgreSQL", icon: "postgres", category: "Database", color: "#4169E1" },
+    { name: "Drizzle", icon: "drizzle", category: "ORM", color: "#C5F74F" },
+    { name: "Kafka", icon: "kafka", category: "Streaming", color: "#231F20" },
+    { name: "Redis", icon: "redis", category: "Database", color: "#FF4438" },
+    // Infra & tools
     { name: "Docker", icon: "docker", category: "DevOps", color: "#2496ED" },
+    { name: "Vercel", icon: "vercel", category: "Cloud", color: "#000000" },
+    { name: "Supabase", icon: "supabase", category: "Database", color: "#3FCF8E" },
+    { name: "Tailwind CSS", icon: "tailwind", category: "Styling", color: "#06B6D4" },
     { name: "Figma", icon: "figma", category: "Design", color: "#F24E1E" },
+    { name: "Git", icon: "git", category: "Tooling", color: "#F03C2E" },
   ],
 
   // === PROJECTS & CASE STUDIES ===
