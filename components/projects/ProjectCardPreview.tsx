@@ -88,8 +88,13 @@ export function ProjectCardPreview({
       className="w-full lg:w-1/2 aspect-[16/10] rounded-[var(--card-radius-inner)] overflow-hidden bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] relative shadow-md shrink-0 group/preview"
     >
       {/* Base Static Mockup / Image */}
+      {slug === "sockets" && (
+        <div className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-full bg-[var(--bg-canvas)]/90 backdrop-blur-md border border-[var(--border-subtle)] text-[11px] font-mono text-[var(--text-secondary)] shadow-sm">
+          Screen recording placeholder
+        </div>
+      )}
       <img
-        src={image}
+        src={slug === "sockets" ? "/projects/teaser-sportz.webp" : image}
         alt={title}
         loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : "auto"}

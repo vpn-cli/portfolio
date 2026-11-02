@@ -72,21 +72,21 @@ const posterLogs: LogItem[] = [
     label: "BCAST",
     msg: "Fanout to 4 match:402 listeners",
     meta: "payload: 142B",
-    latency: "0.6ms",
+    latency: "<80ms",
   },
   {
     time: "17:42:03.000",
     tag: "ping",
     label: "PING",
     msg: "30s heartbeat sweep: 4/4 clients alive",
-    latency: "<1ms",
+    latency: "<80ms",
   },
 ];
 
 const INITIAL: SocketsState = {
   activeSockets: 2,
   msgsPerSec: 48,
-  avgLatency: "0.8ms",
+  avgLatency: "<80ms",
   latencyPoints: [14, 18, 12, 22, 16, 20, 15],
   logs: initialLogs,
   subscribed: false,
@@ -97,7 +97,7 @@ const INITIAL: SocketsState = {
 const POSTER: SocketsState = {
   activeSockets: 4,
   msgsPerSec: 240,
-  avgLatency: "0.6ms",
+  avgLatency: "<80ms",
   latencyPoints: [14, 18, 12, 22, 16, 20, 15, 26, 18, 12, 14, 11],
   logs: posterLogs,
   subscribed: true,
@@ -148,7 +148,7 @@ async function script(a: Act<SocketsState>) {
     activeSockets: 4,
     subscribedClients: 4,
     msgsPerSec: 240,
-    avgLatency: "0.6ms",
+    avgLatency: "<80ms",
     latencyPoints: [14, 18, 12, 22, 16, 20, 15, 26, 18, 12, 14, 11],
     logs: [
       ...s.logs,
@@ -158,7 +158,7 @@ async function script(a: Act<SocketsState>) {
         label: "BCAST",
         msg: "Fanout to 4 match:402 listeners",
         meta: "payload: 142B",
-        latency: "0.6ms",
+        latency: "<80ms",
       },
     ],
   }));
@@ -175,7 +175,7 @@ async function script(a: Act<SocketsState>) {
         tag: "ping",
         label: "PING",
         msg: "30s heartbeat sweep: 4/4 clients alive",
-        latency: "<1ms",
+        latency: "<80ms",
       },
     ],
   }));
@@ -218,7 +218,7 @@ export function SocketsShowcase() {
                   </div>
                   <div className="ss-ws-term-badge">
                     <span className="ss-ws-pulse" />
-                    <span>ws://localhost:8080/ws</span>
+                    <span>wss://sportz-api.onrender.com/ws</span>
                   </div>
                 </div>
 

@@ -40,7 +40,7 @@ export default function ProjectsPage() {
               Selected work & technical case studies
             </h1>
             <p className="type-body2 text-[var(--text-secondary)] max-w-2xl leading-relaxed">
-              High-concurrency systems, compiler runtimes, and real-time distributed pipelines.
+              Three projects: a live sports engine, an event-driven store, and an AI app builder.
             </p>
           </header>
 
@@ -79,14 +79,14 @@ export default function ProjectsPage() {
                       {project.tagline}
                     </p>
 
-                    {/* Metrics / Deliverables Badges */}
+                    {/* Metrics Badges */}
                     <div className="flex items-center gap-2 flex-wrap mb-4">
-                      {project.metrics.slice(0, 2).map((metric) => (
+                      {project.metrics.slice(0, 2).map((m, mIdx) => (
                         <span
-                          key={metric}
+                          key={mIdx}
                           className="text-xs font-mono font-medium px-2.5 py-1 rounded-md bg-[var(--surface-tile-elevated)] text-[var(--text-secondary)] border border-[var(--border-subtle)]"
                         >
-                          {metric}
+                          {m.value} · {m.label}
                         </span>
                       ))}
                     </div>
@@ -102,9 +102,9 @@ export default function ProjectsPage() {
                       <ArrowUpRight className="w-4 h-4 transition-transform motion-safe:group-hover/btn:translate-x-0.5 motion-safe:group-hover/btn:-translate-y-0.5 motion-reduce:transform-none" aria-hidden="true" />
                     </Link>
 
-                    {project.liveUrl && (
+                    {(project.links.repo || project.githubUrl) && (
                       <a
-                        href={project.liveUrl}
+                        href={project.links.repo || project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="min-h-[44px] inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] text-[var(--text-primary)] font-medium text-sm transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
