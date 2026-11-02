@@ -96,14 +96,17 @@ export function ContactTile({ className = "" }: { className?: string }) {
   return (
     <BentoTile className={className} cursorText="Contact" ariaLabel="Contact Vipin Kaushik">
       <div className="w-full h-full flex flex-col justify-between p-1 sm:p-2">
-        {/* Top Header: Big, bold recruiter-targeted CTA */}
-        <div className="space-y-2.5">
+        {/* Top Header: CTA */}
+        <div className="space-y-2">
           <h3 className="text-[26px] sm:text-[30px] xl:text-[32px] 2xl:text-[36px] font-bold text-[var(--text-primary)] leading-[1.1] tracking-[-0.03em]">
-            Hiring? Let’s talk.
+            Let’s talk.
           </h3>
+          <p className="text-[14px] sm:text-[15px] xl:text-[16px] text-[var(--text-secondary)] leading-snug">
+            Roles, collaborations, or a chat about backend systems or drawing.
+          </p>
 
           {/* Inlined Local Time & Status */}
-          <div className="flex items-start sm:items-center gap-2 text-[14px] sm:text-[15px] xl:text-[16px] text-[var(--text-secondary)] min-h-[24px] leading-snug sm:leading-normal">
+          <div className="flex items-start sm:items-center gap-2 text-[14px] sm:text-[15px] xl:text-[16px] text-[var(--text-secondary)] min-h-[24px] leading-snug sm:leading-normal pt-1">
             {timeState ? (
               <>
                 {timeState.isSun ? (
