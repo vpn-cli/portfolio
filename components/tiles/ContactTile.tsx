@@ -1,20 +1,110 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BentoTile } from "./BentoTile";
-import { ArrowUpRight, Copy, Check, Mail } from "lucide-react";
+import { ArrowUpRight, Copy, Check, Mail, Sun, Moon } from "lucide-react";
+
+interface LocalTimeState {
+  timeStr: string;
+  isSun: boolean;
+  statusText: string;
+}
+
+function getIstStatus(mockHour?: number | null): LocalTimeState {
+  const now = new Date();
+
+  // Extract hour in Asia/Kolkata (0..23)
+  const hourFormatter = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Kolkata",
+    hour: "numeric",
+    hourCycle: "h23",
+  });
+  const realHour = parseInt(hourFormatter.format(now), 10);
+  const hour24 = typeof mockHour === "number" ? mockHour : realHour;
+
+  // Format 12-hour time without seconds
+  let timeStr: string;
+  if (typeof mockHour === "number") {
+    const h12 = hour24 % 12 || 12;
+    const ampm = hour24 >= 12 ? "PM" : "AM";
+    const minPart = new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Kolkata",
+      minute: "2-digit",
+    }).format(now);
+    timeStr = `${h12}:${minPart} ${ampm}`;
+  } else {
+    timeStr = new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Kolkata",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    }).format(now);
+  }
+
+  // Sun from 08:00 to 19:59 IST, Moon otherwise
+  const isSun = hour24 >= 8 && hour24 < 20;
+
+  // At night (22:00–07:59 IST), second half changes to "probably asleep, replies in the morning"
+  const isNight = hour24 >= 22 || hour24 < 8;
+  const statusText = isNight
+    ? "probably asleep, replies in the morning"
+    : "usually replies within a day";
+
+  return { timeStr, isSun, statusText };
+}
 
 export function ContactTile({ className = "" }: { className?: string }) {
   const email = "vipinkaushik20771041@gmail.com";
   const [copied, setCopied] = useState(false);
+  const [timeState, setTimeState] = useState<LocalTimeState | null>(null);
+
+  useEffect(() => {
+    // Check optional query param for manual mocking / testing (?mockHour=23)
+    const params = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+    const mockParam = params?.get("mockHour");
+    const mockHour = mockParam !== null && mockParam !== undefined ? parseInt(mockParam, 10) : null;
+
+    const update = () => {
+      setTimeState(getIstStatus(mockHour));
+    };
+    update();
+
+    // Schedule update on the boundary of the next full minute, then repeat once a minute
+    const now = new Date();
+    const msToNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+    let intervalId: NodeJS.Timeout | null = null;
+    const timeoutId = setTimeout(() => {
+      update();
+      intervalId = setInterval(update, 60000);
+    }, Math.max(50, msToNextMinute));
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, []);
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(email);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2200);
+      setTimeout(() => setCopied(false), 1500);
     } catch {
-      // Fallback
+      try {
+        const textarea = document.createElement("textarea");
+        textarea.value = email;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1500);
+      } catch {
+        // Fallback silently
+      }
     }
   };
 
@@ -29,20 +119,36 @@ export function ContactTile({ className = "" }: { className?: string }) {
             Hiring? Let’s talk.
           </h3>
 
-          <div className="flex items-center gap-2 text-[15px] sm:text-[16px] text-[var(--text-secondary)]">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" aria-hidden="true" />
-            <span>Open to SDE roles · replies within a day</span>
+          {/* Inlined Local Time & Status */}
+          <div className="flex items-center gap-2 text-[15px] sm:text-[16px] text-[var(--text-secondary)] min-h-[24px]">
+            {timeState ? (
+              <>
+                {timeState.isSun ? (
+                  <Sun className="w-4 h-4 shrink-0 text-[var(--text-secondary)]" aria-hidden="true" />
+                ) : (
+                  <Moon className="w-4 h-4 shrink-0 text-[var(--text-secondary)]" aria-hidden="true" />
+                )}
+                <span className="tabular-nums">
+                  {timeState.timeStr} in India · {timeState.statusText}
+                </span>
+              </>
+            ) : (
+              <span className="invisible select-none inline-flex items-center gap-2" aria-hidden="true">
+                <span className="w-4 h-4 shrink-0 inline-block" />
+                <span>9:27 AM in India · usually replies within a day</span>
+              </span>
+            )}
           </div>
         </div>
 
         {/* Center / Bottom: Large Clickable Email + Copy & Mail Actions */}
         <div className="pt-4 mt-auto space-y-2.5">
           {/* Large clickable email block with copy button */}
-          <div className="w-full flex items-center justify-between p-3 sm:p-3.5 rounded-2xl bg-[var(--surface-tile-elevated)] border border-transparent hover:border-[var(--border-hover)] transition-colors">
+          <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-2 p-3 sm:p-3.5 rounded-2xl bg-[var(--surface-tile-elevated)] border border-transparent hover:border-[var(--border-hover)] transition-colors">
             <button
               onClick={handleCopy}
               type="button"
-              className="text-left font-medium text-[15px] sm:text-[16px] text-[var(--text-primary)] hover:text-sky-500 transition-colors truncate focus-visible:outline-none"
+              className="text-left font-medium text-[clamp(13px,3.2vw,16px)] text-[var(--text-primary)] hover:text-sky-500 transition-colors focus-visible:outline-none"
               title="Click to copy email address"
             >
               {email}
@@ -52,12 +158,12 @@ export function ContactTile({ className = "" }: { className?: string }) {
               onClick={handleCopy}
               type="button"
               aria-label={copied ? "Email copied to clipboard" : "Copy email address"}
-              className="ml-2 px-3 py-1.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-transparent text-[13px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center gap-1.5 transition-colors shrink-0 cursor-pointer active:scale-95"
+              className="w-full sm:w-auto px-3 py-1.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-transparent text-[13px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center justify-center gap-1.5 transition-colors shrink-0 cursor-pointer active:scale-95"
             >
               {copied ? (
                 <>
                   <Check className="w-3.5 h-3.5 text-emerald-500" aria-hidden="true" />
-                  <span className="text-emerald-500 font-medium">Copied!</span>
+                  <span className="text-emerald-500 font-medium">Copied</span>
                 </>
               ) : (
                 <>

@@ -84,14 +84,6 @@ html.dark {
   --card-shadow-hover: 0 4px 12px -2px rgba(0, 0, 0, 0.4);
   --card-inner-bevel: none;
 
-  /* Clock Face Tokens (Dark Mode) */
-  --clock-face-bg: #18181b;
-  --clock-face-ring: rgba(255, 255, 255, 0.12);
-  --clock-hand-primary: #f4f4f5;
-  --clock-hand-secondary: #a1a1aa;
-  --clock-tick-major: #f4f4f5;
-  --clock-tick-minor: #52525b;
-
   /* Film Grain Overlay Tokens (Dark Mode) */
   --grain-opacity: 0.09;
   --grain-blend: screen;
@@ -117,14 +109,6 @@ html.light {
   --card-shadow: none;
   --card-shadow-hover: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
   --card-inner-bevel: none;
-
-  /* Clock Face Tokens (Light Mode) */
-  --clock-face-bg: #f4f4f6;
-  --clock-face-ring: rgba(0, 0, 0, 0.08);
-  --clock-hand-primary: #18181b;
-  --clock-hand-secondary: #71717a;
-  --clock-tick-major: #18181b;
-  --clock-tick-minor: #a1a1aa;
 
   /* Film Grain Overlay Tokens (Light Mode) */
   --grain-opacity: 0.06;

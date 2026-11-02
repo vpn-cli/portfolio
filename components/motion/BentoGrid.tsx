@@ -8,7 +8,6 @@ import { LinksTile } from "@/components/tiles/LinksTile";
 import { StackTile } from "@/components/tiles/StackTile";
 import { ByteTile } from "@/components/tiles/ByteTile";
 import { ContactTile } from "@/components/tiles/ContactTile";
-import { ClockTile } from "@/components/tiles/ClockTile";
 
 export function BentoGrid() {
   return (
@@ -49,14 +48,9 @@ export function BentoGrid() {
           <ByteTile className="w-full h-full" />
         </div>
 
-        {/* 8. Contact (cols 4-5, row 3 on desktop) */}
+        {/* 8. Contact (cols 4-6, row 3 on desktop) */}
         <div className="tile-contact w-full h-auto xl:h-full">
           <ContactTile className="w-full h-full" />
-        </div>
-
-        {/* 9. Local Time Clock (col 6, row 3 on desktop) */}
-        <div className="tile-clock w-full h-auto xl:h-full">
-          <ClockTile className="w-full h-full" />
         </div>
       </div>
 
