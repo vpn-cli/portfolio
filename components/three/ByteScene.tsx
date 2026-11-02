@@ -85,6 +85,7 @@ function ByteCharacter({
   isStretching,
   hearts,
   sleepZs,
+  patSpinTrigger,
 }: {
   isHovered: boolean;
   isPressed: boolean;
@@ -106,6 +107,7 @@ function ByteCharacter({
   isStretching: boolean;
   hearts: HeartParticle[];
   sleepZs: SleepZParticle[];
+  patSpinTrigger: number;
 }) {
   const { invalidate } = useThree();
   const groupRef = useRef<THREE.Group>(null);
@@ -147,6 +149,15 @@ function ByteCharacter({
   const blinkTimer = useRef(2.5);
   const isBlinking = useRef(false);
   const blinkProgress = useRef(0);
+  const patSpinRemaining = useRef(0);
+  const lastSpinTrigger = useRef(patSpinTrigger);
+
+  if (patSpinTrigger !== lastSpinTrigger.current) {
+    lastSpinTrigger.current = patSpinTrigger;
+    if (!reducedMotion) {
+      patSpinRemaining.current = 0.55;
+    }
+  }
 
   // Draw Face Canvas Texture depending on state & expressions
   const drawFace = useCallback(
@@ -501,6 +512,18 @@ function ByteCharacter({
         p.rotX += p.vRotX * dt;
         p.rotY += p.vRotY * dt;
 
+        // One-time 360 spin on pat (disabled if reduced-motion)
+        if (patSpinRemaining.current > 0) {
+          patSpinRemaining.current -= dt;
+          p.rotY += (Math.PI * 2 / 0.55) * dt;
+          p.vRotY = 0;
+          if (patSpinRemaining.current <= 0) {
+            p.rotY = p.rotY % (Math.PI * 2);
+            patSpinRemaining.current = 0;
+          }
+          isMoving = true;
+        }
+
         // Antenna Spring Wobble
         const targetAntennaZ =
           -p.vy * 0.55 +
@@ -804,7 +827,11 @@ function ByteCharacter({
   );
 }
 
-export default function ByteScene() {
+export default function ByteScene({
+  initialPatCount,
+}: {
+  initialPatCount?: number | null;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
 
@@ -820,6 +847,31 @@ export default function ByteScene() {
   const [dragDelta, setDragDelta] = useState({ dx: 0, dy: 0 });
   const [pointerGaze, setPointerGaze] = useState({ x: 0, y: 0 });
   const [glanceTarget, setGlanceTarget] = useState<{ x: number; y: number } | null>(null);
+
+  // Global Pat Counter state
+  const [patCount, setPatCount] = useState<number | null>(initialPatCount ?? null);
+  const [patSpinTrigger, setPatSpinTrigger] = useState(0);
+  const [floatingPats, setFloatingPats] = useState<{ id: number; x: number }[]>([]);
+  const lastCountedPat = useRef(0);
+
+  useEffect(() => {
+    if (initialPatCount !== undefined && initialPatCount !== null) {
+      setPatCount(initialPatCount);
+    }
+  }, [initialPatCount]);
+
+  useEffect(() => {
+    if (patCount === null) {
+      fetch("/api/pats")
+        .then((res) => res.json())
+        .then((data) => {
+          if (typeof data.count === "number") {
+            setPatCount(data.count);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [patCount]);
 
   // Mood / Reactions
   const [isHappy, setIsHappy] = useState(false);
@@ -891,8 +943,8 @@ export default function ByteScene() {
     }
   }, [isSleeping]);
 
-  // Trigger poke (single click/tap)
-  const triggerPoke = useCallback(() => {
+  // Trigger pat (single click/tap or keyboard Enter/Space)
+  const triggerPat = useCallback(() => {
     wakeUp();
     setIsHappy(true);
     if (happyTimeout.current) clearTimeout(happyTimeout.current);
@@ -900,8 +952,46 @@ export default function ByteScene() {
       setIsHappy(false);
     }, 1200);
 
-    // Spawn 2-3 floating hearts
+    // Spin Byte once (ByteCharacter ignores if reducedMotion is true)
+    setPatSpinTrigger((prev) => prev + 1);
+
+    // Small "+1" floats up from Byte
+    const id = Date.now() + Math.random();
+    const x = (Math.random() - 0.5) * 36;
+    setFloatingPats((prev) => [...prev, { id, x }]);
+    setTimeout(() => {
+      setFloatingPats((prev) => prev.filter((item) => item.id !== id));
+    }, 850);
+
+    // Client-side cooldown of 400ms between counted pats
     const now = Date.now();
+    if (now - lastCountedPat.current >= 400) {
+      lastCountedPat.current = now;
+
+      // Optimistic count increment
+      setPatCount((prev) => (prev ?? 0) + 1);
+
+      // Trigger analytics
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(
+          new CustomEvent("portfolio-analytics", { detail: { name: "byte_pat" } })
+        );
+      }
+
+      fetch("/api/pats", { method: "POST" })
+        .then((res) => {
+          if (res.ok) return res.json();
+          return null;
+        })
+        .then((data) => {
+          if (data && typeof data.count === "number") {
+            setPatCount(data.count);
+          }
+        })
+        .catch(() => {});
+    }
+
+    // Spawn floating hearts
     const newHearts: HeartParticle[] = [
       {
         id: now + 1,
@@ -1236,7 +1326,7 @@ export default function ByteScene() {
     if (isCharging) {
       // Release from charge -> Happy Jump with full 360 spin!
       setIsCharging(false);
-      triggerPoke();
+      triggerPat();
       setSpeechBubble("yay!");
       if (speechTimeout.current) clearTimeout(speechTimeout.current);
       speechTimeout.current = setTimeout(() => {
@@ -1258,7 +1348,7 @@ export default function ByteScene() {
         triggerDizzy();
       }
     } else {
-      // Tap/Click handling
+      // Tap/Click handling -> Pat Byte
       const now = Date.now();
       const timeSinceLastClick = now - (recentClicks.current[recentClicks.current.length - 1] || 0);
 
@@ -1273,7 +1363,7 @@ export default function ByteScene() {
           triggerDizzy();
           recentClicks.current = [];
         } else {
-          triggerPoke();
+          triggerPat();
         }
       }
     }
@@ -1288,20 +1378,20 @@ export default function ByteScene() {
     setDragDelta({ dx: 0, dy: 0 });
   };
 
-  // Keyboard accessibility: Enter = poke, D = wave
+  // Keyboard accessibility: Enter or Space = Pat Byte, D = wave
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         setIsPressed(true);
-        triggerPoke();
+        triggerPat();
         setTimeout(() => setIsPressed(false), 150);
       } else if (e.key === "d" || e.key === "D") {
         e.preventDefault();
         triggerWave();
       }
     },
-    [triggerPoke, triggerWave]
+    [triggerPat, triggerWave]
   );
 
   // Compute captions according to state
@@ -1336,8 +1426,8 @@ export default function ByteScene() {
     <div
       ref={containerRef}
       tabIndex={0}
-      role="region"
-      aria-label="Byte, an interactive robot. Press Enter to poke, D to wave."
+      role="button"
+      aria-label="Pat Byte"
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
@@ -1351,7 +1441,7 @@ export default function ByteScene() {
       }}
       onKeyDown={handleKeyDown}
       style={{ touchAction: "pan-y" }}
-      className="relative w-full h-full min-h-[190px] sm:min-h-[210px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none overflow-hidden focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--border-strong)] rounded-[24px]"
+      className="relative w-full h-full min-h-[190px] sm:min-h-[210px] flex items-center justify-center cursor-pointer select-none overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 rounded-[24px]"
     >
       {/* Top Header Labels (Outside 3D Canvas) */}
       <div className="absolute top-3.5 left-4 right-4 flex items-center justify-between pointer-events-none z-20 gap-2">
@@ -1362,6 +1452,17 @@ export default function ByteScene() {
           <span className="hidden xl:inline">desk </span>companion
         </span>
       </div>
+
+      {/* Floating +1 Particles on Pat */}
+      {floatingPats.map((p) => (
+        <span
+          key={p.id}
+          className="pointer-events-none absolute text-[14px] sm:text-[15px] font-bold text-sky-400 select-none animate-pat-float z-30"
+          style={{ left: `calc(50% + ${p.x}px)`, top: "35%" }}
+        >
+          +1
+        </span>
+      ))}
 
       {/* Floating Speech Bubble */}
       {speechBubble && (
@@ -1427,14 +1528,17 @@ export default function ByteScene() {
             isStretching={isStretching}
             hearts={hearts}
             sleepZs={sleepZs}
+            patSpinTrigger={patSpinTrigger}
           />
         </Canvas>
       </div>
 
       {/* Bottom Footer Labels (Outside 3D Canvas) */}
       <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between pointer-events-none z-20 text-[12.5px] sm:text-[13px] text-[var(--text-tertiary)] gap-2">
-        <span className="transition-opacity duration-200 truncate">{moodCaption}</span>
-        <span className="transition-opacity duration-200 shrink-0 text-right">{statusLabel}</span>
+        <span className="truncate">pat me</span>
+        <span className="shrink-0 text-right tabular-nums">
+          {patCount !== null ? `${patCount.toLocaleString()} pats` : "…"}
+        </span>
       </div>
     </div>
   );

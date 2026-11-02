@@ -192,6 +192,32 @@ body::after {
   }
 }
 
+@keyframes pat-float {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.8);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -6px) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -36px) scale(1);
+  }
+}
+
+.animate-pat-float {
+  animation: pat-float 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pat-float {
+    animation-duration: 0.4s;
+    transform: translate(-50%, 0);
+  }
+}
+
 .animate-marquee {
   display: flex;
   width: max-content;

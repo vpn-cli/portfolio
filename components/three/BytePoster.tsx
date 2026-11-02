@@ -2,7 +2,7 @@
 
 import { useTheme } from "@/components/motion/ThemeProvider";
 
-export default function BytePoster() {
+export default function BytePoster({ patCount }: { patCount?: number | null }) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
@@ -161,8 +161,12 @@ export default function BytePoster() {
 
       {/* Bottom Footer Labels - matching ByteScene */}
       <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between pointer-events-none z-20 text-[12.5px] sm:text-[13px] text-[var(--text-tertiary)] gap-2">
-        <span className="truncate">say hi 👋</span>
-        <span className="shrink-0 text-right">active</span>
+        <span className="truncate">pat me</span>
+        <span className="shrink-0 text-right tabular-nums">
+          {patCount !== undefined && patCount !== null
+            ? `${patCount.toLocaleString()} pats`
+            : "pats"}
+        </span>
       </div>
     </div>
   );

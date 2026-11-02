@@ -28,6 +28,18 @@ export function ByteTile({ className = "" }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [inViewport, setInViewport] = useState(false);
   const [webglOk, setWebglOk] = useState(true);
+  const [patCount, setPatCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("/api/pats")
+      .then((res) => res.json())
+      .then((data) => {
+        if (typeof data.count === "number") {
+          setPatCount(data.count);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     setWebglOk(detectWebGL());
@@ -53,7 +65,11 @@ export function ByteTile({ className = "" }: { className?: string }) {
   return (
     <BentoTile className={className} enableTilt={false} noPadding>
       <div ref={containerRef} className="w-full h-full relative overflow-hidden">
-        {inViewport && webglOk ? <ByteScene /> : <BytePoster />}
+        {inViewport && webglOk ? (
+          <ByteScene initialPatCount={patCount} />
+        ) : (
+          <BytePoster patCount={patCount} />
+        )}
       </div>
     </BentoTile>
   );
