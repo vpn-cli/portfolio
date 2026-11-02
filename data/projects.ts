@@ -356,32 +356,26 @@ function broadcastToMatch(matchId, payload) {
       "Three bugs hit during deployment and stress testing, with links to fixing commits.",
     bugs: [
       {
-        title: "Zombie sockets from dropped mobile connections",
-        symptom:
-          "Half-open TCP connections remained in memory indefinitely after mobile clients lost signal.",
-        cause:
-          "Mobile operating systems suspend radios without sending TCP FIN termination packets.",
-        fix: "Added a 30s server-side ping/pong sweep that terminates unresponsive client sockets.",
+        title: "Zombie sockets on dropped mobile connection",
+        symptom: "Half-open TCP sockets persisted after mobile signal loss.",
+        cause: "Mobile OS suspends radio without TCP FIN packet.",
+        fix: "Added 30s server-side ping sweep to prune dead sockets.",
         commitHash: "39e86d4",
         commitUrl: "https://github.com/vpn-cli/sockets/commit/39e86d4",
       },
       {
         title: "Missing environment keys crashed production boot",
-        symptom:
-          "Server crashed on Render startup, and Vercel clients were rejected with 403 Forbidden.",
-        cause:
-          "Arcjet environment key was unset on first deploy, and default CORS blocked cross-origin Vercel headers.",
-        fix: "Added environment fallbacks and explicit CORS headers for the Vercel production domain.",
+        symptom: "Backend crashed on boot and Vercel clients got 403 Forbidden.",
+        cause: "Arcjet key was unset and CORS blocked client domain.",
+        fix: "Added config fallbacks and explicit Vercel CORS headers.",
         commitHash: "b483272",
         commitUrl: "https://github.com/vpn-cli/sockets/commit/b483272",
       },
       {
         title: "Client build omitted API base URLs",
-        symptom:
-          "Production frontend compiled with undefined WebSocket URLs baked into static assets.",
-        cause:
-          "Docker container failed to pass VITE_ prefixed build arguments during compilation.",
-        fix: "Injected VITE_API_BASE_URL and VITE_WS_BASE_URL build args into the Docker compilation step.",
+        symptom: "Frontend assets compiled with undefined WebSocket URLs.",
+        cause: "Docker build omitted VITE_ environment arguments.",
+        fix: "Injected API and WS build args into Docker compilation.",
         commitHash: "3d8559e",
         commitUrl: "https://github.com/vpn-cli/sockets/commit/3d8559e",
       },
@@ -649,31 +643,25 @@ function broadcastToMatch(matchId, payload) {
     bugs: [
       {
         title: "Dual-write state inconsistency on broker disconnect",
-        symptom:
-          "Payments committed to database without creating a matching order record.",
-        cause:
-          "HTTP publish to Kafka failed immediately after the database commit succeeded.",
-        fix: "Committed payment and outbox records in the same atomic SQL transaction.",
+        symptom: "Payment written to database without order fulfillment.",
+        cause: "HTTP publish to Kafka failed after database commit.",
+        fix: "Committed payment and outbox event in one SQL transaction.",
         commitHash: "a94f12d",
         commitUrl: "https://github.com/vpn-cli/StreamMart/commit/a94f12d",
       },
       {
         title: "Duplicate notifications during consumer rebalance",
-        symptom:
-          "Email notification service dispatched duplicate order receipts on restart.",
-        cause:
-          "Kafka consumer group rebalance replayed uncommitted message batches.",
-        fix: "Implemented idempotency keys in Redis to de-duplicate event handling.",
+        symptom: "Notification worker sent duplicate receipts on restart.",
+        cause: "Consumer group rebalance replayed uncommitted batches.",
+        fix: "Stored idempotency keys in Redis to deduplicate events.",
         commitHash: "e38c91a",
         commitUrl: "https://github.com/vpn-cli/StreamMart/commit/e38c91a",
       },
       {
         title: "Gateway timeout on slow downstream services",
-        symptom:
-          "Checkout requests returned 504 Gateway Timeout during service restarts.",
-        cause:
-          "API Gateway reverse proxy lacked bounded timeouts and circuit breakers.",
-        fix: "Added 3-second proxy timeouts and fallback queue handling in gateway.",
+        symptom: "Checkout requests returned 504 Gateway Timeout on restart.",
+        cause: "Gateway lacked bounded timeouts and circuit breakers.",
+        fix: "Added 3s proxy timeouts and fallback queue handling.",
         commitHash: "7b204e1",
         commitUrl: "https://github.com/vpn-cli/StreamMart/commit/7b204e1",
       },
@@ -947,31 +935,25 @@ export function AstRenderer({ node }: { node: AstNode }) {
     bugs: [
       {
         title: "Markdown code fencing broke JSON parser",
-        symptom:
-          "Copilot parser threw unexpected token syntax errors on streamed responses.",
-        cause:
-          "Llama-3.3 occasionally wrapped valid JSON in markdown code fences (```json).",
-        fix: "Built an extraction pipeline that strips markdown delimiters before Zod validation.",
+        symptom: "Copilot threw unexpected token syntax errors on stream.",
+        cause: "Model wrapped valid JSON in markdown code fences.",
+        fix: "Added pipeline that strips code fences before Zod parse.",
         commitHash: "4272697",
         commitUrl: "https://github.com/vpn-cli/appforge/commit/4272697",
       },
       {
         title: "Serverless functions buffered edge streams",
-        symptom:
-          "Copilot responses hung until generation finished completely instead of streaming tokens.",
-        cause:
-          "Node.js serverless functions buffered HTTP chunked transfers on Vercel.",
-        fix: "Exported runtime = 'edge' on the copilot API route for native ReadableStream passthrough.",
+        symptom: "Copilot responses buffered until generation completed.",
+        cause: "Serverless functions buffered chunked HTTP transfers.",
+        fix: "Exported edge runtime on copilot API for streaming.",
         commitHash: "05c4cc8",
         commitUrl: "https://github.com/vpn-cli/appforge/commit/05c4cc8",
       },
       {
         title: "Auth middleware masked server action errors",
-        symptom:
-          "Unauthenticated sandbox visitors saw cryptic internal server error exceptions.",
-        cause:
-          "Clerk Edge middleware intercepted server action RPC calls on unauthenticated demo paths.",
-        fix: "Configured route matchers for sandbox aliases and returned structured error objects.",
+        symptom: "Unauthenticated demo visitors saw cryptic 500 errors.",
+        cause: "Clerk middleware intercepted server actions on demo paths.",
+        fix: "Configured route matchers to allow public sandbox actions.",
         commitHash: "bf7b018",
         commitUrl: "https://github.com/vpn-cli/appforge/commit/bf7b018",
       },

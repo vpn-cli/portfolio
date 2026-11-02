@@ -125,3 +125,4 @@ This document catalogs every captured visual asset for Sportz, AppForge, and Str
   4. Interactive Architecture Node Explorer (Clickable nodes with real TypeScript code snippets)
 - **Dropped**:
   - Generic mock UI templates: dropped entirely in strict adherence to rule ("Don't fake a UI. Capture a terminal / architecture").
+

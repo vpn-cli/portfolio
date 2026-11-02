@@ -107,8 +107,8 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
                 </span>
               </div>
 
-              <div className="py-2">
-                <span className="text-xs text-[var(--text-secondary)] block">
+              <div className="py-1">
+                <span className="text-xs text-[var(--text-secondary)] font-mono block">
                   {slug === "sockets"
                     ? "90%+ of polling queries return unchanged state."
                     : slug === "stream-mart"
@@ -116,23 +116,12 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
                     : "Syntax hallucination causes blank-screen crash."}
                 </span>
               </div>
-
-              <div className="pt-2 border-t border-[var(--border-subtle)] text-[11px] font-mono text-red-500 flex items-center justify-between">
-                <span>Failure mode:</span>
-                <span>
-                  {slug === "sockets"
-                    ? "Connection pool exhaustion"
-                    : slug === "stream-mart"
-                    ? "Dual-write inconsistency"
-                    : "Cross-site script injection"}
-                </span>
-              </div>
             </div>
           </div>
 
-          <div className="pt-2 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-tertiary)] flex items-center gap-1.5">
+          <div className="pt-2 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-tertiary)] flex items-center gap-1.5 font-mono">
             <XCircle className="w-3.5 h-3.5 text-neutral-400 dark:text-neutral-500 shrink-0" aria-hidden="true" />
-            <span>High latency · Connection pool spikes under load</span>
+            <span>High latency · Connection pool spikes</span>
           </div>
         </div>
 
@@ -178,30 +167,19 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
                 </span>
               </div>
 
-              <div className="py-2">
-                <span className="text-xs text-[var(--text-secondary)] block">
+              <div className="py-1">
+                <span className="text-xs text-emerald-500 font-mono block">
                   {slug === "sockets"
-                    ? "Dispatches frames only when database scores mutate."
+                    ? "Dispatches frames strictly on database mutations."
                     : slug === "stream-mart"
                     ? "Payment and outbox event commit in one SQL transaction."
                     : "Model emits JSON tokens mapped directly to React DOM."}
                 </span>
               </div>
-
-              <div className="pt-2 border-t border-[var(--border-subtle)] text-[11px] font-mono text-emerald-500 flex items-center justify-between">
-                <span>Reliability:</span>
-                <span>
-                  {slug === "sockets"
-                    ? "1 socket · 0 empty polls"
-                    : slug === "stream-mart"
-                    ? "Zero message loss"
-                    : "Deterministic mount"}
-                </span>
-              </div>
             </div>
           </div>
 
-          <div className="pt-2 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-primary)] flex items-center gap-1.5">
+          <div className="pt-2 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-primary)] flex items-center gap-1.5 font-mono">
             <CheckCircle2 className="w-3.5 h-3.5 text-[var(--text-primary)] shrink-0" aria-hidden="true" />
             <span>Sub-second delivery · Minimal bandwidth overhead</span>
           </div>

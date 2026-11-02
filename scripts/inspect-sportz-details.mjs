@@ -31,3 +31,4 @@ async function inspectMatchDetails() {
 }
 
 inspectMatchDetails().catch(console.error);
+

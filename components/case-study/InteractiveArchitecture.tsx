@@ -95,12 +95,9 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
                     </span>
                   </div>
 
-                  <h3 className="text-xs font-medium text-[var(--text-primary)] truncate">
+                  <h3 className="text-xs font-medium text-[var(--text-primary)] truncate mt-1">
                     {node.title}
                   </h3>
-                  <p className="text-[10px] text-[var(--text-secondary)] truncate mt-0.5">
-                    {node.subtitle}
-                  </p>
                 </div>
 
                 <div className="mt-2 pt-1.5 border-t border-[var(--border-subtle)] flex items-center justify-between text-[10px] font-mono text-[var(--text-tertiary)]">
