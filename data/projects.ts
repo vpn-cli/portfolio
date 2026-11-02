@@ -419,7 +419,7 @@ function broadcastToMatch(matchId, payload) {
     heroClip: {
       mp4: "/videos/stream-mart/brag.mp4",
       webm: "/videos/stream-mart/brag.webm",
-      poster: "/projects/stream-mart/stream-mart-event-flow.webp",
+      poster: "/projects/stream-mart/stream-mart-diagram.webp",
       caption: "Diagram: Transactional outbox event flow and decoupled microservice communication.",
     },
     problemVisualCaption: "Synchronous HTTP cascades versus asynchronous Kafka outbox events.",

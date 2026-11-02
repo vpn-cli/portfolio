@@ -71,7 +71,7 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
       <div className="rounded-[var(--card-radius)] bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] p-4 sm:p-5 shadow-sm">
         <div className="flex items-center justify-between text-xs text-[var(--text-tertiary)] pb-3 mb-3 border-b border-[var(--border-subtle)]">
           <span className="font-medium text-[var(--text-primary)]">System Topology</span>
-          <span className="hidden sm:inline font-mono text-[11px]">Click node to inspect</span>
+          <span className="hidden sm:inline">Select stage to inspect pipeline runtime</span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
@@ -82,11 +82,10 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
                 key={node.id}
                 type="button"
                 onClick={() => handleSelectNode(idx)}
-                className={`text-left p-3 rounded-xl border transition-all duration-150 flex flex-col justify-between min-h-[110px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${
-                  isSelected
-                    ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-sm"
-                    : "bg-[var(--surface-tile)] border-[var(--border-subtle)] hover:border-[var(--border-hover)] opacity-85 hover:opacity-100"
-                }`}
+                className={`text-left p-3 rounded-xl border transition-all duration-150 flex flex-col justify-between min-h-[110px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${isSelected
+                  ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-sm"
+                  : "bg-[var(--surface-tile)] border-[var(--border-subtle)] hover:border-[var(--border-hover)] opacity-85 hover:opacity-100"
+                  }`}
                 aria-pressed={isSelected}
                 aria-label={`Inspect stage 0${idx + 1}: ${node.title}`}
               >
@@ -100,9 +99,12 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
                     </span>
                   </div>
 
-                  <h3 className="text-xs font-medium text-[var(--text-primary)] truncate mt-1">
+                  <h3 className="text-xs font-medium text-[var(--text-primary)] truncate">
                     {node.title}
                   </h3>
+                  <p className="text-[10px] text-[var(--text-secondary)] truncate mt-0.5">
+                    {node.subtitle}
+                  </p>
                 </div>
 
                 <div className="mt-2 pt-1.5 border-t border-[var(--border-subtle)] flex items-center justify-between text-[10px] font-mono text-[var(--text-tertiary)]">
@@ -143,11 +145,10 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
                   role="tab"
                   aria-selected={viewMode === "screenshot"}
                   onClick={() => setViewMode("screenshot")}
-                  className={`min-h-[36px] px-3 py-1 rounded-md text-xs font-medium inline-flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${
-                    viewMode === "screenshot"
-                      ? "bg-[var(--surface-tile-elevated)] text-[var(--text-primary)] shadow-sm"
-                      : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-                  }`}
+                  className={`min-h-[36px] px-3 py-1 rounded-md text-xs font-medium inline-flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${viewMode === "screenshot"
+                    ? "bg-[var(--surface-tile-elevated)] text-[var(--text-primary)] shadow-sm"
+                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                    }`}
                 >
                   <Camera className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>Live capture</span>
@@ -158,11 +159,10 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
                   role="tab"
                   aria-selected={viewMode === "code"}
                   onClick={() => setViewMode("code")}
-                  className={`min-h-[36px] px-3 py-1 rounded-md text-xs font-medium inline-flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${
-                    viewMode === "code"
-                      ? "bg-[var(--surface-tile-elevated)] text-[var(--text-primary)] shadow-sm"
-                      : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-                  }`}
+                  className={`min-h-[36px] px-3 py-1 rounded-md text-xs font-medium inline-flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${viewMode === "code"
+                    ? "bg-[var(--surface-tile-elevated)] text-[var(--text-primary)] shadow-sm"
+                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                    }`}
                 >
                   <Code2 className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>Code snippet</span>
@@ -209,7 +209,7 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
                   className="min-h-[44px] px-4 py-2 rounded-xl bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] inline-flex items-center justify-between transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
                   aria-expanded={showCode}
                 >
-                  <span>{showCode ? "Hide code" : "Inspect code"}</span>
+                  <span>{showCode ? "Hide implementation code" : "Inspect implementation code"}</span>
                   <ChevronDown
                     className={`w-3.5 h-3.5 transition-transform duration-200 ${showCode ? "rotate-180" : ""}`}
                     aria-hidden="true"
@@ -227,6 +227,9 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
                   </div>
                 )}
               </div>
+              <p className="text-xs text-[var(--text-tertiary)] font-mono text-center">
+                Click to inspect {activeNode.codeSnippet.filename} implementation details.
+              </p>
             </div>
           ) : (
             <div className="p-5 rounded-xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] text-xs text-[var(--text-secondary)]">

@@ -47,3 +47,4 @@ renderDiagram().catch((err) => {
   console.error("Render error:", err);
   process.exit(1);
 });
+
