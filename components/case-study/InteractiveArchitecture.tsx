@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Server, Database, Shield, Radio, Smartphone, Code2, Camera } from "lucide-react";
+import { Server, Database, Shield, Radio, Smartphone, Code2, Camera, ChevronDown } from "lucide-react";
 import { CodeHighlight } from "./CodeHighlight";
 import type { ArchitectureNode } from "@/data/projects";
 
@@ -12,7 +12,9 @@ interface InteractiveArchitectureProps {
 
 export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps) {
   const [selectedIdx, setSelectedIdx] = useState(0);
-  const [viewMode, setViewMode] = useState<"code" | "screenshot">("code");
+  // Default to screenshot if available for visual-first presentation
+  const [viewMode, setViewMode] = useState<"screenshot" | "code">("screenshot");
+  const [showCode, setShowCode] = useState(false);
 
   const activeNode = nodes[selectedIdx] || nodes[0];
 
@@ -48,11 +50,15 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
 
   const handleSelectNode = (idx: number) => {
     setSelectedIdx(idx);
-    // If the node has screenshot, preserve preference, else fallback to code
-    if (!nodes[idx].screenshotUrl && viewMode === "screenshot") {
+    setShowCode(false);
+    if (nodes[idx].screenshotUrl) {
+      setViewMode("screenshot");
+    } else {
       setViewMode("code");
     }
   };
+
+  const hasScreenshot = Boolean(activeNode.screenshotUrl);
 
   return (
     <div className="w-full space-y-4">
@@ -60,7 +66,7 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
       <div className="rounded-[var(--card-radius)] bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] p-4 sm:p-5 shadow-sm">
         <div className="flex items-center justify-between text-xs text-[var(--text-tertiary)] pb-3 mb-3 border-b border-[var(--border-subtle)]">
           <span className="font-medium text-[var(--text-primary)]">System Topology</span>
-          <span className="hidden sm:inline">Select node to inspect code or live capture</span>
+          <span className="hidden sm:inline">Select stage to inspect pipeline runtime</span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
@@ -109,9 +115,10 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
         </div>
       </div>
 
-      {/* ━━━ INSPECTOR PANEL: CODE OR MATCHING SCREENSHOT ━━━ */}
+      {/* ━━━ INSPECTOR PANEL: SCREENSHOT OR CODE DISCLOSURE ━━━ */}
       {activeNode && (
         <div className="space-y-3">
+          {/* Header Row: Stage Description + Tabs (if both screenshot and code exist) */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
             <div className="flex items-center gap-2">
               <span className="text-xs font-mono text-[var(--text-tertiary)]">
@@ -123,28 +130,12 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
               </span>
             </div>
 
-            {/* Toggle tabs if node has both code and screenshot */}
-            {activeNode.screenshotUrl && (
+            {hasScreenshot && activeNode.codeSnippet && (
               <div
                 role="tablist"
                 aria-label="Node inspector view"
                 className="inline-flex items-center p-0.5 rounded-lg bg-[var(--surface-tile)] border border-[var(--border-subtle)] self-start sm:self-auto"
               >
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={viewMode === "code"}
-                  onClick={() => setViewMode("code")}
-                  className={`min-h-[36px] px-3 py-1 rounded-md text-xs font-medium inline-flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${
-                    viewMode === "code"
-                      ? "bg-[var(--surface-tile-elevated)] text-[var(--text-primary)] shadow-sm"
-                      : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-                  }`}
-                >
-                  <Code2 className="w-3.5 h-3.5" aria-hidden="true" />
-                  <span>Code snippet</span>
-                </button>
-
                 <button
                   type="button"
                   role="tab"
@@ -159,11 +150,26 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
                   <Camera className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>Live capture</span>
                 </button>
+
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={viewMode === "code"}
+                  onClick={() => setViewMode("code")}
+                  className={`min-h-[36px] px-3 py-1 rounded-md text-xs font-medium inline-flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${
+                    viewMode === "code"
+                      ? "bg-[var(--surface-tile-elevated)] text-[var(--text-primary)] shadow-sm"
+                      : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                  }`}
+                >
+                  <Code2 className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>Code snippet</span>
+                </button>
               </div>
             )}
           </div>
 
-          {/* Content slot */}
+          {/* Visual Screen Capture (Dominates half viewport) */}
           {viewMode === "screenshot" && activeNode.screenshotUrl ? (
             <div className="space-y-2">
               <div className="w-full aspect-[16/10] rounded-[var(--card-radius)] overflow-hidden bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] relative shadow-md">
@@ -181,14 +187,46 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
             </div>
           ) : activeNode.codeSnippet ? (
             <div className="space-y-2">
-              <CodeHighlight
-                filename={activeNode.codeSnippet.filename}
-                language={activeNode.codeSnippet.language}
-                code={activeNode.codeSnippet.code}
-                explanation={activeNode.codeSnippet.explanation}
-              />
+              {/* If node has code snippet, show progressive disclosure */}
+              <div className="rounded-[var(--card-radius)] bg-[var(--surface-tile)] border border-[var(--border-subtle)] p-4 flex flex-col justify-between space-y-3">
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <Code2 className="w-4 h-4 text-[var(--text-primary)]" aria-hidden="true" />
+                    <span className="font-mono text-[var(--text-secondary)]">
+                      {activeNode.codeSnippet.filename}
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] text-[var(--text-tertiary)] uppercase">
+                    {activeNode.codeSnippet.language}
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowCode(!showCode)}
+                  className="min-h-[44px] px-4 py-2 rounded-xl bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] inline-flex items-center justify-between transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                  aria-expanded={showCode}
+                >
+                  <span>{showCode ? "Hide implementation code" : "Inspect implementation code"}</span>
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform duration-200 ${showCode ? "rotate-180" : ""}`}
+                    aria-hidden="true"
+                  />
+                </button>
+
+                {showCode && (
+                  <div className="pt-2">
+                    <CodeHighlight
+                      filename={activeNode.codeSnippet.filename}
+                      language={activeNode.codeSnippet.language}
+                      code={activeNode.codeSnippet.code}
+                      explanation={activeNode.codeSnippet.explanation}
+                    />
+                  </div>
+                )}
+              </div>
               <p className="text-xs text-[var(--text-tertiary)] font-mono text-center">
-                {activeNode.codeSnippet.filename}: implementation for {activeNode.title.toLowerCase()}.
+                Click to inspect {activeNode.codeSnippet.filename} implementation details.
               </p>
             </div>
           ) : (
