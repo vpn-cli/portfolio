@@ -12,9 +12,12 @@ interface InteractiveArchitectureProps {
 
 export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps) {
   const [selectedIdx, setSelectedIdx] = useState(0);
-  // Default to screenshot if available for visual-first presentation
-  const [viewMode, setViewMode] = useState<"screenshot" | "code">("screenshot");
-  const [showCode, setShowCode] = useState(false);
+  const initialHasScreenshot = Boolean(nodes[0]?.screenshotUrl);
+  // Default to screenshot if available for visual-first presentation, otherwise code
+  const [viewMode, setViewMode] = useState<"screenshot" | "code">(
+    initialHasScreenshot ? "screenshot" : "code"
+  );
+  const [showCode, setShowCode] = useState(!initialHasScreenshot);
 
   const activeNode = nodes[selectedIdx] || nodes[0];
 
@@ -50,11 +53,13 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
 
   const handleSelectNode = (idx: number) => {
     setSelectedIdx(idx);
-    setShowCode(false);
-    if (nodes[idx].screenshotUrl) {
+    const nodeHasScreenshot = Boolean(nodes[idx]?.screenshotUrl);
+    if (nodeHasScreenshot) {
       setViewMode("screenshot");
+      setShowCode(false);
     } else {
       setViewMode("code");
+      setShowCode(true);
     }
   };
 

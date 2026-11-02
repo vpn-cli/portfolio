@@ -420,7 +420,7 @@ function broadcastToMatch(matchId, payload) {
       mp4: "/videos/stream-mart/brag.mp4",
       webm: "/videos/stream-mart/brag.webm",
       poster: "/projects/stream-mart/stream-mart-event-flow.webp",
-      caption: "Transactional outbox event flow through Apache Kafka cluster.",
+      caption: "Diagram: Transactional outbox event flow and decoupled microservice communication.",
     },
     problemVisualCaption: "Synchronous HTTP cascades versus asynchronous Kafka outbox events.",
     links: {
@@ -431,42 +431,40 @@ function broadcastToMatch(matchId, payload) {
     metrics: [
       {
         value: "5",
-        label: "Decoupled services",
-        howMeasured: "Gateway, Order, Payment, Analytics, Notification services in Docker Compose",
+        label: "Docker Compose services",
+        howMeasured: "docker-compose.yml lines 4-54: payment-service, order-service, email-service, analytic-service, client",
       },
       {
-        value: "<50ms",
-        label: "Gateway response",
-        howMeasured: "TODO: Marked as placeholder. Needs load test harness in repo.",
-        isTodo: true,
+        value: "3",
+        label: "Kafka event topics",
+        howMeasured: "kafka/admin.js lines 13-17: payment-successful, order-successful, email-successful",
       },
       {
-        value: "100%",
-        label: "Delivery consistency",
-        howMeasured: "TODO: Marked as placeholder. Outbox pattern ensures atomic database commit, but needs chaos test for broker drops.",
-        isTodo: true,
+        value: "At-least-once",
+        label: "Delivery guarantee",
+        howMeasured: "README.md line 51 & payment-service/worker.js: atomic SQL outbox commit with persistent background polling and retry",
       },
     ],
-    problemClaim: "Synchronous service calls cause cascading checkout failures",
+    problemClaim: "Dual-write inconsistency between database commits and broker dispatch",
     problemText:
-      "Synchronous HTTP calls across services cause cascading failures. If payment succeeds but downstream order writes fail, customers are charged without an order.",
+      "When payment commits to PostgreSQL but publishing to Kafka fails due to network partitions, downstream services never receive the event. Chaining synchronous HTTP calls across microservices causes cascading 504 timeouts and unfulfilled paid orders.",
     problemComparison: {
       before: {
         title: "Synchronous Microservices",
         points: [
-          "Checkout calls Payment, Order, and Notification services in sequence",
-          "Downstream latency cascades and causes gateway 504 timeouts",
-          "Dual-write risk: Payment succeeds but Order database write fails",
-          "Tight runtime coupling halts checkout when any service restarts",
+          "Checkout chains HTTP calls across Payment, Order, and Notification services sequentially",
+          "Downstream network spikes or service restarts cause cascading gateway timeouts",
+          "Dual-write hazard: database record persists but subsequent broker publish crashes",
+          "Tight runtime coupling halts checkout when any downstream dependency lags",
         ],
       },
       after: {
         title: "Transactional Outbox & Kafka",
         points: [
-          "Checkout commits payment and outbox event in one atomic SQL transaction",
-          "Background worker polls outbox and streams events to Kafka",
-          "Order and Notification workers consume events asynchronously",
-          "Independent service failure boundaries with zero message loss",
+          "Payment service inserts payment record and outbox_events in one atomic SQL transaction",
+          "Background worker polls outbox table every 5s and reliably publishes to Kafka",
+          "Order, Analytic, and Email consumers process events asynchronously with zero blocking",
+          "Independent failure domains guarantee at-least-once message delivery",
         ],
       },
     },
@@ -477,102 +475,143 @@ function broadcastToMatch(matchId, payload) {
       {
         id: "gateway",
         title: "API Gateway",
-        subtitle: "JWT & Reverse Proxy",
-        tech: "Express Gateway",
-        role: "Validates JWT and proxies requests.",
+        subtitle: "JWT Ingress & Reverse Proxy",
+        tech: "Express 5 & http-proxy-middleware",
+        role: "Validates bearer token and reverse-proxies requests on port 8080.",
         codeSnippet: {
-          filename: "gateway/src/middleware/auth.ts",
-          language: "typescript",
-          code: `export const verifyJwt = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) return res.status(401).json({ error: "Missing token" });
-  const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-  req.user = decoded;
-  next();
-};`,
-          explanation: "Gateway intercepts requests and validates JWT tokens before forwarding to microservices.",
+          filename: "api-gateway/index.js",
+          language: "javascript",
+          code: `// api-gateway/index.js (lines 13-24)
+app.use(
+  "/api/payment",
+  verifyToken, 
+  createProxyMiddleware({
+    target: process.env.PAYMENT_SERVICE_URL || "http://localhost:8000",
+    changeOrigin: true,
+    pathRewrite: {
+      "^/api/payment": "/", 
+    },
+  })
+);`,
+          explanation: "Source: api-gateway/index.js lines 13-24. Validates JWT authorization header and reverse-proxies to internal payment service.",
         },
       },
       {
         id: "postgres",
-        title: "Payment DB",
-        subtitle: "Atomic Outbox Commit",
-        tech: "Neon PostgreSQL & Drizzle",
-        role: "Commits payment and outbox atomically.",
-        screenshotUrl: "/projects/stream-mart/stream-mart-outbox-terminal.webp",
-        screenshotCaption: "Atomic database transaction writing outbox event to PostgreSQL.",
+        title: "Transactional Outbox",
+        subtitle: "Atomic SQL Transaction",
+        tech: "Neon PostgreSQL & Drizzle ORM",
+        role: "Atomically commits payment and outbox event in single database transaction.",
         codeSnippet: {
-          filename: "payment-service/src/controllers/payment.ts",
-          language: "typescript",
-          code: `await db.transaction(async (tx) => {
-  const [payment] = await tx.insert(payments).values(paymentData).returning();
+          filename: "payment-service/index.js",
+          language: "javascript",
+          code: `// payment-service/index.js (lines 45-61)
+await db.transaction(async (tx) => {
+  await tx.insert(payments).values({
+    userId: userId,
+    amount: String(amount),
+    status: "completed"
+  });
+  
   await tx.insert(outboxEvents).values({
-    aggregateType: "PAYMENT",
-    aggregateId: payment.id,
-    type: "PAYMENT_COMPLETED",
-    payload: JSON.stringify(payment)
+    topic: "payment-successful",
+    payload: { userId, cart },
+    published: false 
   });
 });`,
-          explanation: "Atomic transaction ensures payment record and outbox message commit together.",
+          explanation: "Source: payment-service/index.js lines 45-61. Guarantees atomic consistency between business record and event log with zero message loss.",
         },
       },
       {
         id: "outbox",
-        title: "Outbox Worker",
-        subtitle: "Poll & Publish",
-        tech: "Node.js Worker",
-        role: "Polls pending events and dispatches.",
+        title: "Outbox Relay Worker",
+        subtitle: "Poll & Reliable Publish",
+        tech: "Node.js & KafkaJS Producer",
+        role: "Polls pending events every 5s and reliably dispatches to Apache Kafka.",
         codeSnippet: {
-          filename: "payment-service/src/workers/outbox.ts",
-          language: "typescript",
-          code: `async function processOutbox() {
-  const pending = await db.select().from(outboxEvents).where(eq(outboxEvents.published, false)).limit(50);
-  for (const event of pending) {
-    await kafkaProducer.send({ topic: "payment-successful", messages: [{ value: event.payload }] });
-    await db.update(outboxEvents).set({ published: true }).where(eq(outboxEvents.id, event.id));
+          filename: "payment-service/worker.js",
+          language: "javascript",
+          code: `// payment-service/worker.js (lines 29-53)
+setInterval(async () => {
+  const events = await db
+    .select()
+    .from(outboxEvents)
+    .where(eq(outboxEvents.published, false))
+    .limit(50); // Batch limit
+
+  for (const event of events) {
+    try {
+      await producer.send({
+        topic: event.topic,
+        messages: [{ value: JSON.stringify(event.payload) }],
+      });
+
+      await db
+        .update(outboxEvents)
+        .set({ published: true })
+        .where(eq(outboxEvents.id, event.id));
+    } catch (err) {
+      console.error("Worker publish failed; retrying next cycle:", err);
+    }
   }
-} `,
-          explanation: "Background worker polls committed outbox events and pushes them to Apache Kafka topics.",
+}, 5000);`,
+          explanation: "Source: payment-service/worker.js lines 29-53. Polling relay worker with retry loop guarantees at-least-once Kafka publication.",
         },
       },
       {
         id: "kafka",
-        title: "Kafka Broker",
-        subtitle: "Topic Partitioning",
-        tech: "Apache Kafka",
-        role: "Partitions asynchronous checkout streams.",
-        screenshotUrl: "/projects/stream-mart/stream-mart-event-flow.webp",
-        screenshotCaption: "Apache Kafka cluster routing decoupled checkout topic events.",
+        title: "Kafka Cluster",
+        subtitle: "Topic Declaration",
+        tech: "Apache Kafka & KafkaJS Admin",
+        role: "Declares partitioned message topics connecting distributed microservices.",
         codeSnippet: {
-          filename: "docker-compose.yml",
-          language: "yaml",
-          code: `kafka:
-  image: confluentinc/cp-kafka:7.4.0
-  ports:
-    - "9092:9092"
-  environment:
-    KAFKA_BROKER_ID: 1
-    KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092`,
-          explanation: "Central event distribution message bus orchestrating service communication asynchronously.",
+          filename: "kafka/admin.js",
+          language: "javascript",
+          code: `// kafka/admin.js (lines 10-19)
+const run = async () => {
+  await admin.connect();
+  await admin.createTopics({
+    topics: [
+      { topic: "payment-successful" },
+      { topic: "order-successful" },
+      { topic: "email-successful" },
+    ],
+  });
+};
+
+run();`,
+          explanation: "Source: kafka/admin.js lines 10-19. Central topic topology connecting payment, order, analytic, and email services.",
         },
       },
       {
         id: "order",
-        title: "Order Worker",
+        title: "Order Consumer",
         subtitle: "Async Fulfillment",
-        tech: "KafkaJS Consumer",
-        role: "Fulfills orders from Kafka events.",
+        tech: "KafkaJS Consumer & Drizzle ORM",
+        role: "Consumes payment events, creates orders in Postgres, and produces order-successful.",
         codeSnippet: {
-          filename: "order-service/src/consumers/paymentConsumer.ts",
-          language: "typescript",
-          code: `await consumer.run({
+          filename: "order-service/index.js",
+          language: "javascript",
+          code: `// order-service/index.js (lines 25-60)
+await consumer.subscribe({
+  topic: "payment-successful",
+  fromBeginning: true,
+});
+
+await consumer.run({
   eachMessage: async ({ message }) => {
-    const payment = JSON.parse(message.value.toString());
-    await createOrderFromPayment(payment);
-  }
+    const { userId, cart } = JSON.parse(message.value.toString());
+    const data = await db.insert(orders).values({
+      userId, items: cart, status: "processing"
+    }).returning();
+
+    await producer.send({
+      topic: "order-successful",
+      messages: [{ value: JSON.stringify({ userId, orderId: data[0].id }) }],
+    });
+  },
 });`,
-          explanation: "Consumes payment events independently without blocking the client checkout experience.",
+          explanation: "Source: order-service/index.js lines 25-60. Consumes payment events independently and propagates fulfillment downstream.",
         },
       },
     ],
@@ -642,39 +681,40 @@ function broadcastToMatch(matchId, payload) {
       "Three bugs hit while orchestrating microservices, with links to fixing commits.",
     bugs: [
       {
-        title: "Dual-write inconsistency on broker disconnect",
-        symptom: "Payment committed without order fulfillment.",
-        cause: "Kafka publish failed after SQL commit.",
-        fix: "Committed payment and outbox atomically.",
-        commitHash: "a94f12d",
-        commitUrl: "https://github.com/vpn-cli/StreamMart/commit/a94f12d",
+        title: "Payment and order service orchestration route mismatch",
+        symptom: "Gateway proxied checkout requests to payment service but hit 404 handler.",
+        cause: "Express handler was bound to '/payment-service' while API Gateway pathRewrite routed to '/'.",
+        fix: "Realigned payment route to '/' and injected x-user-id header in auth middleware.",
+        commitHash: "81b4778",
+        commitUrl: "https://github.com/vpn-cli/StreamMart/commit/81b4778318836f3ed66491dbb9241d690b9690b2",
       },
       {
-        title: "Duplicate receipts on consumer rebalance",
-        symptom: "Worker sent duplicate receipts on restart.",
-        cause: "Consumer rebalance replayed uncommitted batches.",
-        fix: "Added Redis idempotency key deduplication.",
-        commitHash: "e38c91a",
-        commitUrl: "https://github.com/vpn-cli/StreamMart/commit/e38c91a",
+        title: "Broker connectivity in distributed container cluster",
+        symptom: "Microservices failed to resolve Kafka brokers across container boundaries.",
+        cause: "Hardcoded localhost:9094 broker ports failed inside Docker networks and cloud clusters.",
+        fix: "Configured dynamic KAFKA_BROKERS, added SASL/SSL credentials, and mounted ca.pem certificate.",
+        commitHash: "204ba26",
+        commitUrl: "https://github.com/vpn-cli/StreamMart/commit/204ba26eeb957e834e6a1155b1a5098ab99b18eb",
       },
       {
-        title: "Gateway timeouts on slow services",
-        symptom: "Checkout returned 504 timeouts on restart.",
-        cause: "Slow downstream services exhausted pool.",
-        fix: "Added 3s timeouts and fallback handling.",
-        commitHash: "7b204e1",
-        commitUrl: "https://github.com/vpn-cli/StreamMart/commit/7b204e1",
+        title: "Proprietary Supabase client SDK runtime coupling",
+        symptom: "Services lacked standard SQL migration workflows and transactional pooling.",
+        cause: "Supabase client abstraction bypassed transactional SQL session primitives needed for outbox commits.",
+        fix: "Migrated persistence layer to Neon Serverless Postgres and Drizzle ORM schemas.",
+        commitHash: "a50d3a9",
+        commitUrl: "https://github.com/vpn-cli/StreamMart/commit/a50d3a9ef5ccbc9481b39360f1b9eaf89715854b",
       },
     ],
     nextStepsClaim: "What I would build next and test steps",
     nextStepsText:
-      "Add dead letter queues and OpenTelemetry distributed tracing across Kafka.",
+      "Add Redis idempotency key deduplication on consumers and Dead Letter Queues (DLQ) for failed message handling.",
     learningStatement:
       "Distributed consistency is an architectural pattern, not a database feature.",
     tryItSteps: [
-      "Clone the repository and launch the cluster with docker-compose up -d.",
-      "Post a checkout payload to the API Gateway at /api/checkout with an auth token.",
-      "Inspect Docker logs to watch the outbox worker publish and the order service fulfill asynchronously.",
+      "Clone the repository: git clone https://github.com/vpn-cli/StreamMart.git",
+      "In payment-service and order-service directories, execute database migrations: npx drizzle-kit push",
+      "Spin up the architecture cluster: docker-compose up --build -d",
+      "Send a POST request to API Gateway at http://localhost:8080/api/payment with Bearer token: mock.jwt.token",
     ],
     image: "/projects/stream-mart.png",
     githubUrl: "https://github.com/vpn-cli/StreamMart",

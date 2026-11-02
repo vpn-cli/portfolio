@@ -97,32 +97,17 @@ This document catalogs every captured visual asset for Sportz, AppForge, and Str
 
 ### Environment & Architecture Status
 - **Status**: Backend event-driven microservices architecture (Node.js, Apache Kafka, PostgreSQL Outbox, Docker Compose).
-- **Local Service Run Attempt**: Docker is not installed on this host environment (`docker` command unavailable). Per project instructions ("If it can't run, tell me, and we'll use an animated architecture diagram instead"), no faux UI was created. We use high-fidelity terminal event stream captures and interactive animated architecture pipelines.
-
-### Captured Visuals & Analysis
-1. `public/projects/stream-mart/stream-mart-event-flow.webp`
-   - **What it shows**: High-resolution dark terminal window showing the transactional outbox pipeline: Checkout request → PostgreSQL atomic commit → Outbox publisher → Kafka topic dispatch → Consumer fulfillment.
-   - **What it proves to a recruiter**: Proves understanding of distributed event-driven systems and dual-write prevention.
-   - **Story beat**: Hook / How it works.
-2. `public/projects/stream-mart/stream-mart-outbox-terminal.webp`
-   - **What it shows**: Terminal logs showing atomic SQL transaction commit `tx.insert(outboxEvents)` and asynchronous worker poll.
-   - **What it proves to a recruiter**: Proves implementation of the Transactional Outbox pattern with zero message loss.
-   - **Story beat**: The Problem / Decisions.
-3. `public/projects/stream-mart/stream-mart-mobile.webp`
-   - **What it shows**: Viewport 390×844 capture of the service architecture flow.
-   - **What it proves to a recruiter**: Demonstrates structured responsive presentation of complex backend telemetry.
-   - **Story beat**: How it works.
-4. Animated Architecture & Event Simulation Component (`HeroEventFlow.tsx` / `InteractiveArchitecture.tsx`)
-   - **What it shows**: Real-time animated SVG and DOM packet flow tracing checkout payloads through Gateway, Postgres, Outbox Worker, Kafka Broker, and Order Worker.
-   - **What it proves to a recruiter**: Visualizes asynchronous message decoupling and latency boundaries in action.
-   - **Story beat**: Hook / How it works.
-
-### Visual Selection for StreamMart (4 Selected, 1 Dropped)
-- **Selected**:
-  1. Animated Outbox Pipeline Component (Hero Hook)
-  2. `stream-mart-event-flow.webp` (Full architecture pipeline & cluster overview)
-  3. `stream-mart-outbox-terminal.webp` (Outbox worker SQL transaction & Kafka publish logs)
-  4. Interactive Architecture Node Explorer (Clickable nodes with real TypeScript code snippets)
-- **Dropped**:
-  - Generic mock UI templates: dropped entirely in strict adherence to rule ("Don't fake a UI. Capture a terminal / architecture").
+- **Repo-Grounded Visual Policy**: Docker was not run to produce fake logs. In accordance with honesty rules, no fake terminal windows, simulated logs, or faux live outputs are permitted.
+- **Deletions**:
+  1. `stream-mart-outbox-terminal.webp`: DELETED. Generated artificially from `public/projects/stream-mart-flow.html` via Playwright crop without running real microservices.
+  2. `stream-mart-mobile.webp`: DELETED. Generated artificially from mobile viewport crop of `stream-mart-flow.html`.
+- **Allowed Visuals Implemented**:
+  1. **Architecture & Event-Flow Diagram**: Directly derived from `README.md` lines 18-36 (Mermaid) and `docker-compose.yml`. Clearly labeled "Diagram" on the page. Every box and arrow matches a file in the repo (`client/src/app/page.jsx`, `api-gateway/index.js`, `payment-service/index.js`, `payment-service/db/schema.js`, `payment-service/worker.js`, `kafka/admin.js`, `order-service/index.js`, `analytic-service/index.js`, `email-service/index.js`).
+  2. **Real Code Excerpts with Copy**: Displayed in `InteractiveArchitecture.tsx` and `StreamMartDiagram.tsx` with file paths, syntax highlighting, and clipboard copy buttons. These replace all fake terminal windows.
+     - Outbox write inside DB transaction: `payment-service/index.js#L45-L61`
+     - Relay/publisher worker loop: `payment-service/worker.js#L29-L53`
+     - Kafka topic administrator: `kafka/admin.js#L10-L19`
+     - Async Order consumer: `order-service/index.js#L25-L60`
+     - API Gateway reverse proxy: `api-gateway/index.js#L13-L24`
+  3. **Sample Output Check**: Checked `d:\Projects\StreamMart\README.md`. It contains no sample CLI/terminal output, so no quotes were fabricated.
 

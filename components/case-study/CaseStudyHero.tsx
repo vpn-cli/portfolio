@@ -5,6 +5,7 @@ import Image from "next/image";
 import { CaseStudy } from "@/data/projects";
 import { Play, Pause } from "lucide-react";
 import { HeroEventFlow } from "./HeroEventFlow";
+import { StreamMartDiagram } from "./StreamMartDiagram";
 
 interface CaseStudyHeroProps {
   project: CaseStudy;
@@ -62,13 +63,13 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
     }
   };
 
-  // If project is stream-mart (no UI), render the real animated outbox pipeline diagram
+  // If project is stream-mart (no UI), render the real repo-grounded architecture diagram
   if (project.slug === "stream-mart") {
     return (
       <div className="w-full space-y-2.5">
-        <HeroEventFlow slug={project.slug} title={project.title} />
+        <StreamMartDiagram />
         <p className="text-xs text-[var(--text-tertiary)] font-mono text-center">
-          {clip?.caption || "Transactional outbox event flow through Apache Kafka cluster."}
+          {clip?.caption || "Diagram: Transactional outbox event flow through Apache Kafka cluster."}
         </p>
       </div>
     );

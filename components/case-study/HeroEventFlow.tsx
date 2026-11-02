@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Server, Database, Radio, Smartphone, ArrowRight, Play, Film, CheckCircle2 } from "lucide-react";
+import { Server, Database, Radio, Smartphone, ArrowRight, CheckCircle2 } from "lucide-react";
 
 interface HeroEventFlowProps {
   slug: string;
@@ -13,7 +13,6 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
   const [phase, setPhase] = useState<number>(0);
   const [isVisible, setIsVisible] = useState<boolean>(true);
   const [reducedMotion, setReducedMotion] = useState<boolean>(false);
-  const [showVideo, setShowVideo] = useState<boolean>(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -41,14 +40,14 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
   }, []);
 
   useEffect(() => {
-    if (reducedMotion || !isVisible || showVideo) return;
+    if (reducedMotion || !isVisible) return;
 
     const timer = setInterval(() => {
       setPhase((prev) => (prev + 1) % 4);
     }, 1100);
 
     return () => clearInterval(timer);
-  }, [reducedMotion, isVisible, showVideo]);
+  }, [reducedMotion, isVisible]);
 
   return (
     <div
@@ -56,7 +55,7 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
       className="w-full rounded-[var(--card-radius)] border border-[var(--border-subtle)] bg-[var(--surface-tile-elevated)] p-5 sm:p-7 shadow-sm overflow-hidden relative"
       aria-label={`${title} system architecture visual simulation`}
     >
-      {/* Top Bar: Visual label + Optional Video toggle */}
+      {/* Top Bar: Visual label */}
       <div className="flex items-center justify-between pb-3 mb-3 border-b border-[var(--border-subtle)] text-xs text-[var(--text-tertiary)]">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-[var(--text-primary)]" aria-hidden="true" />
@@ -68,32 +67,9 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
               : "AST Pipeline"}
           </span>
         </div>
-
-        <button
-          type="button"
-          onClick={() => setShowVideo(!showVideo)}
-          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
-        >
-          <Film className="w-3 h-3" aria-hidden="true" />
-          <span>{showVideo ? "Diagram" : "Video"}</span>
-        </button>
       </div>
 
-      {showVideo ? (
-        <div className="w-full aspect-[16/9] max-h-[420px] rounded-xl overflow-hidden bg-black flex items-center justify-center">
-          <video
-            controls
-            autoPlay
-            playsInline
-            loop
-            poster={`/videos/${slug}/brag.jpg`}
-            className="w-full h-full object-contain"
-          >
-            <source src={`/videos/${slug}/brag.webm`} type="video/webm" />
-            <source src={`/videos/${slug}/brag.mp4`} type="video/mp4" />
-          </video>
-        </div>
-      ) : slug === "sockets" ? (
+      {slug === "sockets" ? (
         /* ━━━ SPORTZ EVENT FLOW (Ingestion -> Postgres -> Gateway -> Topic Map -> Subscribed vs Idle Clients) ━━━ */
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center relative">
