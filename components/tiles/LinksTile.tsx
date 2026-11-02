@@ -64,35 +64,31 @@ export function LinksTile({ className = "" }: { className?: string }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={item.ariaLabel}
-            style={{
-              gridTemplateColumns: "24px 1fr 32px",
-              columnGap: "12px",
-              alignItems: "center",
-            }}
-            className="group/row min-h-0 w-full flex-1 grid px-5 sm:px-6 rounded-xl bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-transparent transition-[background-color,transform] duration-150 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+            className="group/row min-h-0 w-full flex-1 flex items-center justify-between px-2.5 sm:px-3 xl:px-4 rounded-xl bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-transparent transition-[background-color,transform] duration-150 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 gap-2"
           >
-            {/* 1. Icon column (24px wide, optically centered, balanced weight) */}
-            <div className="w-6 h-6 flex items-center justify-center shrink-0 text-[var(--text-primary)] transition-transform duration-200 motion-safe:group-hover/row:scale-105 motion-reduce:transform-none">
-              {item.renderIcon({ className: "w-5 h-5 text-current shrink-0" })}
+            {/* 1. Left: Icon + Text */}
+            <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
+              <div className="w-5 h-5 flex items-center justify-center shrink-0 text-[var(--text-primary)] transition-transform duration-200 motion-safe:group-hover/row:scale-105 motion-reduce:transform-none">
+                {item.renderIcon({ className: "w-4.5 h-4.5 text-current shrink-0" })}
+              </div>
+
+              <div className="min-w-0 flex flex-col justify-center">
+                <span className="text-[13.5px] sm:text-[14px] xl:text-[15px] font-medium text-[var(--text-primary)] leading-tight truncate">
+                  {item.label}
+                </span>
+                <span className="text-[10.5px] sm:text-[11px] xl:text-[11.5px] font-mono tracking-tight text-[var(--text-tertiary)] leading-tight mt-0.5 whitespace-nowrap overflow-visible">
+                  {item.subtext}
+                </span>
+              </div>
             </div>
 
-            {/* 2. Text column (min-width: 0 so it never pushes into or under arrow; title on top, subtitle below; truncated) */}
-            <div className="min-w-0 flex flex-col justify-center">
-              <span className="text-[16px] font-medium text-[var(--text-primary)] leading-tight truncate">
-                {item.label}
-              </span>
-              <span className="text-[13px] text-[var(--text-tertiary)] leading-tight mt-0.5 truncate">
-                {item.subtext}
-              </span>
-            </div>
-
-            {/* 3. Arrow button (32px wide, vertically centered against the whole row, same distance from right edge) */}
+            {/* 2. Arrow button (only on wider tile widths where space permits) */}
             <div
-              className="w-8 h-8 rounded-full bg-[var(--surface-tile)] group-hover/row:bg-[var(--surface-tile-hover)] border border-transparent text-[var(--text-secondary)] group-hover/row:text-[var(--text-primary)] flex items-center justify-center transition-colors duration-200 shrink-0"
+              className="hidden xl:flex w-7 h-7 rounded-full bg-[var(--surface-tile)] group-hover/row:bg-[var(--surface-tile-hover)] border border-transparent text-[var(--text-secondary)] group-hover/row:text-[var(--text-primary)] items-center justify-center transition-colors duration-200 shrink-0"
               aria-hidden="true"
             >
               <ArrowUpRight
-                className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover/row:translate-x-0.5 motion-safe:group-hover/row:-translate-y-0.5 motion-reduce:transform-none"
+                className="w-3.5 h-3.5 transition-transform duration-200 motion-safe:group-hover/row:translate-x-0.5 motion-safe:group-hover/row:-translate-y-0.5 motion-reduce:transform-none"
                 aria-hidden="true"
               />
             </div>
