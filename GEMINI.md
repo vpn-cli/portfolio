@@ -6,3 +6,4 @@
 - Commit immediately after completing and verifying each discrete step (e.g. configuration updates, tokens/styling, component additions, bug fixes, refactors, tests, docs).
 - Use clear, descriptive Conventional Commit messages (e.g. `feat:`, `fix:`, `style:`, `refactor:`, `chore:`, `docs:`, `test:`).
 - Always verify the build passes cleanly and changes are verified before committing.
+
