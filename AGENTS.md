@@ -4,6 +4,7 @@
 - Commit a checkpoint: git add -A && git commit -m "checkpoint: before <task>"
 
 ## While editing
+- For visual and design decisions, design-taste-frontend leads. Use antislop and hallmark to audit the result, not to pick the direction.
 - Make all file edits for the task first, then check the page once at the end. Don't check after every single file.
 - Never start a second dev server; reuse the running one.
 - Stop the dev server before installing or removing packages, then restart once.
