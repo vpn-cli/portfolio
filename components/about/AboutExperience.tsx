@@ -32,8 +32,8 @@ export function AboutExperience() {
         <h2 id="experience-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
           Experience
         </h2>
-        <span className="text-xs text-[var(--text-tertiary)] uppercase tracking-wider font-medium">
-          Production Work
+        <span className="text-xs text-[var(--text-tertiary)]">
+          Production roles
         </span>
       </div>
 

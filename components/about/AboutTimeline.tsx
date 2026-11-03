@@ -28,7 +28,7 @@ const milestones: Milestone[] = [
   },
   {
     id: "campus-design",
-    year: "2023–2024",
+    year: "2023 to 2024",
     stage: "Visual Craft",
     title: "Campus Design Leadership",
     description:
@@ -91,8 +91,8 @@ export function AboutTimeline() {
             Growth trajectory from visual design into backend systems engineering.
           </p>
         </div>
-        <span className="text-xs text-[var(--text-tertiary)] uppercase tracking-wider font-medium hidden sm:inline">
-          2022 – Present
+        <span className="text-xs text-[var(--text-tertiary)] hidden sm:inline tabular-nums">
+          2022 to present
         </span>
       </div>
 
@@ -106,7 +106,7 @@ export function AboutTimeline() {
               role="tab"
               aria-selected={isActive}
               onClick={() => setActiveId(m.id)}
-              className={`p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 ${
+              className={`p-3 rounded-xl border text-left transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 ${
                 isActive
                   ? "bg-[var(--surface-tile-elevated)] border-[var(--text-primary)] shadow-sm"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] hover:border-[var(--border-hover)]"
@@ -136,14 +136,12 @@ export function AboutTimeline() {
             className="p-6 sm:p-7 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-4 motion-safe:animate-fadeIn"
           >
             <div className="flex items-baseline justify-between gap-4">
-              <div>
-                <span className="text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-wider block">
-                  {m.stage} · {m.year}
-                </span>
-                <h3 className="text-lg sm:text-xl font-bold text-[var(--text-primary)] mt-1">
-                  {m.title}
-                </h3>
-              </div>
+              <h3 className="text-lg sm:text-xl font-bold text-[var(--text-primary)]">
+                {m.title}
+              </h3>
+              <span className="text-xs text-[var(--text-tertiary)] tabular-nums font-medium">
+                {m.stage} ({m.year})
+              </span>
             </div>
 
             <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">

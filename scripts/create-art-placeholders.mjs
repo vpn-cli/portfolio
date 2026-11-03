@@ -1,145 +1,99 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import sharp from 'sharp';
 
 const dir = path.join(process.cwd(), 'public', 'art');
 if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
 const svgs = [
   {
-    name: 'art-01.svg',
-    title: 'Vector Flow',
-    year: '2025',
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
-  <defs>
-    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#181a20" />
-      <stop offset="100%" stop-color="#0f1013" />
-    </linearGradient>
-  </defs>
-  <rect width="800" height="600" fill="url(#g1)"/>
-  <circle cx="400" cy="300" r="180" fill="none" stroke="#2d313a" stroke-width="2"/>
-  <circle cx="400" cy="300" r="120" fill="none" stroke="#f97316" stroke-width="1.5" stroke-dasharray="6 8"/>
-  <line x1="120" y1="300" x2="680" y2="300" stroke="#262932" stroke-width="1.5"/>
-  <line x1="400" y1="60" x2="400" y2="540" stroke="#262932" stroke-width="1.5"/>
-  <rect x="330" y="230" width="140" height="140" fill="#f97316" fill-opacity="0.12" stroke="#f97316" stroke-width="1.5" transform="rotate(45 400 300)"/>
-  <circle cx="400" cy="300" r="4" fill="#fb923c"/>
-  <text x="36" y="565" font-family="system-ui, sans-serif" font-size="13" font-weight="500" fill="#64748b" letter-spacing="1.5">01 · VECTOR FLOW &amp; AXIS</text>
+    name: 'art-01',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <rect width="400" height="300" fill="#111318"/>
+  <circle cx="200" cy="150" r="90" fill="none" stroke="#252932" stroke-width="2"/>
+  <circle cx="200" cy="150" r="65" fill="none" stroke="#ea580c" stroke-width="3" stroke-dasharray="6 6"/>
+  <line x1="40" y1="150" x2="360" y2="150" stroke="#2b303c" stroke-width="1.5"/>
+  <line x1="200" y1="25" x2="200" y2="275" stroke="#2b303c" stroke-width="1.5"/>
+  <rect x="160" y="110" width="80" height="80" fill="#ea580c" fill-opacity="0.25" stroke="#f97316" stroke-width="2" transform="rotate(45 200 150)"/>
+  <circle cx="200" cy="150" r="6" fill="#fb923c"/>
+  <text x="20" y="282" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#94a3b8" letter-spacing="1">01 · VECTOR FLOW &amp; AXIS</text>
 </svg>`
   },
   {
-    name: 'art-02.svg',
-    title: 'Contour Waves',
-    year: '2025',
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
-  <defs>
-    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#16181f" />
-      <stop offset="100%" stop-color="#0d0e12" />
-    </linearGradient>
-  </defs>
-  <rect width="800" height="600" fill="url(#g2)"/>
-  <path d="M80 440 Q 240 180, 400 340 T 720 160" fill="none" stroke="#3b82f6" stroke-width="2.5"/>
-  <path d="M80 470 Q 240 210, 400 370 T 720 190" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-opacity="0.6"/>
-  <path d="M80 500 Q 240 240, 400 400 T 720 220" fill="none" stroke="#1d4ed8" stroke-width="1" stroke-opacity="0.3"/>
-  <circle cx="400" cy="340" r="5" fill="#60a5fa"/>
-  <circle cx="720" cy="160" r="7" fill="#3b82f6"/>
-  <text x="36" y="565" font-family="system-ui, sans-serif" font-size="13" font-weight="500" fill="#64748b" letter-spacing="1.5">02 · TOPOGRAPHIC CONTOUR</text>
+    name: 'art-02',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <rect width="400" height="300" fill="#111318"/>
+  <path d="M30 225 Q 120 80, 200 160 T 370 70" fill="none" stroke="#38bdf8" stroke-width="4"/>
+  <path d="M30 240 Q 120 95, 200 175 T 370 85" fill="none" stroke="#0284c7" stroke-width="2.5" stroke-opacity="0.8"/>
+  <path d="M30 255 Q 120 110, 200 190 T 370 100" fill="none" stroke="#0369a1" stroke-width="2" stroke-opacity="0.5"/>
+  <circle cx="200" cy="160" r="8" fill="#38bdf8"/>
+  <circle cx="370" cy="70" r="10" fill="#0ea5e9"/>
+  <text x="20" y="282" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#94a3b8" letter-spacing="1">02 · TOPOGRAPHIC CONTOUR</text>
 </svg>`
   },
   {
-    name: 'art-03.svg',
-    title: 'Isometric Void',
-    year: '2024',
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
-  <defs>
-    <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#14171d" />
-      <stop offset="100%" stop-color="#0b0d11" />
-    </linearGradient>
-  </defs>
-  <rect width="800" height="600" fill="url(#g3)"/>
-  <g stroke="#334155" stroke-width="1.5" fill="none">
-    <line x1="200" y1="160" x2="400" y2="80"/>
-    <line x1="400" y1="80" x2="600" y2="160"/>
-    <line x1="600" y1="160" x2="400" y2="240"/>
-    <line x1="400" y1="240" x2="200" y2="160"/>
-    <line x1="200" y1="160" x2="200" y2="400"/>
-    <line x1="400" y1="240" x2="400" y2="480"/>
-    <line x1="600" y1="160" x2="600" y2="400"/>
-    <line x1="200" y1="400" x2="400" y2="480"/>
-    <line x1="400" y1="480" x2="600" y2="400"/>
-  </g>
-  <polygon points="400,120 540,180 400,240 260,180" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-width="1.5"/>
-  <text x="36" y="565" font-family="system-ui, sans-serif" font-size="13" font-weight="500" fill="#64748b" letter-spacing="1.5">03 · ISOMETRIC MONOLITH</text>
+    name: 'art-03',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <rect width="400" height="300" fill="#111318"/>
+  <path d="M 200 60 L 275 90 L 200 120 L 125 90 Z" fill="#34d399" fill-opacity="0.35" stroke="#34d399" stroke-width="2"/>
+  <path d="M 90 80 L 200 35 L 310 80 L 200 125 Z" fill="none" stroke="#10b981" stroke-width="2"/>
+  <path d="M 90 80 L 90 205 L 200 250 L 200 125 Z" fill="none" stroke="#10b981" stroke-width="2"/>
+  <path d="M 310 80 L 310 205 L 200 250" fill="none" stroke="#10b981" stroke-width="2"/>
+  <text x="20" y="282" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#94a3b8" letter-spacing="1">03 · ISOMETRIC MONOLITH</text>
 </svg>`
   },
   {
-    name: 'art-04.svg',
-    title: 'Fractal Prism',
-    year: '2024',
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
-  <defs>
-    <linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1a1816" />
-      <stop offset="100%" stop-color="#0f0e0c" />
-    </linearGradient>
-  </defs>
-  <rect width="800" height="600" fill="url(#g4)"/>
-  <g fill="none" stroke="#f59e0b" stroke-width="1.5">
-    <polygon points="400,100 500,260 300,260" stroke-opacity="0.9"/>
-    <polygon points="400,180 540,400 260,400" stroke-opacity="0.5"/>
-    <polygon points="400,260 580,510 220,510" stroke-opacity="0.25"/>
-  </g>
-  <circle cx="400" cy="310" r="5" fill="#f59e0b"/>
-  <text x="36" y="565" font-family="system-ui, sans-serif" font-size="13" font-weight="500" fill="#64748b" letter-spacing="1.5">04 · TRIANGULAR TENSION</text>
+    name: 'art-04',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <rect width="400" height="300" fill="#111318"/>
+  <path d="M 200 40 L 320 220 L 80 220 Z" fill="#f59e0b" fill-opacity="0.2" stroke="#f59e0b" stroke-width="3"/>
+  <path d="M 200 85 L 280 205 L 120 205 Z" fill="#fbbf24" fill-opacity="0.3" stroke="#fbbf24" stroke-width="2.5"/>
+  <path d="M 200 130 L 240 190 L 160 190 Z" fill="#fde047" fill-opacity="0.5" stroke="#fde047" stroke-width="2"/>
+  <circle cx="200" cy="165" r="8" fill="#fef08a"/>
+  <circle cx="200" cy="40" r="5" fill="#f59e0b"/>
+  <circle cx="320" cy="220" r="5" fill="#f59e0b"/>
+  <circle cx="80" cy="220" r="5" fill="#f59e0b"/>
+  <text x="20" y="282" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#94a3b8" letter-spacing="1">04 · TRIANGULAR TENSION</text>
 </svg>`
   },
   {
-    name: 'art-05.svg',
-    title: 'Vertical Resonance',
-    year: '2024',
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
-  <defs>
-    <linearGradient id="g5" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#181520" />
-      <stop offset="100%" stop-color="#0c0914" />
-    </linearGradient>
-  </defs>
-  <rect width="800" height="600" fill="url(#g5)"/>
-  <line x1="80" y1="480" x2="720" y2="480" stroke="#332a45" stroke-width="2"/>
-  <line x1="220" y1="480" x2="220" y2="180" stroke="#8b5cf6" stroke-width="2.5"/>
-  <line x1="320" y1="480" x2="320" y2="240" stroke="#a78bfa" stroke-width="2"/>
-  <line x1="420" y1="480" x2="420" y2="110" stroke="#c4b5fd" stroke-width="3"/>
-  <line x1="520" y1="480" x2="520" y2="300" stroke="#7c3aed" stroke-width="1.5"/>
-  <line x1="620" y1="480" x2="620" y2="210" stroke="#6d28d9" stroke-width="2"/>
-  <circle cx="420" cy="110" r="6" fill="#c4b5fd"/>
-  <text x="36" y="565" font-family="system-ui, sans-serif" font-size="13" font-weight="500" fill="#64748b" letter-spacing="1.5">05 · HARMONIC CADENCE</text>
+    name: 'art-05',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <rect width="400" height="300" fill="#111318"/>
+  <path d="M 30 220 L 370 220" stroke="#3b2d54" stroke-width="2"/>
+  <rect x="50" y="140" width="18" height="80" rx="9" fill="#7c3aed"/>
+  <rect x="85" y="100" width="18" height="120" rx="9" fill="#9333ea"/>
+  <rect x="120" y="70" width="18" height="150" rx="9" fill="#a855f7"/>
+  <rect x="155" y="45" width="20" height="175" rx="10" fill="#c084fc"/>
+  <rect x="190" y="25" width="20" height="195" rx="10" fill="#e9d5ff"/>
+  <rect x="225" y="55" width="20" height="165" rx="10" fill="#c084fc"/>
+  <rect x="260" y="90" width="18" height="130" rx="9" fill="#a855f7"/>
+  <rect x="295" y="125" width="18" height="95" rx="9" fill="#9333ea"/>
+  <rect x="330" y="160" width="18" height="60" rx="9" fill="#7c3aed"/>
+  <circle cx="200" cy="15" r="6" fill="#f3e8ff"/>
+  <text x="20" y="282" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#94a3b8" letter-spacing="1">05 · HARMONIC CADENCE</text>
 </svg>`
   },
   {
-    name: 'art-06.svg',
-    title: 'Orbital Duality',
-    year: '2023',
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
-  <defs>
-    <linearGradient id="g6" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1a1418" />
-      <stop offset="100%" stop-color="#100a0d" />
-    </linearGradient>
-  </defs>
-  <rect width="800" height="600" fill="url(#g6)"/>
-  <circle cx="400" cy="300" r="150" fill="none" stroke="#f43f5e" stroke-width="1.5"/>
-  <circle cx="350" cy="300" r="120" fill="none" stroke="#fb7185" stroke-width="1" stroke-dasharray="6 6"/>
-  <circle cx="450" cy="300" r="120" fill="none" stroke="#fda4af" stroke-width="1" stroke-dasharray="3 5"/>
-  <circle cx="400" cy="300" r="6" fill="#f43f5e"/>
-  <text x="36" y="565" font-family="system-ui, sans-serif" font-size="13" font-weight="500" fill="#64748b" letter-spacing="1.5">06 · ORBITAL DUALITY</text>
+    name: 'art-06',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <rect width="400" height="300" fill="#111318"/>
+  <circle cx="200" cy="145" r="90" fill="none" stroke="#be123c" stroke-width="2"/>
+  <circle cx="160" cy="145" r="65" fill="#f43f5e" fill-opacity="0.3" stroke="#f43f5e" stroke-width="3"/>
+  <circle cx="240" cy="145" r="65" fill="#fb7185" fill-opacity="0.3" stroke="#fb7185" stroke-width="3"/>
+  <ellipse cx="200" cy="145" rx="20" ry="40" fill="#fda4af" fill-opacity="0.6" stroke="#ffffff" stroke-width="2"/>
+  <circle cx="200" cy="145" r="8" fill="#ffffff"/>
+  <text x="20" y="282" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#94a3b8" letter-spacing="1">06 · ORBITAL DUALITY</text>
 </svg>`
   }
 ];
 
-for (const item of svgs) {
-  const filePath = path.join(dir, item.name);
-  fs.writeFileSync(filePath, item.svg, 'utf8');
-}
-
-console.log('Successfully written ' + svgs.length + ' art SVG files to public/art');
+(async () => {
+  for (const item of svgs) {
+    const svgPath = path.join(dir, item.name + '.svg');
+    const webpPath = path.join(dir, item.name + '.webp');
+    fs.writeFileSync(svgPath, item.svg, 'utf8');
+    await sharp(Buffer.from(item.svg)).webp({ quality: 95 }).toFile(webpPath);
+  }
+  console.log('Successfully written and rendered 6 vibrant 400x300 art files');
+})();

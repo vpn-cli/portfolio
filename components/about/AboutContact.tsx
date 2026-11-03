@@ -108,13 +108,13 @@ export function AboutContact() {
                   <Moon className="w-3.5 h-3.5 shrink-0 text-slate-400" aria-hidden="true" />
                 )}
                 <span className="tabular-nums">
-                  {timeState.timeStr} in India · {timeState.statusText}
+                  {timeState.timeStr} in India ({timeState.statusText})
                 </span>
               </>
             ) : (
               <span className="invisible select-none inline-flex items-center gap-2" aria-hidden="true">
                 <span className="w-3.5 h-3.5 shrink-0 inline-block" />
-                <span>9:27 AM in India · usually replies within a day</span>
+                <span>9:27 AM in India (usually replies within a day)</span>
               </span>
             )}
           </div>
@@ -154,7 +154,7 @@ export function AboutContact() {
             <a
               href={mailUrl}
               onClick={() => trackEvent("send_mail_click")}
-              className="px-4 py-2 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] text-xs font-medium hover:opacity-90 flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-95"
+              className="px-4 py-2 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] text-xs font-medium hover:opacity-90 flex items-center justify-center gap-1.5 transition-colors cursor-pointer active:scale-95 disabled:opacity-50"
             >
               <Mail className="w-3.5 h-3.5" aria-hidden="true" />
               <span>Send mail</span>

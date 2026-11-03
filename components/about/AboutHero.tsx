@@ -52,7 +52,7 @@ export function AboutHero({ status }: AboutHeroProps) {
             href="/resume.pdf"
             download="Vipin_Kaushik_Resume.pdf"
             onClick={() => trackEvent("download_resume_click")}
-            className="inline-flex items-center justify-center gap-2 w-full md:w-auto px-5 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] text-sm font-medium hover:opacity-90 active:scale-98 transition-all shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-400 cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 w-full md:w-auto px-5 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] text-sm font-medium hover:opacity-90 active:scale-98 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-400 cursor-pointer"
           >
             <Download className="w-4 h-4" aria-hidden="true" />
             <span>Download Résumé</span>

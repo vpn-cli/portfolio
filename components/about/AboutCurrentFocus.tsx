@@ -10,8 +10,8 @@ export function AboutCurrentFocus() {
             Right now
           </h2>
         </div>
-        <span className="text-xs text-[var(--text-tertiary)] uppercase tracking-wider font-medium">
-          Active Study
+        <span className="text-xs text-[var(--text-tertiary)]">
+          Active study
         </span>
       </div>
 

@@ -1,16 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
-  <defs>
-    <linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1a1816" />
-      <stop offset="100%" stop-color="#0f0e0c" />
-    </linearGradient>
-  </defs>
-  <rect width="800" height="600" fill="url(#g4)"/>
-  <g fill="none" stroke="#f59e0b" stroke-width="1.5">
-    <polygon points="400,100 500,260 300,260" stroke-opacity="0.9"/>
-    <polygon points="400,180 540,400 260,400" stroke-opacity="0.5"/>
-    <polygon points="400,260 580,510 220,510" stroke-opacity="0.25"/>
-  </g>
-  <circle cx="400" cy="310" r="5" fill="#f59e0b"/>
-  <text x="36" y="565" font-family="system-ui, sans-serif" font-size="13" font-weight="500" fill="#64748b" letter-spacing="1.5">04 · TRIANGULAR TENSION</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <rect width="400" height="300" fill="#111318"/>
+  <path d="M 200 40 L 320 220 L 80 220 Z" fill="#f59e0b" fill-opacity="0.2" stroke="#f59e0b" stroke-width="3"/>
+  <path d="M 200 85 L 280 205 L 120 205 Z" fill="#fbbf24" fill-opacity="0.3" stroke="#fbbf24" stroke-width="2.5"/>
+  <path d="M 200 130 L 240 190 L 160 190 Z" fill="#fde047" fill-opacity="0.5" stroke="#fde047" stroke-width="2"/>
+  <circle cx="200" cy="165" r="8" fill="#fef08a"/>
+  <circle cx="200" cy="40" r="5" fill="#f59e0b"/>
+  <circle cx="320" cy="220" r="5" fill="#f59e0b"/>
+  <circle cx="80" cy="220" r="5" fill="#f59e0b"/>
+  <text x="20" y="282" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#94a3b8" letter-spacing="1">04 · TRIANGULAR TENSION</text>
 </svg>

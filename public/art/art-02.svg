@@ -1,15 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
-  <defs>
-    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#16181f" />
-      <stop offset="100%" stop-color="#0d0e12" />
-    </linearGradient>
-  </defs>
-  <rect width="800" height="600" fill="url(#g2)"/>
-  <path d="M80 440 Q 240 180, 400 340 T 720 160" fill="none" stroke="#3b82f6" stroke-width="2.5"/>
-  <path d="M80 470 Q 240 210, 400 370 T 720 190" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-opacity="0.6"/>
-  <path d="M80 500 Q 240 240, 400 400 T 720 220" fill="none" stroke="#1d4ed8" stroke-width="1" stroke-opacity="0.3"/>
-  <circle cx="400" cy="340" r="5" fill="#60a5fa"/>
-  <circle cx="720" cy="160" r="7" fill="#3b82f6"/>
-  <text x="36" y="565" font-family="system-ui, sans-serif" font-size="13" font-weight="500" fill="#64748b" letter-spacing="1.5">02 · TOPOGRAPHIC CONTOUR</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <rect width="400" height="300" fill="#111318"/>
+  <path d="M30 225 Q 120 80, 200 160 T 370 70" fill="none" stroke="#38bdf8" stroke-width="4"/>
+  <path d="M30 240 Q 120 95, 200 175 T 370 85" fill="none" stroke="#0284c7" stroke-width="2.5" stroke-opacity="0.8"/>
+  <path d="M30 255 Q 120 110, 200 190 T 370 100" fill="none" stroke="#0369a1" stroke-width="2" stroke-opacity="0.5"/>
+  <circle cx="200" cy="160" r="8" fill="#38bdf8"/>
+  <circle cx="370" cy="70" r="10" fill="#0ea5e9"/>
+  <text x="20" y="282" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#94a3b8" letter-spacing="1">02 · TOPOGRAPHIC CONTOUR</text>
 </svg>

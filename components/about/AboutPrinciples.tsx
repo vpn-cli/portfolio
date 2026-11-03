@@ -48,8 +48,8 @@ export function AboutPrinciples() {
             Three engineering principles backed by decisions in production case studies.
           </p>
         </div>
-        <span className="text-xs text-[var(--text-tertiary)] uppercase tracking-wider font-medium hidden sm:inline">
-          Architectural Proof
+        <span className="text-xs text-[var(--text-tertiary)] hidden sm:inline">
+          Architectural proof
         </span>
       </div>
 

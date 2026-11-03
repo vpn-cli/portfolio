@@ -18,8 +18,8 @@ export default function AboutPage() {
       <div className="w-full max-w-[1280px] min-h-[calc(100vh-48px)] rounded-[32px] sm:rounded-[36px] bg-[var(--bg-canvas-subtle)] border border-[var(--border-subtle)] p-6 sm:p-10 lg:p-14 shadow-sm flex flex-col items-center">
         {/* Top Floating Close Pill */}
         <div className="w-full flex justify-between items-center mb-8 sm:mb-12">
-          <span className="text-xs uppercase tracking-wider font-semibold text-[var(--text-tertiary)]">
-            About Vipin Kaushik
+          <span className="text-sm font-medium text-[var(--text-secondary)]">
+            About
           </span>
 
           <TransitionLink

@@ -1,16 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
-  <defs>
-    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#181a20" />
-      <stop offset="100%" stop-color="#0f1013" />
-    </linearGradient>
-  </defs>
-  <rect width="800" height="600" fill="url(#g1)"/>
-  <circle cx="400" cy="300" r="180" fill="none" stroke="#2d313a" stroke-width="2"/>
-  <circle cx="400" cy="300" r="120" fill="none" stroke="#f97316" stroke-width="1.5" stroke-dasharray="6 8"/>
-  <line x1="120" y1="300" x2="680" y2="300" stroke="#262932" stroke-width="1.5"/>
-  <line x1="400" y1="60" x2="400" y2="540" stroke="#262932" stroke-width="1.5"/>
-  <rect x="330" y="230" width="140" height="140" fill="#f97316" fill-opacity="0.12" stroke="#f97316" stroke-width="1.5" transform="rotate(45 400 300)"/>
-  <circle cx="400" cy="300" r="4" fill="#fb923c"/>
-  <text x="36" y="565" font-family="system-ui, sans-serif" font-size="13" font-weight="500" fill="#64748b" letter-spacing="1.5">01 · VECTOR FLOW &amp; AXIS</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <rect width="400" height="300" fill="#111318"/>
+  <circle cx="200" cy="150" r="90" fill="none" stroke="#252932" stroke-width="2"/>
+  <circle cx="200" cy="150" r="65" fill="none" stroke="#ea580c" stroke-width="3" stroke-dasharray="6 6"/>
+  <line x1="40" y1="150" x2="360" y2="150" stroke="#2b303c" stroke-width="1.5"/>
+  <line x1="200" y1="25" x2="200" y2="275" stroke="#2b303c" stroke-width="1.5"/>
+  <rect x="160" y="110" width="80" height="80" fill="#ea580c" fill-opacity="0.25" stroke="#f97316" stroke-width="2" transform="rotate(45 200 150)"/>
+  <circle cx="200" cy="150" r="6" fill="#fb923c"/>
+  <text x="20" y="282" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#94a3b8" letter-spacing="1">01 · VECTOR FLOW &amp; AXIS</text>
 </svg>
