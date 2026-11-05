@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { BentoTile } from "./BentoTile";
 import { ArrowUpRight } from "lucide-react";
 import { SiGithub } from "react-icons/si";
@@ -31,16 +32,6 @@ const projectsList: TeaserProject[] = [
     liveUrl: "https://appforge-studios.vercel.app",
   },
   {
-    id: "stream-mart",
-    slug: "stream-mart",
-    title: "StreamMart",
-    teaserLine: "Orders over Kafka",
-    // Intentional event flow visual: Order → Kafka → Payment services (2x WebP)
-    image: "/projects/teaser-stream-mart.webp",
-    repoUrl: "https://github.com/vpn-cli/StreamMart",
-    liveUrl: "https://github.com/vpn-cli/StreamMart#architecture--workflow",
-  },
-  {
     id: "sportz",
     slug: "sockets",
     title: "Sportz",
@@ -50,9 +41,20 @@ const projectsList: TeaserProject[] = [
     repoUrl: "https://github.com/vpn-cli/sockets",
     liveUrl: "https://sportz-rho.vercel.app",
   },
+  {
+    id: "stream-mart",
+    slug: "stream-mart",
+    title: "StreamMart",
+    teaserLine: "Orders over Kafka",
+    // Intentional event flow visual: Order → Kafka → Payment services (2x WebP)
+    image: "/projects/teaser-stream-mart.webp",
+    repoUrl: "https://github.com/vpn-cli/StreamMart",
+    liveUrl: "https://github.com/vpn-cli/StreamMart#architecture--workflow",
+  },
 ];
 
 export function ProjectsTile({ className = "" }: { className?: string }) {
+  const router = useRouter();
   const { navigateWithWipe } = usePageTransition();
   const cardRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
@@ -129,6 +131,8 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
 
         {/* Preview area (~60% of card height): fills area edge to edge with card's inner radius */}
         <div
+          onMouseEnter={() => router.prefetch(`/work/${activeProject.slug}`)}
+          onFocus={() => router.prefetch(`/work/${activeProject.slug}`)}
           onClick={() => {
             trackEvent("project_click", { project: activeProject.title, where: "teaser" });
             navigateWithWipe(`/work/${activeProject.slug}`);
@@ -151,11 +155,10 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
             return (
               <div
                 key={project.id}
-                className={`absolute inset-0 w-full h-full transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${
-                  isCurrent
+                className={`absolute inset-0 w-full h-full transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${isCurrent
                     ? "opacity-100 scale-100 z-10"
                     : "opacity-0 scale-[1.02] pointer-events-none z-0 motion-reduce:scale-100"
-                }`}
+                  }`}
               >
                 <Image
                   src={project.image}
@@ -185,8 +188,14 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
             return (
               <div
                 key={project.id}
-                onMouseEnter={() => setActiveIdx(idx)}
-                onFocus={() => setActiveIdx(idx)}
+                onMouseEnter={() => {
+                  setActiveIdx(idx);
+                  router.prefetch(`/work/${project.slug}`);
+                }}
+                onFocus={() => {
+                  setActiveIdx(idx);
+                  router.prefetch(`/work/${project.slug}`);
+                }}
                 onClick={() => {
                   trackEvent("project_click", { project: project.title, where: "teaser" });
                   navigateWithWipe(`/work/${project.slug}`);
@@ -201,20 +210,18 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                 tabIndex={0}
                 role="link"
                 aria-label={`View ${project.title} project`}
-                className={`relative flex items-center justify-between pl-3 pr-2.5 py-1.5 sm:py-2 rounded-lg transition-colors cursor-pointer group/row focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 select-none ${
-                  isActive
+                className={`relative flex items-center justify-between pl-3 pr-2.5 py-1.5 sm:py-2 rounded-lg transition-colors cursor-pointer group/row focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 select-none ${isActive
                     ? "bg-[var(--surface-tile-elevated)]"
                     : "bg-transparent hover:bg-[var(--surface-tile-hover)]"
-                }`}
+                  }`}
               >
                 {/* Left: Project title and short plain teaser line */}
                 <div className="min-w-0 flex-1 flex flex-col justify-center">
                   <span
-                    className={`text-[13.5px] sm:text-[14px] font-medium leading-tight transition-colors ${
-                      isActive
+                    className={`text-[13.5px] sm:text-[14px] font-medium leading-tight transition-colors ${isActive
                         ? "text-[var(--text-primary)]"
                         : "text-[var(--text-secondary)] group-hover/row:text-[var(--text-primary)]"
-                    }`}
+                      }`}
                   >
                     {project.title}
                   </span>
@@ -279,6 +286,8 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
         {/* Footer: "All projects ↗" aligned with row text and matched font weight */}
         <div className="pt-1.5 mt-auto flex items-center justify-between shrink-0 pl-3">
           <button
+            onMouseEnter={() => router.prefetch("/projects")}
+            onFocus={() => router.prefetch("/projects")}
             onClick={() => navigateWithWipe("/projects")}
             type="button"
             className="group/btn text-[13.5px] sm:text-[14px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400"

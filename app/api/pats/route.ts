@@ -3,6 +3,8 @@ import arcjet, { shield, slidingWindow } from "@arcjet/next";
 import { getDb, bytePats } from "@/lib/db";
 import { sql, eq } from "drizzle-orm";
 
+export const dynamic = "force-dynamic";
+
 // Initialize Arcjet if ARCJET_KEY is provided
 const aj = process.env.ARCJET_KEY
   ? arcjet({

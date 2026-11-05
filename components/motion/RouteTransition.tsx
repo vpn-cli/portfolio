@@ -3,7 +3,7 @@
 import { createContext, useContext, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { gsap } from "gsap";
-import { registerGSAPPlugins, MOTION } from "@/lib/motion";
+import { registerGSAPPlugins } from "@/lib/motion";
 
 interface TransitionContextType {
   navigateWithWipe: (href: string) => void;
@@ -46,7 +46,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
       return;
     }
 
-    // Wipe in animation (accent curtain wipes down from top)
+    // Fast, crisp wipe in animation
     gsap.set(overlay, {
       display: "block",
       clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)",
@@ -55,24 +55,24 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
 
     gsap.to(overlay, {
       clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
-      duration: MOTION.durations.portal * 0.6,
-      ease: "power3.inOut",
+      duration: 0.22,
+      ease: "power2.out",
       onComplete: () => {
         startTransition(() => {
           router.push(href);
 
-          // Small timeout to allow Next.js route swap before wiping out
-          setTimeout(() => {
+          // Fast wipe out on route swap with zero artificial lag
+          requestAnimationFrame(() => {
             gsap.to(overlay, {
               clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)",
-              duration: MOTION.durations.portal * 0.6,
-              ease: "power3.inOut",
+              duration: 0.22,
+              ease: "power2.inOut",
               onComplete: () => {
                 gsap.set(overlay, { display: "none" });
                 isTransitioningRef.current = false;
               },
             });
-          }, 150);
+          });
         });
       },
     });
@@ -86,11 +86,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 z-[10000] hidden bg-[var(--bg-canvas)] border-b border-[var(--border-subtle)]"
         style={{ clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" }}
-      >
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-12 h-12 rounded-full border-2 border-black/20 dark:border-white/20 border-t-neutral-900 dark:border-t-white animate-spin" />
-        </div>
-      </div>
+      />
       {children}
     </TransitionContext.Provider>
   );
@@ -103,16 +99,26 @@ export function TransitionLink({
   ...props
 }: {
   href: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   [key: string]: any;
 }) {
   const { navigateWithWipe } = usePageTransition();
+  const router = useRouter();
+
+  const handlePrefetch = () => {
+    if (!href.startsWith("http") && !href.startsWith("mailto:") && !href.startsWith("#")) {
+      router.prefetch(href);
+    }
+  };
 
   return (
     <a
       href={href}
       className={className}
+      onMouseEnter={handlePrefetch}
+      onFocus={handlePrefetch}
+      onTouchStart={handlePrefetch}
       onClick={(e) => {
         // If external link, don't hijack
         if (href.startsWith("http") || href.startsWith("mailto:") || href.startsWith("#")) {
@@ -127,4 +133,3 @@ export function TransitionLink({
     </a>
   );
 }
-

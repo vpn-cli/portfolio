@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { ProjectCardPreview } from "./ProjectCardPreview";
 import { trackEvent } from "@/lib/analytics";
 import { CaseStudy } from "@/data/projects";
+import { TransitionLink } from "@/components/motion/RouteTransition";
 
 interface ProjectListingCardProps {
   project: CaseStudy;
@@ -30,9 +30,8 @@ export function ProjectListingCard({ project, idx, meta }: ProjectListingCardPro
 
   return (
     <article className="group relative flex flex-col lg:flex-row items-center gap-8 lg:gap-12 py-10 sm:py-14 border-b border-[var(--border-subtle)] last:border-b-0">
-      <Link
+      <TransitionLink
         href={`/work/${project.slug}`}
-        prefetch={false}
         onClick={handleProjectClick}
         className="absolute inset-0 z-10 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
         aria-label={`View ${project.title} case study`}
@@ -67,9 +66,8 @@ export function ProjectListingCard({ project, idx, meta }: ProjectListingCardPro
         </p>
 
         <div className="pt-2 flex items-center gap-3 relative z-20">
-          <Link
+          <TransitionLink
             href={`/work/${project.slug}`}
-            prefetch={false}
             onClick={handleProjectClick}
             className="min-h-[40px] inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-xs sm:text-sm transition-opacity shadow-sm active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
           >
@@ -78,7 +76,7 @@ export function ProjectListingCard({ project, idx, meta }: ProjectListingCardPro
               className="w-3.5 h-3.5 transition-transform motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
               aria-hidden="true"
             />
-          </Link>
+          </TransitionLink>
 
           {sourceUrl && (
             <a
