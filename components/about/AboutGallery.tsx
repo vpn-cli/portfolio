@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Award, Eye, X, ZoomIn } from "lucide-react";
+import { Award, X, ZoomIn } from "lucide-react";
 
 interface ArtPiece {
   filename: string;
@@ -62,19 +62,19 @@ const leadershipRoles = [
     role: "Design Team Head",
     org: "Manga & Anime Society, IIT Kharagpur",
     period: "Aug 2024 to Apr 2025",
-    scope: "Led 14 student designers producing publications, banners, and digital graphics.",
+    scope: "Led 14 student designers on publications, banners and social graphics.",
   },
   {
     role: "Design Coordinator",
     org: "Illumination Magazine, IIT Kharagpur",
     period: "Oct to Dec 2024",
-    scope: "Curated typography systems and multi-page editorial spreads.",
+    scope: "Set the typography and laid out multi-page spreads.",
   },
   {
     role: "Web & Design Team",
     org: "Chemical Engineering Association, IIT Kharagpur",
     period: "Aug 2023 to Apr 2024",
-    scope: "Maintained departmental media, symposium collateral, and print assets.",
+    scope: "Kept the department's media, symposium material and print assets up to date.",
   },
 ];
 
@@ -83,13 +83,13 @@ const awards = [
     title: "Silver Medal",
     event: "Inter-Hall Rangoli Competition, IIT Kharagpur",
     year: "2024",
-    badge: "2nd Place Campus-wide",
+    badge: "2nd place",
   },
   {
     title: "Bronze Medal",
     event: "Inter-Hall Rangoli Competition, IIT Kharagpur",
     year: "2023",
-    badge: "3rd Place Campus-wide",
+    badge: "3rd place",
   },
 ];
 
@@ -99,40 +99,24 @@ export function AboutGallery() {
   return (
     <section
       aria-labelledby="design-art-heading"
-      className="w-full rounded-[28px] sm:rounded-[32px] bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] p-6 sm:p-8 space-y-8"
+      className="w-full space-y-8"
     >
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-[var(--border-subtle)] pb-4">
-        <div>
-          <h2 id="design-art-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
-            Design & visual craft
-          </h2>
-          <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
-            An engineer who designs: digital vector studies, campus publication typography, and traditional rangoli.
-          </p>
-        </div>
-        <span className="text-xs text-[var(--text-tertiary)] hidden sm:inline">
-          Exhibition & leadership
-        </span>
+      <div className="border-b border-[var(--border-subtle)] pb-4">
+        <h2 id="design-art-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+          Design
+        </h2>
+        <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
+          Vector studies, campus publication work and rangoli.
+        </p>
       </div>
 
-      {/* Art Gallery Grid */}
       <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
-            Digital Vector Exhibition (Click to Inspect)
-          </h3>
-          <span className="text-xs text-[var(--text-tertiary)] hidden sm:inline">
-            Original SVG Artwork
-          </span>
-        </div>
-
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
           {artworks.map((art) => (
             <figure
               key={art.filename}
               onClick={() => setSpotlightArt(art)}
-              className="group cursor-pointer overflow-hidden rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] hover:border-[var(--text-primary)] transition-all duration-200 hover:-translate-y-0.5 shadow-xs"
+              className="group cursor-pointer overflow-hidden rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] hover:border-[var(--text-primary)] transition-all duration-200 shadow-xs"
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-950 flex items-center justify-center">
                 <Image
@@ -155,7 +139,7 @@ export function AboutGallery() {
                   <h4 className="text-xs sm:text-sm font-bold text-[var(--text-primary)] truncate">
                     {art.title}
                   </h4>
-                  <span className="text-[11px] text-[var(--text-tertiary)] tabular-nums shrink-0 font-mono">
+                  <span className="text-[11px] text-[var(--text-tertiary)] tabular-nums shrink-0">
                     {art.year}
                   </span>
                 </div>
@@ -168,12 +152,10 @@ export function AboutGallery() {
         </div>
       </div>
 
-      {/* Leadership & Competition Recognition Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 border-t border-[var(--border-subtle)]">
-        {/* Campus Design Leadership */}
         <div className="p-5 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-3">
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)]">
-            Campus Design Leadership
+          <h3 className="text-xs font-semibold text-[var(--text-tertiary)]">
+            Campus design roles
           </h3>
           <ul className="space-y-3 text-xs sm:text-sm" role="list">
             {leadershipRoles.map((lead) => (
@@ -185,7 +167,7 @@ export function AboutGallery() {
                   <span className="font-bold text-[var(--text-primary)]">
                     {lead.role}
                   </span>
-                  <span className="text-xs text-[var(--text-tertiary)] tabular-nums font-mono shrink-0">
+                  <span className="text-xs text-[var(--text-tertiary)] tabular-nums shrink-0">
                     {lead.period}
                   </span>
                 </div>
@@ -200,13 +182,12 @@ export function AboutGallery() {
           </ul>
         </div>
 
-        {/* Art Competitions: Rangoli */}
         <div className="p-5 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-3 flex flex-col justify-between">
           <div className="space-y-3">
             <div className="flex items-center gap-1.5">
               <Award className="w-4 h-4 text-amber-500" aria-hidden="true" />
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)]">
-                Competition Recognition
+              <h3 className="text-xs font-semibold text-[var(--text-tertiary)]">
+                Competitions
               </h3>
             </div>
             <ul className="space-y-3 text-xs sm:text-sm" role="list">
@@ -220,28 +201,23 @@ export function AboutGallery() {
                       <span className="w-2 h-2 rounded-full bg-amber-500" />
                       {award.title}
                     </span>
-                    <span className="text-xs text-[var(--text-tertiary)] font-mono tabular-nums">
+                    <span className="text-xs text-[var(--text-tertiary)] tabular-nums">
                       {award.year}
                     </span>
                   </div>
                   <p className="text-xs text-[var(--text-secondary)]">
                     {award.event}
                   </p>
-                  <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                  <span className="inline-block px-2 py-0.5 rounded text-[10px] bg-amber-500/10 text-amber-500 border border-amber-500/20 font-medium">
                     {award.badge}
                   </span>
                 </li>
               ))}
             </ul>
           </div>
-
-          <div className="pt-3 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-tertiary)]">
-            Traditional floor pigment compositions evaluated across color theory, symmetry, and geometric scaling.
-          </div>
         </div>
       </div>
 
-      {/* Spotlight Inspection Lightbox Modal */}
       {spotlightArt && (
         <div
           role="dialog"
@@ -259,7 +235,7 @@ export function AboutGallery() {
                 <h4 className="text-lg font-bold text-[var(--text-primary)]">
                   {spotlightArt.title}
                 </h4>
-                <p className="text-xs text-[var(--text-tertiary)] font-mono">
+                <p className="text-xs text-[var(--text-tertiary)]">
                   {spotlightArt.medium} · {spotlightArt.year}
                 </p>
               </div>

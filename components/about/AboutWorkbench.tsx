@@ -4,19 +4,11 @@ import { useState } from "react";
 import Image from "next/image";
 import { TransitionLink } from "@/components/motion/RouteTransition";
 import {
-  Activity,
-  Terminal,
   Palette,
-  Layers,
   ArrowUpRight,
   Play,
   RotateCcw,
-  CheckCircle2,
   Cpu,
-  Database,
-  Radio,
-  FileCode,
-  ShieldCheck,
   Zap,
 } from "lucide-react";
 import { Stage, Window } from "@/components/stageshow/kit";
@@ -185,28 +177,17 @@ export function AboutWorkbench() {
   };
 
   return (
-    <section
-      aria-labelledby="workbench-heading"
-      className="w-full rounded-[28px] sm:rounded-[32px] bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] p-5 sm:p-7 lg:p-8 space-y-6 shadow-sm overflow-hidden"
-    >
-      {/* Workbench Header & Mode Switcher */}
+    <section aria-labelledby="workbench-heading" className="w-full space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-5">
         <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)]">
-              Interactive Systems & Design Workbench
-            </span>
-          </div>
           <h2 id="workbench-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
-            Explore the dual discipline live
+            Three backends, simulated
           </h2>
           <p className="text-xs sm:text-sm text-[var(--text-secondary)]">
-            Test the real-time event streaming pipeline, inspect vector design studies, or compare architectural latency tradeoffs.
+            Press Emit Event to see how each system handles a new event. The logs are simulated.
           </p>
         </div>
 
-        {/* Mode Selector Buttons */}
         <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] shrink-0 self-start md:self-auto">
           <button
             onClick={() => setMode("systems")}
@@ -217,7 +198,7 @@ export function AboutWorkbench() {
             }`}
           >
             <Cpu className="w-3.5 h-3.5" aria-hidden="true" />
-            <span>01 // Systems Engine</span>
+            <span>Systems</span>
           </button>
 
           <button
@@ -229,7 +210,7 @@ export function AboutWorkbench() {
             }`}
           >
             <Palette className="w-3.5 h-3.5" aria-hidden="true" />
-            <span>02 // Visual Studio</span>
+            <span>Design</span>
           </button>
 
           <button
@@ -241,15 +222,13 @@ export function AboutWorkbench() {
             }`}
           >
             <Zap className="w-3.5 h-3.5" aria-hidden="true" />
-            <span>03 // Primitives</span>
+            <span>Trade-offs</span>
           </button>
         </div>
       </div>
 
-      {/* MODE 1: SYSTEMS ENGINE (STAGESHOW WINDOW) */}
       {mode === "systems" && (
         <div className="space-y-4">
-          {/* Subtabs for Architecture */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-1.5">
               <button
@@ -260,7 +239,7 @@ export function AboutWorkbench() {
                     : "bg-transparent border-[var(--border-subtle)] text-[var(--text-secondary)] hover:border-[var(--border-hover)]"
                 }`}
               >
-                Kafka Outbox (StreamMart)
+                StreamMart (Kafka)
               </button>
               <button
                 onClick={() => setSystemsTab("sockets")}
@@ -270,7 +249,7 @@ export function AboutWorkbench() {
                     : "bg-transparent border-[var(--border-subtle)] text-[var(--text-secondary)] hover:border-[var(--border-hover)]"
                 }`}
               >
-                WebSocket Fanout (Sportz)
+                Sportz (WebSockets)
               </button>
               <button
                 onClick={() => setSystemsTab("ast")}
@@ -280,11 +259,10 @@ export function AboutWorkbench() {
                     : "bg-transparent border-[var(--border-subtle)] text-[var(--text-secondary)] hover:border-[var(--border-hover)]"
                 }`}
               >
-                AST Parser (AppForge)
+                AppForge (AST parser)
               </button>
             </div>
 
-            {/* Live Actions */}
             <div className="flex items-center gap-2">
               <button
                 onClick={handleEmitEvent}
@@ -304,73 +282,31 @@ export function AboutWorkbench() {
             </div>
           </div>
 
-          {/* Miniature Stageshow Stage */}
           <div className="w-full rounded-2xl overflow-hidden border border-[var(--border-subtle)] bg-[var(--surface-tile)] shadow-inner">
-            <Stage theme={stageshowTheme} fidelity="standard" width={920} height={380} className="w-full">
+            <Stage theme={stageshowTheme} fidelity="standard" width={920} height={340} className="w-full">
               {() => (
                 <Window
                   title={
                     systemsTab === "kafka"
-                      ? "stream-mart :: kafka-transactional-outbox-monitor"
+                      ? "StreamMart outbox"
                       : systemsTab === "sockets"
-                      ? "sportz :: ws-room-dispatcher (in-memory)"
-                      : "appforge :: deterministic-ast-pipeline"
+                      ? "Sportz rooms"
+                      : "AppForge parser"
                   }
                   toolbar={
-                    <span className="text-[11px] font-mono font-bold text-emerald-500">
-                      {isSimulating ? "EMITTING..." : "STREAMING ACTIVE"}
+                    <span className="text-[11px] font-bold text-emerald-500">
+                      {isSimulating ? "Emitting..." : "Simulated"}
                     </span>
                   }
                   className="w-full h-full"
                 >
                   <div className="p-4 sm:p-5 flex flex-col justify-between h-full space-y-4">
-                    {/* Top Stats Strip */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 border-b border-[var(--border-subtle)] pb-3">
-                      <div className="space-y-0.5">
-                        <span className="text-[11px] text-[var(--text-tertiary)] uppercase font-mono">
-                          {systemsTab === "kafka" ? "Topic Partition" : systemsTab === "sockets" ? "Active Room" : "AST Nodes"}
-                        </span>
-                        <p className="text-sm font-bold font-mono text-[var(--text-primary)]">
-                          {systemsTab === "kafka" ? "orders.events (p2)" : systemsTab === "sockets" ? "match:402" : "4 Bounded Nodes"}
-                        </p>
-                      </div>
-
-                      <div className="space-y-0.5">
-                        <span className="text-[11px] text-[var(--text-tertiary)] uppercase font-mono">
-                          {systemsTab === "kafka" ? "Consumer Lag" : systemsTab === "sockets" ? "Connected" : "Schema Guard"}
-                        </span>
-                        <p className="text-sm font-bold font-mono text-emerald-500">
-                          {systemsTab === "kafka" ? "0 msgs (real-time)" : systemsTab === "sockets" ? "4 listeners" : "Zod Strict Valid"}
-                        </p>
-                      </div>
-
-                      <div className="space-y-0.5">
-                        <span className="text-[11px] text-[var(--text-tertiary)] uppercase font-mono">
-                          Average Latency
-                        </span>
-                        <p className="text-sm font-bold font-mono text-[var(--text-primary)]">
-                          {systemsTab === "kafka" ? "0.24 ms" : systemsTab === "sockets" ? "0.18 ms" : "1.1 ms"}
-                        </p>
-                      </div>
-
-                      <div className="space-y-0.5">
-                        <span className="text-[11px] text-[var(--text-tertiary)] uppercase font-mono">
-                          Integrity Guarantee
-                        </span>
-                        <p className="text-sm font-bold font-mono text-[var(--text-secondary)]">
-                          {systemsTab === "kafka" ? "At-least-once ACID" : systemsTab === "sockets" ? "Sub-ms In-memory" : "Zero Eval()"}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Middle: Live Event Log Stream */}
-                    <div className="flex-1 space-y-2 overflow-hidden font-mono text-xs">
+                    <div className="flex-1 space-y-2 overflow-hidden text-xs">
                       <div className="text-[11px] text-[var(--text-tertiary)] flex items-center justify-between pb-1">
-                        <span>LIVE TRANSACTION STREAM</span>
-                        <span>TIMEZONE: IST (LOCAL CLOCK)</span>
+                        <span>Event log</span>
                       </div>
 
-                      <div className="space-y-1.5 max-h-[170px] overflow-y-auto pr-1">
+                      <div className="space-y-1.5 max-h-[200px] overflow-y-auto pr-1">
                         {(systemsTab === "kafka"
                           ? kafkaLogs
                           : systemsTab === "sockets"
@@ -379,7 +315,7 @@ export function AboutWorkbench() {
                         ).map((log) => (
                           <div
                             key={log.id}
-                            className="flex items-center justify-between gap-3 p-2 rounded-lg bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] text-[12px] leading-tight"
+                            className="flex items-center justify-between gap-3 p-2 rounded-lg bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] text-[12px] leading-tight font-mono"
                           >
                             <div className="flex items-center gap-2.5 truncate">
                               <span className="text-[var(--text-tertiary)] tabular-nums shrink-0">
@@ -418,14 +354,13 @@ export function AboutWorkbench() {
                       </div>
                     </div>
 
-                    {/* Foot Note with Case Study Link */}
                     <div className="flex items-center justify-between border-t border-[var(--border-subtle)] pt-2.5 text-xs text-[var(--text-secondary)]">
                       <span className="text-[11px] text-[var(--text-tertiary)]">
                         {systemsTab === "kafka"
-                          ? "Source: StreamMart production architecture"
+                          ? "From StreamMart"
                           : systemsTab === "sockets"
-                          ? "Source: Sportz high-throughput WebSocket engine"
-                          : "Source: AppForge AST component compiler"}
+                          ? "From Sportz"
+                          : "From AppForge"}
                       </span>
                       <TransitionLink
                         href={
@@ -449,30 +384,23 @@ export function AboutWorkbench() {
         </div>
       )}
 
-      {/* MODE 2: VISUAL STUDIO (VECTOR ARTWORK & CAMPUS DESIGN) */}
       {mode === "visual" && (
         <div className="space-y-4">
           <div className="flex items-baseline justify-between">
             <span className="text-xs text-[var(--text-tertiary)]">
-              Digital vector studies & exhibition works (2023 – 2025)
+              Vector studies, 2023 to 2025
             </span>
             <span className="text-xs text-[var(--text-secondary)] font-medium">
-              Click artwork to inspect vector details
+              Pick one to view it larger
             </span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-            {/* Left: Artwork Spotlight Window */}
             <div className="lg:col-span-8 rounded-2xl overflow-hidden border border-[var(--border-subtle)] bg-[var(--surface-tile)]">
               <Stage theme={stageshowTheme} fidelity="standard" width={680} height={400} className="w-full">
                 {() => (
                   <Window
-                    title={`studio-canvas :: art-0${selectedArtwork + 1}.svg`}
-                    toolbar={
-                      <span className="text-[11px] font-mono text-emerald-500 font-bold">
-                        VECTOR 100% SCALE
-                      </span>
-                    }
+                    title={`art-0${selectedArtwork + 1}.svg`}
                     className="w-full h-full"
                   >
                     <div className="p-4 sm:p-5 flex flex-col h-full justify-between">
@@ -484,7 +412,6 @@ export function AboutWorkbench() {
                           unoptimized
                           className="object-contain p-4"
                         />
-                        {/* Grid overlay lines */}
                         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
                       </div>
 
@@ -499,9 +426,6 @@ export function AboutWorkbench() {
                             "Orbital Duality",
                           ][selectedArtwork]}
                         </span>
-                        <span className="text-[var(--text-tertiary)] font-mono">
-                          IIT Kharagpur Studio Archives
-                        </span>
                       </div>
                     </div>
                   </Window>
@@ -509,7 +433,6 @@ export function AboutWorkbench() {
               </Stage>
             </div>
 
-            {/* Right: Selectable Artwork Palette */}
             <div className="lg:col-span-4 flex flex-col justify-between space-y-3">
               <div className="space-y-2">
                 <span className="text-xs font-semibold text-[var(--text-secondary)]">
@@ -538,23 +461,22 @@ export function AboutWorkbench() {
                 </div>
               </div>
 
-              {/* Campus Leadership Credentials */}
               <div className="p-3.5 rounded-xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-2">
-                <span className="text-[11px] font-semibold text-[var(--text-tertiary)] uppercase block">
-                  Campus Design Leadership
+                <span className="text-[11px] font-semibold text-[var(--text-tertiary)] block">
+                  Campus design leadership
                 </span>
                 <div className="space-y-1.5 text-xs text-[var(--text-secondary)]">
                   <div className="flex justify-between items-baseline">
                     <span className="font-medium text-[var(--text-primary)]">Manga & Anime Society</span>
-                    <span className="text-[11px] text-[var(--text-tertiary)] font-mono">Head</span>
+                    <span className="text-[11px] text-[var(--text-tertiary)]">Head</span>
                   </div>
                   <div className="flex justify-between items-baseline">
                     <span className="font-medium text-[var(--text-primary)]">Illumination Magazine</span>
-                    <span className="text-[11px] text-[var(--text-tertiary)] font-mono">Coordinator</span>
+                    <span className="text-[11px] text-[var(--text-tertiary)]">Coordinator</span>
                   </div>
                   <div className="flex justify-between items-baseline">
                     <span className="font-medium text-[var(--text-primary)]">Inter-Hall Rangoli</span>
-                    <span className="text-[11px] text-amber-500 font-mono">Silver & Bronze</span>
+                    <span className="text-[11px] text-amber-500">Silver & Bronze</span>
                   </div>
                 </div>
               </div>
@@ -563,66 +485,62 @@ export function AboutWorkbench() {
         </div>
       )}
 
-      {/* MODE 3: BENCHMARKS & PRIMITIVES */}
       {mode === "benchmarks" && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-5 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-3 flex flex-col justify-between">
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-sky-500/10 text-sky-400 font-bold">
-                  LOCAL MEMORY MAP
+              <div>
+                <span className="px-2 py-0.5 rounded text-[11px] bg-sky-500/10 text-sky-400 font-semibold">
+                  In-memory rooms
                 </span>
-                <span className="text-xs font-mono text-emerald-500 font-bold">0.18 ms</span>
               </div>
               <h3 className="text-base font-bold text-[var(--text-primary)]">
-                In-Memory WebSocket Rooms
+                Rooms in memory
               </h3>
               <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-normal">
-                Single-node room lookups in plain JavaScript <code className="font-mono text-xs">Map&lt;string, Set&lt;Client&gt;&gt;</code> without Redis network hop overhead. Zero external dependency, sub-millisecond broadcast.
+                Sportz keeps rooms in a <code className="font-mono text-xs">Map&lt;string, Set&lt;Client&gt;&gt;</code> inside the Node process, so broadcasting to a room needs no Redis call.
               </p>
             </div>
-            <div className="pt-3 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-tertiary)] font-mono">
-              Applied in: Sportz Sockets Engine
+            <div className="pt-3 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-tertiary)]">
+              Used in Sportz
             </div>
           </div>
 
           <div className="p-5 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-3 flex flex-col justify-between">
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/10 text-emerald-400 font-bold">
-                  TRANSACTIONAL OUTBOX
+              <div>
+                <span className="px-2 py-0.5 rounded text-[11px] bg-emerald-500/10 text-emerald-400 font-semibold">
+                  Transactional outbox
                 </span>
-                <span className="text-xs font-mono text-emerald-500 font-bold">ACID Guarantee</span>
               </div>
               <h3 className="text-base font-bold text-[var(--text-primary)]">
-                Durable Kafka Event Logs
+                Orders and events in one transaction
               </h3>
               <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-normal">
-                Writing orders and events into PostgreSQL in the same database transaction. Debezium CDC pushes to Kafka topic partitions, eliminating 2-phase commit and dual-write anomalies.
+                StreamMart writes the order and its outbox event in the same Postgres transaction. Debezium reads the outbox and publishes to Kafka, so an order can&apos;t exist without its event.
               </p>
             </div>
-            <div className="pt-3 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-tertiary)] font-mono">
-              Applied in: StreamMart E-Commerce
+            <div className="pt-3 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-tertiary)]">
+              Used in StreamMart
             </div>
           </div>
 
           <div className="p-5 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-3 flex flex-col justify-between">
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-amber-500/10 text-amber-400 font-bold">
-                  DETERMINISTIC AST
+              <div>
+                <span className="px-2 py-0.5 rounded text-[11px] bg-amber-500/10 text-amber-400 font-semibold">
+                  Schema-checked AST
                 </span>
-                <span className="text-xs font-mono text-emerald-500 font-bold">Zero Eval()</span>
               </div>
               <h3 className="text-base font-bold text-[var(--text-primary)]">
-                Compiler AST Constraints
+                Validate before rendering
               </h3>
               <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-normal">
-                Compiler pipeline that parses generative AI output through rigorous JSON Schema and Babel AST validators before building React components. Eliminates arbitrary code execution risk.
+                AppForge checks model output against a JSON schema and a Babel AST pass before building React components. It never calls eval().
               </p>
             </div>
-            <div className="pt-3 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-tertiary)] font-mono">
-              Applied in: AppForge App Builder
+            <div className="pt-3 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-tertiary)]">
+              Used in AppForge
             </div>
           </div>
         </div>

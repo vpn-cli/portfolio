@@ -11,7 +11,6 @@ interface Milestone {
   year: string;
   title: string;
   stage: string;
-  badge: string;
   description: string;
   keyArtifact: string;
   artifactTitle: string;
@@ -19,7 +18,6 @@ interface Milestone {
   projectLinks?: {
     label: string;
     href: string;
-    note?: string;
   }[];
 }
 
@@ -27,11 +25,10 @@ const milestones: Milestone[] = [
   {
     id: "kgp-start",
     year: "2022",
-    stage: "Foundation",
-    badge: "IIT Kharagpur",
-    title: "IIT Kharagpur Entry & Systems Foundations",
+    stage: "Joined IIT KGP",
+    title: "Joining IIT Kharagpur",
     description:
-      "Admitted to IIT Kharagpur for the B.Tech + M.Tech Dual Degree in Chemical Engineering. Began writing software for numerical modeling and discovering visual design principles.",
+      "Started the B.Tech + M.Tech dual degree in chemical engineering. Wrote my first real programs for numerical simulations, and started doing design for campus groups.",
     keyArtifact: "terminal",
     artifactTitle: "terminal :: iitkgp-hpc-node01",
     terminalLines: [
@@ -45,11 +42,10 @@ const milestones: Milestone[] = [
   {
     id: "campus-design",
     year: "2023 to 2024",
-    stage: "Visual Craft",
-    badge: "Design Direction",
-    title: "Campus Design Leadership & Publication Direction",
+    stage: "Campus design",
+    title: "Design for campus publications",
     description:
-      "Led design teams across campus student publications and societies: Manga & Anime Society (Head), Illumination Magazine (Coordinator), and ChemEA. Won Silver & Bronze Medals in Inter-Hall Rangoli competitions.",
+      "Led design for the Manga & Anime Society and coordinated design for Illumination Magazine. I also worked on the Chemical Engineering Association's web and design team, and won bronze (2023) and silver (2024) at the inter-hall rangoli competition.",
     keyArtifact: "design",
     artifactTitle: "studio :: illumination-magazine-issue4",
     terminalLines: [
@@ -62,16 +58,15 @@ const milestones: Milestone[] = [
   {
     id: "frontend-unnati-sportz",
     year: "2025",
-    stage: "Real-Time & UI",
-    badge: "Unnati & Sportz",
-    title: "Unnati Internship & Sportz Sockets Engine",
+    stage: "First internship",
+    title: "Unnati and Sportz",
     description:
-      "Frontend engineering internship at Unnati building an SME onboarding dashboard and design system (WCAG 2.1 AA). Engineered Sportz, a push-based sports broadcasting server over raw WebSockets with in-memory room dispatching.",
+      "Interned at Unnati, building an admin dashboard and a component library. Built Sportz, a WebSocket server that pushes live scores to everyone watching a match.",
     keyArtifact: "sockets",
     artifactTitle: "sportz :: ws-room-monitor",
     projectLinks: [
       {
-        label: "Sportz Case Study",
+        label: "Sportz case study",
         href: "/work/sockets",
       },
     ],
@@ -85,21 +80,19 @@ const milestones: Milestone[] = [
   {
     id: "fullstack-clairvyn-appforge",
     year: "2026",
-    stage: "Distributed Systems",
-    badge: "Clairvyn & StreamMart",
-    title: "Clairvyn AI Internship + StreamMart & AppForge",
+    stage: "Clairvyn & StreamMart",
+    title: "Clairvyn AI, StreamMart and AppForge",
     description:
-      "Full-stack internship at Clairvyn AI: built Next.js UI panels, Paytm subscription paywall, and Docker deploys to AWS EC2. Built StreamMart with Kafka transactional outbox and AppForge with deterministic AST compiler transforms.",
+      "Interned at Clairvyn AI on their Next.js app, payments and deploys. Built StreamMart, which uses a transactional outbox to publish order events to Kafka, and AppForge, which turns model output into React components without eval().",
     keyArtifact: "distributed",
     artifactTitle: "stream-mart :: kafka-outbox-broker",
     projectLinks: [
       {
-        label: "StreamMart (dates: TODO)",
+        label: "StreamMart case study",
         href: "/work/stream-mart",
-        note: "Dates: TODO",
       },
       {
-        label: "AppForge Case Study",
+        label: "AppForge case study",
         href: "/work/appforge",
       },
     ],
@@ -113,11 +106,10 @@ const milestones: Milestone[] = [
   {
     id: "current-focus",
     year: "Now",
-    stage: "Distributed Scale",
-    badge: "Kafka & K8s",
-    title: "Advanced Kafka Event Partitioning & Kubernetes",
+    stage: "Now",
+    title: "Kafka and Kubernetes",
     description:
-      "Deepening production-readiness in backend distributed architectures, focusing on Kafka event partitioning, consumer group rebalancing, and Kubernetes pod orchestration for resilient microservices.",
+      "Learning how Kafka partitioning and consumer group rebalancing behave under load, and how to run services on Kubernetes.",
     keyArtifact: "k8s",
     artifactTitle: "cluster :: distributed-orchestration",
     terminalLines: [
@@ -138,22 +130,15 @@ export function AboutTimeline() {
 
   return (
     <section aria-labelledby="timeline-heading" className="w-full space-y-6">
-      {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-[var(--border-subtle)] pb-4">
-        <div>
-          <h2 id="timeline-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
-            How I got here
-          </h2>
-          <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
-            Growth trajectory from IIT Kharagpur foundations through visual design leadership into distributed backend systems.
-          </p>
-        </div>
-        <span className="text-xs text-[var(--text-tertiary)] hidden sm:inline tabular-nums">
-          2022 to present
-        </span>
+      <div className="border-b border-[var(--border-subtle)] pb-4">
+        <h2 id="timeline-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+          How I got here
+        </h2>
+        <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
+          From chemical engineering to backend work.
+        </p>
       </div>
 
-      {/* Interactive Milestone Rail */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2" role="tablist" aria-label="Career milestones">
         {milestones.map((m) => {
           const isActive = m.id === activeId;
@@ -165,7 +150,7 @@ export function AboutTimeline() {
               onClick={() => setActiveId(m.id)}
               className={`p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${
                 isActive
-                  ? "bg-[var(--surface-tile-elevated)] border-[var(--text-primary)] shadow-sm scale-102"
+                  ? "bg-[var(--surface-tile-elevated)] border-[var(--text-primary)] shadow-sm"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] hover:border-[var(--border-hover)] opacity-85 hover:opacity-100"
               }`}
             >
@@ -173,9 +158,6 @@ export function AboutTimeline() {
                 <span className="text-xs font-semibold tabular-nums text-[var(--text-tertiary)] block">
                   {m.year}
                 </span>
-                {isActive && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
-                )}
               </div>
               <span
                 className={`text-xs sm:text-sm font-semibold truncate block mt-1 ${
@@ -189,21 +171,16 @@ export function AboutTimeline() {
         })}
       </div>
 
-      {/* Active Milestone Card with Paired Stageshow Window */}
       <article className="p-6 sm:p-7 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-6 motion-safe:animate-fadeIn">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Left: Narrative & Context */}
           <div className="lg:col-span-7 space-y-4">
             <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded text-[11px] font-mono uppercase bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-[var(--text-tertiary)]">
+              <div>
+                <span className="px-2 py-0.5 rounded text-[11px] bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-[var(--text-tertiary)]">
                   {currentMilestone.year} · {currentMilestone.stage}
                 </span>
-                <span className="text-xs font-semibold text-emerald-500">
-                  {currentMilestone.badge}
-                </span>
               </div>
-              <h3 className="text-lg sm:text-xl font-bold text-[var(--text-primary)]">
+              <h3 className="text-lg sm:text-xl font-bold text-[var(--text-primary)] mt-1">
                 {currentMilestone.title}
               </h3>
             </div>
@@ -228,20 +205,14 @@ export function AboutTimeline() {
             )}
           </div>
 
-          {/* Right: Miniature Stageshow Artifact Window */}
           <div className="lg:col-span-5 rounded-xl overflow-hidden border border-[var(--border-subtle)] bg-[var(--surface-tile-elevated)] shadow-xs">
             <Stage theme={stageshowTheme} fidelity="standard" width={420} height={220} className="w-full">
               {() => (
                 <Window
                   title={currentMilestone.artifactTitle}
-                  toolbar={
-                    <span className="text-[10px] font-mono text-[var(--text-tertiary)] font-bold">
-                      ARCHIVED
-                    </span>
-                  }
                   className="w-full h-full"
                 >
-                  <div className="p-3.5 h-full flex flex-col justify-between font-mono text-[11px] leading-relaxed overflow-hidden">
+                  <div className="p-3.5 h-full flex flex-col justify-start font-mono text-[11px] leading-relaxed overflow-hidden">
                     <div className="space-y-1.5">
                       {currentMilestone.terminalLines?.map((line, idx) => (
                         <div key={idx} className="space-y-0.5">
@@ -259,11 +230,6 @@ export function AboutTimeline() {
                         </div>
                       ))}
                     </div>
-
-                    <div className="pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between text-[10px] text-[var(--text-tertiary)]">
-                      <span>STATUS: REPRODUCIBLE</span>
-                      <span>VERIFIED ARTIFACT</span>
-                    </div>
                   </div>
                 </Window>
               )}
@@ -272,7 +238,6 @@ export function AboutTimeline() {
         </div>
       </article>
 
-      {/* Accessible Full Chronology List for Screen Readers */}
       <ol className="sr-only">
         {milestones.map((m) => (
           <li key={m.id}>

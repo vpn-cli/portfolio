@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowUpRight, Copy, Check, Mail, Sun, Moon, MapPin, Download } from "lucide-react";
+import { ArrowUpRight, Copy, Check, Mail, Sun, Moon, MapPin } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
 interface LocalTimeState {
@@ -30,8 +30,8 @@ function getIstStatus(): LocalTimeState {
   const isSun = hour24 >= 8 && hour24 < 20;
   const isNight = hour24 >= 22 || hour24 < 8;
   const statusText = isNight
-    ? "probably asleep, replies in the morning"
-    : "usually replies within a day";
+    ? "probably asleep, I'll reply in the morning"
+    : "I usually reply within a day";
 
   return { timeStr, isSun, statusText };
 }
@@ -81,40 +81,32 @@ export function AboutContact() {
         setCopied(true);
         setTimeout(() => setCopied(false), 1500);
       } catch {
-        // Fallback silently
+        /* Clipboard copy failed silently */
       }
     }
   };
 
-  const mailUrl = `mailto:${email}?subject=Opportunity%20Inquiry%20%E2%80%94%20Vipin%20Kaushik`;
+  const mailUrl = `mailto:${email}?subject=Opportunity%20Inquiry%20-%20Vipin%20Kaushik`;
 
   return (
     <section aria-labelledby="contact-heading" className="w-full">
       <div className="p-7 sm:p-9 rounded-[28px] sm:rounded-[32px] bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-6">
         <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)]">
-              Direct Contact & Status
-            </span>
-          </div>
-
           <h2 id="contact-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)]">
-            Let’s build together.
+            Get in touch
           </h2>
 
           <p className="text-sm sm:text-base text-[var(--text-secondary)] max-w-2xl leading-relaxed">
-            Available for Summer 2026 internships and full-time software engineering roles post-graduation (April 2027). Always happy to discuss distributed systems, WebSockets, or visual design.
+            I&apos;m looking for full-time software engineering roles starting after I graduate in April 2027. Email me if you want to talk about backend systems or design.
           </p>
 
-          {/* Location & Time Coordinates Strip */}
           <div className="flex flex-wrap items-center gap-4 text-xs text-[var(--text-secondary)] min-h-[24px] pt-1 border-t border-[var(--border-subtle)]">
-            <div className="flex items-center gap-1.5 font-mono">
+            <div className="flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-[var(--text-tertiary)] shrink-0" aria-hidden="true" />
-              <span>IIT Kharagpur · 22.3149° N, 87.3105° E</span>
+              <span>IIT Kharagpur</span>
             </div>
 
-            <div className="flex items-center gap-1.5 font-mono">
+            <div className="flex items-center gap-1.5">
               {timeState ? (
                 <>
                   {timeState.isSun ? (
@@ -123,25 +115,24 @@ export function AboutContact() {
                     <Moon className="w-3.5 h-3.5 shrink-0 text-slate-400" aria-hidden="true" />
                   )}
                   <span className="tabular-nums">
-                    {timeState.timeStr} IST ({timeState.statusText})
+                    {timeState.timeStr} in India, {timeState.statusText}
                   </span>
                 </>
               ) : (
                 <span className="invisible select-none inline-flex items-center gap-2" aria-hidden="true">
                   <span className="w-3.5 h-3.5 shrink-0 inline-block" />
-                  <span>9:27 AM in India (usually replies within a day)</span>
+                  <span>9:27 AM in India, I usually reply within a day</span>
                 </span>
               )}
             </div>
           </div>
         </div>
 
-        {/* Email & Actions Console */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-2xl bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)]">
           <button
             onClick={handleCopy}
             type="button"
-            className="text-left font-mono text-sm sm:text-base text-[var(--text-primary)] hover:text-sky-400 transition-colors focus-visible:outline-none cursor-pointer"
+            className="text-left text-sm sm:text-base text-[var(--text-primary)] hover:text-sky-400 transition-colors focus-visible:outline-none cursor-pointer"
             title="Click to copy email address"
           >
             {email}
@@ -157,7 +148,7 @@ export function AboutContact() {
               {copied ? (
                 <>
                   <Check className="w-3.5 h-3.5 text-emerald-500" aria-hidden="true" />
-                  <span className="text-emerald-500 font-bold">Copied!</span>
+                  <span className="text-emerald-500 font-bold">Copied</span>
                 </>
               ) : (
                 <>
@@ -173,7 +164,7 @@ export function AboutContact() {
               className="px-4 py-2 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] text-xs font-semibold hover:opacity-90 flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-95 shadow-xs"
             >
               <Mail className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>Send Email</span>
+              <span>Send email</span>
               <ArrowUpRight className="w-3.5 h-3.5 opacity-80" aria-hidden="true" />
             </a>
           </div>

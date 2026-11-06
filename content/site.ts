@@ -60,7 +60,7 @@ export const siteConfig = {
   timezone: "Asia/Kolkata",
   email: "vipinkaushik20771041@gmail.com",
   // Availability line per resume
-  status: "Graduating April 2027 · open to SDE roles",
+  status: "Graduating April 2027, looking for SDE roles",
   bio: "I build full-stack web applications and the backend systems behind them, mostly with Next.js, Node.js, and PostgreSQL.",
   story: "I focus on distributed systems, real-time data streaming, and scalable web architectures built with modern web standards.",
   whatIDoNow: "Today I build full-stack applications with Next.js, TypeScript, and Node.js, backed by PostgreSQL and event-driven Kafka message queues.",
