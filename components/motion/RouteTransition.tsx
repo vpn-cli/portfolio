@@ -85,9 +85,12 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
 
       if (targetElement) {
         if (activeLenis) {
-          activeLenis.scrollTo(targetElement, { immediate: true, force: true });
+          activeLenis.scrollTo(targetElement, { immediate: true, force: true, offset: -24 });
         } else {
-          targetElement.scrollIntoView({ behavior: "instant", block: "start" });
+          window.scrollTo({
+            top: targetElement.getBoundingClientRect().top + window.scrollY - 24,
+            behavior: "instant",
+          });
         }
       } else {
         if (activeLenis) {
