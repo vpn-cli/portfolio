@@ -46,6 +46,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
   const overlayRef = useRef<HTMLDivElement>(null);
   const isTransitioningRef = useRef(false);
   const targetPathRef = useRef<string | null>(null);
+  const targetHashRef = useRef<string | null>(null);
   const wipeInDoneRef = useRef(false);
   const routeChangedRef = useRef(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -53,6 +54,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
   const resetState = () => {
     isTransitioningRef.current = false;
     targetPathRef.current = null;
+    targetHashRef.current = null;
     wipeInDoneRef.current = false;
     routeChangedRef.current = false;
   };
@@ -78,10 +80,21 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     // Give browser 1 frame to paint the new route DOM under the curtain
     requestAnimationFrame(() => {
       const activeLenis = lenisRef.current || lenis;
-      if (activeLenis) {
-        activeLenis.scrollTo(0, { immediate: true, force: true });
+      const targetHash = targetHashRef.current;
+      const targetElement = targetHash ? document.getElementById(targetHash) : null;
+
+      if (targetElement) {
+        if (activeLenis) {
+          activeLenis.scrollTo(targetElement, { immediate: true, force: true });
+        } else {
+          targetElement.scrollIntoView({ behavior: "instant", block: "start" });
+        }
       } else {
-        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        if (activeLenis) {
+          activeLenis.scrollTo(0, { immediate: true, force: true });
+        } else {
+          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        }
       }
 
       gsap.to(overlay, {
@@ -133,6 +146,9 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     registerGSAPPlugins();
     isTransitioningRef.current = true;
     targetPathRef.current = targetPath;
+    const hashIndex = href.indexOf("#");
+    const hash = hashIndex !== -1 && href.slice(hashIndex + 1) ? href.slice(hashIndex + 1) : null;
+    targetHashRef.current = hash;
     wipeInDoneRef.current = false;
     routeChangedRef.current = false;
 
