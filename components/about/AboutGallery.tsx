@@ -140,7 +140,6 @@ export function AboutGallery() {
                   alt={`${art.title} (${art.medium}) by Vipin Kaushik`}
                   fill
                   unoptimized
-                  loading="eager"
                   sizes="(max-width: 768px) 50vw, 33vw"
                   className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
                 />

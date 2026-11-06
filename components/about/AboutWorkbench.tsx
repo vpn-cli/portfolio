@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
+import { TransitionLink } from "@/components/motion/RouteTransition";
 import {
   Activity,
   Terminal,
@@ -427,7 +427,7 @@ export function AboutWorkbench() {
                           ? "Source: Sportz high-throughput WebSocket engine"
                           : "Source: AppForge AST component compiler"}
                       </span>
-                      <Link
+                      <TransitionLink
                         href={
                           systemsTab === "kafka"
                             ? "/work/stream-mart"
@@ -439,7 +439,7 @@ export function AboutWorkbench() {
                       >
                         <span>Read case study</span>
                         <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
-                      </Link>
+                      </TransitionLink>
                     </div>
                   </div>
                 </Window>
@@ -482,7 +482,6 @@ export function AboutWorkbench() {
                           alt={`Digital vector study 0${selectedArtwork + 1} by Vipin Kaushik`}
                           fill
                           unoptimized
-                          priority
                           className="object-contain p-4"
                         />
                         {/* Grid overlay lines */}

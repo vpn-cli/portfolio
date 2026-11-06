@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { ArrowUpRight, Check, AlertTriangle, ShieldCheck, Database, Radio } from "lucide-react";
+import { TransitionLink } from "@/components/motion/RouteTransition";
 
 export function AboutPrinciples() {
   // Principle 1: In-Memory vs Redis toggle
@@ -110,13 +110,13 @@ export function AboutPrinciples() {
             <p className="text-[12px] text-[var(--text-secondary)]">
               Sportz handles thousands of concurrent subscribers using native Node.js Maps with zero Redis dependency.
             </p>
-            <Link
+            <TransitionLink
               href="/work/sockets#decisions"
               className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--text-primary)] hover:underline pt-1"
             >
               <span>Read in Sportz Sockets Engine</span>
               <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
-            </Link>
+            </TransitionLink>
           </div>
         </article>
 
@@ -171,13 +171,13 @@ export function AboutPrinciples() {
             <p className="text-[12px] text-[var(--text-secondary)]">
               StreamMart uses the transactional outbox pattern to guarantee at-least-once Kafka message delivery.
             </p>
-            <Link
+            <TransitionLink
               href="/work/stream-mart#decisions"
               className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--text-primary)] hover:underline pt-1"
             >
               <span>Read in StreamMart Outbox</span>
               <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
-            </Link>
+            </TransitionLink>
           </div>
         </article>
 
@@ -244,13 +244,13 @@ export function AboutPrinciples() {
             <p className="text-[12px] text-[var(--text-secondary)]">
               AppForge compiles raw generative prompts into safe, deterministic React JSX syntax trees without eval().
             </p>
-            <Link
+            <TransitionLink
               href="/work/appforge#decisions"
               className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--text-primary)] hover:underline pt-1"
             >
               <span>Read in AppForge Engine</span>
               <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
-            </Link>
+            </TransitionLink>
           </div>
         </article>
       </div>

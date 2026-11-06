@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Stage, Window } from "@/components/stageshow/kit";
 import { useTheme } from "@/components/motion/ThemeProvider";
+import { TransitionLink } from "@/components/motion/RouteTransition";
 
 interface Milestone {
   id: string;
@@ -215,14 +215,14 @@ export function AboutTimeline() {
             {currentMilestone.projectLinks && currentMilestone.projectLinks.length > 0 && (
               <div className="pt-2 flex items-center gap-3 flex-wrap">
                 {currentMilestone.projectLinks.map((link) => (
-                  <Link
+                  <TransitionLink
                     key={link.href}
                     href={link.href}
                     className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[var(--surface-tile-hover)] hover:bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] text-[var(--text-primary)] transition-colors active:scale-98"
                   >
                     <span>{link.label}</span>
                     <ArrowUpRight className="w-3.5 h-3.5 text-[var(--text-tertiary)]" aria-hidden="true" />
-                  </Link>
+                  </TransitionLink>
                 ))}
               </div>
             )}

@@ -1,5 +1,3 @@
-"use client";
-
 import { siteConfig } from "@/content/site";
 import { TransitionLink } from "@/components/motion/RouteTransition";
 import { X, ArrowLeft } from "lucide-react";

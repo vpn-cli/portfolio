@@ -1,5 +1,3 @@
-"use client";
-
 import { Briefcase, CheckCircle2, ShieldCheck, Server } from "lucide-react";
 
 interface ExperienceEntry {

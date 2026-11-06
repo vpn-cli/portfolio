@@ -1,9 +1,7 @@
-"use client";
-
 import Image from "next/image";
-import Link from "next/link";
-import { Download, ArrowUpRight, Sparkles, MapPin, GraduationCap, Briefcase } from "lucide-react";
-import { trackEvent } from "@/lib/analytics";
+import { ArrowUpRight, MapPin, GraduationCap } from "lucide-react";
+import { TransitionLink } from "@/components/motion/RouteTransition";
+import { ResumeDownloadButton } from "./ResumeDownloadButton";
 
 interface AboutHeroProps {
   status: string;
@@ -60,23 +58,15 @@ export function AboutHero({ status }: AboutHeroProps) {
 
         {/* Right: Quick Action Buttons */}
         <div className="flex items-center gap-3 w-full sm:w-auto shrink-0 pt-2 lg:pt-0">
-          <a
-            href="/resume.pdf"
-            download="Vipin_Kaushik_Resume.pdf"
-            onClick={() => trackEvent("download_resume_click")}
-            className="inline-flex items-center justify-center gap-2 flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] text-xs sm:text-sm font-semibold hover:opacity-90 active:scale-98 transition-all shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 cursor-pointer"
-          >
-            <Download className="w-4 h-4" aria-hidden="true" />
-            <span>Download Résumé</span>
-          </a>
+          <ResumeDownloadButton />
 
-          <Link
+          <TransitionLink
             href="/projects"
             className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] text-[var(--text-primary)] text-xs sm:text-sm font-semibold transition-colors active:scale-98"
           >
             <span>Case Studies</span>
             <ArrowUpRight className="w-4 h-4 text-[var(--text-tertiary)]" aria-hidden="true" />
-          </Link>
+          </TransitionLink>
         </div>
       </div>
 

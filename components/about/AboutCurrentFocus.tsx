@@ -1,5 +1,3 @@
-"use client";
-
 import { Cpu, Terminal, Layers } from "lucide-react";
 
 export function AboutCurrentFocus() {
