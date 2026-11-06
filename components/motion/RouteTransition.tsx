@@ -5,6 +5,10 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { registerGSAPPlugins } from "@/lib/motion";
+import { useLenisInstance } from "./SmoothScrollProvider";
+
+const WIPE_IN = 0.16;
+const WIPE_OUT = 0.2;
 
 interface TransitionContextType {
   navigateWithWipe: (href: string) => void;
@@ -32,6 +36,12 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
   const router = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
+  const { lenis } = useLenisInstance();
+  const lenisRef = useRef(lenis);
+
+  useEffect(() => {
+    lenisRef.current = lenis;
+  }, [lenis]);
 
   const overlayRef = useRef<HTMLDivElement>(null);
   const isTransitioningRef = useRef(false);
@@ -39,6 +49,13 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
   const wipeInDoneRef = useRef(false);
   const routeChangedRef = useRef(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const resetState = () => {
+    isTransitioningRef.current = false;
+    targetPathRef.current = null;
+    wipeInDoneRef.current = false;
+    routeChangedRef.current = false;
+  };
 
   const prefetch = (href: string) => {
     if (!href.startsWith("http") && !href.startsWith("mailto:") && !href.startsWith("#")) {
@@ -54,27 +71,26 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
 
     const overlay = overlayRef.current;
     if (!overlay) {
-      isTransitioningRef.current = false;
-      targetPathRef.current = null;
-      wipeInDoneRef.current = false;
-      routeChangedRef.current = false;
+      resetState();
       return;
     }
 
     // Give browser 1 frame to paint the new route DOM under the curtain
     requestAnimationFrame(() => {
-      window.scrollTo(0, 0);
+      const activeLenis = lenisRef.current || lenis;
+      if (activeLenis) {
+        activeLenis.scrollTo(0, { immediate: true, force: true });
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      }
 
       gsap.to(overlay, {
         clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)",
-        duration: 0.22,
+        duration: WIPE_OUT,
         ease: "power2.inOut",
         onComplete: () => {
           gsap.set(overlay, { display: "none" });
-          isTransitioningRef.current = false;
-          targetPathRef.current = null;
-          wipeInDoneRef.current = false;
-          routeChangedRef.current = false;
+          resetState();
         },
       });
     });
@@ -126,7 +142,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     const overlay = overlayRef.current;
     if (!overlay) {
       router.push(href);
-      isTransitioningRef.current = false;
+      resetState();
       return;
     }
 
@@ -150,7 +166,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
 
     gsap.to(overlay, {
       clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
-      duration: 0.22,
+      duration: WIPE_IN,
       ease: "power2.out",
       onComplete: () => {
         wipeInDoneRef.current = true;
@@ -187,6 +203,9 @@ export function TransitionLink({
   className,
   prefetch = true,
   onClick,
+  onMouseEnter,
+  onFocus,
+  onPointerDown,
   ...props
 }: {
   href: string;
@@ -194,9 +213,12 @@ export function TransitionLink({
   className?: string;
   prefetch?: boolean;
   onClick?: (e?: any) => void;
+  onMouseEnter?: (e?: any) => void;
+  onFocus?: (e?: any) => void;
+  onPointerDown?: (e?: any) => void;
   [key: string]: any;
 }) {
-  const { navigateWithWipe } = usePageTransition();
+  const { navigateWithWipe, prefetch: prefetchRoute } = usePageTransition();
 
   const isExternal =
     href.startsWith("http://") ||
@@ -207,7 +229,15 @@ export function TransitionLink({
 
   if (isExternal) {
     return (
-      <a href={href} className={className} onClick={onClick} {...props}>
+      <a
+        href={href}
+        className={className}
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onFocus={onFocus}
+        onPointerDown={onPointerDown}
+        {...props}
+      >
         {children}
       </a>
     );
@@ -218,6 +248,18 @@ export function TransitionLink({
       href={href}
       prefetch={prefetch}
       className={className}
+      onMouseEnter={(e) => {
+        prefetchRoute(href);
+        if (onMouseEnter) onMouseEnter(e);
+      }}
+      onFocus={(e) => {
+        prefetchRoute(href);
+        if (onFocus) onFocus(e);
+      }}
+      onPointerDown={(e) => {
+        prefetchRoute(href);
+        if (onPointerDown) onPointerDown(e);
+      }}
       onClick={(e) => {
         // Allow default behavior for modifier clicks (cmd/ctrl click to new tab)
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
