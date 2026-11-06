@@ -34,7 +34,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
   const [isPending, startTransition] = useTransition();
 
   const overlayRef = useRef<HTMLDivElement>(null);
-  const isTransitioningRef.current = useRef(false);
+  const isTransitioningRef = useRef(false);
   const targetPathRef = useRef<string | null>(null);
   const wipeInDoneRef = useRef(false);
   const routeChangedRef = useRef(false);
@@ -186,12 +186,14 @@ export function TransitionLink({
   children,
   className,
   prefetch = true,
+  onClick,
   ...props
 }: {
   href: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   prefetch?: boolean;
+  onClick?: (e?: any) => void;
   [key: string]: any;
 }) {
   const { navigateWithWipe } = usePageTransition();
@@ -205,7 +207,7 @@ export function TransitionLink({
 
   if (isExternal) {
     return (
-      <a href={href} className={className} {...props}>
+      <a href={href} className={className} onClick={onClick} {...props}>
         {children}
       </a>
     );
@@ -222,6 +224,13 @@ export function TransitionLink({
           return;
         }
         e.preventDefault();
+        if (onClick) {
+          try {
+            onClick(e);
+          } catch (err) {
+            console.error(err);
+          }
+        }
         navigateWithWipe(href);
       }}
       {...props}
