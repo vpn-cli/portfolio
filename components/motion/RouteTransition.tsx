@@ -13,7 +13,7 @@ interface TransitionContextType {
 }
 
 const TransitionContext = createContext<TransitionContextType>({
-  navigateWithWipe: () => {},
+  navigateWithWipe: () => { },
   prefetch: () => {},
   isPending: false,
 });
@@ -34,7 +34,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
   const [isPending, startTransition] = useTransition();
 
   const overlayRef = useRef<HTMLDivElement>(null);
-  const isTransitioningRef = useRef(false);
+  const isTransitioningRef.current = useRef(false);
   const targetPathRef = useRef<string | null>(null);
   const wipeInDoneRef = useRef(false);
   const routeChangedRef = useRef(false);
@@ -189,7 +189,7 @@ export function TransitionLink({
   ...props
 }: {
   href: string;
-  children?: React.ReactNode;
+  children: React.ReactNode;
   className?: string;
   prefetch?: boolean;
   [key: string]: any;
