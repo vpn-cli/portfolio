@@ -2,16 +2,14 @@
 
 import { BentoTile } from "./BentoTile";
 import { ArrowUpRight } from "lucide-react";
-import { usePageTransition } from "@/components/motion/RouteTransition";
+import { TransitionLink } from "@/components/motion/RouteTransition";
 
 export function AboutTile({ className = "" }: { className?: string }) {
-  const { navigateWithWipe } = usePageTransition();
-
   return (
     <BentoTile className={className} cursorText="Read background">
-      <div
-        onClick={() => navigateWithWipe("/about")}
-        className="w-full h-full flex flex-col justify-between cursor-pointer group py-0.5"
+      <TransitionLink
+        href="/about"
+        className="w-full h-full flex flex-col justify-between cursor-pointer group py-0.5 no-underline text-inherit"
       >
         <div className="space-y-2">
           <span className="text-[13px] text-[var(--text-tertiary)] block font-medium">
@@ -36,7 +34,7 @@ export function AboutTile({ className = "" }: { className?: string }) {
             />
           </div>
         </div>
-      </div>
+      </TransitionLink>
     </BentoTile>
   );
 }

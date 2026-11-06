@@ -2,7 +2,7 @@
 
 import { Project } from "@/content/site";
 import { BentoTile } from "./BentoTile";
-import { usePageTransition } from "@/components/motion/RouteTransition";
+import { TransitionLink } from "@/components/motion/RouteTransition";
 import { ArrowUpRight } from "lucide-react";
 
 export function ProjectTile({
@@ -12,13 +12,12 @@ export function ProjectTile({
   project: Project;
   className?: string;
 }) {
-  const { navigateWithWipe } = usePageTransition();
-
   return (
     <BentoTile className={className} noPadding cursorText={`View ${project.title}`}>
-      <div
-        onClick={() => navigateWithWipe(`/work/${project.slug}`)}
-        className="w-full h-full relative cursor-pointer group overflow-hidden rounded-[24px]"
+      <TransitionLink
+        href={`/work/${project.slug}`}
+        aria-label={`View ${project.title}`}
+        className="w-full h-full relative cursor-pointer group overflow-hidden rounded-[24px] block"
       >
         {/* Full-Bleed Image: absolute inset-0 prevents image from pushing grid cell height */}
         <img
@@ -36,7 +35,7 @@ export function ProjectTile({
             <ArrowUpRight className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5 motion-reduce:transform-none" aria-hidden="true" />
           </div>
         </div>
-      </div>
+      </TransitionLink>
     </BentoTile>
   );
 }

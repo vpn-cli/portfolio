@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { BentoTile } from "./BentoTile";
 import { ArrowUpRight } from "lucide-react";
 import { SiGithub } from "react-icons/si";
-import { usePageTransition } from "@/components/motion/RouteTransition";
+import { usePageTransition, TransitionLink } from "@/components/motion/RouteTransition";
 import { trackEvent } from "@/lib/analytics";
 
 interface TeaserProject {
@@ -285,16 +285,13 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
 
         {/* Footer: "All projects ↗" aligned with row text and matched font weight */}
         <div className="pt-1.5 mt-auto flex items-center justify-between shrink-0 pl-3">
-          <button
-            onMouseEnter={() => router.prefetch("/projects")}
-            onFocus={() => router.prefetch("/projects")}
-            onClick={() => navigateWithWipe("/projects")}
-            type="button"
-            className="group/btn text-[13.5px] sm:text-[14px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400"
+          <TransitionLink
+            href="/projects"
+            className="group/btn text-[13.5px] sm:text-[14px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 no-underline"
           >
             <span className="whitespace-nowrap">All projects</span>
             <ArrowUpRight className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
-          </button>
+          </TransitionLink>
         </div>
       </div>
     </BentoTile>

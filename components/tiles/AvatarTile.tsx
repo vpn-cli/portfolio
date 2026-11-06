@@ -3,16 +3,15 @@
 import Image from "next/image";
 import { BentoTile } from "./BentoTile";
 import { siteConfig } from "@/content/site";
-import { usePageTransition } from "@/components/motion/RouteTransition";
+import { TransitionLink } from "@/components/motion/RouteTransition";
 
 export function AvatarTile({ className = "" }: { className?: string }) {
-  const { navigateWithWipe } = usePageTransition();
-
   return (
     <BentoTile className={className} noPadding cursorText="About Vipin">
-      <div
-        onClick={() => navigateWithWipe("/about")}
-        className="w-full h-full relative cursor-pointer overflow-hidden rounded-[24px] group"
+      <TransitionLink
+        href="/about"
+        aria-label="About Vipin"
+        className="w-full h-full relative cursor-pointer overflow-hidden rounded-[24px] group block"
       >
         <Image
           src={siteConfig.avatar}
@@ -23,7 +22,7 @@ export function AvatarTile({ className = "" }: { className?: string }) {
           className="object-cover object-[center_40%]"
           quality={85}
         />
-      </div>
+      </TransitionLink>
     </BentoTile>
   );
 }
