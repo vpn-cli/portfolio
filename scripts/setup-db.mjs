@@ -62,25 +62,12 @@ async function setup() {
     );
   `;
 
-  // 3. Seed initial row if byte_pats exists
-  try {
-    const oldRows = await sql`SELECT count FROM byte_pats WHERE id = 1;`;
-    if (oldRows.length > 0) {
-      const oldCount = Number(oldRows[0].count || 0);
-      await sql`
-        INSERT INTO pats_total (id, total, updated_at)
-        VALUES (1, ${oldCount}, NOW())
-        ON CONFLICT (id) DO NOTHING;
-      `;
-    }
-  } catch {
-    // byte_pats does not exist, insert default 0
-    await sql`
-      INSERT INTO pats_total (id, total, updated_at)
-      VALUES (1, 0, NOW())
-      ON CONFLICT (id) DO NOTHING;
-    `;
-  }
+  // 3. Seed initial row with total 0
+  await sql`
+    INSERT INTO pats_total (id, total, updated_at)
+    VALUES (1, 0, NOW())
+    ON CONFLICT (id) DO NOTHING;
+  `;
 
   const rows = await sql`SELECT id, total, updated_at FROM pats_total WHERE id = 1;`;
   console.log("Success! Current pats_total row:", rows[0]);
