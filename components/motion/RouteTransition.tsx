@@ -10,7 +10,7 @@ import { siteConfig } from "@/content/site";
 
 const WIPE_IN = 0.16;
 const WIPE_OUT = 0.2;
-export const MIN_VISIBLE: number = 0.42;
+export const MIN_VISIBLE = 0.42;
 
 interface TransitionContextType {
   navigateWithWipe: (href: string) => void;
@@ -20,7 +20,7 @@ interface TransitionContextType {
 
 const TransitionContext = createContext<TransitionContextType>({
   navigateWithWipe: () => { },
-  prefetch: () => {},
+  prefetch: () => { },
   isPending: false,
 });
 
