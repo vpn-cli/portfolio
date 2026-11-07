@@ -7,7 +7,9 @@
     "dev:clean": "node -e \"require('fs').rmSync('.next',{recursive:true,force:true})\" && next dev --turbopack",
     "dev:poll": "set WATCHPACK_POLLING=true&& next dev --turbopack",
     "build": "next build",
+    "build:check": "set NEXT_DIST_DIR=.next-verify&& next build",
     "start": "next start",
+    "start:check": "set NEXT_DIST_DIR=.next-verify&& next start -p 3100",
     "lint": "next lint",
     "postinstall": "node scripts/add-si-linkedin.js"
   },

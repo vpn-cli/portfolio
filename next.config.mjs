@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   transpilePackages: ['three', 'gsap'],
   reactStrictMode: false, // Prevents double ticker initialization in development for GSAP / Lenis
   devIndicators: false,
