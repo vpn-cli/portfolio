@@ -69,6 +69,10 @@ export async function GET(req: NextRequest) {
     }
   }
 
+  if (process.env.NODE_ENV === "production") {
+    return NextResponse.json({ error: "unavailable" }, { status: 503 });
+  }
+
   // Fallback in-memory rows for dev/testing
   return NextResponse.json({ regions: getFallbackDailyRegions() });
 }

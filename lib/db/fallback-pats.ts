@@ -10,11 +10,19 @@ export interface FallbackRegionRow {
 export let fallbackTotal = 0;
 export const fallbackRegionMap = new Map<string, FallbackRegionRow>();
 
+function assertNotProduction(op: string) {
+  if (process.env.NODE_ENV === "production") {
+    throw new Error(`In-memory fallback (${op}) is forbidden in production`);
+  }
+}
+
 export function getFallbackTotal(): number {
+  assertNotProduction("getFallbackTotal");
   return fallbackTotal;
 }
 
 export function incrementFallbackTotal(count: number): number {
+  assertNotProduction("incrementFallbackTotal");
   fallbackTotal += count;
   return fallbackTotal;
 }
@@ -26,6 +34,7 @@ export function updateFallbackDailyRegion(
   city: string | null,
   pats: number
 ) {
+  assertNotProduction("updateFallbackDailyRegion");
   const key = `${day}|${country}|${region ?? ""}|${city ?? ""}`;
   const existing = fallbackRegionMap.get(key);
   if (existing) {
@@ -44,5 +53,6 @@ export function updateFallbackDailyRegion(
 }
 
 export function getFallbackDailyRegions(): FallbackRegionRow[] {
+  assertNotProduction("getFallbackDailyRegions");
   return Array.from(fallbackRegionMap.values());
 }

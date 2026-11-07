@@ -872,8 +872,12 @@ export default function ByteScene({
 
   useEffect(() => {
     fetch("/api/pats")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) return null;
+        return res.json();
+      })
       .then((data) => {
+        if (!data) return;
         const total = typeof data.total === "number" ? data.total : data.count;
         if (typeof total === "number") {
           serverTotalRef.current = total;
@@ -972,12 +976,24 @@ export default function ByteScene({
       session_total: sessionTotalRef.current,
     });
 
-    if (isBeacon && typeof navigator !== "undefined" && navigator.sendBeacon) {
+    if (isBeacon) {
       try {
-        const blob = new Blob([JSON.stringify({ count })], { type: "application/json" });
-        navigator.sendBeacon("/api/pats", blob);
+        if (typeof fetch === "function") {
+          fetch("/api/pats", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ count }),
+            keepalive: true,
+          }).catch(() => { });
+          return;
+        }
+        if (typeof navigator !== "undefined" && navigator.sendBeacon) {
+          const blob = new Blob([JSON.stringify({ count })], { type: "application/json" });
+          navigator.sendBeacon("/api/pats", blob);
+          return;
+        }
       } catch {
-        // ignore beacon failures on exit
+        // ignore beacon/keepalive failures on exit
       }
       return;
     }
@@ -989,7 +1005,7 @@ export default function ByteScene({
       body: JSON.stringify({ count }),
     })
       .then((res) => {
-        if (res.status === 429) {
+        if (res.status === 429 || res.status === 503) {
           const retryHeader = res.headers.get("Retry-After");
           const retrySeconds = retryHeader ? parseInt(retryHeader, 10) : 60;
           rateLimitUntilRef.current = Date.now() + (retrySeconds || 60) * 1000;

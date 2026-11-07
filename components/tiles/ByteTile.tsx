@@ -32,8 +32,9 @@ export function ByteTile({ className = "" }: { className?: string }) {
 
   useEffect(() => {
     fetch("/api/pats")
-      .then((res) => res.json())
+      .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
+        if (!data) return;
         const total = typeof data.total === "number" ? data.total : data.count;
         if (typeof total === "number") {
           setPatCount(total);
