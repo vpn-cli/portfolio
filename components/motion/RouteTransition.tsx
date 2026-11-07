@@ -3,14 +3,12 @@
 import { createContext, useContext, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { gsap } from "gsap";
-import { registerGSAPPlugins } from "@/lib/motion";
 import { useLenisInstance } from "./SmoothScrollProvider";
 import { siteConfig } from "@/content/site";
 import { trackEvent, OutboundDestination, getReferrerDomain } from "@/lib/analytics";
 
 const WIPE_IN = 0.16;
-const WIPE_OUT = 0.2;
+const WIPE_OUT = 0.22;
 export const MIN_VISIBLE: number = 0.42;
 
 const isDebugEnabled = () => {
@@ -86,6 +84,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
   }, [lenis]);
 
   const overlayRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
@@ -94,13 +93,22 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
   const targetPathRef = useRef<string | null>(null);
   const targetHashRef = useRef<string | null>(null);
   const wipeInDoneRef = useRef(false);
-  const routeChangedRef = useRef(false);
+  const routeCommittedRef = useRef(false);
+  const wipeOutStartedRef = useRef(false);
   const navStartRef = useRef<number>(0);
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const minVisibleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const tlRef = useRef<gsap.core.Timeline | null>(null);
-  const isRevealingRef = useRef(false);
+
+  // WAAPI animation refs
+  const wipeInAnimationRef = useRef<Animation | null>(null);
+  const innerAnimationRef = useRef<Animation | null>(null);
+  const labelAnimationRef = useRef<Animation | null>(null);
+  const fillAnimationRef = useRef<Animation | null>(null);
+  const trackAnimationRef = useRef<Animation | null>(null);
+  const wipeOutAnimationRef = useRef<Animation | null>(null);
+  const wipeOutInnerAnimationRef = useRef<Animation | null>(null);
+  const revealAnimationsRef = useRef<Animation[]>([]);
 
   const marksRef = useRef<{ name: string; time: number }[]>([]);
 
@@ -136,26 +144,85 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     }
   };
 
+  const cancelCurtainAnimations = () => {
+    if (wipeInAnimationRef.current) {
+      try { wipeInAnimationRef.current.cancel(); } catch { }
+      wipeInAnimationRef.current = null;
+    }
+    if (innerAnimationRef.current) {
+      try { innerAnimationRef.current.cancel(); } catch { }
+      innerAnimationRef.current = null;
+    }
+    if (labelAnimationRef.current) {
+      try { labelAnimationRef.current.cancel(); } catch { }
+      labelAnimationRef.current = null;
+    }
+    if (fillAnimationRef.current) {
+      try { fillAnimationRef.current.cancel(); } catch { }
+      fillAnimationRef.current = null;
+    }
+    if (trackAnimationRef.current) {
+      try { trackAnimationRef.current.cancel(); } catch { }
+      trackAnimationRef.current = null;
+    }
+    if (wipeOutAnimationRef.current) {
+      try { wipeOutAnimationRef.current.cancel(); } catch { }
+      wipeOutAnimationRef.current = null;
+    }
+    if (wipeOutInnerAnimationRef.current) {
+      try { wipeOutInnerAnimationRef.current.cancel(); } catch { }
+      wipeOutInnerAnimationRef.current = null;
+    }
+  };
+
   const resetState = (interrupted = false) => {
     isTransitioningRef.current = false;
     targetPathRef.current = null;
     targetHashRef.current = null;
     wipeInDoneRef.current = false;
-    routeChangedRef.current = false;
+    routeCommittedRef.current = false;
+    wipeOutStartedRef.current = false;
 
-    // Clear gsap props on [data-reveal] elements whenever resetState() runs.
-    const reveals = document.querySelectorAll<HTMLElement>("main [data-reveal]");
-    if (reveals.length > 0) {
-      if (interrupted || !isRevealingRef.current) {
-        gsap.killTweensOf(reveals);
-        gsap.set(reveals, { clearProps: "opacity,transform" });
-      } else {
-        reveals.forEach((el) => {
-          if (el.style.opacity === "0" && !gsap.isTweening(el)) {
-            gsap.set(el, { clearProps: "opacity,transform" });
-          }
-        });
-      }
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    if (minVisibleTimeoutRef.current) {
+      clearTimeout(minVisibleTimeoutRef.current);
+      minVisibleTimeoutRef.current = null;
+    }
+
+    cancelCurtainAnimations();
+
+    if (interrupted) {
+      revealAnimationsRef.current.forEach((anim) => {
+        try { anim.cancel(); } catch { }
+      });
+      revealAnimationsRef.current = [];
+    }
+
+    if (overlayRef.current) {
+      overlayRef.current.style.display = "none";
+      overlayRef.current.style.willChange = "";
+      overlayRef.current.style.transform = "translateY(-100%)";
+    }
+    if (innerRef.current) {
+      innerRef.current.style.willChange = "";
+      innerRef.current.style.transform = "translateY(100%)";
+    }
+    if (labelRef.current) {
+      labelRef.current.style.transform = "translateY(100%)";
+      labelRef.current.style.opacity = "1";
+    }
+    if (fillRef.current) {
+      fillRef.current.style.transform = "scaleX(0)";
+    }
+    if (trackRef.current) {
+      trackRef.current.style.opacity = "1";
+    }
+
+    if (lenisRef.current) {
+      lenisRef.current.start();
     }
   };
 
@@ -166,6 +233,9 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
   };
 
   const completeWipeOut = () => {
+    if (wipeOutStartedRef.current) return;
+    wipeOutStartedRef.current = true;
+
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
@@ -176,25 +246,21 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     }
 
     const overlay = overlayRef.current;
-    if (!overlay) {
+    const inner = innerRef.current;
+    const label = labelRef.current;
+    const track = trackRef.current;
+
+    if (!overlay || !inner) {
       resetState(true);
       return;
     }
 
-    // Ensure progress fill is at 1
-    if (fillRef.current) {
-      gsap.to(fillRef.current, {
-        scaleX: 1,
-        duration: 0.12,
-        ease: "power2.out",
-        overwrite: "auto",
-      });
-    }
-
-    // Give browser 1 frame to paint the new route DOM under the curtain
+    // 1 frame for DOM paint & scroll reset
     requestAnimationFrame(() => {
       markTransition("wipe-out start");
-      const activeLenis = lenisRef.current || lenis;
+
+      // Scroll reset
+      const activeLenis = lenisRef.current;
       const targetHash = targetHashRef.current;
       const targetElement = targetHash ? document.getElementById(targetHash) : null;
 
@@ -216,100 +282,146 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
       }
 
       // Content reveal on arrival
-      const all = Array.from(document.querySelectorAll<HTMLElement>("main [data-reveal]"));
-      const visible = all.filter((el) => el.getBoundingClientRect().top < window.innerHeight);
+      // FIRST read all rects of "main [data-reveal]" in one loop (no style writes in between),
+      // filter to above the fold, sort by data-reveal-order, cap at 7. THEN create animations.
+      const allReveals = Array.from(document.querySelectorAll<HTMLElement>("main [data-reveal]"));
+      const windowH = window.innerHeight;
+      const rects = allReveals.map((el) => ({
+        el,
+        top: el.getBoundingClientRect().top,
+        order: el.getAttribute("data-reveal-order"),
+      }));
+
+      const visible = rects.filter((item) => item.top < windowH);
 
       visible.sort((a, b) => {
-        const orderA = a.getAttribute("data-reveal-order");
-        const orderB = b.getAttribute("data-reveal-order");
-        if (orderA !== null && orderB !== null) {
-          return parseFloat(orderA) - parseFloat(orderB);
+        if (a.order !== null && b.order !== null) {
+          return parseFloat(a.order) - parseFloat(b.order);
         }
-        if (orderA !== null) return -1;
-        if (orderB !== null) return 1;
+        if (a.order !== null) return -1;
+        if (b.order !== null) return 1;
         return 0;
       });
 
       const toAnimate = visible.slice(0, 7);
 
-      if (toAnimate.length > 0) {
-        gsap.set(toAnimate, { opacity: 0, y: 14 });
-        isRevealingRef.current = true;
-      }
+      // Cancel previous reveal animations if any
+      revealAnimationsRef.current.forEach((anim) => {
+        try { anim.cancel(); } catch { }
+      });
+      revealAnimationsRef.current = [];
 
-      // Wipe-out: as now (WIPE_OUT)
-      gsap.to(overlay, {
-        clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)",
-        duration: WIPE_OUT,
-        ease: "power2.inOut",
-        onComplete: () => {
-          gsap.set(overlay, { display: "none" });
-          if (labelRef.current) {
-            gsap.set(labelRef.current, { yPercent: 100, opacity: 1 });
+      // Create reveal animations in the same frame the wipe-out starts
+      toAnimate.forEach((item, i) => {
+        const anim = item.el.animate(
+          [
+            { opacity: 0, translate: "0 12px" },
+            { opacity: 1, translate: "0 0" },
+          ],
+          {
+            duration: 500,
+            delay: 50 + i * 50,
+            easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+            fill: "backwards",
           }
-          if (fillRef.current) {
-            gsap.set(fillRef.current, { scaleX: 0 });
-          }
-          if (trackRef.current) {
-            gsap.set(trackRef.current, { opacity: 1 });
-          }
-          markTransition("wipe-out end");
-          logTransitionTable();
-          resetState(false);
-          if (tlRef.current) {
-            tlRef.current.kill();
-            tlRef.current = null;
-          }
-        },
+        );
+        revealAnimationsRef.current.push(anim);
       });
 
-      // At the same moment the label animates to yPercent: -100 and opacity 0
-      if (labelRef.current) {
-        gsap.to(labelRef.current, {
-          yPercent: -100,
-          opacity: 0,
-          duration: 0.2,
-          ease: "power2.in",
-        });
+      // Curtain Wipe-out:
+      // outer translateY(0) -> translateY(100%), inner translateY(0) -> translateY(-100%).
+      // 220ms, easing cubic-bezier(0.65, 0, 0.35, 1), fill "forwards".
+      const outerOut = overlay.animate(
+        [
+          { transform: "translateY(0)" },
+          { transform: "translateY(100%)" },
+        ],
+        {
+          duration: 220,
+          easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+          fill: "forwards",
+        }
+      );
+      wipeOutAnimationRef.current = outerOut;
+
+      const innerOut = inner.animate(
+        [
+          { transform: "translateY(0)" },
+          { transform: "translateY(-100%)" },
+        ],
+        {
+          duration: 220,
+          easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+          fill: "forwards",
+        }
+      );
+      wipeOutInnerAnimationRef.current = innerOut;
+
+      // Label: translateY(0) -> translateY(-100%) plus opacity 1 -> 0, 200ms, easing cubic-bezier(0.55, 0, 1, 0.45)
+      if (label) {
+        labelAnimationRef.current = label.animate(
+          [
+            { transform: "translateY(0)", opacity: 1 },
+            { transform: "translateY(-100%)", opacity: 0 },
+          ],
+          {
+            duration: 200,
+            easing: "cubic-bezier(0.55, 0, 1, 0.45)",
+            fill: "forwards",
+          }
+        );
       }
 
-      // And the progress track fades out
-      if (trackRef.current) {
-        gsap.to(trackRef.current, {
-          opacity: 0,
-          duration: 0.2,
-          ease: "power2.in",
-        });
+      // Track: opacity 1 -> 0, 200ms
+      if (track) {
+        trackAnimationRef.current = track.animate(
+          [
+            { opacity: 1 },
+            { opacity: 0 },
+          ],
+          {
+            duration: 200,
+            easing: "cubic-bezier(0.55, 0, 1, 0.45)",
+            fill: "forwards",
+          }
+        );
       }
 
-      // Starting 0.05s after the wipe-out begins
-      if (toAnimate.length > 0) {
-        gsap.to(toAnimate, {
-          opacity: 1,
-          y: 0,
-          duration: 0.55,
-          ease: "power3.out",
-          stagger: 0.06,
-          delay: 0.05,
-          clearProps: "opacity,transform",
-          onComplete: () => {
-            isRevealingRef.current = false;
-          },
-        });
-      }
+      // On finish: hide overlay, cancel its animations, reset
+      outerOut.finished
+        .then(() => {
+          markTransition("wipe-out end");
+          logTransitionTable();
+
+          if (overlayRef.current) {
+            overlayRef.current.style.display = "none";
+            overlayRef.current.style.willChange = "";
+          }
+          if (innerRef.current) {
+            innerRef.current.style.willChange = "";
+          }
+
+          cancelCurtainAnimations();
+
+          if (lenisRef.current) {
+            lenisRef.current.start();
+          }
+
+          resetState(false);
+        })
+        .catch(() => { });
     });
   };
 
-  const triggerWipeOutWithMinVisible = () => {
-    if (minVisibleTimeoutRef.current) {
-      clearTimeout(minVisibleTimeoutRef.current);
-      minVisibleTimeoutRef.current = null;
-    }
+  const checkTriggerWipeOut = () => {
+    if (wipeOutStartedRef.current) return;
+    if (!routeCommittedRef.current || !wipeInDoneRef.current) return;
 
     const currentMinVisible =
       typeof window !== "undefined" && typeof (window as any).__MIN_VISIBLE === "number"
         ? (window as any).__MIN_VISIBLE
         : MIN_VISIBLE;
+
     const elapsed = (performance.now() - navStartRef.current) / 1000;
     const remaining = Math.max(0, currentMinVisible - elapsed);
 
@@ -317,7 +429,9 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
       markTransition("MIN_VISIBLE elapsed");
       completeWipeOut();
     } else {
+      if (minVisibleTimeoutRef.current) clearTimeout(minVisibleTimeoutRef.current);
       minVisibleTimeoutRef.current = setTimeout(() => {
+        if (!isTransitioningRef.current || wipeOutStartedRef.current) return;
         markTransition("MIN_VISIBLE elapsed");
         completeWipeOut();
       }, remaining * 1000);
@@ -330,25 +444,25 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
 
     const currentNormalized = normalizePath(pathname);
     if (isDebugEnabled()) {
-      console.log(`[pathname effect] pathname=${pathname}, target=${targetPathRef.current}, routeChanged=${routeChangedRef.current}`);
+      console.log(`[pathname effect] pathname=${pathname}, target=${targetPathRef.current}, routeCommitted=${routeCommittedRef.current}`);
     }
     if (targetPathRef.current && currentNormalized === targetPathRef.current) {
       markTransition("pathname committed");
-      routeChangedRef.current = true;
+      routeCommittedRef.current = true;
 
-      // When the route is ready, animate it to scaleX 1 over 0.12s. Do not delay wipe-out waiting for this to finish.
-      if (fillRef.current) {
-        gsap.to(fillRef.current, {
-          scaleX: 1,
-          duration: 0.12,
-          ease: "power2.out",
-          overwrite: "auto",
-        });
+      // When the route is ready: commitStyles(), cancel(), then animate to scaleX(1) over 120ms. It must never gate the wipe-out.
+      if (fillRef.current && fillAnimationRef.current) {
+        try {
+          fillAnimationRef.current.commitStyles();
+        } catch { }
+        fillAnimationRef.current.cancel();
+        fillAnimationRef.current = fillRef.current.animate(
+          [{ transform: "scaleX(1)" }],
+          { duration: 120, fill: "forwards", easing: "ease-out" }
+        );
       }
 
-      if (wipeInDoneRef.current) {
-        triggerWipeOutWithMinVisible();
-      }
+      checkTriggerWipeOut();
     }
   }, [pathname]);
 
@@ -357,7 +471,11 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       if (minVisibleTimeoutRef.current) clearTimeout(minVisibleTimeoutRef.current);
-      if (tlRef.current) tlRef.current.kill();
+      revealAnimationsRef.current.forEach((anim) => {
+        try { anim.cancel(); } catch { }
+      });
+      revealAnimationsRef.current = [];
+      cancelCurtainAnimations();
       resetState(true);
     };
   }, []);
@@ -383,8 +501,6 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
       return;
     }
 
-    registerGSAPPlugins();
-
     // Clean any residual props from a previous interrupted navigation
     resetState(true);
 
@@ -396,110 +512,132 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     const hash = hashIndex !== -1 && href.slice(hashIndex + 1) ? href.slice(hashIndex + 1) : null;
     targetHashRef.current = hash;
     wipeInDoneRef.current = false;
-    routeChangedRef.current = false;
+    routeCommittedRef.current = false;
+    wipeOutStartedRef.current = false;
     navStartRef.current = performance.now();
     marksRef.current = [];
     markTransition("click");
+
+    // Step 4: Stop Lenis when wipe-in starts
+    if (lenisRef.current) {
+      lenisRef.current.stop();
+    }
 
     // Prefetch immediately so chunks are ready during wipe animation
     prefetch(href);
 
     const overlay = overlayRef.current;
-    if (!overlay) {
+    const inner = innerRef.current;
+    const label = labelRef.current;
+    const fill = fillRef.current;
+    const track = trackRef.current;
+
+    if (!overlay || !inner) {
       router.push(href);
       resetState(true);
       return;
     }
 
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    if (minVisibleTimeoutRef.current) {
-      clearTimeout(minVisibleTimeoutRef.current);
-      minVisibleTimeoutRef.current = null;
-    }
-
     // Set destination label text BEFORE the wipe-in starts
-    const label = getRouteLabel(href);
-    if (labelRef.current) {
-      labelRef.current.textContent = label;
-      gsap.set(labelRef.current, { yPercent: 100, opacity: 1 });
+    const labelText = getRouteLabel(href);
+    if (label) {
+      label.textContent = labelText;
+      label.style.transform = "translateY(100%)";
+      label.style.opacity = "1";
     }
 
-    if (trackRef.current) {
-      gsap.set(trackRef.current, { opacity: 1 });
+    if (track) {
+      track.style.opacity = "1";
     }
-    if (fillRef.current) {
-      gsap.set(fillRef.current, { scaleX: 0, transformOrigin: "left center" });
+    if (fill) {
+      fill.style.transform = "scaleX(0)";
     }
 
-    // Fast, crisp wipe in animation
-    gsap.set(overlay, {
-      display: "flex",
-      clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)",
-      opacity: 1,
-    });
+    overlay.style.display = "block";
+    overlay.style.willChange = "transform";
+    inner.style.willChange = "transform";
 
     // Safety timeout: if route doesn't swap within 1.5s, force wipe out so UI never blocks
     timeoutRef.current = setTimeout(() => {
-      if (isTransitioningRef.current) {
+      if (isTransitioningRef.current && !wipeOutStartedRef.current) {
         markTransition("safety timeout fired (1500ms)");
         completeWipeOut();
       }
     }, 1500);
 
-    const tl = gsap.timeline();
-    tlRef.current = tl;
-
-    // t=0: curtain wipe-in exactly as now (WIPE_IN)
-    tl.to(
-      overlay,
+    // Wipe-in: outer translateY(-100%) -> translateY(0) while inner translateY(100%) -> translateY(0) (counter-transform, so label stays still on screen).
+    // 160ms, easing cubic-bezier(0.33, 1, 0.68, 1), fill "forwards"
+    const outerAnim = overlay.animate(
+      [
+        { transform: "translateY(-100%)" },
+        { transform: "translateY(0)" },
+      ],
       {
-        clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
-        duration: WIPE_IN,
-        ease: "power2.out",
-        onComplete: () => {
-          markTransition("wipe-in done");
-          wipeInDoneRef.current = true;
+        duration: 160,
+        easing: "cubic-bezier(0.33, 1, 0.68, 1)",
+        fill: "forwards",
+      }
+    );
+    wipeInAnimationRef.current = outerAnim;
 
-          startTransition(() => {
-            markTransition("router.push called");
-            router.push(href);
-          });
-
-          // If route already completed swap while curtain was wiping in
-          if (routeChangedRef.current) {
-            triggerWipeOutWithMinVisible();
-          }
-        },
-      },
-      0
+    innerAnimationRef.current = inner.animate(
+      [
+        { transform: "translateY(100%)" },
+        { transform: "translateY(0)" },
+      ],
+      {
+        duration: 160,
+        easing: "cubic-bezier(0.33, 1, 0.68, 1)",
+        fill: "forwards",
+      }
     );
 
-    // At t=0.06 the label <span> animates from yPercent: 100 to 0 (duration 0.32, ease "power3.out")
-    if (labelRef.current) {
-      tl.fromTo(
-        labelRef.current,
-        { yPercent: 100, opacity: 1 },
-        { yPercent: 0, opacity: 1, duration: 0.32, ease: "power3.out" },
-        0.06
+    // Label: in an overflow-hidden wrapper, the span animates translateY(100%) -> 0, 320ms, delay 60ms, easing cubic-bezier(0.22, 1, 0.36, 1)
+    if (label) {
+      labelAnimationRef.current = label.animate(
+        [
+          { transform: "translateY(100%)" },
+          { transform: "translateY(0)" },
+        ],
+        {
+          duration: 320,
+          delay: 60,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+          fill: "forwards",
+        }
       );
     }
 
-    // Progress line: starts at scaleX 0. While waiting for the route, animate scaleX to 0.7 over 0.6s (ease "power2.out"), then creep toward 0.9 over 2s.
-    if (fillRef.current) {
-      tl.fromTo(
-        fillRef.current,
-        { scaleX: 0, transformOrigin: "left center" },
-        { scaleX: 0.7, duration: 0.6, ease: "power2.out" },
-        0
-      );
-      tl.to(
-        fillRef.current,
-        { scaleX: 0.9, duration: 2.0, ease: "none" },
-        0.6
+    // Progress line: one animation on the fill with keyframes
+    // [{ transform: "scaleX(0)" }, { transform: "scaleX(0.7)", offset: 0.23 }, { transform: "scaleX(0.9)" }], 2600ms, fill "forwards"
+    if (fill) {
+      fillAnimationRef.current = fill.animate(
+        [
+          { transform: "scaleX(0)" },
+          { transform: "scaleX(0.7)", offset: 0.23 },
+          { transform: "scaleX(0.9)" },
+        ],
+        {
+          duration: 2600,
+          fill: "forwards",
+        }
       );
     }
+
+    outerAnim.finished
+      .then(() => {
+        if (!isTransitioningRef.current) return;
+        markTransition("wipe-in done");
+        wipeInDoneRef.current = true;
+
+        startTransition(() => {
+          markTransition("router.push called");
+          router.push(href);
+        });
+
+        checkTriggerWipeOut();
+      })
+      .catch(() => { });
   };
 
   return (
@@ -516,26 +654,32 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
       <div
         ref={overlayRef}
         aria-hidden="true"
-        className="pointer-events-auto fixed inset-0 z-[10000] hidden flex-col items-center justify-center bg-[var(--bg-canvas)] border-b border-[var(--border-subtle)]"
-        style={{ clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)", display: "none" }}
+        className="pointer-events-auto fixed inset-0 z-[10000] hidden overflow-hidden bg-[var(--bg-canvas)] border-b border-[var(--border-subtle)]"
+        style={{ transform: "translateY(-100%)", display: "none" }}
       >
-        <div className="overflow-hidden">
-          <span
-            ref={labelRef}
-            className="block font-sans font-semibold tracking-tight text-[var(--text-primary)] text-[clamp(2.5rem,8vw,6rem)] leading-none select-none"
-          >
-            Loading
-          </span>
-        </div>
         <div
-          ref={trackRef}
-          className="mt-6 h-[1px] w-[120px] bg-[var(--border-subtle)] overflow-hidden"
+          ref={innerRef}
+          className="absolute inset-0 flex flex-col items-center justify-center"
+          style={{ transform: "translateY(100%)" }}
         >
+          <div className="overflow-hidden">
+            <span
+              ref={labelRef}
+              className="block font-sans font-semibold tracking-tight text-[var(--text-primary)] text-[clamp(2.5rem,8vw,6rem)] leading-none select-none"
+            >
+              Loading
+            </span>
+          </div>
           <div
-            ref={fillRef}
-            className="h-full w-full bg-[var(--text-primary)] origin-left"
-            style={{ transform: "scaleX(0)" }}
-          />
+            ref={trackRef}
+            className="mt-6 h-[1px] w-[120px] bg-[var(--border-subtle)] overflow-hidden"
+          >
+            <div
+              ref={fillRef}
+              className="h-full w-full bg-[var(--text-primary)] origin-left"
+              style={{ transform: "scaleX(0)" }}
+            />
+          </div>
         </div>
       </div>
       {children}
