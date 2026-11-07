@@ -196,6 +196,7 @@ export function AboutTimeline() {
                     key={link.href}
                     href={link.href}
                     trackLocation="about_timeline"
+                    trackLabel={link.label}
                     className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[var(--surface-tile-hover)] hover:bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] text-[var(--text-primary)] transition-colors active:scale-98"
                   >
                     <span>{link.label}</span>

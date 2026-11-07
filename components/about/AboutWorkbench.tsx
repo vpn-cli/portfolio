@@ -371,6 +371,13 @@ export function AboutWorkbench() {
                             : "/work/appforge"
                         }
                         trackLocation="about_workbench"
+                        trackLabel={`Read case study: ${
+                          systemsTab === "kafka"
+                            ? "StreamMart"
+                            : systemsTab === "sockets"
+                            ? "Sportz"
+                            : "AppForge"
+                        }`}
                         className="inline-flex items-center gap-1 font-semibold text-[var(--text-primary)] hover:underline"
                       >
                         <span>Read case study</span>

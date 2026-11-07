@@ -10,6 +10,7 @@ export function ResourcesTile({ className = "" }: { className?: string }) {
       <TransitionLink
         href="/resources"
         trackLocation="resources_tile"
+        trackLabel="Resources tile"
         className="w-full h-full flex flex-col justify-between cursor-pointer group py-0.5 no-underline text-inherit"
       >
         <div>

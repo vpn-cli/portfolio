@@ -79,6 +79,7 @@ export function LinksTile({ className = "" }: { className?: string }) {
                 destination,
                 url: item.url,
                 location: "links_tile",
+                label: item.label,
               });
             }}
             className="group/row min-h-0 w-full flex-1 flex items-center justify-between px-2.5 sm:px-3 xl:px-4 rounded-xl bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-transparent transition-[background-color,transform] duration-150 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 gap-2"

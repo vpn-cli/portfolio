@@ -11,6 +11,7 @@ export function AvatarTile({ className = "" }: { className?: string }) {
       <TransitionLink
         href="/about"
         trackLocation="avatar_tile"
+        trackLabel="About (Avatar)"
         aria-label="About Vipin"
         className="w-full h-full relative cursor-pointer overflow-hidden rounded-[24px] group block"
       >

@@ -149,7 +149,7 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                 from_path: "/",
                 to_path: `/work/${activeProject.slug}`,
                 location: "selected_work",
-                label: activeProject.title,
+                label: `Selected work: ${activeProject.title}`,
               });
             });
           }}
@@ -162,7 +162,7 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                   from_path: "/",
                   to_path: `/work/${activeProject.slug}`,
                   location: "selected_work",
-                  label: activeProject.title,
+                  label: `Selected work: ${activeProject.title}`,
                 });
               });
             }
@@ -227,7 +227,7 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                       from_path: "/",
                       to_path: `/work/${project.slug}`,
                       location: "selected_work",
-                      label: project.title,
+                      label: `Selected work: ${project.title}`,
                     });
                   });
                 }}
@@ -240,7 +240,7 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                         from_path: "/",
                         to_path: `/work/${project.slug}`,
                         location: "selected_work",
-                        label: project.title,
+                        label: `Selected work: ${project.title}`,
                       });
                     });
                   }
@@ -336,6 +336,7 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
           <TransitionLink
             href="/projects"
             trackLocation="selected_work"
+            trackLabel="All projects"
             className="group/btn text-[13.5px] sm:text-[14px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 no-underline"
           >
             <span className="whitespace-nowrap">All projects</span>

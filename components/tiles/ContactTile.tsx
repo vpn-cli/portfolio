@@ -173,6 +173,7 @@ export function ContactTile({ className = "" }: { className?: string }) {
                   destination: "email",
                   url: mailUrl,
                   location: "contact_tile",
+                  label: "Send mail",
                 })
               }
               className="min-h-[44px] w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-transparent hover:border-[var(--border-hover)] text-[13px] sm:text-[14px] font-medium text-[var(--text-primary)] transition-colors active:scale-98 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"

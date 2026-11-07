@@ -27,6 +27,7 @@ export function ProjectListingCard({ project, idx, meta, dataReveal }: ProjectLi
         destination: "project_repo",
         url: sourceUrl,
         location: "all_projects",
+        label: `${project.title} Source`,
       });
     }
   };
@@ -39,6 +40,7 @@ export function ProjectListingCard({ project, idx, meta, dataReveal }: ProjectLi
       <TransitionLink
         href={`/work/${project.slug}`}
         trackLocation="all_projects"
+        trackLabel={`Case study: ${project.title}`}
         className="absolute inset-0 z-10 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
         aria-label={`View ${project.title} case study`}
       />
@@ -75,6 +77,7 @@ export function ProjectListingCard({ project, idx, meta, dataReveal }: ProjectLi
           <TransitionLink
             href={`/work/${project.slug}`}
             trackLocation="all_projects"
+            trackLabel={`Read case study: ${project.title}`}
             className="min-h-[40px] inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-xs sm:text-sm transition-opacity shadow-sm active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
           >
             <span>Read case study</span>

@@ -10,6 +10,7 @@ export function AboutTile({ className = "" }: { className?: string }) {
       <TransitionLink
         href="/about"
         trackLocation="about_tile"
+        trackLabel="About tile"
         className="w-full h-full flex flex-col justify-between cursor-pointer group py-0.5 no-underline text-inherit"
       >
         <div className="space-y-2">

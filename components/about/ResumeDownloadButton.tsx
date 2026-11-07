@@ -14,6 +14,7 @@ export function ResumeDownloadButton() {
           destination: "resume",
           url: "/resume.pdf",
           location: "about_resume",
+          label: "Download Résumé",
         })
       }
       className="inline-flex items-center justify-center gap-2 flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] text-xs sm:text-sm font-semibold hover:opacity-90 active:scale-98 transition-all shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 cursor-pointer"

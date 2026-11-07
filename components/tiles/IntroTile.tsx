@@ -57,6 +57,7 @@ export function IntroTile({ className = "" }: { className?: string }) {
                 destination: "email",
                 url: `mailto:${siteConfig.email}?subject=Opportunity%20Inquiry`,
                 location: "intro_tile",
+                label: "Get in touch",
               })
             }
             className="text-[13px] font-medium px-3.5 py-1.5 rounded-full bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-transparent text-[var(--text-primary)] transition-colors active:scale-95 cursor-pointer"

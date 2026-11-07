@@ -133,6 +133,7 @@ export function AboutPrinciples() {
             <TransitionLink
               href="/work/stream-mart#decisions"
               trackLocation="about_principles"
+              trackLabel="StreamMart case study"
               className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--text-primary)] hover:underline pt-1"
             >
               <span>StreamMart case study</span>
@@ -198,6 +199,7 @@ export function AboutPrinciples() {
             <TransitionLink
               href="/work/appforge#decisions"
               trackLocation="about_principles"
+              trackLabel="AppForge case study"
               className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--text-primary)] hover:underline pt-1"
             >
               <span>AppForge case study</span>

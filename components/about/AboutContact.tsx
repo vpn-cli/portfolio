@@ -167,6 +167,7 @@ export function AboutContact() {
                   destination: "email",
                   url: mailUrl,
                   location: "about_contact",
+                  label: "Send mail",
                 })
               }
               className="px-4 py-2 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] text-xs font-semibold hover:opacity-90 flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-95 shadow-xs"

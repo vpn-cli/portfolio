@@ -31,6 +31,7 @@ export default function ResourcesPage() {
           <TransitionLink
             href="/"
             trackLocation="back_link"
+            trackLabel="Back to home"
             className="w-10 h-10 rounded-full bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] flex items-center justify-center transition-colors text-[var(--text-primary)] shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 active:scale-95"
             title="Back to home"
             aria-label="Back to home"
@@ -166,6 +167,7 @@ export default function ResourcesPage() {
                       destination: "other",
                       url: activeItem.downloadUrl,
                       location: "resources_modal",
+                      label: `${activeItem.title} (${activeItem.isFree ? "Free" : "Template"})`,
                     })
                   }
                   className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-xs transition-opacity active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
@@ -184,6 +186,7 @@ export default function ResourcesPage() {
                       destination: "project_live",
                       url: activeItem.previewUrl,
                       location: "resources_modal",
+                      label: `${activeItem.title} Live Preview`,
                     })
                   }
                   className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-[var(--border-subtle)] hover:border-[var(--border-hover)] bg-[var(--surface-tile-hover)] text-[var(--text-primary)] font-medium text-xs transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
