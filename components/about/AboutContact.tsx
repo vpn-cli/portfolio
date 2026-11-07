@@ -49,7 +49,7 @@ export function AboutContact() {
 
     const now = new Date();
     const msToNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
-    let intervalId: NodeJS.Timeout | null = null;
+    let intervalId: ReturnType<typeof setInterval> | null = null;
     const timeoutId = setTimeout(() => {
       update();
       intervalId = setInterval(update, 60000);
@@ -64,9 +64,13 @@ export function AboutContact() {
   const handleCopy = async () => {
     trackEvent("email_copy", { location: "about_contact" });
     try {
-      await navigator.clipboard.writeText(email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
+      if (typeof navigator !== "undefined" && navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(email);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1500);
+        return;
+      }
+      throw new Error("Clipboard API unavailable");
     } catch {
       try {
         const textarea = document.createElement("textarea");
@@ -76,7 +80,8 @@ export function AboutContact() {
         document.body.appendChild(textarea);
         textarea.focus();
         textarea.select();
-        document.execCommand("copy");
+        // Fallback for legacy environments without navigator.clipboard
+        (document as any).execCommand?.("copy");
         document.body.removeChild(textarea);
         setCopied(true);
         setTimeout(() => setCopied(false), 1500);

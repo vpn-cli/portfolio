@@ -49,7 +49,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
       payload.referrer_domain = getReferrerDomain();
     }
     trackEvent("project_open", payload);
-  }, [project.slug]);
+  }, [project.slug, previousPath, getPreviousPath]);
 
   // Track case study reading depth on exit (>25% scroll)
   useEffect(() => {
@@ -273,8 +273,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                   >
                     <span>{showMetaDetails ? "Hide stack" : `Stack (${project.stack.length})`}</span>
                     <ChevronDown
-                      className={`w-3.5 h-3.5 transition-transform duration-200 ${showMetaDetails ? "rotate-180" : ""
-                        }`}
+                      className={`w-3.5 h-3.5 transition-transform duration-200 ${showMetaDetails ? "rotate-180" : ""}`}
                       aria-hidden="true"
                     />
                   </button>
@@ -334,9 +333,10 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                           destination: getOutboundDestination(githubUrl, "project_repo"),
                           url: githubUrl,
                           location: "case_study_hero",
+                          label: "GitHub",
                         })
                       }
-                      className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-sm font-medium text-[var(--text-primary)] transition-colors shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                      className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-sm font-medium text-[var(--text-primary)] transition-colors shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
                     >
                       <SiGithub className="w-4 h-4" aria-hidden="true" />
                       <span>GitHub</span>
@@ -355,9 +355,10 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                           destination: getOutboundDestination(project.links.readme!, "project_repo"),
                           url: project.links.readme!,
                           location: "case_study_hero",
+                          label: "README",
                         })
                       }
-                      className="min-h-[44px] inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors underline decoration-[var(--border-subtle)] underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                      className="min-h-[44px] inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors underline decoration-[var(--border-subtle)] underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
                     >
                       <FileText className="w-3.5 h-3.5" aria-hidden="true" />
                       <span>README</span>
@@ -511,6 +512,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                       destination: "email",
                       url: `mailto:${siteConfig.email}`,
                       location: "case_study_footer",
+                      label: "Send email",
                     })
                   }
                   className="min-h-[44px] inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-sm transition-opacity shadow-sm motion-safe:active:scale-95 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
