@@ -17,6 +17,8 @@ This document describes the analytics implementation, event taxonomy, data priva
    - Obvious bot visits (`navigator.webdriver === true`) set `is_bot_suspect: true` and are skipped from tracking.
    - Zero IP addresses, cookies, or personal identifiers are stored in the database.
    - Localhost and non-production tracking are suppressed unless `NEXT_PUBLIC_POSTHOG_DEBUG=true`.
+   - **Footer Privacy Disclosure**: The homepage footer explicitly discloses *"This site uses privacy-friendly analytics."*
+   - **PostHog IP Handling & Anonymization**: PostHog by default uses client IP for geographic enrichment (`$geoip_country_name`, etc.) and attaches `$ip`. To discard raw IP data entirely upon ingestion, enable the **"Discard client IP data"** toggle in the PostHog Cloud dashboard under *Project Settings > Privacy*. Our application database ([Neon PostgreSQL](file:///d:/Projects/portfolio/lib/db)) stores zero IP addresses or personal identifiers.
 
 3. **Ingest Reverse Proxy**:
    - Routed via Next.js `/ingest` rewrite to avoid ad-blockers and protect client analytics data flow.

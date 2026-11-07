@@ -43,10 +43,12 @@ export function IntroTile({ className = "" }: { className?: string }) {
 
         {/* Bottom Bar: Availability Status Badge */}
         <div className="mt-auto pt-4 flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-2 text-[13px] font-medium text-[var(--text-secondary)]">
+          <div className="flex items-center gap-2 text-[12px] sm:text-[13px] font-medium text-[var(--text-secondary)]">
             <span className="w-2 h-2 rounded-full bg-emerald-500 motion-safe:animate-pulse shrink-0" aria-hidden="true" />
-            {/* TODO: Customize exact job-seeker availability wording */}
-            <span>{siteConfig.status}</span>
+            <span className="text-pretty">
+              <span className="inline-block">Graduating April 2027,</span>{" "}
+              <span className="inline-block">looking for SDE roles</span>
+            </span>
           </div>
 
           <a

@@ -55,8 +55,12 @@ export function BentoGrid() {
       </div>
 
       {/* Footer Credit Line */}
-      <footer className="w-full pt-3 px-2 flex items-center justify-between text-[13px] text-[var(--text-tertiary)] select-none">
-        <span>© {new Date().getFullYear()} Vipin Kaushik</span>
+      <footer className="w-full pt-3 px-2 flex flex-col sm:flex-row items-center justify-between gap-2 text-[12px] sm:text-[13px] text-[var(--text-tertiary)] select-none">
+        <div className="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
+          <span>© {new Date().getFullYear()} Vipin Kaushik</span>
+          <span aria-hidden="true" className="opacity-40">·</span>
+          <span>This site uses privacy-friendly analytics.</span>
+        </div>
         <span>Byte: interactive 3D companion</span>
       </footer>
     </div>
