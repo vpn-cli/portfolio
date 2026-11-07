@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import arcjet, { shield, detectBot, tokenBucket } from "@arcjet/next";
 import { getDb, patsTotal, patsDailyRegion } from "@/lib/db";
-import { sql, eq, desc } from "drizzle-orm";
+import { sql, eq } from "drizzle-orm";
 import { z } from "zod";
+import {
+  getFallbackTotal,
+  incrementFallbackTotal,
+  updateFallbackDailyRegion,
+} from "@/lib/db/fallback-pats";
 
 export const dynamic = "force-dynamic";
 
@@ -39,42 +44,6 @@ const aj = process.env.ARCJET_KEY
       ],
     })
   : null;
-
-// Fallback in-memory state for local testing or dev without DATABASE_URL / ARCJET_KEY
-let fallbackTotal = 0;
-export interface FallbackRegionRow {
-  day: string;
-  country: string;
-  region: string | null;
-  city: string | null;
-  pats: number;
-  requests: number;
-}
-const fallbackRegionMap = new Map<string, FallbackRegionRow>();
-
-function updateFallbackDailyRegion(
-  day: string,
-  country: string,
-  region: string | null,
-  city: string | null,
-  pats: number
-) {
-  const key = `${day}|${country}|${region ?? ""}|${city ?? ""}`;
-  const existing = fallbackRegionMap.get(key);
-  if (existing) {
-    existing.pats += pats;
-    existing.requests += 1;
-  } else {
-    fallbackRegionMap.set(key, {
-      day,
-      country,
-      region,
-      city,
-      pats,
-      requests: 1,
-    });
-  }
-}
 
 // Local token bucket simulation (for test/local verification when ARCJET_KEY is unset)
 interface LocalLimitState {
@@ -185,27 +154,9 @@ function isAllowedOrigin(req: NextRequest): boolean {
   return false;
 }
 
-export async function GET(req: NextRequest) {
-  // Support region rows query for inspection and verification
-  if (req.nextUrl.searchParams.get("regions") === "true") {
-    const db = getDb();
-    if (db) {
-      try {
-        const rows = await db
-          .select()
-          .from(patsDailyRegion)
-          .orderBy(desc(patsDailyRegion.day))
-          .limit(50);
-        return NextResponse.json({ regions: rows });
-      } catch (err) {
-        console.error("Error reading regions from database:", err);
-      }
-    }
-    return NextResponse.json({ regions: Array.from(fallbackRegionMap.values()) });
-  }
-
+export async function GET() {
   const db = getDb();
-  let total = fallbackTotal;
+  let total = getFallbackTotal();
 
   if (db) {
     try {
@@ -403,14 +354,14 @@ export async function POST(req: NextRequest) {
     } catch (err) {
       console.error("Database update transaction error:", err);
       // Fallback in-memory persistence
-      fallbackTotal += count;
+      const currentFallback = incrementFallbackTotal(count);
       updateFallbackDailyRegion(todayStr, country, region, city, count);
-      return NextResponse.json({ total: fallbackTotal });
+      return NextResponse.json({ total: currentFallback });
     }
   }
 
   // Dev in-memory fallback when DATABASE_URL is not set
-  fallbackTotal += count;
+  const currentFallback = incrementFallbackTotal(count);
   updateFallbackDailyRegion(todayStr, country, region, city, count);
-  return NextResponse.json({ total: fallbackTotal });
+  return NextResponse.json({ total: currentFallback });
 }
