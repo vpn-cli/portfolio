@@ -30,32 +30,60 @@ loadEnv();
 const databaseUrl = process.env.DATABASE_URL;
 
 if (!databaseUrl) {
-  console.error("Error: DATABASE_URL environment variable is missing.");
-  console.error("Please set DATABASE_URL=postgresql://... in your environment or .env.local file.");
-  process.exit(1);
+  console.log("Note: DATABASE_URL environment variable is not set. Skipping DB migration.");
+  process.exit(0);
 }
 
 async function setup() {
   console.log("Connecting to Neon Postgres...");
   const sql = neon(databaseUrl);
 
-  console.log("Creating byte_pats table if not exists...");
+  console.log("Creating tables for Byte pats...");
+
+  // 1. pats_total
   await sql`
-    CREATE TABLE IF NOT EXISTS byte_pats (
+    CREATE TABLE IF NOT EXISTS pats_total (
       id INT PRIMARY KEY DEFAULT 1,
-      count BIGINT NOT NULL DEFAULT 0
+      total BIGINT NOT NULL DEFAULT 0,
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
     );
   `;
 
-  console.log("Seeding initial row with id=1...");
+  // 2. pats_daily_region
   await sql`
-    INSERT INTO byte_pats (id, count)
-    VALUES (1, 0)
-    ON CONFLICT (id) DO NOTHING;
+    CREATE TABLE IF NOT EXISTS pats_daily_region (
+      day DATE NOT NULL,
+      country TEXT NOT NULL DEFAULT 'XX',
+      region TEXT,
+      city TEXT,
+      pats INT NOT NULL DEFAULT 0,
+      requests INT NOT NULL DEFAULT 0,
+      CONSTRAINT pats_daily_region_unique_idx UNIQUE NULLS NOT DISTINCT(day, country, region, city)
+    );
   `;
 
-  const rows = await sql`SELECT id, count FROM byte_pats WHERE id = 1;`;
-  console.log("Success! Current byte_pats row:", rows[0]);
+  // 3. Seed initial row if byte_pats exists
+  try {
+    const oldRows = await sql`SELECT count FROM byte_pats WHERE id = 1;`;
+    if (oldRows.length > 0) {
+      const oldCount = Number(oldRows[0].count || 0);
+      await sql`
+        INSERT INTO pats_total (id, total, updated_at)
+        VALUES (1, ${oldCount}, NOW())
+        ON CONFLICT (id) DO NOTHING;
+      `;
+    }
+  } catch {
+    // byte_pats does not exist, insert default 0
+    await sql`
+      INSERT INTO pats_total (id, total, updated_at)
+      VALUES (1, 0, NOW())
+      ON CONFLICT (id) DO NOTHING;
+    `;
+  }
+
+  const rows = await sql`SELECT id, total, updated_at FROM pats_total WHERE id = 1;`;
+  console.log("Success! Current pats_total row:", rows[0]);
 }
 
 setup().catch((err) => {
