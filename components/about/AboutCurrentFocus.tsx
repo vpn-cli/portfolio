@@ -2,7 +2,11 @@ import { Cpu, Layers } from "lucide-react";
 
 export function AboutCurrentFocus() {
   return (
-    <section aria-labelledby="current-focus-heading" className="w-full space-y-4">
+    <section
+      aria-labelledby="current-focus-heading"
+      className="w-full space-y-4"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "auto 700px" }}
+    >
       <div className="border-b border-[var(--border-subtle)] pb-4">
         <h2 id="current-focus-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
           What I&apos;m learning now

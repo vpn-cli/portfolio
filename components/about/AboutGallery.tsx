@@ -100,6 +100,7 @@ export function AboutGallery() {
     <section
       aria-labelledby="design-art-heading"
       className="w-full space-y-8"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "auto 700px" }}
     >
       <div className="border-b border-[var(--border-subtle)] pb-4">
         <h2 id="design-art-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">

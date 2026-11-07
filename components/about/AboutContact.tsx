@@ -89,7 +89,11 @@ export function AboutContact() {
   const mailUrl = `mailto:${email}?subject=Opportunity%20Inquiry%20-%20Vipin%20Kaushik`;
 
   return (
-    <section aria-labelledby="contact-heading" className="w-full">
+    <section
+      aria-labelledby="contact-heading"
+      className="w-full"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "auto 700px" }}
+    >
       <div className="p-7 sm:p-9 rounded-[28px] sm:rounded-[32px] bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-6">
         <div className="space-y-3">
           <h2 id="contact-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)]">
