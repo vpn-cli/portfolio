@@ -53,6 +53,13 @@ export interface AnalyticsEvents {
   theme_toggle: {
     to: "light" | "dark";
   };
+  byte_viewed: Record<string, never>;
+  byte_scene_loaded: {
+    load_ms: number;
+  };
+  byte_scene_failed: {
+    reason: "no_webgl" | "load_error";
+  };
   byte_pat_batch: {
     count: number;
     session_total: number;
@@ -195,6 +202,32 @@ function recordDebugCapture(name: string, properties?: Record<string, any>): voi
     if (isDebugEnabled() || !isProdEnv()) {
       console.log(`[PostHog Capture] ${name}`, properties || {});
     }
+  }
+}
+
+/**
+ * Defers executing a callback until the browser is idle.
+ * If a route transition is currently active, re-defers until transition completion.
+ */
+export function deferUntilIdle(callback: () => void): void {
+  if (typeof window === "undefined") return;
+
+  const run = () => {
+    if (typeof window !== "undefined" && (window as any).__isTransitioning) {
+      if ("requestIdleCallback" in window) {
+        (window as any).requestIdleCallback(run, { timeout: 1000 });
+      } else {
+        setTimeout(run, 100);
+      }
+      return;
+    }
+    callback();
+  };
+
+  if ("requestIdleCallback" in window) {
+    (window as any).requestIdleCallback(run, { timeout: 2000 });
+  } else {
+    setTimeout(run, 0);
   }
 }
 

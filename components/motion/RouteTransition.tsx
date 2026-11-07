@@ -177,6 +177,9 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
 
   const resetState = (interrupted = false) => {
     isTransitioningRef.current = false;
+    if (typeof window !== "undefined") {
+      (window as any).__isTransitioning = false;
+    }
     targetPathRef.current = null;
     targetHashRef.current = null;
     wipeInDoneRef.current = false;
@@ -505,6 +508,9 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     resetState(true);
 
     isTransitioningRef.current = true;
+    if (typeof window !== "undefined") {
+      (window as any).__isTransitioning = true;
+    }
     previousPathRef.current = pathname;
     setPreviousPath(pathname);
     targetPathRef.current = targetPath;

@@ -5,7 +5,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
 import { useTheme } from "@/components/motion/ThemeProvider";
-import { trackEvent } from "@/lib/analytics";
+import { trackEvent, deferUntilIdle } from "@/lib/analytics";
 
 interface HeartParticle {
   id: number;
@@ -828,13 +828,41 @@ function ByteCharacter({
   );
 }
 
+function FirstFrameReporter({ onFirstFrame }: { onFirstFrame: () => void }) {
+  const firedRef = useRef(false);
+  useFrame(() => {
+    if (!firedRef.current) {
+      firedRef.current = true;
+      onFirstFrame();
+    }
+  });
+  return null;
+}
+
 export default function ByteScene({
   initialPatCount,
+  loadStartTime,
+  onLoadError,
 }: {
   initialPatCount?: number | null;
+  loadStartTime?: number;
+  onLoadError?: () => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
+
+  const hasFiredLoadedRef = useRef(false);
+
+  const handleFirstFrame = useCallback(() => {
+    if (hasFiredLoadedRef.current) return;
+    hasFiredLoadedRef.current = true;
+    const now = performance.now();
+    const startTime = loadStartTime || now;
+    const load_ms = Math.max(0, Math.round(now - startTime));
+    deferUntilIdle(() => {
+      trackEvent("byte_scene_loaded", { load_ms });
+    });
+  }, [loadStartTime]);
 
   const [inView, setInView] = useState(true);
   const [isDocVisible, setIsDocVisible] = useState(true);
@@ -1597,7 +1625,13 @@ export default function ByteScene({
             alpha: true,
           }}
           style={{ width: "100%", height: "100%", background: "transparent" }}
+          onCreated={({ gl }) => {
+            if (!gl) {
+              onLoadError?.();
+            }
+          }}
         >
+          <FirstFrameReporter onFirstFrame={handleFirstFrame} />
           <ResponsiveCamera margin={1.28} />
 
           {/* Theme-aware soft studio lighting */}
