@@ -15,6 +15,11 @@ const PatBatchSchema = z.object({
   count: z.number().int().min(1).max(25),
 });
 
+// In production, if ARCJET_KEY is missing, log a warning once at startup
+if (!process.env.ARCJET_KEY && process.env.NODE_ENV === "production") {
+  console.warn("ARCJET_KEY is missing in production. Using local rate limiting and bot detection.");
+}
+
 // Initialize Arcjet with exact 4 rules in order:
 // 1. shield (LIVE)
 // 2. detectBot (deny all automated clients, no allow-list)
@@ -45,7 +50,7 @@ const aj = process.env.ARCJET_KEY
     })
   : null;
 
-// Local token bucket simulation (for test/local verification when ARCJET_KEY is unset)
+// Local token bucket simulation (for test/local verification when ARCJET_KEY is unset or Arcjet throws)
 interface LocalLimitState {
   tokens: number;
   lastRefill: number;
@@ -114,7 +119,7 @@ function isKnownBotUserAgent(ua: string | null): boolean {
 function isAllowedOrigin(req: NextRequest): boolean {
   const origin = req.headers.get("origin");
   if (!origin) {
-    // Browsers send Origin on POST/Beacon; reject missing or non-origin requests
+    // Browsers send Origin on POST/keepalive fetch; reject missing or non-origin requests
     return false;
   }
 
@@ -122,30 +127,50 @@ function isAllowedOrigin(req: NextRequest): boolean {
     const parsed = new URL(origin);
     const hostname = parsed.hostname.toLowerCase();
 
-    // Allow localhost and loopbacks in dev/testing
-    if (
+    // localhost / 127.0.0.1 / .local only when NODE_ENV !== "production"
+    const isLocal =
       hostname === "localhost" ||
       hostname === "127.0.0.1" ||
-      hostname.endsWith(".local")
-    ) {
+      hostname.endsWith(".local");
+
+    if (isLocal) {
+      return process.env.NODE_ENV !== "production";
+    }
+
+    // Allow vipinkaushik.dev and www.vipinkaushik.dev
+    if (hostname === "vipinkaushik.dev" || hostname === "www.vipinkaushik.dev") {
       return true;
     }
 
-    // Match current host header
+    // For Vercel previews, allow only this project's own deployments:
+    // the hostname must equal process.env.VERCEL_URL or process.env.VERCEL_BRANCH_URL (when set).
+    // Remove the blanket *.vercel.app rule.
+    const cleanEnvUrl = (val?: string) => {
+      if (!val) return null;
+      try {
+        return val.replace(/^https?:\/\//, "").split("/")[0].split(":")[0].toLowerCase();
+      } catch {
+        return null;
+      }
+    };
+
+    const vercelUrl = cleanEnvUrl(process.env.VERCEL_URL);
+    const vercelBranchUrl = cleanEnvUrl(process.env.VERCEL_BRANCH_URL);
+
+    if (hostname.endsWith(".vercel.app")) {
+      return Boolean(
+        (vercelUrl && hostname === vercelUrl) ||
+        (vercelBranchUrl && hostname === vercelBranchUrl)
+      );
+    }
+
+    // Keep: same-host match
     const host = req.headers.get("host")?.toLowerCase();
     if (host) {
       const cleanHost = host.split(":")[0];
       if (hostname === cleanHost) {
         return true;
       }
-    }
-
-    // Known site production origins
-    if (hostname === "vipinkaushik.dev" || hostname.endsWith(".vipinkaushik.dev")) {
-      return true;
-    }
-    if (hostname.endsWith(".vercel.app")) {
-      return true;
     }
   } catch {
     return false;
@@ -155,33 +180,60 @@ function isAllowedOrigin(req: NextRequest): boolean {
 }
 
 export async function GET() {
+  const isProd = process.env.NODE_ENV === "production";
   const db = getDb();
-  let total = getFallbackTotal();
 
-  if (db) {
-    try {
-      const rows = await db
-        .select({ total: patsTotal.total })
-        .from(patsTotal)
-        .where(eq(patsTotal.id, 1))
-        .limit(1);
-
-      if (rows.length > 0) {
-        total = Number(rows[0].total);
-      }
-    } catch (err) {
-      console.error("Error reading pats from database:", err);
+  if (!db) {
+    if (isProd) {
+      console.error("DATABASE_URL missing");
+      return NextResponse.json(
+        { error: "unavailable" },
+        { status: 503, headers: { "Retry-After": "60" } }
+      );
     }
+    return NextResponse.json(
+      { total: getFallbackTotal() },
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=10, stale-while-revalidate=30",
+        },
+      }
+    );
   }
 
-  return NextResponse.json(
-    { total },
-    {
-      headers: {
-        "Cache-Control": "public, s-maxage=10, stale-while-revalidate=30",
-      },
+  try {
+    const rows = await db
+      .select({ total: patsTotal.total })
+      .from(patsTotal)
+      .where(eq(patsTotal.id, 1))
+      .limit(1);
+
+    const total = rows.length > 0 ? Number(rows[0].total) : 0;
+    return NextResponse.json(
+      { total },
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=10, stale-while-revalidate=30",
+        },
+      }
+    );
+  } catch (err) {
+    console.error("Database query error:", err);
+    if (isProd) {
+      return NextResponse.json(
+        { error: "unavailable" },
+        { status: 503, headers: { "Retry-After": "60" } }
+      );
     }
-  );
+    return NextResponse.json(
+      { total: getFallbackTotal() },
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=10, stale-while-revalidate=30",
+        },
+      }
+    );
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -190,13 +242,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Forbidden origin" }, { status: 403 });
   }
 
-  // 2. Bot check fallback (reject automated clients early)
-  const ua = req.headers.get("user-agent");
-  if (!aj && isKnownBotUserAgent(ua)) {
-    return NextResponse.json({ error: "Access denied" }, { status: 403 });
-  }
-
-  // 3. Body validation with Zod: { count: integer 1..25 }
+  // 2. Body validation with Zod: { count: integer 1..25 }
   let body: unknown;
   try {
     body = await req.json();
@@ -220,18 +266,27 @@ export async function POST(req: NextRequest) {
     : req.headers.get("x-real-ip") || "127.0.0.1";
 
   // 3. Arcjet protection (if configured)
+  let arcjetProtected = false;
   let arcjetIp: any = null;
 
   if (aj) {
     try {
-      const decision = await aj.protect(req, { requested: count, ipSrc: clientIp });
+      // Don't pass ipSrc from x-forwarded-for in production; let Arcjet detect the IP itself on Vercel.
+      const protectOpts =
+        process.env.NODE_ENV === "production"
+          ? { requested: count }
+          : { requested: count, ipSrc: clientIp };
+
+      const decision = await aj.protect(req, protectOpts);
+      arcjetProtected = true;
       arcjetIp = decision.ip;
 
       if (decision.isDenied()) {
         if (decision.reason.isRateLimit()) {
+          const retryAfter = Math.max(1, Math.ceil(decision.reason.reset || 60));
           return NextResponse.json(
             { error: "Too many pats, slow down!" },
-            { status: 429, headers: { "Retry-After": "60" } }
+            { status: 429, headers: { "Retry-After": String(retryAfter) } }
           );
         }
         return NextResponse.json({ error: "Access denied" }, { status: 403 });
@@ -246,11 +301,17 @@ export async function POST(req: NextRequest) {
       }
     } catch (err) {
       console.error("Arcjet protection error:", err);
+      arcjetProtected = false;
     }
   }
 
-  // 4. Fallback Rate Limiting (when ARCJET_KEY is unset or locally testing)
-  if (!aj) {
+  // 4. Fallback rate limiting & bot detection (when ARCJET_KEY is unset or aj.protect() threw)
+  if (!arcjetProtected) {
+    const ua = req.headers.get("user-agent");
+    if (isKnownBotUserAgent(ua)) {
+      return NextResponse.json({ error: "Access denied" }, { status: 403 });
+    }
+
     const rateResult = checkLocalRateLimit(clientIp, count);
     if (!rateResult.allowed) {
       return NextResponse.json(
@@ -308,60 +369,74 @@ export async function POST(req: NextRequest) {
   const todayStr = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
 
   // 6. Atomic Database Update in One Transaction
+  const isProd = process.env.NODE_ENV === "production";
   const db = getDb();
-  if (db) {
-    try {
-      const updatedTotal = await db.transaction(async (tx) => {
-        const [totalRow] = await tx
-          .insert(patsTotal)
-          .values({ id: 1, total: count, updatedAt: new Date() })
-          .onConflictDoUpdate({
-            target: patsTotal.id,
-            set: {
-              total: sql`${patsTotal.total} + ${count}`,
-              updatedAt: new Date(),
-            },
-          })
-          .returning({ total: patsTotal.total });
 
-        await tx
-          .insert(patsDailyRegion)
-          .values({
-            day: todayStr,
-            country,
-            region,
-            city,
-            pats: count,
-            requests: 1,
-          })
-          .onConflictDoUpdate({
-            target: [
-              patsDailyRegion.day,
-              patsDailyRegion.country,
-              patsDailyRegion.region,
-              patsDailyRegion.city,
-            ],
-            set: {
-              pats: sql`${patsDailyRegion.pats} + ${count}`,
-              requests: sql`${patsDailyRegion.requests} + 1`,
-            },
-          });
-
-        return Number(totalRow?.total ?? count);
-      });
-
-      return NextResponse.json({ total: updatedTotal });
-    } catch (err) {
-      console.error("Database update transaction error:", err);
-      // Fallback in-memory persistence
-      const currentFallback = incrementFallbackTotal(count);
-      updateFallbackDailyRegion(todayStr, country, region, city, count);
-      return NextResponse.json({ total: currentFallback });
+  if (!db) {
+    if (isProd) {
+      console.error("DATABASE_URL missing");
+      return NextResponse.json(
+        { error: "unavailable" },
+        { status: 503, headers: { "Retry-After": "60" } }
+      );
     }
+    const currentFallback = incrementFallbackTotal(count);
+    updateFallbackDailyRegion(todayStr, country, region, city, count);
+    return NextResponse.json({ total: currentFallback });
   }
 
-  // Dev in-memory fallback when DATABASE_URL is not set
-  const currentFallback = incrementFallbackTotal(count);
-  updateFallbackDailyRegion(todayStr, country, region, city, count);
-  return NextResponse.json({ total: currentFallback });
+  try {
+    const updatedTotal = await db.transaction(async (tx) => {
+      const [totalRow] = await tx
+        .insert(patsTotal)
+        .values({ id: 1, total: count, updatedAt: new Date() })
+        .onConflictDoUpdate({
+          target: patsTotal.id,
+          set: {
+            total: sql`${patsTotal.total} + ${count}`,
+            updatedAt: new Date(),
+          },
+        })
+        .returning({ total: patsTotal.total });
+
+      await tx
+        .insert(patsDailyRegion)
+        .values({
+          day: todayStr,
+          country,
+          region,
+          city,
+          pats: count,
+          requests: 1,
+        })
+        .onConflictDoUpdate({
+          target: [
+            patsDailyRegion.day,
+            patsDailyRegion.country,
+            patsDailyRegion.region,
+            patsDailyRegion.city,
+          ],
+          set: {
+            pats: sql`${patsDailyRegion.pats} + ${count}`,
+            requests: sql`${patsDailyRegion.requests} + 1`,
+          },
+        });
+
+      return Number(totalRow?.total ?? count);
+    });
+
+    return NextResponse.json({ total: updatedTotal });
+  } catch (err) {
+    console.error("Database update transaction error:", err);
+    if (isProd) {
+      return NextResponse.json(
+        { error: "unavailable" },
+        { status: 503, headers: { "Retry-After": "60" } }
+      );
+    }
+    // Fallback in-memory persistence in development only
+    const currentFallback = incrementFallbackTotal(count);
+    updateFallbackDailyRegion(todayStr, country, region, city, count);
+    return NextResponse.json({ total: currentFallback });
+  }
 }
