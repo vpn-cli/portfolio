@@ -142,8 +142,19 @@ function isAllowedOrigin(req: NextRequest): boolean {
       return true;
     }
 
-    // For Vercel previews, allow only this project's own deployments:
-    // the hostname must equal process.env.VERCEL_URL or process.env.VERCEL_BRANCH_URL (when set).
+    // Same-host match: allow requests where origin hostname matches request Host header
+    // Checked before .vercel.app so the site works when visited on its own production .vercel.app alias
+    const host = req.headers.get("host")?.toLowerCase();
+    if (host) {
+      const cleanHost = host.split(":")[0];
+      if (hostname === cleanHost) {
+        return true;
+      }
+    }
+
+    // For Vercel deployments, allow only this project's own deployments:
+    // the hostname must equal process.env.VERCEL_PROJECT_PRODUCTION_URL,
+    // process.env.VERCEL_URL, or process.env.VERCEL_BRANCH_URL (when set).
     // Remove the blanket *.vercel.app rule.
     const cleanEnvUrl = (val?: string) => {
       if (!val) return null;
@@ -154,23 +165,27 @@ function isAllowedOrigin(req: NextRequest): boolean {
       }
     };
 
+    const vercelProductionUrl = cleanEnvUrl(process.env.VERCEL_PROJECT_PRODUCTION_URL);
+    if (vercelProductionUrl && hostname === vercelProductionUrl) {
+      return true;
+    }
+
     const vercelUrl = cleanEnvUrl(process.env.VERCEL_URL);
+    if (vercelUrl && hostname === vercelUrl) {
+      return true;
+    }
+
     const vercelBranchUrl = cleanEnvUrl(process.env.VERCEL_BRANCH_URL);
+    if (vercelBranchUrl && hostname === vercelBranchUrl) {
+      return true;
+    }
 
     if (hostname.endsWith(".vercel.app")) {
       return Boolean(
+        (vercelProductionUrl && hostname === vercelProductionUrl) ||
         (vercelUrl && hostname === vercelUrl) ||
         (vercelBranchUrl && hostname === vercelBranchUrl)
       );
-    }
-
-    // Keep: same-host match
-    const host = req.headers.get("host")?.toLowerCase();
-    if (host) {
-      const cleanHost = host.split(":")[0];
-      if (hostname === cleanHost) {
-        return true;
-      }
     }
   } catch {
     return false;
