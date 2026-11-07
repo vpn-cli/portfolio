@@ -104,6 +104,14 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
   }, [activeIdx, isPaused]);
 
   const activeProject = projectsList[activeIdx] || projectsList[0];
+  const previewedProjectsRef = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (activeProject && !previewedProjectsRef.current.has(activeProject.slug)) {
+      previewedProjectsRef.current.add(activeProject.slug);
+      trackEvent("project_preview", { project: activeProject.slug });
+    }
+  }, [activeProject]);
 
   return (
     <BentoTile className={className} cursorText="View work" enableTilt={false} noPadding>
@@ -133,15 +141,30 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
         <div
           onMouseEnter={() => router.prefetch(`/work/${activeProject.slug}`)}
           onFocus={() => router.prefetch(`/work/${activeProject.slug}`)}
+          data-ph-capture-attribute-location="selected_work"
           onClick={() => {
-            trackEvent("project_click", { project: activeProject.title, where: "teaser" });
             navigateWithWipe(`/work/${activeProject.slug}`);
+            queueMicrotask(() => {
+              trackEvent("nav_click", {
+                from_path: "/",
+                to_path: `/work/${activeProject.slug}`,
+                location: "selected_work",
+                label: activeProject.title,
+              });
+            });
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              trackEvent("project_click", { project: activeProject.title, where: "teaser" });
               navigateWithWipe(`/work/${activeProject.slug}`);
+              queueMicrotask(() => {
+                trackEvent("nav_click", {
+                  from_path: "/",
+                  to_path: `/work/${activeProject.slug}`,
+                  location: "selected_work",
+                  label: activeProject.title,
+                });
+              });
             }
           }}
           tabIndex={0}
@@ -196,15 +219,30 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                   setActiveIdx(idx);
                   router.prefetch(`/work/${project.slug}`);
                 }}
+                data-ph-capture-attribute-location="selected_work"
                 onClick={() => {
-                  trackEvent("project_click", { project: project.title, where: "teaser" });
                   navigateWithWipe(`/work/${project.slug}`);
+                  queueMicrotask(() => {
+                    trackEvent("nav_click", {
+                      from_path: "/",
+                      to_path: `/work/${project.slug}`,
+                      location: "selected_work",
+                      label: project.title,
+                    });
+                  });
                 }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
-                    trackEvent("project_click", { project: project.title, where: "teaser" });
                     navigateWithWipe(`/work/${project.slug}`);
+                    queueMicrotask(() => {
+                      trackEvent("nav_click", {
+                        from_path: "/",
+                        to_path: `/work/${project.slug}`,
+                        location: "selected_work",
+                        label: project.title,
+                      });
+                    });
                   }
                 }}
                 tabIndex={0}
@@ -238,9 +276,14 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                     rel="noopener noreferrer"
                     title={`${project.title} GitHub repository`}
                     aria-label={`${project.title} GitHub repository`}
+                    data-ph-capture-attribute-location="selected_work"
                     onClick={(e) => {
                       e.stopPropagation();
-                      trackEvent("source_click", { project: project.title });
+                      trackEvent("outbound_click", {
+                        destination: "project_repo",
+                        url: project.repoUrl,
+                        location: "selected_work",
+                      });
                     }}
                     onKeyDown={(e) => e.stopPropagation()}
                     className="w-7 h-7 flex items-center justify-center rounded-md text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-tile)] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400"
@@ -253,9 +296,14 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                     rel="noopener noreferrer"
                     title={`Open ${project.title}`}
                     aria-label={`Open ${project.title}`}
+                    data-ph-capture-attribute-location="selected_work"
                     onClick={(e) => {
                       e.stopPropagation();
-                      trackEvent("demo_click", { project: project.title });
+                      trackEvent("outbound_click", {
+                        destination: "project_live",
+                        url: project.liveUrl,
+                        location: "selected_work",
+                      });
                     }}
                     onKeyDown={(e) => e.stopPropagation()}
                     className="w-7 h-7 flex items-center justify-center rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-tile)] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400"
@@ -287,6 +335,7 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
         <div className="pt-1.5 mt-auto flex items-center justify-between shrink-0 pl-3">
           <TransitionLink
             href="/projects"
+            trackLocation="selected_work"
             className="group/btn text-[13.5px] sm:text-[14px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 no-underline"
           >
             <span className="whitespace-nowrap">All projects</span>

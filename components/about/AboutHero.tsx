@@ -58,6 +58,7 @@ export function AboutHero({ status }: AboutHeroProps) {
 
           <TransitionLink
             href="/projects"
+            trackLocation="about_hero"
             className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] text-[var(--text-primary)] text-xs sm:text-sm font-semibold transition-colors active:scale-98"
           >
             <span>Case Studies</span>

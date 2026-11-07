@@ -20,13 +20,15 @@ interface ProjectListingCardProps {
 export function ProjectListingCard({ project, idx, meta, dataReveal }: ProjectListingCardProps) {
   const sourceUrl = project.links?.repo || project.githubUrl;
 
-  const handleProjectClick = () => {
-    trackEvent("project_click", { project: project.title, where: "listing" });
-  };
-
   const handleSourceClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    trackEvent("source_click", { project: project.title });
+    if (sourceUrl) {
+      trackEvent("outbound_click", {
+        destination: "project_repo",
+        url: sourceUrl,
+        location: "all_projects",
+      });
+    }
   };
 
   return (
@@ -36,7 +38,7 @@ export function ProjectListingCard({ project, idx, meta, dataReveal }: ProjectLi
     >
       <TransitionLink
         href={`/work/${project.slug}`}
-        onClick={handleProjectClick}
+        trackLocation="all_projects"
         className="absolute inset-0 z-10 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
         aria-label={`View ${project.title} case study`}
       />
@@ -72,7 +74,7 @@ export function ProjectListingCard({ project, idx, meta, dataReveal }: ProjectLi
         <div className="pt-2 flex items-center gap-3 relative z-20">
           <TransitionLink
             href={`/work/${project.slug}`}
-            onClick={handleProjectClick}
+            trackLocation="all_projects"
             className="min-h-[40px] inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-xs sm:text-sm transition-opacity shadow-sm active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
           >
             <span>Read case study</span>
@@ -87,6 +89,7 @@ export function ProjectListingCard({ project, idx, meta, dataReveal }: ProjectLi
               href={sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
+              data-ph-capture-attribute-location="all_projects"
               onClick={handleSourceClick}
               className="min-h-[40px] inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-medium text-xs sm:text-sm transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
             >

@@ -17,6 +17,7 @@ export default function AboutPage() {
         <div data-reveal data-reveal-order="1" className="w-full flex justify-between items-center mb-8 sm:mb-12">
           <TransitionLink
             href="/"
+            trackLocation="back_link"
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" aria-hidden="true" />
@@ -25,6 +26,7 @@ export default function AboutPage() {
 
           <TransitionLink
             href="/"
+            trackLocation="back_link"
             className="w-10 h-10 rounded-full bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] flex items-center justify-center transition-colors text-[var(--text-primary)] shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 active:scale-95 cursor-pointer"
             title="Close and return to home"
             aria-label="Close and return to home"

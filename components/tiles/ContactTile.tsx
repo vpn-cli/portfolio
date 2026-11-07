@@ -69,7 +69,7 @@ export function ContactTile({ className = "" }: { className?: string }) {
   }, []);
 
   const handleCopy = async () => {
-    trackEvent("email_copy");
+    trackEvent("email_copy", { location: "contact_tile" });
     try {
       await navigator.clipboard.writeText(email);
       setCopied(true);
@@ -145,6 +145,7 @@ export function ContactTile({ className = "" }: { className?: string }) {
             <button
               onClick={handleCopy}
               type="button"
+              data-ph-capture-attribute-location="contact_tile"
               aria-label={copied ? "Email copied to clipboard" : "Copy email address"}
               className="w-full sm:w-auto px-3 py-1.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-transparent text-[13px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center justify-center gap-1.5 transition-colors shrink-0 cursor-pointer active:scale-95"
             >
@@ -166,7 +167,14 @@ export function ContactTile({ className = "" }: { className?: string }) {
           <div className="flex items-center gap-3">
             <a
               href={mailUrl}
-              onClick={() => trackEvent("send_mail_click")}
+              data-ph-capture-attribute-location="contact_tile"
+              onClick={() =>
+                trackEvent("outbound_click", {
+                  destination: "email",
+                  url: mailUrl,
+                  location: "contact_tile",
+                })
+              }
               className="min-h-[44px] w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-transparent hover:border-[var(--border-hover)] text-[13px] sm:text-[14px] font-medium text-[var(--text-primary)] transition-colors active:scale-98 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
             >
               <Mail className="w-4 h-4 text-[var(--text-secondary)]" aria-hidden="true" />

@@ -9,6 +9,7 @@ export function AboutTile({ className = "" }: { className?: string }) {
     <BentoTile className={className} cursorText="Read background">
       <TransitionLink
         href="/about"
+        trackLocation="about_tile"
         className="w-full h-full flex flex-col justify-between cursor-pointer group py-0.5 no-underline text-inherit"
       >
         <div className="space-y-2">

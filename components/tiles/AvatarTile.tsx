@@ -10,6 +10,7 @@ export function AvatarTile({ className = "" }: { className?: string }) {
     <BentoTile className={className} noPadding cursorText="About Vipin">
       <TransitionLink
         href="/about"
+        trackLocation="avatar_tile"
         aria-label="About Vipin"
         className="w-full h-full relative cursor-pointer overflow-hidden rounded-[24px] group block"
       >

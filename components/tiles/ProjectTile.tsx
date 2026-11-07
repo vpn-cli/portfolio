@@ -16,6 +16,7 @@ export function ProjectTile({
     <BentoTile className={className} noPadding cursorText={`View ${project.title}`}>
       <TransitionLink
         href={`/work/${project.slug}`}
+        trackLocation="selected_work"
         aria-label={`View ${project.title}`}
         className="w-full h-full relative cursor-pointer group overflow-hidden rounded-[24px] block"
       >

@@ -78,6 +78,7 @@ export function AboutPrinciples() {
             </p>
             <TransitionLink
               href="/work/sockets#decisions"
+              trackLocation="about_principles"
               className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--text-primary)] hover:underline pt-1"
             >
               <span>Sportz case study</span>
@@ -131,6 +132,7 @@ export function AboutPrinciples() {
             </p>
             <TransitionLink
               href="/work/stream-mart#decisions"
+              trackLocation="about_principles"
               className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--text-primary)] hover:underline pt-1"
             >
               <span>StreamMart case study</span>
@@ -195,6 +197,7 @@ export function AboutPrinciples() {
             </p>
             <TransitionLink
               href="/work/appforge#decisions"
+              trackLocation="about_principles"
               className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--text-primary)] hover:underline pt-1"
             >
               <span>AppForge case study</span>

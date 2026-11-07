@@ -65,12 +65,21 @@ export function LinksTile({ className = "" }: { className?: string }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={item.ariaLabel}
+            data-ph-capture-attribute-location="links_tile"
             onClick={() => {
-              if (item.id === "resume") {
-                trackEvent("resume_click");
-              } else if (item.id === "github" || item.id === "linkedin") {
-                trackEvent("social_click", { platform: item.id });
-              }
+              const destination =
+                item.id === "resume"
+                  ? "resume"
+                  : item.id === "github"
+                  ? "github"
+                  : item.id === "linkedin"
+                  ? "linkedin"
+                  : "other";
+              trackEvent("outbound_click", {
+                destination,
+                url: item.url,
+                location: "links_tile",
+              });
             }}
             className="group/row min-h-0 w-full flex-1 flex items-center justify-between px-2.5 sm:px-3 xl:px-4 rounded-xl bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-transparent transition-[background-color,transform] duration-150 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 gap-2"
           >

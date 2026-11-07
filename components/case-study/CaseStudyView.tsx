@@ -38,7 +38,47 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
   const [showMetaDetails, setShowMetaDetails] = useState(false);
 
   useEffect(() => {
-    trackEvent("case_study_view", { project: project.slug });
+    trackEvent("project_open", {
+      project: project.slug,
+      from_path: typeof document !== "undefined" && document.referrer ? document.referrer : "/",
+    });
+  }, [project.slug]);
+
+  // Track case study reading depth on exit (>25% scroll)
+  useEffect(() => {
+    let maxScrollPct = 0;
+
+    const handleScroll = () => {
+      const docEl = document.documentElement;
+      const scrollTop = window.scrollY || docEl.scrollTop;
+      const scrollHeight = docEl.scrollHeight - window.innerHeight;
+      if (scrollHeight > 0) {
+        const pct = Math.min(100, Math.round((scrollTop / scrollHeight) * 100));
+        if (pct > maxScrollPct) maxScrollPct = pct;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    let fired = false;
+    const fireOnLeave = () => {
+      if (fired) return;
+      if (maxScrollPct > 25) {
+        fired = true;
+        trackEvent("case_study_read", {
+          project: project.slug,
+          max_scroll_pct: maxScrollPct,
+        });
+      }
+    };
+
+    window.addEventListener("pagehide", fireOnLeave);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("pagehide", fireOnLeave);
+      fireOnLeave();
+    };
   }, [project.slug]);
 
   // Esc key navigates back to /projects
@@ -74,6 +114,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
           <div className="flex items-center gap-3">
             <TransitionLink
               href="/projects"
+              trackLocation="case_study_nav"
               className="inline-flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
             >
               <ArrowLeft
@@ -96,6 +137,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
           <div className="flex items-center gap-3 sm:gap-5 text-sm">
             <TransitionLink
               href={`/work/${prevProject.slug}`}
+              trackLocation="case_study_nav"
               className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors hidden sm:inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
               title={`Previous project: ${prevProject.title}`}
             >
@@ -109,6 +151,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
 
             <TransitionLink
               href={`/work/${nextProject.slug}`}
+              trackLocation="case_study_nav"
               className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors inline-flex items-center gap-1.5 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
               title={`Next project: ${nextProject.title}`}
             >
@@ -249,7 +292,14 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                       href={liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      onClick={() => trackEvent("demo_click", { project: project.slug })}
+                      data-ph-capture-attribute-location="case_study_hero"
+                      onClick={() =>
+                        trackEvent("outbound_click", {
+                          destination: "project_live",
+                          url: liveUrl,
+                          location: "case_study_hero",
+                        })
+                      }
                       className="min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-sm transition-opacity shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
                     >
                       <ExternalLink className="w-4 h-4" aria-hidden="true" />
@@ -263,7 +313,14 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                       href={githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      onClick={() => trackEvent("source_click", { project: project.slug })}
+                      data-ph-capture-attribute-location="case_study_hero"
+                      onClick={() =>
+                        trackEvent("outbound_click", {
+                          destination: "project_repo",
+                          url: githubUrl,
+                          location: "case_study_hero",
+                        })
+                      }
                       className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-sm font-medium text-[var(--text-primary)] transition-colors shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
                     >
                       <SiGithub className="w-4 h-4" aria-hidden="true" />
@@ -277,6 +334,14 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                       href={project.links.readme}
                       target="_blank"
                       rel="noopener noreferrer"
+                      data-ph-capture-attribute-location="case_study_hero"
+                      onClick={() =>
+                        trackEvent("outbound_click", {
+                          destination: "project_repo",
+                          url: project.links.readme!,
+                          location: "case_study_hero",
+                        })
+                      }
                       className="min-h-[44px] inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors underline decoration-[var(--border-subtle)] underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
                     >
                       <FileText className="w-3.5 h-3.5" aria-hidden="true" />
@@ -390,6 +455,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
             <footer className="space-y-8 pt-10 border-t border-[var(--border-subtle)]">
               <TransitionLink
                 href={`/work/${nextProject.slug}`}
+                trackLocation="case_study_nav"
                 className="group block w-full rounded-[var(--card-radius)] bg-[var(--surface-tile)] border border-[var(--border-subtle)] p-6 sm:p-8 hover:border-[var(--border-hover)] transition-colors shadow-sm"
               >
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
@@ -423,6 +489,14 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
 
                 <a
                   href={`mailto:${siteConfig.email}`}
+                  data-ph-capture-attribute-location="case_study_footer"
+                  onClick={() =>
+                    trackEvent("outbound_click", {
+                      destination: "email",
+                      url: `mailto:${siteConfig.email}`,
+                      location: "case_study_footer",
+                    })
+                  }
                   className="min-h-[44px] inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-sm transition-opacity shadow-sm motion-safe:active:scale-95 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
                 >
                   <Mail className="w-4 h-4" aria-hidden="true" />

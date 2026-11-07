@@ -7,6 +7,7 @@ import { gsap } from "gsap";
 import { registerGSAPPlugins } from "@/lib/motion";
 import { useLenisInstance } from "./SmoothScrollProvider";
 import { siteConfig } from "@/content/site";
+import { trackEvent, OutboundDestination } from "@/lib/analytics";
 
 const WIPE_IN = 0.16;
 const WIPE_OUT = 0.2;
@@ -515,6 +516,22 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
   );
 }
 
+function getOutboundDestination(href: string, explicit?: OutboundDestination): OutboundDestination {
+  if (explicit) return explicit;
+  if (href.startsWith("mailto:")) return "email";
+  if (href.includes("/resume.pdf") || href.includes("resume")) return "resume";
+  if (href.includes("linkedin.com")) return "linkedin";
+  if (href.includes("github.com")) {
+    return href.includes("/blob/") || href.includes("/tree/") || href.split("/").length > 4
+      ? "project_repo"
+      : "github";
+  }
+  if (href.includes("vercel.app") || href.startsWith("http://") || href.startsWith("https://")) {
+    return "project_live";
+  }
+  return "other";
+}
+
 export function TransitionLink({
   href,
   children,
@@ -524,6 +541,8 @@ export function TransitionLink({
   onMouseEnter,
   onFocus,
   onPointerDown,
+  trackLocation = "inline",
+  trackDestination,
   ...props
 }: {
   href: string;
@@ -534,9 +553,12 @@ export function TransitionLink({
   onMouseEnter?: (e?: any) => void;
   onFocus?: (e?: any) => void;
   onPointerDown?: (e?: any) => void;
+  trackLocation?: string;
+  trackDestination?: OutboundDestination;
   [key: string]: any;
 }) {
   const { navigateWithWipe, prefetch: prefetchRoute } = usePageTransition();
+  const pathname = usePathname();
 
   const isExternal =
     href.startsWith("http://") ||
@@ -545,12 +567,23 @@ export function TransitionLink({
     href.startsWith("tel:") ||
     href.startsWith("#");
 
+  const location = trackLocation || "inline";
+
   if (isExternal) {
+    const destination = getOutboundDestination(href, trackDestination);
     return (
       <a
         href={href}
         className={className}
-        onClick={onClick}
+        data-ph-capture-attribute-location={location}
+        onClick={(e) => {
+          trackEvent("outbound_click", {
+            destination,
+            url: href,
+            location,
+          });
+          if (onClick) onClick(e);
+        }}
         onMouseEnter={onMouseEnter}
         onFocus={onFocus}
         onPointerDown={onPointerDown}
@@ -566,6 +599,7 @@ export function TransitionLink({
       href={href}
       prefetch={prefetch}
       className={className}
+      data-ph-capture-attribute-location={location}
       onMouseEnter={(e) => {
         prefetchRoute(href);
         if (onMouseEnter) onMouseEnter(e);
@@ -584,6 +618,11 @@ export function TransitionLink({
           return;
         }
         e.preventDefault();
+
+        const label = ((e.currentTarget as HTMLElement).textContent || "").trim().slice(0, 60);
+        const from_path = pathname || "/";
+        const to_path = href;
+
         if (onClick) {
           try {
             onClick(e);
@@ -591,7 +630,18 @@ export function TransitionLink({
             console.error(err);
           }
         }
+
         navigateWithWipe(href);
+
+        // Performance guardrail: defer nav_click capture after navigateWithWipe starts
+        queueMicrotask(() => {
+          trackEvent("nav_click", {
+            from_path,
+            to_path,
+            location,
+            label,
+          });
+        });
       }}
       {...props}
     >

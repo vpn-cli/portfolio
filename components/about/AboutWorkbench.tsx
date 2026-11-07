@@ -370,6 +370,7 @@ export function AboutWorkbench() {
                             ? "/work/sockets"
                             : "/work/appforge"
                         }
+                        trackLocation="about_workbench"
                         className="inline-flex items-center gap-1 font-semibold text-[var(--text-primary)] hover:underline"
                       >
                         <span>Read case study</span>

@@ -62,7 +62,7 @@ export function AboutContact() {
   }, []);
 
   const handleCopy = async () => {
-    trackEvent("email_copy");
+    trackEvent("email_copy", { location: "about_contact" });
     try {
       await navigator.clipboard.writeText(email);
       setCopied(true);
@@ -142,6 +142,7 @@ export function AboutContact() {
             <button
               onClick={handleCopy}
               type="button"
+              data-ph-capture-attribute-location="about_contact"
               aria-label={copied ? "Email copied to clipboard" : "Copy email address"}
               className="px-3.5 py-2 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center justify-center gap-1.5 transition-colors cursor-pointer active:scale-95 shadow-xs"
             >
@@ -160,7 +161,14 @@ export function AboutContact() {
 
             <a
               href={mailUrl}
-              onClick={() => trackEvent("send_mail_click")}
+              data-ph-capture-attribute-location="about_contact"
+              onClick={() =>
+                trackEvent("outbound_click", {
+                  destination: "email",
+                  url: mailUrl,
+                  location: "about_contact",
+                })
+              }
               className="px-4 py-2 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] text-xs font-semibold hover:opacity-90 flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-95 shadow-xs"
             >
               <Mail className="w-3.5 h-3.5" aria-hidden="true" />

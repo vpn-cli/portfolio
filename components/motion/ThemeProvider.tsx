@@ -78,7 +78,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const toggleTheme = () => {
     const next = theme === "dark" ? "light" : "dark";
-    trackEvent("theme_toggle", { theme: next });
+    trackEvent("theme_toggle", { to: next });
     setTheme(next);
   };
 
