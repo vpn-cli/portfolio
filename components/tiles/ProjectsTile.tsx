@@ -179,8 +179,8 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
               <div
                 key={project.id}
                 className={`absolute inset-0 w-full h-full transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${isCurrent
-                    ? "opacity-100 scale-100 z-10"
-                    : "opacity-0 scale-[1.02] pointer-events-none z-0 motion-reduce:scale-100"
+                  ? "opacity-100 scale-100 z-10"
+                  : "opacity-0 scale-[1.02] pointer-events-none z-0 motion-reduce:scale-100"
                   }`}
               >
                 <Image
@@ -249,16 +249,16 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                 role="link"
                 aria-label={`View ${project.title} project`}
                 className={`relative flex items-center justify-between pl-3 pr-2.5 py-1.5 sm:py-2 rounded-lg transition-colors cursor-pointer group/row focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 select-none ${isActive
-                    ? "bg-[var(--surface-tile-elevated)]"
-                    : "bg-transparent hover:bg-[var(--surface-tile-hover)]"
+                  ? "bg-[var(--surface-tile-elevated)]"
+                  : "bg-transparent hover:bg-[var(--surface-tile-hover)]"
                   }`}
               >
                 {/* Left: Project title and short plain teaser line */}
                 <div className="min-w-0 flex-1 flex flex-col justify-center">
                   <span
                     className={`text-[13.5px] sm:text-[14px] font-medium leading-tight transition-colors ${isActive
-                        ? "text-[var(--text-primary)]"
-                        : "text-[var(--text-secondary)] group-hover/row:text-[var(--text-primary)]"
+                      ? "text-[var(--text-primary)]"
+                      : "text-[var(--text-secondary)] group-hover/row:text-[var(--text-primary)]"
                       }`}
                   >
                     {project.title}

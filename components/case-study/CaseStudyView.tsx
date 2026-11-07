@@ -262,9 +262,8 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                   >
                     <span>{showMetaDetails ? "Hide stack" : `Stack (${project.stack.length})`}</span>
                     <ChevronDown
-                      className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                        showMetaDetails ? "rotate-180" : ""
-                      }`}
+                      className={`w-3.5 h-3.5 transition-transform duration-200 ${showMetaDetails ? "rotate-180" : ""
+                        }`}
                       aria-hidden="true"
                     />
                   </button>

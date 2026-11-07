@@ -880,7 +880,7 @@ export default function ByteScene({
           setPatCount(serverTotalRef.current + pendingPatsRef.current);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   // Mood / Reactions
@@ -1010,7 +1010,7 @@ export default function ByteScene({
           }
         }
       })
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => {
         isFlushingRef.current = false;
         if (pendingPatsRef.current > 0) {

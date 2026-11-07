@@ -71,10 +71,10 @@ export function LinksTile({ className = "" }: { className?: string }) {
                 item.id === "resume"
                   ? "resume"
                   : item.id === "github"
-                  ? "github"
-                  : item.id === "linkedin"
-                  ? "linkedin"
-                  : "other";
+                    ? "github"
+                    : item.id === "linkedin"
+                      ? "linkedin"
+                      : "other";
               trackEvent("outbound_click", {
                 destination,
                 url: item.url,
