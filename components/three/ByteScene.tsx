@@ -5,6 +5,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
 import { useTheme } from "@/components/motion/ThemeProvider";
+import { trackEvent } from "@/lib/analytics";
 
 interface HeartParticle {
   id: number;
@@ -848,30 +849,39 @@ export default function ByteScene({
   const [pointerGaze, setPointerGaze] = useState({ x: 0, y: 0 });
   const [glanceTarget, setGlanceTarget] = useState<{ x: number; y: number } | null>(null);
 
-  // Global Pat Counter state
+  // Global Pat Counter state & batching refs
   const [patCount, setPatCount] = useState<number | null>(initialPatCount ?? null);
   const [patSpinTrigger, setPatSpinTrigger] = useState(0);
   const [floatingPats, setFloatingPats] = useState<{ id: number; x: number }[]>([]);
-  const lastCountedPat = useRef(0);
+
+  const serverTotalRef = useRef<number>(initialPatCount ?? 0);
+  const pendingPatsRef = useRef<number>(0);
+  const sessionTotalRef = useRef<number>(0);
+  const lastCountedPatTime = useRef<number>(0);
+  const lastFlushTime = useRef<number>(0);
+  const flushTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const rateLimitUntilRef = useRef<number>(0);
+  const isFlushingRef = useRef<boolean>(false);
 
   useEffect(() => {
-    if (initialPatCount !== undefined && initialPatCount !== null) {
-      setPatCount(initialPatCount);
+    if (typeof initialPatCount === "number") {
+      serverTotalRef.current = initialPatCount;
+      setPatCount(serverTotalRef.current + pendingPatsRef.current);
     }
   }, [initialPatCount]);
 
   useEffect(() => {
-    if (patCount === null) {
-      fetch("/api/pats")
-        .then((res) => res.json())
-        .then((data) => {
-          if (typeof data.count === "number") {
-            setPatCount(data.count);
-          }
-        })
-        .catch(() => {});
-    }
-  }, [patCount]);
+    fetch("/api/pats")
+      .then((res) => res.json())
+      .then((data) => {
+        const total = typeof data.total === "number" ? data.total : data.count;
+        if (typeof total === "number") {
+          serverTotalRef.current = total;
+          setPatCount(serverTotalRef.current + pendingPatsRef.current);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Mood / Reactions
   const [isHappy, setIsHappy] = useState(false);
@@ -943,6 +953,103 @@ export default function ByteScene({
     }
   }, [isSleeping]);
 
+  const flushPendingPats = useCallback((isBeacon = false) => {
+    if (Date.now() < rateLimitUntilRef.current) {
+      pendingPatsRef.current = 0;
+      return;
+    }
+
+    if (pendingPatsRef.current <= 0) return;
+    if (isFlushingRef.current && !isBeacon) return;
+
+    const count = Math.min(25, pendingPatsRef.current);
+    pendingPatsRef.current -= count;
+    lastFlushTime.current = Date.now();
+
+    // Fire PostHog byte_pat_batch { count, session_total } on each flush
+    trackEvent("byte_pat_batch", {
+      count,
+      session_total: sessionTotalRef.current,
+    });
+
+    if (isBeacon && typeof navigator !== "undefined" && navigator.sendBeacon) {
+      try {
+        const blob = new Blob([JSON.stringify({ count })], { type: "application/json" });
+        navigator.sendBeacon("/api/pats", blob);
+      } catch {
+        // ignore beacon failures on exit
+      }
+      return;
+    }
+
+    isFlushingRef.current = true;
+    fetch("/api/pats", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ count }),
+    })
+      .then((res) => {
+        if (res.status === 429) {
+          const retryHeader = res.headers.get("Retry-After");
+          const retrySeconds = retryHeader ? parseInt(retryHeader, 10) : 60;
+          rateLimitUntilRef.current = Date.now() + (retrySeconds || 60) * 1000;
+          pendingPatsRef.current = 0;
+          return null;
+        }
+        if (!res.ok) {
+          return null;
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data) {
+          const newTotal = typeof data.total === "number" ? data.total : data.count;
+          if (typeof newTotal === "number") {
+            serverTotalRef.current = newTotal;
+            setPatCount(serverTotalRef.current + pendingPatsRef.current);
+          }
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        isFlushingRef.current = false;
+        if (pendingPatsRef.current > 0) {
+          scheduleFlush();
+        }
+      });
+  }, []);
+
+  const scheduleFlush = useCallback(() => {
+    if (flushTimerRef.current) return;
+    const elapsed = Date.now() - lastFlushTime.current;
+    const delay = Math.max(0, 3000 - elapsed);
+    flushTimerRef.current = setTimeout(() => {
+      flushTimerRef.current = null;
+      flushPendingPats(false);
+    }, delay);
+  }, [flushPendingPats]);
+
+  // Flush pending count on pagehide or visibilitychange hidden using sendBeacon
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState === "hidden") {
+        flushPendingPats(true);
+      }
+    };
+    const handlePageHide = () => {
+      flushPendingPats(true);
+    };
+
+    document.addEventListener("visibilitychange", handleVisibility);
+    window.addEventListener("pagehide", handlePageHide);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibility);
+      window.removeEventListener("pagehide", handlePageHide);
+      if (flushTimerRef.current) clearTimeout(flushTimerRef.current);
+    };
+  }, [flushPendingPats]);
+
   // Trigger pat (single click/tap or keyboard Enter/Space)
   const triggerPat = useCallback(() => {
     wakeUp();
@@ -963,33 +1070,7 @@ export default function ByteScene({
       setFloatingPats((prev) => prev.filter((item) => item.id !== id));
     }, 850);
 
-    // Client-side cooldown of 400ms between counted pats
     const now = Date.now();
-    if (now - lastCountedPat.current >= 400) {
-      lastCountedPat.current = now;
-
-      // Optimistic count increment
-      setPatCount((prev) => (prev ?? 0) + 1);
-
-      // Trigger analytics
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(
-          new CustomEvent("portfolio-analytics", { detail: { name: "byte_pat" } })
-        );
-      }
-
-      fetch("/api/pats", { method: "POST" })
-        .then((res) => {
-          if (res.ok) return res.json();
-          return null;
-        })
-        .then((data) => {
-          if (data && typeof data.count === "number") {
-            setPatCount(data.count);
-          }
-        })
-        .catch(() => {});
-    }
 
     // Spawn floating hearts
     const newHearts: HeartParticle[] = [
@@ -1031,7 +1112,20 @@ export default function ByteScene({
       },
     ];
     setHearts((prev) => [...prev, ...newHearts]);
-  }, [wakeUp]);
+
+    // Ignore pats less than 120ms apart (still animate Byte, just don't count them)
+    if (now - lastCountedPatTime.current < 120) {
+      return;
+    }
+    lastCountedPatTime.current = now;
+
+    // Optimistic count increment
+    pendingPatsRef.current += 1;
+    sessionTotalRef.current += 1;
+    setPatCount(serverTotalRef.current + pendingPatsRef.current);
+
+    scheduleFlush();
+  }, [wakeUp, scheduleFlush]);
 
   // Trigger dizzy (rapid pokes 4+ or fast fling)
   const triggerDizzy = useCallback(() => {

@@ -34,8 +34,9 @@ export function ByteTile({ className = "" }: { className?: string }) {
     fetch("/api/pats")
       .then((res) => res.json())
       .then((data) => {
-        if (typeof data.count === "number") {
-          setPatCount(data.count);
+        const total = typeof data.total === "number" ? data.total : data.count;
+        if (typeof total === "number") {
+          setPatCount(total);
         }
       })
       .catch(() => {});
