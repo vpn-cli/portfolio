@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CaseStudy } from "@/data/projects";
 import { siteConfig } from "@/content/site";
-import { TransitionLink } from "@/components/motion/RouteTransition";
+import { TransitionLink, usePageTransition } from "@/components/motion/RouteTransition";
 import {
   ArrowLeft,
   ArrowRight,
@@ -16,7 +16,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { SiGithub } from "react-icons/si";
-import { trackEvent } from "@/lib/analytics";
+import { trackEvent, getReferrerDomain } from "@/lib/analytics";
 
 import { TableOfContents } from "./TableOfContents";
 import { CaseStudyHero } from "./CaseStudyHero";
@@ -37,11 +37,18 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
   );
   const [showMetaDetails, setShowMetaDetails] = useState(false);
 
+  const { previousPath, getPreviousPath } = usePageTransition();
+
   useEffect(() => {
-    trackEvent("project_open", {
+    const fromPath = getPreviousPath() || previousPath || "external";
+    const payload: { project: string; from_path: string; referrer_domain?: string } = {
       project: project.slug,
-      from_path: typeof document !== "undefined" && document.referrer ? document.referrer : "/",
-    });
+      from_path: fromPath,
+    };
+    if (fromPath === "external") {
+      payload.referrer_domain = getReferrerDomain();
+    }
+    trackEvent("project_open", payload);
   }, [project.slug]);
 
   // Track case study reading depth on exit (>25% scroll)
@@ -115,6 +122,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
             <TransitionLink
               href="/projects"
               trackLocation="case_study_nav"
+              trackLabel="All work"
               className="inline-flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
             >
               <ArrowLeft
@@ -138,6 +146,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
             <TransitionLink
               href={`/work/${prevProject.slug}`}
               trackLocation="case_study_nav"
+              trackLabel={`Previous: ${prevProject.title}`}
               className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors hidden sm:inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
               title={`Previous project: ${prevProject.title}`}
             >
@@ -152,6 +161,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
             <TransitionLink
               href={`/work/${nextProject.slug}`}
               trackLocation="case_study_nav"
+              trackLabel={`Next: ${nextProject.title}`}
               className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors inline-flex items-center gap-1.5 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
               title={`Next project: ${nextProject.title}`}
             >
@@ -455,6 +465,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
               <TransitionLink
                 href={`/work/${nextProject.slug}`}
                 trackLocation="case_study_nav"
+                trackLabel={`Next Case Study: ${nextProject.title}`}
                 className="group block w-full rounded-[var(--card-radius)] bg-[var(--surface-tile)] border border-[var(--border-subtle)] p-6 sm:p-8 hover:border-[var(--border-hover)] transition-colors shadow-sm"
               >
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">

@@ -31,11 +31,13 @@ export interface AnalyticsEvents {
     to_path: string;
     location: string;
     label: string;
+    referrer_domain?: string;
   };
   outbound_click: {
     destination: OutboundDestination;
     url: string;
     location: string;
+    label?: string;
   };
   project_preview: {
     project: string;
@@ -43,6 +45,7 @@ export interface AnalyticsEvents {
   project_open: {
     project: string;
     from_path: string;
+    referrer_domain?: string;
   };
   email_copy: {
     location: string;
@@ -254,5 +257,20 @@ export function trackPageView(
     posthog.capture("$pageview", payload);
   } else {
     eventQueue.push({ name: "$pageview", properties: payload });
+  }
+}
+
+/**
+ * Extracts referrer domain from document.referrer (domain only, or "direct" if empty/invalid).
+ */
+export function getReferrerDomain(): string {
+  if (typeof document === "undefined" || !document.referrer) {
+    return "direct";
+  }
+  try {
+    const url = new URL(document.referrer);
+    return url.hostname.replace(/^www\./, "") || "direct";
+  } catch {
+    return "direct";
   }
 }

@@ -1,13 +1,13 @@
 "use client";
 
-import { createContext, useContext, useEffect, useRef, useTransition } from "react";
+import { createContext, useContext, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { registerGSAPPlugins } from "@/lib/motion";
 import { useLenisInstance } from "./SmoothScrollProvider";
 import { siteConfig } from "@/content/site";
-import { trackEvent, OutboundDestination } from "@/lib/analytics";
+import { trackEvent, OutboundDestination, getReferrerDomain } from "@/lib/analytics";
 
 const WIPE_IN = 0.16;
 const WIPE_OUT = 0.2;
@@ -22,12 +22,16 @@ interface TransitionContextType {
   navigateWithWipe: (href: string) => void;
   prefetch: (href: string) => void;
   isPending: boolean;
+  previousPath: string | null;
+  getPreviousPath: () => string | null;
 }
 
 const TransitionContext = createContext<TransitionContextType>({
   navigateWithWipe: () => { },
   prefetch: () => { },
   isPending: false,
+  previousPath: null,
+  getPreviousPath: () => null,
 });
 
 export const usePageTransition = () => useContext(TransitionContext);
@@ -60,6 +64,19 @@ export function getRouteLabel(path: string): string {
 export function RouteTransitionProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
+  const [previousPath, setPreviousPath] = useState<string | null>(null);
+  const currentPathRef = useRef<string>(pathname);
+  const previousPathRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (currentPathRef.current !== pathname) {
+      const prev = currentPathRef.current;
+      previousPathRef.current = prev;
+      setPreviousPath(prev);
+      currentPathRef.current = pathname;
+    }
+  }, [pathname]);
+
   const [isPending, startTransition] = useTransition();
   const { lenis } = useLenisInstance();
   const lenisRef = useRef(lenis);
@@ -372,6 +389,8 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     resetState(true);
 
     isTransitioningRef.current = true;
+    previousPathRef.current = pathname;
+    setPreviousPath(pathname);
     targetPathRef.current = targetPath;
     const hashIndex = href.indexOf("#");
     const hash = hashIndex !== -1 && href.slice(hashIndex + 1) ? href.slice(hashIndex + 1) : null;
@@ -484,7 +503,15 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
   };
 
   return (
-    <TransitionContext.Provider value={{ navigateWithWipe, prefetch, isPending }}>
+    <TransitionContext.Provider
+      value={{
+        navigateWithWipe,
+        prefetch,
+        isPending,
+        previousPath,
+        getPreviousPath: () => previousPathRef.current,
+      }}
+    >
       {/* Wipe overlay */}
       <div
         ref={overlayRef}
@@ -532,6 +559,45 @@ function getOutboundDestination(href: string, explicit?: OutboundDestination): O
   return "other";
 }
 
+/**
+ * Resolves link label strictly by order of precedence:
+ * trackLabel -> aria-label -> title -> text of first heading -> first text node only -> textContent (max 60 chars)
+ */
+export function resolveLinkLabel(el: HTMLElement, explicitTrackLabel?: string): string {
+  // 1. trackLabel
+  if (explicitTrackLabel && explicitTrackLabel.trim()) {
+    return explicitTrackLabel.trim().slice(0, 60);
+  }
+  // 2. aria-label
+  const ariaLabel = el.getAttribute("aria-label");
+  if (ariaLabel && ariaLabel.trim()) {
+    return ariaLabel.trim().slice(0, 60);
+  }
+  // 3. title
+  const title = el.getAttribute("title");
+  if (title && title.trim()) {
+    return title.trim().slice(0, 60);
+  }
+  // 4. the text of the first heading (h1-h6) or first text node only
+  const heading = el.querySelector("h1, h2, h3, h4, h5, h6");
+  if (heading && heading.textContent && heading.textContent.trim()) {
+    return heading.textContent.trim().slice(0, 60);
+  }
+  // First non-empty text node
+  if (typeof document !== "undefined") {
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    let node = walker.nextNode();
+    while (node) {
+      const text = node.textContent?.trim();
+      if (text) {
+        return text.slice(0, 60);
+      }
+      node = walker.nextNode();
+    }
+  }
+  return (el.textContent || "").trim().slice(0, 60);
+}
+
 export function TransitionLink({
   href,
   children,
@@ -543,6 +609,7 @@ export function TransitionLink({
   onPointerDown,
   trackLocation = "inline",
   trackDestination,
+  trackLabel,
   ...props
 }: {
   href: string;
@@ -555,9 +622,10 @@ export function TransitionLink({
   onPointerDown?: (e?: any) => void;
   trackLocation?: string;
   trackDestination?: OutboundDestination;
+  trackLabel?: string;
   [key: string]: any;
 }) {
-  const { navigateWithWipe, prefetch: prefetchRoute } = usePageTransition();
+  const { navigateWithWipe, prefetch: prefetchRoute, previousPath } = usePageTransition();
   const pathname = usePathname();
 
   const isExternal =
@@ -577,10 +645,12 @@ export function TransitionLink({
         className={className}
         data-ph-capture-attribute-location={location}
         onClick={(e) => {
+          const label = resolveLinkLabel(e.currentTarget as HTMLElement, trackLabel);
           trackEvent("outbound_click", {
             destination,
             url: href,
             location,
+            label,
           });
           if (onClick) onClick(e);
         }}
@@ -619,7 +689,7 @@ export function TransitionLink({
         }
         e.preventDefault();
 
-        const label = ((e.currentTarget as HTMLElement).textContent || "").trim().slice(0, 60);
+        const label = resolveLinkLabel(e.currentTarget as HTMLElement, trackLabel);
         const from_path = pathname || "/";
         const to_path = href;
 
@@ -635,12 +705,16 @@ export function TransitionLink({
 
         // Performance guardrail: defer nav_click capture after navigateWithWipe starts
         queueMicrotask(() => {
-          trackEvent("nav_click", {
+          const payload: { from_path: string; to_path: string; location: string; label: string; referrer_domain?: string } = {
             from_path,
             to_path,
             location,
             label,
-          });
+          };
+          if (!previousPath) {
+            payload.referrer_domain = getReferrerDomain();
+          }
+          trackEvent("nav_click", payload);
         });
       }}
       {...props}
