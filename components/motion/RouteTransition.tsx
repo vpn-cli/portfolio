@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useLenisInstance } from "./SmoothScrollProvider";
 import { siteConfig } from "@/content/site";
-import { trackEvent, OutboundDestination, getReferrerDomain } from "@/lib/analytics";
+import { trackEvent, OutboundDestination, getReferrerDomain, getOutboundDestination } from "@/lib/analytics";
 
 const WIPE_IN = 0.16;
 const WIPE_OUT = 0.22;
@@ -687,21 +687,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
   );
 }
 
-function getOutboundDestination(href: string, explicit?: OutboundDestination): OutboundDestination {
-  if (explicit) return explicit;
-  if (href.startsWith("mailto:")) return "email";
-  if (href.includes("/resume.pdf") || href.includes("resume")) return "resume";
-  if (href.includes("linkedin.com")) return "linkedin";
-  if (href.includes("github.com")) {
-    return href.includes("/blob/") || href.includes("/tree/") || href.split("/").length > 4
-      ? "project_repo"
-      : "github";
-  }
-  if (href.includes("vercel.app") || href.startsWith("http://") || href.startsWith("https://")) {
-    return "project_live";
-  }
-  return "other";
-}
+export { getOutboundDestination };
 
 /**
  * Resolves link label strictly by order of precedence:

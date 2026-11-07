@@ -16,7 +16,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { SiGithub } from "react-icons/si";
-import { trackEvent, getReferrerDomain } from "@/lib/analytics";
+import { trackEvent, getReferrerDomain, getOutboundDestination } from "@/lib/analytics";
 
 import { TableOfContents } from "./TableOfContents";
 import { CaseStudyHero } from "./CaseStudyHero";
@@ -304,7 +304,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                       data-ph-capture-attribute-location="case_study_hero"
                       onClick={() =>
                         trackEvent("outbound_click", {
-                          destination: "project_live",
+                          destination: getOutboundDestination(liveUrl, "project_live"),
                           url: liveUrl,
                           location: "case_study_hero",
                         })
@@ -325,7 +325,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                       data-ph-capture-attribute-location="case_study_hero"
                       onClick={() =>
                         trackEvent("outbound_click", {
-                          destination: "project_repo",
+                          destination: getOutboundDestination(githubUrl, "project_repo"),
                           url: githubUrl,
                           location: "case_study_hero",
                         })
@@ -346,7 +346,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                       data-ph-capture-attribute-location="case_study_hero"
                       onClick={() =>
                         trackEvent("outbound_click", {
-                          destination: "project_repo",
+                          destination: getOutboundDestination(project.links.readme!, "project_repo"),
                           url: project.links.readme!,
                           location: "case_study_hero",
                         })

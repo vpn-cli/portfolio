@@ -2,7 +2,7 @@
 
 import { ArrowUpRight } from "lucide-react";
 import { ProjectCardPreview } from "./ProjectCardPreview";
-import { trackEvent } from "@/lib/analytics";
+import { trackEvent, getOutboundDestination } from "@/lib/analytics";
 import { CaseStudy } from "@/data/projects";
 import { TransitionLink } from "@/components/motion/RouteTransition";
 
@@ -24,7 +24,7 @@ export function ProjectListingCard({ project, idx, meta, dataReveal }: ProjectLi
     e.stopPropagation();
     if (sourceUrl) {
       trackEvent("outbound_click", {
-        destination: "project_repo",
+        destination: getOutboundDestination(sourceUrl, "project_repo"),
         url: sourceUrl,
         location: "all_projects",
         label: `${project.title} Source`,

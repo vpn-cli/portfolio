@@ -8,7 +8,7 @@ import { BentoTile } from "./BentoTile";
 import { ArrowUpRight } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 import { usePageTransition, TransitionLink } from "@/components/motion/RouteTransition";
-import { trackEvent } from "@/lib/analytics";
+import { trackEvent, getOutboundDestination } from "@/lib/analytics";
 
 interface TeaserProject {
   id: string;
@@ -280,7 +280,7 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                     onClick={(e) => {
                       e.stopPropagation();
                       trackEvent("outbound_click", {
-                        destination: "project_repo",
+                        destination: getOutboundDestination(project.repoUrl, "project_repo"),
                         url: project.repoUrl,
                         location: "selected_work",
                       });
@@ -300,7 +300,7 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                     onClick={(e) => {
                       e.stopPropagation();
                       trackEvent("outbound_click", {
-                        destination: "project_live",
+                        destination: getOutboundDestination(project.liveUrl, "project_live"),
                         url: project.liveUrl,
                         location: "selected_work",
                       });

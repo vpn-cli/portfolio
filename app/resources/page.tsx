@@ -4,7 +4,7 @@ import { useState } from "react";
 import { siteConfig, ResourceItem } from "@/content/site";
 import { TransitionLink } from "@/components/motion/RouteTransition";
 import { X, ArrowUpRight, Check, Sparkles, Code2, Layout, Layers, Terminal } from "lucide-react";
-import { trackEvent } from "@/lib/analytics";
+import { trackEvent, getOutboundDestination } from "@/lib/analytics";
 
 export default function ResourcesPage() {
   const [activeItem, setActiveItem] = useState<ResourceItem | null>(null);
@@ -183,7 +183,7 @@ export default function ResourcesPage() {
                   data-ph-capture-attribute-location="resources_modal"
                   onClick={() =>
                     trackEvent("outbound_click", {
-                      destination: "project_live",
+                      destination: getOutboundDestination(activeItem.previewUrl, "project_live"),
                       url: activeItem.previewUrl,
                       location: "resources_modal",
                       label: `${activeItem.title} Live Preview`,

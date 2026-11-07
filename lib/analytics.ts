@@ -74,7 +74,12 @@ let initScheduled = false;
 
 function isDebugEnabled(): boolean {
   if (process.env.NEXT_PUBLIC_POSTHOG_DEBUG === "true") return true;
-  if (typeof window !== "undefined" && (window as any).__POSTHOG_DEBUG === true) return true;
+  if (typeof window !== "undefined") {
+    if ((window as any).__POSTHOG_DEBUG === true) return true;
+    try {
+      if (window.localStorage && window.localStorage.getItem("posthog_debug") === "true") return true;
+    } catch {}
+  }
   return false;
 }
 
@@ -89,7 +94,6 @@ function isLocalEnvironment(): boolean {
 }
 
 function isBotSuspect(): boolean {
-  // Allow test automation in debug mode
   if (isDebugEnabled()) return false;
   if (typeof navigator === "undefined") return false;
   return Boolean(navigator.webdriver);
@@ -139,9 +143,9 @@ export function initPostHog(): void {
       disable_session_recording: !ENABLE_REPLAY,
       session_recording: ENABLE_REPLAY
         ? {
-            sampleRate: 0.2,
-            maskAllInputs: true,
-          }
+          sampleRate: 0.2,
+          maskAllInputs: true,
+        }
         : undefined,
       loaded: (ph) => {
         posthogLoaded = true;
@@ -168,11 +172,8 @@ export function initPostHog(): void {
 function flushQueue(ph: { capture: (name: string, properties?: any) => void } | null): void {
   while (eventQueue.length > 0) {
     const item = eventQueue.shift();
-    if (item) {
-      if (ph) {
-        ph.capture(item.name, item.properties);
-      }
-      recordDebugCapture(item.name, item.properties);
+    if (item && ph) {
+      ph.capture(item.name, item.properties);
     }
   }
 }
@@ -258,6 +259,56 @@ export function trackPageView(
   } else {
     eventQueue.push({ name: "$pageview", properties: payload });
   }
+}
+
+/**
+ * Resolves outbound click destination strictly adhering to:
+ * - Any URL on github.com that points to a repository must be "project_repo"
+ * - The profile link (github.com/vpn-cli exactly) stays "github"
+ * - mailto: -> "email"
+ * - /resume.pdf or resume -> "resume"
+ * - linkedin.com -> "linkedin"
+ * - vercel.app or http/https live links -> "project_live"
+ * - fallback / other -> "other"
+ */
+export function getOutboundDestination(href: string, explicit?: OutboundDestination): OutboundDestination {
+  const cleanHref = href.trim();
+
+  // Check for github.com URLs first
+  try {
+    const url = new URL(cleanHref, "https://portfolio.local");
+    const hostname = url.hostname.toLowerCase().replace(/^www\./, "");
+    if (hostname === "github.com") {
+      const segments = url.pathname.split("/").filter(Boolean);
+      // github.com/vpn-cli exactly (with or without trailing slash)
+      if (segments.length === 1 && segments[0].toLowerCase() === "vpn-cli") {
+        return "github";
+      }
+      // Any other path with repo (e.g. /vpn-cli/StreamMart, /vpn-cli/StreamMart/...)
+      if (segments.length >= 2) {
+        return "project_repo";
+      }
+      return "github";
+    }
+  } catch {
+    if (cleanHref.includes("github.com")) {
+      if (/github\.com\/vpn-cli\/?(?:$|[?#])/i.test(cleanHref)) {
+        return "github";
+      }
+      return "project_repo";
+    }
+  }
+
+  // If explicit destination is provided (and not overridden by github rules)
+  if (explicit) return explicit;
+
+  if (cleanHref.startsWith("mailto:")) return "email";
+  if (cleanHref.includes("/resume.pdf") || cleanHref.includes("resume")) return "resume";
+  if (cleanHref.includes("linkedin.com")) return "linkedin";
+  if (cleanHref.includes("vercel.app") || cleanHref.startsWith("http://") || cleanHref.startsWith("https://")) {
+    return "project_live";
+  }
+  return "other";
 }
 
 /**
