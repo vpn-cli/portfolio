@@ -10,7 +10,12 @@ import { siteConfig } from "@/content/site";
 
 const WIPE_IN = 0.16;
 const WIPE_OUT = 0.2;
-export const MIN_VISIBLE = 0.42;
+export const MIN_VISIBLE: number = 0.42;
+
+const isDebugEnabled = () => {
+  if (typeof window === "undefined") return false;
+  return process.env.NODE_ENV !== "production" || Boolean((window as any).__debugTransitions);
+};
 
 interface TransitionContextType {
   navigateWithWipe: (href: string) => void;
@@ -79,6 +84,40 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
   const tlRef = useRef<gsap.core.Timeline | null>(null);
   const isRevealingRef = useRef(false);
 
+  const marksRef = useRef<{ name: string; time: number }[]>([]);
+
+  const markTransition = (name: string) => {
+    try {
+      performance.mark(name);
+    } catch { }
+    marksRef.current.push({ name, time: performance.now() });
+    if (isDebugEnabled()) {
+      console.log(`[RouteTransition Mark] ${name} (+${(performance.now() - navStartRef.current).toFixed(1)}ms)`);
+    }
+  };
+
+  const logTransitionTable = () => {
+    if (!isDebugEnabled()) return;
+    const marks = marksRef.current;
+    if (marks.length === 0) return;
+    const rows: { Step: string; "Duration (ms)": number; "Cumulative (ms)": number }[] = [];
+    for (let i = 1; i < marks.length; i++) {
+      const prev = marks[i - 1];
+      const curr = marks[i];
+      rows.push({
+        Step: `${prev.name} -> ${curr.name}`,
+        "Duration (ms)": Number((curr.time - prev.time).toFixed(2)),
+        "Cumulative (ms)": Number((curr.time - marks[0].time).toFixed(2)),
+      });
+    }
+    console.table(rows);
+    if (typeof window !== "undefined") {
+      (window as any).__lastTransitionTable = rows;
+      (window as any).__allTransitionTables = (window as any).__allTransitionTables || [];
+      (window as any).__allTransitionTables.push(rows);
+    }
+  };
+
   const resetState = (interrupted = false) => {
     isTransitioningRef.current = false;
     targetPathRef.current = null;
@@ -136,6 +175,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
 
     // Give browser 1 frame to paint the new route DOM under the curtain
     requestAnimationFrame(() => {
+      markTransition("wipe-out start");
       const activeLenis = lenisRef.current || lenis;
       const targetHash = targetHashRef.current;
       const targetElement = targetHash ? document.getElementById(targetHash) : null;
@@ -195,6 +235,8 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
           if (trackRef.current) {
             gsap.set(trackRef.current, { opacity: 1 });
           }
+          markTransition("wipe-out end");
+          logTransitionTable();
           resetState(false);
           if (tlRef.current) {
             tlRef.current.kill();
@@ -246,13 +288,19 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
       minVisibleTimeoutRef.current = null;
     }
 
+    const currentMinVisible =
+      typeof window !== "undefined" && typeof (window as any).__MIN_VISIBLE === "number"
+        ? (window as any).__MIN_VISIBLE
+        : MIN_VISIBLE;
     const elapsed = (performance.now() - navStartRef.current) / 1000;
-    const remaining = Math.max(0, MIN_VISIBLE - elapsed);
+    const remaining = Math.max(0, currentMinVisible - elapsed);
 
-    if (remaining <= 0 || MIN_VISIBLE === 0) {
+    if (remaining <= 0 || currentMinVisible === 0) {
+      markTransition("MIN_VISIBLE elapsed");
       completeWipeOut();
     } else {
       minVisibleTimeoutRef.current = setTimeout(() => {
+        markTransition("MIN_VISIBLE elapsed");
         completeWipeOut();
       }, remaining * 1000);
     }
@@ -263,7 +311,11 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     if (!isTransitioningRef.current) return;
 
     const currentNormalized = normalizePath(pathname);
+    if (isDebugEnabled()) {
+      console.log(`[pathname effect] pathname=${pathname}, target=${targetPathRef.current}, routeChanged=${routeChangedRef.current}`);
+    }
     if (targetPathRef.current && currentNormalized === targetPathRef.current) {
+      markTransition("pathname committed");
       routeChangedRef.current = true;
 
       // When the route is ready, animate it to scaleX 1 over 0.12s. Do not delay wipe-out waiting for this to finish.
@@ -326,6 +378,8 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     wipeInDoneRef.current = false;
     routeChangedRef.current = false;
     navStartRef.current = performance.now();
+    marksRef.current = [];
+    markTransition("click");
 
     // Prefetch immediately so chunks are ready during wipe animation
     prefetch(href);
@@ -369,6 +423,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     // Safety timeout: if route doesn't swap within 1.5s, force wipe out so UI never blocks
     timeoutRef.current = setTimeout(() => {
       if (isTransitioningRef.current) {
+        markTransition("safety timeout fired (1500ms)");
         completeWipeOut();
       }
     }, 1500);
@@ -384,9 +439,11 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
         duration: WIPE_IN,
         ease: "power2.out",
         onComplete: () => {
+          markTransition("wipe-in done");
           wipeInDoneRef.current = true;
 
           startTransition(() => {
+            markTransition("router.push called");
             router.push(href);
           });
 
