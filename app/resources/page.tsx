@@ -26,7 +26,7 @@ export default function ResourcesPage() {
       {/* Main Bento Shell matching Master Framer Spec */}
       <div className="w-full max-w-[1480px] min-h-[calc(100vh-48px)] rounded-[32px] sm:rounded-[36px] bg-[var(--bg-canvas-subtle)] border border-[var(--border-subtle)] p-6 sm:p-10 lg:p-14 shadow-md flex flex-col items-center">
         {/* Top Floating Close / Back Pill */}
-        <div className="w-full flex justify-center mb-8 sm:mb-12">
+        <div data-reveal className="w-full flex justify-center mb-8 sm:mb-12">
           <TransitionLink
             href="/"
             className="w-10 h-10 rounded-full bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] flex items-center justify-center transition-colors text-[var(--text-primary)] shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 active:scale-95"
@@ -40,19 +40,20 @@ export default function ResourcesPage() {
         {/* Inner Content Column */}
         <div className="w-full max-w-5xl lg:max-w-6xl">
           <header className="mb-10 text-center sm:text-left">
-            <span className="type-label2 text-[var(--text-tertiary)] block mb-2 font-semibold">
+            <span data-reveal className="type-label2 text-[var(--text-tertiary)] block mb-2 font-semibold">
               Resources & open source
             </span>
-            <h1 className="type-h1 font-display font-medium text-[var(--text-primary)] tracking-tight">
+            <h1 data-reveal className="type-h1 font-display font-medium text-[var(--text-primary)] tracking-tight">
               Templates & boilerplates to speed your workflow
             </h1>
           </header>
 
           {/* 2-Column Template Grid */}
           <section className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {siteConfig.resources.map((item) => (
+            {siteConfig.resources.map((item, idx) => (
               <article
                 key={item.id}
+                {...(idx === 0 ? { "data-reveal": "" } : {})}
                 onClick={() => setActiveItem(item)}
                 className="group cursor-pointer rounded-[28px] bento-surface p-5 transition-[background-color,border-color] duration-300 flex flex-col justify-between"
               >

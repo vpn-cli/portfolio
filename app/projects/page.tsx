@@ -42,7 +42,7 @@ export default function ProjectsPage() {
     <main className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-primary)] px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex flex-col items-center">
       <div className="w-full max-w-[var(--layout-max-width)]">
         {/* Top Navigation Bar */}
-        <div className="flex items-center justify-between mb-8 sm:mb-12">
+        <div data-reveal className="flex items-center justify-between mb-8 sm:mb-12">
           <TransitionLink
             href="/"
             className="min-h-[40px] px-4 py-2 rounded-full bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] inline-flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 active:scale-95"
@@ -56,10 +56,10 @@ export default function ProjectsPage() {
 
         {/* Hero Section */}
         <header className="mb-10 sm:mb-14 text-left space-y-3">
-          <h1 className="type-h1 font-display font-medium text-[var(--text-primary)] tracking-tight">
+          <h1 data-reveal className="type-h1 font-display font-medium text-[var(--text-primary)] tracking-tight">
             Selected work
           </h1>
-          <p className="type-body2 text-[var(--text-secondary)] max-w-2xl leading-relaxed">
+          <p data-reveal className="type-body2 text-[var(--text-secondary)] max-w-2xl leading-relaxed">
             Three projects: an AI app builder, a live sports engine, and an event-driven store.
           </p>
         </header>
@@ -79,6 +79,7 @@ export default function ProjectsPage() {
                 project={project}
                 idx={idx}
                 meta={meta}
+                dataReveal={idx === 0}
               />
             );
           })}

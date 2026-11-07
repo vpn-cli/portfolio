@@ -11,7 +11,7 @@ export function AboutHero({ status }: AboutHeroProps) {
   return (
     <section aria-labelledby="about-intro-heading" className="w-full space-y-8">
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-8 border-b border-[var(--border-subtle)]">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6">
+        <div data-reveal data-reveal-order="2" className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6">
           <div className="relative w-22 h-22 sm:w-28 sm:h-28 rounded-2xl overflow-hidden bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] shrink-0 shadow-sm">
             <Image
               src="/avatar.jpg"
@@ -53,7 +53,7 @@ export function AboutHero({ status }: AboutHeroProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 w-full sm:w-auto shrink-0 pt-2 lg:pt-0">
+        <div data-reveal data-reveal-order="3" className="flex items-center gap-3 w-full sm:w-auto shrink-0 pt-2 lg:pt-0">
           <ResumeDownloadButton />
 
           <TransitionLink
@@ -67,7 +67,7 @@ export function AboutHero({ status }: AboutHeroProps) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <div className="lg:col-span-8 space-y-4">
+        <div data-reveal data-reveal-order="4" className="lg:col-span-8 space-y-4">
           <p className="text-xl sm:text-2xl text-[var(--text-primary)] font-normal leading-relaxed tracking-tight">
             I&apos;m a chemical engineering student at IIT Kharagpur who ended up writing software. Now I build backend systems with Kafka, WebSockets and Postgres, and I still do design work on the side.
           </p>
@@ -76,7 +76,7 @@ export function AboutHero({ status }: AboutHeroProps) {
           </p>
         </div>
 
-        <div className="lg:col-span-4 p-5 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-3">
+        <div data-reveal data-reveal-order="5" className="lg:col-span-4 p-5 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-3">
           <span className="text-xs font-semibold text-[var(--text-tertiary)] block">
             What I work with
           </span>

@@ -66,6 +66,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
       <div className="w-full max-w-[var(--layout-max-width)] space-y-10 sm:space-y-12">
         {/* ━━━ TOP BAR NAVIGATION ━━━ */}
         <nav
+          data-reveal
           aria-label="Case study navigation"
           className="w-full flex items-center justify-between py-3 border-b border-[var(--border-subtle)]"
         >
@@ -140,17 +141,17 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                   </span>
                 </div>
 
-                <h1 className="type-h1 font-display font-medium text-[var(--text-primary)] tracking-tight">
+                <h1 data-reveal className="type-h1 font-display font-medium text-[var(--text-primary)] tracking-tight">
                   {project.title}
                 </h1>
 
-                <p className="type-body2 text-[var(--text-primary)] font-medium leading-relaxed max-w-[65ch]">
+                <p data-reveal className="type-body2 text-[var(--text-primary)] font-medium leading-relaxed max-w-[65ch]">
                   {project.hookPitch}
                 </p>
               </div>
 
               {/* Hero Visual: Real Application Clip / Pipeline (Dominates >50% Viewport) */}
-              <div className="w-full">
+              <div data-reveal className="w-full">
                 <CaseStudyHero project={project} />
               </div>
 

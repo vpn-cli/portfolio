@@ -14,7 +14,7 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-primary)] p-3 sm:p-4 lg:p-6 flex flex-col items-center">
       <div className="w-full max-w-[1280px] min-h-[calc(100vh-48px)] rounded-[32px] sm:rounded-[36px] bg-[var(--bg-canvas-subtle)] border border-[var(--border-subtle)] p-5 sm:p-8 lg:p-12 shadow-sm flex flex-col items-center">
-        <div className="w-full flex justify-between items-center mb-8 sm:mb-12">
+        <div data-reveal data-reveal-order="1" className="w-full flex justify-between items-center mb-8 sm:mb-12">
           <TransitionLink
             href="/"
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"

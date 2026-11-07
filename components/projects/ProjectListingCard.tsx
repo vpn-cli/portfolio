@@ -14,9 +14,10 @@ interface ProjectListingCardProps {
     stackLine: string;
     description: string;
   };
+  dataReveal?: boolean;
 }
 
-export function ProjectListingCard({ project, idx, meta }: ProjectListingCardProps) {
+export function ProjectListingCard({ project, idx, meta, dataReveal }: ProjectListingCardProps) {
   const sourceUrl = project.links?.repo || project.githubUrl;
 
   const handleProjectClick = () => {
@@ -29,7 +30,10 @@ export function ProjectListingCard({ project, idx, meta }: ProjectListingCardPro
   };
 
   return (
-    <article className="group relative flex flex-col lg:flex-row items-center gap-8 lg:gap-12 py-10 sm:py-14 border-b border-[var(--border-subtle)] last:border-b-0">
+    <article
+      {...(dataReveal ? { "data-reveal": "" } : {})}
+      className="group relative flex flex-col lg:flex-row items-center gap-8 lg:gap-12 py-10 sm:py-14 border-b border-[var(--border-subtle)] last:border-b-0"
+    >
       <TransitionLink
         href={`/work/${project.slug}`}
         onClick={handleProjectClick}

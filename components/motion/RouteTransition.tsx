@@ -6,9 +6,11 @@ import Link from "next/link";
 import { gsap } from "gsap";
 import { registerGSAPPlugins } from "@/lib/motion";
 import { useLenisInstance } from "./SmoothScrollProvider";
+import { siteConfig } from "@/content/site";
 
 const WIPE_IN = 0.16;
 const WIPE_OUT = 0.2;
+export const MIN_VISIBLE: number = 0.42;
 
 interface TransitionContextType {
   navigateWithWipe: (href: string) => void;
@@ -32,6 +34,23 @@ const normalizePath = (path: string) => {
   return clean;
 };
 
+export function getRouteLabel(path: string): string {
+  const clean = normalizePath(path);
+  if (clean === "" || clean === "/") return "Home";
+  if (clean === "/about") return "About";
+  if (clean === "/projects") return "Projects";
+  if (clean === "/work") return "Work";
+  if (clean === "/resources") return "Resources";
+
+  if (clean.startsWith("/work/")) {
+    const slug = clean.slice("/work/".length);
+    const project = siteConfig.projects.find((p) => p.slug === slug);
+    if (project?.title) return project.title;
+  }
+
+  return "Loading";
+}
+
 export function RouteTransitionProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -44,19 +63,43 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
   }, [lenis]);
 
   const overlayRef = useRef<HTMLDivElement>(null);
+  const labelRef = useRef<HTMLSpanElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const fillRef = useRef<HTMLDivElement>(null);
+
   const isTransitioningRef = useRef(false);
   const targetPathRef = useRef<string | null>(null);
   const targetHashRef = useRef<string | null>(null);
   const wipeInDoneRef = useRef(false);
   const routeChangedRef = useRef(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const navStartRef = useRef<number>(0);
 
-  const resetState = () => {
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const minVisibleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const isRevealingRef = useRef(false);
+
+  const resetState = (interrupted = false) => {
     isTransitioningRef.current = false;
     targetPathRef.current = null;
     targetHashRef.current = null;
     wipeInDoneRef.current = false;
     routeChangedRef.current = false;
+
+    // Clear gsap props on [data-reveal] elements whenever resetState() runs.
+    const reveals = document.querySelectorAll<HTMLElement>("main [data-reveal]");
+    if (reveals.length > 0) {
+      if (interrupted || !isRevealingRef.current) {
+        gsap.killTweensOf(reveals);
+        gsap.set(reveals, { clearProps: "opacity,transform" });
+      } else {
+        reveals.forEach((el) => {
+          if (el.style.opacity === "0" && !gsap.isTweening(el)) {
+            gsap.set(el, { clearProps: "opacity,transform" });
+          }
+        });
+      }
+    }
   };
 
   const prefetch = (href: string) => {
@@ -70,11 +113,25 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
+    if (minVisibleTimeoutRef.current) {
+      clearTimeout(minVisibleTimeoutRef.current);
+      minVisibleTimeoutRef.current = null;
+    }
 
     const overlay = overlayRef.current;
     if (!overlay) {
-      resetState();
+      resetState(true);
       return;
+    }
+
+    // Ensure progress fill is at 1
+    if (fillRef.current) {
+      gsap.to(fillRef.current, {
+        scaleX: 1,
+        duration: 0.12,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
     }
 
     // Give browser 1 frame to paint the new route DOM under the curtain
@@ -100,16 +157,105 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
         }
       }
 
+      // Content reveal on arrival
+      const all = Array.from(document.querySelectorAll<HTMLElement>("main [data-reveal]"));
+      const visible = all.filter((el) => el.getBoundingClientRect().top < window.innerHeight);
+
+      visible.sort((a, b) => {
+        const orderA = a.getAttribute("data-reveal-order");
+        const orderB = b.getAttribute("data-reveal-order");
+        if (orderA !== null && orderB !== null) {
+          return parseFloat(orderA) - parseFloat(orderB);
+        }
+        if (orderA !== null) return -1;
+        if (orderB !== null) return 1;
+        return 0;
+      });
+
+      const toAnimate = visible.slice(0, 7);
+
+      if (toAnimate.length > 0) {
+        gsap.set(toAnimate, { opacity: 0, y: 14 });
+        isRevealingRef.current = true;
+      }
+
+      // Wipe-out: as now (WIPE_OUT)
       gsap.to(overlay, {
         clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)",
         duration: WIPE_OUT,
         ease: "power2.inOut",
         onComplete: () => {
           gsap.set(overlay, { display: "none" });
-          resetState();
+          if (labelRef.current) {
+            gsap.set(labelRef.current, { yPercent: 100, opacity: 1 });
+          }
+          if (fillRef.current) {
+            gsap.set(fillRef.current, { scaleX: 0 });
+          }
+          if (trackRef.current) {
+            gsap.set(trackRef.current, { opacity: 1 });
+          }
+          resetState(false);
+          if (tlRef.current) {
+            tlRef.current.kill();
+            tlRef.current = null;
+          }
         },
       });
+
+      // At the same moment the label animates to yPercent: -100 and opacity 0
+      if (labelRef.current) {
+        gsap.to(labelRef.current, {
+          yPercent: -100,
+          opacity: 0,
+          duration: 0.2,
+          ease: "power2.in",
+        });
+      }
+
+      // And the progress track fades out
+      if (trackRef.current) {
+        gsap.to(trackRef.current, {
+          opacity: 0,
+          duration: 0.2,
+          ease: "power2.in",
+        });
+      }
+
+      // Starting 0.05s after the wipe-out begins
+      if (toAnimate.length > 0) {
+        gsap.to(toAnimate, {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          ease: "power3.out",
+          stagger: 0.06,
+          delay: 0.05,
+          clearProps: "opacity,transform",
+          onComplete: () => {
+            isRevealingRef.current = false;
+          },
+        });
+      }
     });
+  };
+
+  const triggerWipeOutWithMinVisible = () => {
+    if (minVisibleTimeoutRef.current) {
+      clearTimeout(minVisibleTimeoutRef.current);
+      minVisibleTimeoutRef.current = null;
+    }
+
+    const elapsed = (performance.now() - navStartRef.current) / 1000;
+    const remaining = Math.max(0, MIN_VISIBLE - elapsed);
+
+    if (remaining <= 0 || MIN_VISIBLE === 0) {
+      completeWipeOut();
+    } else {
+      minVisibleTimeoutRef.current = setTimeout(() => {
+        completeWipeOut();
+      }, remaining * 1000);
+    }
   };
 
   // Synchronize: listen for the incoming route to mount before revealing
@@ -119,11 +265,32 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     const currentNormalized = normalizePath(pathname);
     if (targetPathRef.current && currentNormalized === targetPathRef.current) {
       routeChangedRef.current = true;
+
+      // When the route is ready, animate it to scaleX 1 over 0.12s. Do not delay wipe-out waiting for this to finish.
+      if (fillRef.current) {
+        gsap.to(fillRef.current, {
+          scaleX: 1,
+          duration: 0.12,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+      }
+
       if (wipeInDoneRef.current) {
-        completeWipeOut();
+        triggerWipeOutWithMinVisible();
       }
     }
   }, [pathname]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (minVisibleTimeoutRef.current) clearTimeout(minVisibleTimeoutRef.current);
+      if (tlRef.current) tlRef.current.kill();
+      resetState(true);
+    };
+  }, []);
 
   const navigateWithWipe = (href: string) => {
     if (isTransitioningRef.current) return;
@@ -147,6 +314,10 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     }
 
     registerGSAPPlugins();
+
+    // Clean any residual props from a previous interrupted navigation
+    resetState(true);
+
     isTransitioningRef.current = true;
     targetPathRef.current = targetPath;
     const hashIndex = href.indexOf("#");
@@ -154,6 +325,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     targetHashRef.current = hash;
     wipeInDoneRef.current = false;
     routeChangedRef.current = false;
+    navStartRef.current = performance.now();
 
     // Prefetch immediately so chunks are ready during wipe animation
     prefetch(href);
@@ -161,13 +333,38 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     const overlay = overlayRef.current;
     if (!overlay) {
       router.push(href);
-      resetState();
+      resetState(true);
       return;
     }
 
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
+    if (minVisibleTimeoutRef.current) {
+      clearTimeout(minVisibleTimeoutRef.current);
+      minVisibleTimeoutRef.current = null;
+    }
+
+    // Set destination label text BEFORE the wipe-in starts
+    const label = getRouteLabel(href);
+    if (labelRef.current) {
+      labelRef.current.textContent = label;
+      gsap.set(labelRef.current, { yPercent: 100, opacity: 1 });
+    }
+
+    if (trackRef.current) {
+      gsap.set(trackRef.current, { opacity: 1 });
+    }
+    if (fillRef.current) {
+      gsap.set(fillRef.current, { scaleX: 0, transformOrigin: "left center" });
+    }
+
+    // Fast, crisp wipe in animation
+    gsap.set(overlay, {
+      display: "flex",
+      clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)",
+      opacity: 1,
+    });
 
     // Safety timeout: if route doesn't swap within 1.5s, force wipe out so UI never blocks
     timeoutRef.current = setTimeout(() => {
@@ -176,30 +373,56 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
       }
     }, 1500);
 
-    // Fast, crisp wipe in animation
-    gsap.set(overlay, {
-      display: "block",
-      clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)",
-      opacity: 1,
-    });
+    const tl = gsap.timeline();
+    tlRef.current = tl;
 
-    gsap.to(overlay, {
-      clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
-      duration: WIPE_IN,
-      ease: "power2.out",
-      onComplete: () => {
-        wipeInDoneRef.current = true;
+    // t=0: curtain wipe-in exactly as now (WIPE_IN)
+    tl.to(
+      overlay,
+      {
+        clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+        duration: WIPE_IN,
+        ease: "power2.out",
+        onComplete: () => {
+          wipeInDoneRef.current = true;
 
-        startTransition(() => {
-          router.push(href);
-        });
+          startTransition(() => {
+            router.push(href);
+          });
 
-        // If route already completed swap while curtain was wiping in
-        if (routeChangedRef.current) {
-          completeWipeOut();
-        }
+          // If route already completed swap while curtain was wiping in
+          if (routeChangedRef.current) {
+            triggerWipeOutWithMinVisible();
+          }
+        },
       },
-    });
+      0
+    );
+
+    // At t=0.06 the label <span> animates from yPercent: 100 to 0 (duration 0.32, ease "power3.out")
+    if (labelRef.current) {
+      tl.fromTo(
+        labelRef.current,
+        { yPercent: 100, opacity: 1 },
+        { yPercent: 0, opacity: 1, duration: 0.32, ease: "power3.out" },
+        0.06
+      );
+    }
+
+    // Progress line: starts at scaleX 0. While waiting for the route, animate scaleX to 0.7 over 0.6s (ease "power2.out"), then creep toward 0.9 over 2s.
+    if (fillRef.current) {
+      tl.fromTo(
+        fillRef.current,
+        { scaleX: 0, transformOrigin: "left center" },
+        { scaleX: 0.7, duration: 0.6, ease: "power2.out" },
+        0
+      );
+      tl.to(
+        fillRef.current,
+        { scaleX: 0.9, duration: 2.0, ease: "none" },
+        0.6
+      );
+    }
   };
 
   return (
@@ -208,9 +431,28 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
       <div
         ref={overlayRef}
         aria-hidden="true"
-        className="pointer-events-auto fixed inset-0 z-[10000] hidden bg-[var(--bg-canvas)] border-b border-[var(--border-subtle)]"
-        style={{ clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" }}
-      />
+        className="pointer-events-auto fixed inset-0 z-[10000] hidden flex-col items-center justify-center bg-[var(--bg-canvas)] border-b border-[var(--border-subtle)]"
+        style={{ clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)", display: "none" }}
+      >
+        <div className="overflow-hidden">
+          <span
+            ref={labelRef}
+            className="block font-sans font-semibold tracking-tight text-[var(--text-primary)] text-[clamp(2.5rem,8vw,6rem)] leading-none select-none"
+          >
+            Loading
+          </span>
+        </div>
+        <div
+          ref={trackRef}
+          className="mt-6 h-[1px] w-[120px] bg-[var(--border-subtle)] overflow-hidden"
+        >
+          <div
+            ref={fillRef}
+            className="h-full w-full bg-[var(--text-primary)] origin-left"
+            style={{ transform: "scaleX(0)" }}
+          />
+        </div>
+      </div>
       {children}
     </TransitionContext.Provider>
   );

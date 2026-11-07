@@ -178,7 +178,7 @@ export function AboutWorkbench() {
 
   return (
     <section aria-labelledby="workbench-heading" className="w-full space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-5">
+      <div data-reveal data-reveal-order="6" className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-5">
         <div className="space-y-1">
           <h2 id="workbench-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
             Three backends, simulated
