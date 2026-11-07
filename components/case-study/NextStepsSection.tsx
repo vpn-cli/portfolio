@@ -24,6 +24,8 @@ export function NextStepsSection({
 }: NextStepsSectionProps) {
   const [showDetails, setShowDetails] = useState(false);
 
+  const isDemoOnGithub = Boolean(demoUrl && demoUrl.includes("github.com"));
+
   return (
     <div className="w-full space-y-4">
       {/* ━━━ COMPACT NEXT STEPS CARD ━━━ */}
@@ -47,8 +49,12 @@ export function NextStepsSection({
                 rel="noopener noreferrer"
                 className="min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-sm transition-opacity shadow-sm active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
               >
-                <ExternalLink className="w-4 h-4" aria-hidden="true" />
-                <span>Launch live demo</span>
+                {isDemoOnGithub ? (
+                  <SiGithub className="w-4 h-4" aria-hidden="true" />
+                ) : (
+                  <ExternalLink className="w-4 h-4" aria-hidden="true" />
+                )}
+                <span>{isDemoOnGithub ? "View architecture" : "Launch live demo"}</span>
                 <ArrowUpRight className="w-3.5 h-3.5 opacity-80" aria-hidden="true" />
               </a>
             )}

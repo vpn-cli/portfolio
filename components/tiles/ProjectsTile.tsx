@@ -106,12 +106,12 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
   const activeProject = projectsList[activeIdx] || projectsList[0];
   const previewedProjectsRef = useRef<Set<string>>(new Set());
 
-  useEffect(() => {
-    if (activeProject && !previewedProjectsRef.current.has(activeProject.slug)) {
-      previewedProjectsRef.current.add(activeProject.slug);
-      trackEvent("project_preview", { project: activeProject.slug });
+  const recordUserProjectPreview = (slug: string) => {
+    if (!previewedProjectsRef.current.has(slug)) {
+      previewedProjectsRef.current.add(slug);
+      trackEvent("project_preview", { project: slug });
     }
-  }, [activeProject]);
+  };
 
   return (
     <BentoTile className={className} cursorText="View work" enableTilt={false} noPadding>
@@ -139,10 +139,17 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
 
         {/* Preview area (~60% of card height): fills area edge to edge with card's inner radius */}
         <div
-          onMouseEnter={() => router.prefetch(`/work/${activeProject.slug}`)}
-          onFocus={() => router.prefetch(`/work/${activeProject.slug}`)}
+          onMouseEnter={() => {
+            recordUserProjectPreview(activeProject.slug);
+            router.prefetch(`/work/${activeProject.slug}`);
+          }}
+          onFocus={() => {
+            recordUserProjectPreview(activeProject.slug);
+            router.prefetch(`/work/${activeProject.slug}`);
+          }}
           data-ph-capture-attribute-location="selected_work"
           onClick={() => {
+            recordUserProjectPreview(activeProject.slug);
             navigateWithWipe(`/work/${activeProject.slug}`);
             queueMicrotask(() => {
               trackEvent("nav_click", {
@@ -156,6 +163,7 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
+              recordUserProjectPreview(activeProject.slug);
               navigateWithWipe(`/work/${activeProject.slug}`);
               queueMicrotask(() => {
                 trackEvent("nav_click", {
@@ -207,20 +215,24 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
         <div className="my-2 sm:my-2.5 flex flex-col justify-between gap-1 sm:gap-1.5 shrink-0">
           {projectsList.map((project, idx) => {
             const isActive = idx === activeIdx;
+            const isDemoOnGithub = project.liveUrl.includes("github.com");
 
             return (
               <div
                 key={project.id}
                 onMouseEnter={() => {
                   setActiveIdx(idx);
+                  recordUserProjectPreview(project.slug);
                   router.prefetch(`/work/${project.slug}`);
                 }}
                 onFocus={() => {
                   setActiveIdx(idx);
+                  recordUserProjectPreview(project.slug);
                   router.prefetch(`/work/${project.slug}`);
                 }}
                 data-ph-capture-attribute-location="selected_work"
                 onClick={() => {
+                  recordUserProjectPreview(project.slug);
                   navigateWithWipe(`/work/${project.slug}`);
                   queueMicrotask(() => {
                     trackEvent("nav_click", {
@@ -234,6 +246,7 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
+                    recordUserProjectPreview(project.slug);
                     navigateWithWipe(`/work/${project.slug}`);
                     queueMicrotask(() => {
                       trackEvent("nav_click", {
@@ -268,7 +281,7 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                   </p>
                 </div>
 
-                {/* Right: Direct links (GitHub & ArrowUpRight) - hidden by default, fade in on row hover/focus, always visible on touch */}
+                {/* Right: Direct links (GitHub & ArrowUpRight/SiGithub) - hidden by default, fade in on row hover/focus, always visible on touch */}
                 <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover/row:opacity-100 group-focus-visible/row:opacity-100 [@media(pointer:coarse)]:opacity-100 transition-opacity duration-200">
                   <a
                     href={project.repoUrl}
@@ -279,6 +292,7 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                     data-ph-capture-attribute-location="selected_work"
                     onClick={(e) => {
                       e.stopPropagation();
+                      recordUserProjectPreview(project.slug);
                       trackEvent("outbound_click", {
                         destination: getOutboundDestination(project.repoUrl, "project_repo"),
                         url: project.repoUrl,
@@ -294,21 +308,27 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                     href={project.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    title={`Open ${project.title}`}
-                    aria-label={`Open ${project.title}`}
+                    title={isDemoOnGithub ? `View architecture (${project.title})` : `Live demo (${project.title})`}
+                    aria-label={isDemoOnGithub ? `View architecture (${project.title})` : `Live demo (${project.title})`}
                     data-ph-capture-attribute-location="selected_work"
                     onClick={(e) => {
                       e.stopPropagation();
+                      recordUserProjectPreview(project.slug);
                       trackEvent("outbound_click", {
                         destination: getOutboundDestination(project.liveUrl, "project_live"),
                         url: project.liveUrl,
                         location: "selected_work",
+                        label: isDemoOnGithub ? "View architecture" : "Live demo",
                       });
                     }}
                     onKeyDown={(e) => e.stopPropagation()}
                     className="w-7 h-7 flex items-center justify-center rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-tile)] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400"
                   >
-                    <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5" />
+                    {isDemoOnGithub ? (
+                      <SiGithub className="w-4 h-4" />
+                    ) : (
+                      <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5" />
+                    )}
                   </a>
                 </div>
 

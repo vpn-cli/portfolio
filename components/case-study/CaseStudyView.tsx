@@ -107,6 +107,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
 
   const liveUrl = project.links.demo || project.liveUrl;
   const githubUrl = project.links.repo || project.githubUrl;
+  const isDemoOnGithub = Boolean(liveUrl && liveUrl.includes("github.com"));
 
   return (
     <main className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-primary)] px-4 sm:px-6 lg:px-8 py-6 sm:py-10 flex flex-col items-center">
@@ -307,12 +308,17 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                           destination: getOutboundDestination(liveUrl, "project_live"),
                           url: liveUrl,
                           location: "case_study_hero",
+                          label: isDemoOnGithub ? "View architecture" : "Live demo",
                         })
                       }
                       className="min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-sm transition-opacity shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
                     >
-                      <ExternalLink className="w-4 h-4" aria-hidden="true" />
-                      <span>Live demo</span>
+                      {isDemoOnGithub ? (
+                        <SiGithub className="w-4 h-4" aria-hidden="true" />
+                      ) : (
+                        <ExternalLink className="w-4 h-4" aria-hidden="true" />
+                      )}
+                      <span>{isDemoOnGithub ? "View architecture" : "Live demo"}</span>
                       <ArrowUpRight className="w-3.5 h-3.5 opacity-80" aria-hidden="true" />
                     </a>
                   )}
