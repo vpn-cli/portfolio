@@ -173,7 +173,7 @@ export function AboutGallery() {
               className="w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] rounded-xl cursor-pointer block"
               aria-label={`Open lightbox for ${art.title}, ${art.medium} (${art.year})`}
             >
-              <div className="overflow-hidden rounded-xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] transition-colors duration-200 group-hover:border-[var(--text-secondary)]">
+              <div className="overflow-hidden rounded-xl bg-[var(--surface-tile)] transition-transform duration-200 group-hover:scale-[1.01]">
                 <Image
                   src={`/art/${art.file}`}
                   alt={art.alt}
@@ -184,7 +184,7 @@ export function AboutGallery() {
                   priority={index < 3}
                   loading={index < 3 ? "eager" : "lazy"}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="w-full h-auto object-contain rounded-xl block transition-transform duration-300 group-hover:scale-[1.01]"
+                  className="w-full h-auto object-contain rounded-xl block"
                 />
               </div>
               <figcaption className="pt-2.5 pb-1 space-y-0.5">
@@ -202,11 +202,11 @@ export function AboutGallery() {
 
       {/* Campus design roles and Competitions */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-        <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-3">
-          <h3 className="text-xs sm:text-sm font-semibold text-[var(--text-tertiary)]">
+        <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface-tile)] space-y-3">
+          <h3 className="text-sm font-semibold text-[var(--text-tertiary)]">
             Campus design roles
           </h3>
-          <ul className="space-y-4 text-xs sm:text-sm" role="list">
+          <ul className="space-y-4 text-sm" role="list">
             {leadershipRoles.map((lead) => (
               <li
                 key={lead.org}
@@ -216,14 +216,14 @@ export function AboutGallery() {
                   <span className="font-bold text-[var(--text-primary)]">
                     {lead.role}
                   </span>
-                  <span className="text-xs text-[var(--text-tertiary)] tabular-nums shrink-0">
+                  <span className="text-sm text-[var(--text-tertiary)] tabular-nums shrink-0">
                     {lead.period}
                   </span>
                 </div>
-                <p className="text-xs sm:text-sm text-[var(--text-secondary)]">
+                <p className="text-sm text-[var(--text-secondary)]">
                   {lead.org}
                 </p>
-                <p className="text-xs text-[var(--text-tertiary)] leading-normal">
+                <p className="text-xs sm:text-sm text-[var(--text-tertiary)] leading-normal">
                   {lead.scope}
                 </p>
               </li>
@@ -231,15 +231,15 @@ export function AboutGallery() {
           </ul>
         </div>
 
-        <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-3 flex flex-col justify-between">
+        <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface-tile)] space-y-3 flex flex-col justify-between">
           <div className="space-y-3">
             <div className="flex items-center gap-1.5">
               <Award className="w-4 h-4 text-amber-700 dark:text-amber-400" aria-hidden="true" />
-              <h3 className="text-xs sm:text-sm font-semibold text-[var(--text-tertiary)]">
+              <h3 className="text-sm font-semibold text-[var(--text-tertiary)]">
                 Competitions
               </h3>
             </div>
-            <ul className="space-y-4 text-xs sm:text-sm" role="list">
+            <ul className="space-y-4 text-sm" role="list">
               {awards.map((award) => (
                 <li
                   key={award.year}
@@ -250,14 +250,14 @@ export function AboutGallery() {
                       <span className="w-2 h-2 rounded-full bg-amber-600 dark:bg-amber-400" />
                       {award.title}
                     </span>
-                    <span className="text-xs text-[var(--text-tertiary)] tabular-nums">
+                    <span className="text-sm text-[var(--text-tertiary)] tabular-nums">
                       {award.year}
                     </span>
                   </div>
-                  <p className="text-xs text-[var(--text-secondary)]">
+                  <p className="text-sm text-[var(--text-secondary)]">
                     {award.event}
                   </p>
-                  <span className="inline-block px-2 py-0.5 rounded text-xs bg-amber-500/15 text-amber-900 dark:text-amber-300 border border-amber-500/30 font-medium">
+                  <span className="inline-block px-2 py-0.5 rounded text-xs bg-amber-500/15 text-amber-900 dark:text-amber-300 font-medium">
                     {award.badge}
                   </span>
                 </li>
@@ -278,6 +278,7 @@ export function AboutGallery() {
         >
           <div
             ref={dialogRef}
+            data-ui="lightbox-dialog"
             className="relative w-full max-w-4xl max-h-[92vh] flex flex-col bg-[var(--surface-tile)] border border-[var(--border-hover)] rounded-2xl sm:rounded-3xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
