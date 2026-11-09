@@ -9,10 +9,12 @@ import { AboutPrinciples } from "@/components/about/AboutPrinciples";
 import { AboutGallery } from "@/components/about/AboutGallery";
 import { AboutCurrentFocus } from "@/components/about/AboutCurrentFocus";
 import { AboutContact } from "@/components/about/AboutContact";
+import { AboutMotion } from "@/components/about/AboutMotion";
 
 export default function AboutPage() {
   return (
     <main className="min-h-dvh bg-[var(--bg-canvas)] text-[var(--text-primary)] p-3 sm:p-4 lg:p-6 flex flex-col items-center">
+      <AboutMotion />
       <div className="w-full max-w-[1280px] min-h-[calc(100dvh-48px)] rounded-[32px] sm:rounded-[36px] bg-[var(--bg-canvas-subtle)] border border-[var(--border-subtle)] p-5 sm:p-8 lg:p-12 flex flex-col items-center">
         <div data-reveal data-reveal-order="1" className="w-full flex justify-between items-center mb-8 sm:mb-12">
           <TransitionLink

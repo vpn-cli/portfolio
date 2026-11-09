@@ -1,6 +1,6 @@
 {
  "url": "http://localhost:3000/about",
- "at": "2026-11-09T16:37:58.921Z",
+ "at": "2026-11-09T16:45:46.876Z",
  "allow": [],
  "viewports": [
   {
@@ -9,20 +9,20 @@
    "load": "load",
    "screens": 8,
    "filled": [
+    0.9,
+    0.9,
     0.91,
-    0.92,
-    0.92,
-    0.92,
-    0.92,
-    0.92,
-    0.92,
-    0.92
+    0.91,
+    0.91,
+    0.91,
+    0.91,
+    0.91
    ],
    "motion": {
-    "elements": 2,
-    "css": 0,
+    "elements": 9,
+    "css": 8,
     "transitions": 0,
-    "scripted": 2,
+    "scripted": 1,
     "videos": 0,
     "playingVideos": 0
    },
@@ -32,8 +32,8 @@
      "h": 900
     },
     "page": {
-     "height": 6206,
-     "screens": 6.9,
+     "height": 6309,
+     "screens": 7,
      "words": 828,
      "img": 6,
      "video": 0,
@@ -42,7 +42,7 @@
      "sections": 8,
      "horizontalOverflow": 0,
      "overflowCulprits": [],
-     "uiFragments": 2,
+     "uiFragments": 5,
      "uiAbuse": false,
      "realPictures": 4,
      "videoCount": 0,
@@ -126,7 +126,7 @@
       "align": "left",
       "position": "center",
       "widthRatio": 0.66,
-      "top": 5470,
+      "top": 5572,
       "tag": "h2",
       "kind": "heading"
      }
@@ -160,7 +160,6 @@
      ],
      "familyCount": 3,
      "sizes": [
-      11,
       12,
       14,
       16,
@@ -169,7 +168,7 @@
       30,
       60
      ],
-     "sizeCount": 8,
+     "sizeCount": 7,
      "notLoaded": [],
      "body": {
       "font": "Inter",
@@ -197,7 +196,7 @@
      "microSamples": [],
      "upperShare": 0,
      "centerShare": 0.03,
-     "smallText": 36
+     "smallText": 16
     },
     "eyebrows": [],
     "numbered": [],
@@ -230,7 +229,7 @@
       },
       {
        "color": "#ffffff",
-       "top": 3129,
+       "top": 3234,
        "hsl": {
         "h": 0,
         "s": 0,
@@ -286,11 +285,10 @@
      ]
     },
     "surfaces": {
-     "shadowStatic": 2,
+     "shadowStatic": 1,
      "shadowOverlay": 1,
      "shadowSamples": [
-      "button.h-7.px-2.5 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
-      "button.h-7.px-2.5 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+      "button.p-3.rounded-xl → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
      ],
      "gradients": 0,
      "scrims": 0,
@@ -298,7 +296,7 @@
      "gradientText": 0,
      "hairlines": 0,
      "hairlineSamples": [],
-     "outlinedBoxes": 22,
+     "outlinedBoxes": 1,
      "dashed": 0,
      "blurred": 0,
      "roundedBoxes": 25,
@@ -320,17 +318,17 @@
      "w": 1440,
      "h": 900
     },
-    "pageH": 6206,
+    "pageH": 6309,
     "margins": {
      "left": 208,
-     "right": 209
+     "right": 208
     },
     "sections": [
      {
       "sel": "section.w-full.space-y-8",
       "tag": "section",
       "top": 161,
-      "height": 753,
+      "height": 854,
       "words": 133,
       "media": 1,
       "middle": 49,
@@ -352,7 +350,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 1042,
+      "top": 1143,
       "height": 492,
       "words": 93,
       "media": 0,
@@ -375,20 +373,20 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 1662,
+      "top": 1763,
       "height": 606,
       "words": 130,
       "media": 0,
-      "middle": 182,
+      "middle": 184,
       "heading": {
        "text": "Experience",
        "size": 24,
        "tag": "h2"
       },
       "left": 208,
-      "right": 237,
+      "right": 236,
       "textLeft": 208,
-      "textRight": 237,
+      "textRight": 236,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -398,8 +396,8 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 2396,
-      "height": 517,
+      "top": 2497,
+      "height": 521,
       "words": 116,
       "media": 0,
       "middle": 0,
@@ -411,7 +409,7 @@
       "left": 208,
       "right": 208,
       "textLeft": 208,
-      "textRight": 242,
+      "textRight": 241,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -421,11 +419,11 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 3041,
-      "height": 608,
+      "top": 3146,
+      "height": 606,
       "words": 170,
       "media": 0,
-      "middle": 40,
+      "middle": 41,
       "heading": {
        "text": "How I work",
        "size": 24,
@@ -444,7 +442,7 @@
      {
       "sel": "section.w-full.space-y-8",
       "tag": "section",
-      "top": 3777,
+      "top": 3880,
       "height": 700,
       "words": 24,
       "media": 3,
@@ -467,7 +465,7 @@
      {
       "sel": "section.w-full.space-y-4",
       "tag": "section",
-      "top": 4605,
+      "top": 4708,
       "height": 700,
       "words": 36,
       "media": 0,
@@ -478,9 +476,9 @@
        "tag": "h2"
       },
       "left": 208,
-      "right": 270,
+      "right": 271,
       "textLeft": 208,
-      "textRight": 270,
+      "textRight": 271,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -490,20 +488,20 @@
      {
       "sel": "section.w-full",
       "tag": "section",
-      "top": 5433,
+      "top": 5536,
       "height": 700,
       "words": 45,
       "media": 0,
-      "middle": 44,
+      "middle": 45,
       "heading": {
        "text": "Get in touch",
        "size": 30,
        "tag": "h2"
       },
-      "left": 245,
-      "right": 298,
-      "textLeft": 245,
-      "textRight": 298,
+      "left": 244,
+      "right": 296,
+      "textLeft": 244,
+      "textRight": 296,
       "fullBleed": false,
       "footer": true,
       "hero": false,
@@ -513,8 +511,8 @@
     ],
     "gaps": [
      {
-      "top": 4976,
-      "height": 492
+      "top": 5128,
+      "height": 440
      }
     ],
     "h1s": [
@@ -532,7 +530,7 @@
       "n": 10
      },
      {
-      "x": 233,
+      "x": 232,
       "n": 8
      },
      {
@@ -544,7 +542,7 @@
       "n": 3
      },
      {
-      "x": 245,
+      "x": 244,
       "n": 2
      },
      {
@@ -552,19 +550,23 @@
       "n": 2
      },
      {
-      "x": 777,
+      "x": 776,
       "n": 2
      },
      {
-      "x": 257,
+      "x": 256,
       "n": 1
      },
      {
-      "x": 753,
+      "x": 752,
+      "n": 1
+     },
+     {
+      "x": 844,
       "n": 1
      }
     ],
-    "leftBlocks": 32,
+    "leftBlocks": 33,
     "bodySize": 16,
     "stage": false,
     "explains": true,
@@ -572,9 +574,9 @@
     "voidShare": 0.15,
     "voidBox": {
      "x": 360,
-     "y": 540,
-     "w": 660,
-     "h": 300
+     "y": 720,
+     "w": 1080,
+     "h": 180
     }
    },
    "app": null,
@@ -586,17 +588,17 @@
    "load": "load",
    "screens": 7,
    "filled": [
-    0.94,
+    0.9,
+    0.96,
+    0.96,
     0.93,
-    0.96,
-    0.96,
-    0.96,
+    0.93,
     0.96,
     0.96
    ],
    "motion": {
-    "elements": 0,
-    "css": 0,
+    "elements": 8,
+    "css": 8,
     "transitions": 0,
     "scripted": 0,
     "videos": 0,
@@ -608,8 +610,8 @@
      "h": 1024
     },
     "page": {
-     "height": 6835,
-     "screens": 6.7,
+     "height": 6978,
+     "screens": 6.8,
      "words": 659,
      "img": 6,
      "video": 0,
@@ -618,7 +620,7 @@
      "sections": 8,
      "horizontalOverflow": 0,
      "overflowCulprits": [],
-     "uiFragments": 2,
+     "uiFragments": 5,
      "uiAbuse": false,
      "realPictures": 4,
      "videoCount": 0,
@@ -702,7 +704,7 @@
       "align": "left",
       "position": "center",
       "widthRatio": 0.78,
-      "top": 6123,
+      "top": 6265,
       "tag": "h2",
       "kind": "heading"
      }
@@ -736,7 +738,6 @@
      ],
      "familyCount": 3,
      "sizes": [
-      11,
       12,
       14,
       16,
@@ -745,7 +746,7 @@
       30,
       48
      ],
-     "sizeCount": 8,
+     "sizeCount": 7,
      "notLoaded": [],
      "body": {
       "font": "Inter",
@@ -773,7 +774,7 @@
      "microSamples": [],
      "upperShare": 0,
      "centerShare": 0.03,
-     "smallText": 36
+     "smallText": 16
     },
     "eyebrows": [],
     "numbered": [],
@@ -806,7 +807,7 @@
       },
       {
        "color": "#ffffff",
-       "top": 704,
+       "top": 744,
        "hsl": {
         "h": 0,
         "s": 0,
@@ -862,11 +863,10 @@
      ]
     },
     "surfaces": {
-     "shadowStatic": 2,
+     "shadowStatic": 1,
      "shadowOverlay": 1,
      "shadowSamples": [
-      "button.h-7.px-2.5 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
-      "button.h-7.px-2.5 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+      "button.p-3.rounded-xl → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
      ],
      "gradients": 0,
      "scrims": 0,
@@ -874,7 +874,7 @@
      "gradientText": 0,
      "hairlines": 0,
      "hairlineSamples": [],
-     "outlinedBoxes": 22,
+     "outlinedBoxes": 1,
      "dashed": 0,
      "blurred": 0,
      "roundedBoxes": 25,
@@ -896,7 +896,7 @@
      "w": 768,
      "h": 1024
     },
-    "pageH": 6835,
+    "pageH": 6978,
     "margins": {
      "left": 49,
      "right": 49
@@ -906,7 +906,7 @@
       "sel": "section.w-full.space-y-8",
       "tag": "section",
       "top": 137,
-      "height": 1084,
+      "height": 1185,
       "words": 133,
       "media": 1,
       "middle": 0,
@@ -928,7 +928,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 1333,
+      "top": 1434,
       "height": 512,
       "words": 93,
       "media": 0,
@@ -951,8 +951,8 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 1957,
-      "height": 706,
+      "top": 2058,
+      "height": 744,
       "words": 130,
       "media": 0,
       "middle": 0,
@@ -962,9 +962,9 @@
        "tag": "h2"
       },
       "left": 49,
-      "right": 78,
+      "right": 77,
       "textLeft": 49,
-      "textRight": 78,
+      "textRight": 77,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -974,8 +974,8 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 2775,
-      "height": 763,
+      "top": 2914,
+      "height": 767,
       "words": 116,
       "media": 0,
       "middle": 0,
@@ -987,7 +987,7 @@
       "left": 49,
       "right": 49,
       "textLeft": 49,
-      "textRight": 106,
+      "textRight": 107,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -997,7 +997,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 3650,
+      "top": 3793,
       "height": 700,
       "words": 93,
       "media": 0,
@@ -1008,9 +1008,9 @@
        "tag": "h2"
       },
       "left": 49,
-      "right": 89,
+      "right": 88,
       "textLeft": 49,
-      "textRight": 89,
+      "textRight": 88,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -1020,7 +1020,7 @@
      {
       "sel": "section.w-full.space-y-8",
       "tag": "section",
-      "top": 4462,
+      "top": 4605,
       "height": 700,
       "words": 25,
       "media": 3,
@@ -1043,7 +1043,7 @@
      {
       "sel": "section.w-full.space-y-4",
       "tag": "section",
-      "top": 5274,
+      "top": 5417,
       "height": 700,
       "words": 36,
       "media": 0,
@@ -1054,9 +1054,9 @@
        "tag": "h2"
       },
       "left": 49,
-      "right": 97,
+      "right": 98,
       "textLeft": 49,
-      "textRight": 97,
+      "textRight": 98,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -1066,7 +1066,7 @@
      {
       "sel": "section.w-full",
       "tag": "section",
-      "top": 6086,
+      "top": 6229,
       "height": 700,
       "words": 45,
       "media": 0,
@@ -1076,10 +1076,10 @@
        "size": 30,
        "tag": "h2"
       },
-      "left": 86,
-      "right": 100,
-      "textLeft": 86,
-      "textRight": 100,
+      "left": 85,
+      "right": 101,
+      "textLeft": 85,
+      "textRight": 101,
       "fullBleed": false,
       "footer": true,
       "hero": false,
@@ -1099,35 +1099,35 @@
     "edgeText": [],
     "edges": [
      {
-      "x": 74,
-      "n": 14
+      "x": 69,
+      "n": 13
      },
      {
       "x": 49,
       "n": 10
      },
      {
-      "x": 86,
-      "n": 2
+      "x": 81,
+      "n": 4
      },
      {
       "x": 217,
       "n": 2
      },
      {
-      "x": 441,
+      "x": 440,
       "n": 2
      },
      {
-      "x": 98,
+      "x": 97,
       "n": 1
      },
      {
-      "x": 417,
+      "x": 416,
       "n": 1
      }
     ],
-    "leftBlocks": 32,
+    "leftBlocks": 33,
     "bodySize": 16,
     "stage": false,
     "explains": true,
@@ -1144,7 +1144,7 @@
    "load": "load",
    "screens": 9,
    "filled": [
-    0.85,
+    0.86,
     0.92,
     0.92,
     0.92,
@@ -1155,8 +1155,8 @@
     0.92
    ],
    "motion": {
-    "elements": 1,
-    "css": 0,
+    "elements": 7,
+    "css": 6,
     "transitions": 0,
     "scripted": 1,
     "videos": 0,
@@ -1168,8 +1168,8 @@
      "h": 844
     },
     "page": {
-     "height": 7253,
-     "screens": 8.6,
+     "height": 7447,
+     "screens": 8.8,
      "words": 365,
      "img": 6,
      "video": 0,
@@ -1178,7 +1178,7 @@
      "sections": 8,
      "horizontalOverflow": 0,
      "overflowCulprits": [],
-     "uiFragments": 2,
+     "uiFragments": 5,
      "uiAbuse": false,
      "realPictures": 3,
      "videoCount": 0,
@@ -1260,8 +1260,8 @@
       "mono": false,
       "align": "left",
       "position": "center",
-      "widthRatio": 0.68,
-      "top": 6549,
+      "widthRatio": 0.69,
+      "top": 6742,
       "tag": "h2",
       "kind": "heading"
      }
@@ -1295,7 +1295,6 @@
      ],
      "familyCount": 3,
      "sizes": [
-      11,
       12,
       14,
       16,
@@ -1303,17 +1302,17 @@
       24,
       36
      ],
-     "sizeCount": 7,
+     "sizeCount": 6,
      "notLoaded": [],
      "body": {
       "font": "Inter",
-      "size": 14,
-      "leading": 1.63,
-      "weight": 400,
+      "size": 16,
+      "leading": 1.5,
+      "weight": 500,
       "tracking": 0,
       "contrast": 7.8
      },
-     "measureChars": 46,
+     "measureChars": 41,
      "max": {
       "size": 36,
       "vw": 9.2,
@@ -1331,7 +1330,7 @@
      "microSamples": [],
      "upperShare": 0,
      "centerShare": 0.03,
-     "smallText": 72
+     "smallText": 36
     },
     "eyebrows": [],
     "numbered": [],
@@ -1364,7 +1363,7 @@
       },
       {
        "color": "#ffffff",
-       "top": 921,
+       "top": 982,
        "hsl": {
         "h": 0,
         "s": 0,
@@ -1409,7 +1408,7 @@
      "count": 18,
      "inHero": 2,
      "radius": 12,
-     "height": 62,
+     "height": 68,
      "withShadow": 0,
      "withGradient": 0,
      "mono": 0,
@@ -1420,11 +1419,10 @@
      ]
     },
     "surfaces": {
-     "shadowStatic": 2,
+     "shadowStatic": 1,
      "shadowOverlay": 1,
      "shadowSamples": [
-      "button.h-7.px-2.5 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
-      "button.h-7.px-2.5 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+      "button.p-3.rounded-xl → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
      ],
      "gradients": 0,
      "scrims": 0,
@@ -1432,7 +1430,7 @@
      "gradientText": 0,
      "hairlines": 0,
      "hairlineSamples": [],
-     "outlinedBoxes": 23,
+     "outlinedBoxes": 1,
      "dashed": 0,
      "blurred": 0,
      "roundedBoxes": 26,
@@ -1454,7 +1452,7 @@
      "w": 390,
      "h": 844
     },
-    "pageH": 7253,
+    "pageH": 7447,
     "margins": {
      "left": 33,
      "right": 33
@@ -1464,7 +1462,7 @@
       "sel": "div.flex.flex-col",
       "tag": "div",
       "top": 105,
-      "height": 414,
+      "height": 426,
       "words": 35,
       "media": 0,
       "middle": 0,
@@ -1486,14 +1484,14 @@
      {
       "sel": "div.grid.grid-cols-1",
       "tag": "div",
-      "top": 551,
-      "height": 1067,
+      "top": 563,
+      "height": 1177,
       "words": 115,
       "media": 0,
       "middle": 0,
       "heading": {
        "text": "What I work with",
-       "size": 12,
+       "size": 14,
        "tag": "h2"
       },
       "left": 33,
@@ -1509,7 +1507,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 1698,
+      "top": 1820,
       "height": 602,
       "words": 86,
       "media": 0,
@@ -1532,8 +1530,8 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 2380,
-      "height": 940,
+      "top": 2502,
+      "height": 1012,
       "words": 130,
       "media": 0,
       "middle": 0,
@@ -1543,9 +1541,9 @@
        "tag": "h2"
       },
       "left": 33,
-      "right": 75,
+      "right": 57,
       "textLeft": 33,
-      "textRight": 75,
+      "textRight": 57,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -1555,9 +1553,9 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 3400,
+      "top": 3594,
       "height": 700,
-      "words": 79,
+      "words": 76,
       "media": 0,
       "middle": 0,
       "heading": {
@@ -1568,7 +1566,7 @@
       "left": 33,
       "right": 33,
       "textLeft": 33,
-      "textRight": 47,
+      "textRight": 45,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -1578,9 +1576,9 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 4180,
+      "top": 4374,
       "height": 700,
-      "words": 93,
+      "words": 88,
       "media": 0,
       "middle": 0,
       "heading": {
@@ -1589,9 +1587,9 @@
        "tag": "h2"
       },
       "left": 33,
-      "right": 59,
+      "right": 62,
       "textLeft": 33,
-      "textRight": 59,
+      "textRight": 62,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -1601,7 +1599,7 @@
      {
       "sel": "section.w-full.space-y-8",
       "tag": "section",
-      "top": 4960,
+      "top": 5154,
       "height": 700,
       "words": 14,
       "media": 1,
@@ -1624,7 +1622,7 @@
      {
       "sel": "section.w-full.space-y-4",
       "tag": "section",
-      "top": 5740,
+      "top": 5934,
       "height": 700,
       "words": 36,
       "media": 0,
@@ -1635,9 +1633,9 @@
        "tag": "h2"
       },
       "left": 33,
-      "right": 78,
+      "right": 76,
       "textLeft": 33,
-      "textRight": 78,
+      "textRight": 76,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -1647,7 +1645,7 @@
      {
       "sel": "section.w-full",
       "tag": "section",
-      "top": 6520,
+      "top": 6714,
       "height": 700,
       "words": 45,
       "media": 0,
@@ -1657,10 +1655,10 @@
        "size": 24,
        "tag": "h2"
       },
-      "left": 62,
-      "right": 73,
-      "textLeft": 62,
-      "textRight": 73,
+      "left": 61,
+      "right": 61,
+      "textLeft": 61,
+      "textRight": 61,
       "fullBleed": false,
       "footer": true,
       "hero": false,
@@ -1680,20 +1678,20 @@
     "edgeText": [],
     "edges": [
      {
-      "x": 54,
-      "n": 14
+      "x": 53,
+      "n": 16
      },
      {
       "x": 33,
       "n": 10
      },
      {
-      "x": 78,
-      "n": 2
+      "x": 75,
+      "n": 3
      }
     ],
-    "leftBlocks": 26,
-    "bodySize": 14,
+    "leftBlocks": 29,
+    "bodySize": 16,
     "stage": false,
     "explains": true,
     "slivers": [],
@@ -1709,7 +1707,7 @@
    "level": "FAIL",
    "id": "shadow",
    "width": 1440,
-   "message": "2 box-shadow(s) on elements at rest: button.h-7.px-2.5 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0 | button.h-7.px-2.5 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+   "message": "1 box-shadow(s) on elements at rest: button.p-3.rounded-xl → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
    "fix": "Remove. Separate surfaces with a tone step or space. Shadows are for things that really float (menus, dialogs, sticky bars).",
    "alsoAt": [
     768,
@@ -1717,11 +1715,11 @@
    ]
   },
   {
-   "level": "FAIL",
+   "level": "WARN",
    "id": "outlined-box",
    "width": 1440,
-   "message": "22 boxes drawn with a 1px outline.",
-   "fix": "Define a surface by its fill (one tone step from the page) or leave the content unboxed.",
+   "message": "1 box(es) drawn with a 1px outline.",
+   "fix": "Prefer a filled surface or no box.",
    "alsoAt": [
     768,
     390
@@ -1749,7 +1747,7 @@
    "level": "FAIL",
    "id": "small-text",
    "width": 1440,
-   "message": "36 text blocks under 13px.",
+   "message": "16 text blocks under 13px.",
    "fix": "Nothing meant to be read goes below 13px.",
    "alsoAt": [
     768,
@@ -1760,22 +1758,15 @@
    "level": "WARN",
    "id": "blank-gap",
    "width": 1440,
-   "message": "A 492px stretch at 4976px holds nothing.",
+   "message": "A 440px stretch at 5128px holds nothing.",
    "fix": "Check that it is a deliberate rest (once per page at most); otherwise close it to the normal section gap."
   },
   {
-   "level": "FAIL",
+   "level": "WARN",
    "id": "still-page",
    "width": 1440,
-   "message": "Only 2 element(s) moved while the page loaded and scrolled.",
-   "fix": "Build the motion layer (SKILL.md step 9, references/motion.md): the signature move, an entrance for the parts of every section, feedback on every control, and one moving picture. Transform and opacity only, with a reduced-motion fallback."
-  },
-  {
-   "level": "FAIL",
-   "id": "body-size",
-   "width": 390,
-   "message": "Body text is 14px (the size most of the running text is set in).",
-   "fix": "Body copy 16–20px. Map small sizes from blueprints onto your body step."
+   "message": "Little motion: 9 element(s) moved while the page loaded and scrolled.",
+   "fix": "Give every section an entrance for its parts (not one fade of the whole block) and add one moving picture: a looping clip or a slow move on a photograph."
   }
  ],
  "images": [
