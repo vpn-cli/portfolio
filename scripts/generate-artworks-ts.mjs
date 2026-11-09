@@ -38,6 +38,27 @@ const metadata = {
     note: 'Event poster designed for IIT Kharagpur hall day party.',
     alt: 'Campus hall day party poster featuring a laughing Joker face with red brushstroke text reading Why so serious.',
   },
+  'kobeni-chainsaw-man': {
+    title: 'Kobeni',
+    medium: 'Graphite on Paper',
+    year: '2024',
+    note: 'Sketchbook portrait study of Kobeni from Chainsaw Man.',
+    alt: 'Detailed pencil sketchbook drawing of Kobeni from Chainsaw Man with side ponytail and hair clips.',
+  },
+  'tengen-uzui': {
+    title: 'Tengen Uzui',
+    medium: 'Graphite on Paper',
+    year: '2024',
+    note: 'Pencil portrait study of the Sound Hashira from Demon Slayer.',
+    alt: 'Pencil portrait sketch of Tengen Uzui from Demon Slayer wearing jeweled headpiece and eye marking.',
+  },
+  'wings-angel': {
+    title: 'Wings',
+    medium: 'Digital Illustration',
+    year: '2024',
+    note: 'Character illustration of a winged figure reaching toward iridescent light.',
+    alt: 'Anime-style digital illustration of an angelic figure with blue hair and white wings reaching forward into prism light.',
+  },
 };
 
 const artworks = summary.map((item) => {
@@ -73,5 +94,4 @@ export const artworks: Artwork[] = ${JSON.stringify(artworks, null, 2)};
 `;
 
 fs.writeFileSync('content/artworks.ts', fileContent, 'utf8');
-console.log('content/artworks.ts generated successfully');
-
+console.log('content/artworks.ts generated successfully with', artworks.length, 'artworks');

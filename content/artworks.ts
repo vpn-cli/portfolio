@@ -71,5 +71,41 @@ export const artworks: Artwork[] = [
     "height": 2000,
     "alt": "Campus hall day party poster featuring a laughing Joker face with red brushstroke text reading Why so serious.",
     "blurDataURL": "data:image/webp;base64,UklGRp4AAABXRUJQVlA4IJIAAAAQBACdASoQABUAPzmGuVOvKSWisAgB4CcJbACdMoR3ACZUosl/WAoMAAD+g78P5yb4RdmiDn7W69HyQ+3JaII95tiliPmY+5V0sMo1Aq34RVxJA2xh6N8BTu2Boh4YW225bbUlz36q0c3L6/q2q7yoWXC1DotWsNiWqTeSzcJlZXhUdOp4S8mpcyqNpZB36gAAAA=="
+  },
+  {
+    "slug": "kobeni-chainsaw-man",
+    "file": "kobeni-chainsaw-man.webp",
+    "title": "Kobeni",
+    "medium": "Graphite on Paper",
+    "year": "2024",
+    "note": "Sketchbook portrait study of Kobeni from Chainsaw Man.",
+    "width": 1800,
+    "height": 2400,
+    "alt": "Detailed pencil sketchbook drawing of Kobeni from Chainsaw Man with side ponytail and hair clips.",
+    "blurDataURL": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAACQAwCdASoQABUAPzmGuVOvKSWisAgB4CcJaQAAUowUiiPt1XAAAP6pyvYABtGCXpHPFf+R49C3DgI02DS+abxQ7wYAdoiUKcOWvfeDUftFQEAA"
+  },
+  {
+    "slug": "tengen-uzui",
+    "file": "tengen-uzui.webp",
+    "title": "Tengen Uzui",
+    "medium": "Graphite on Paper",
+    "year": "2024",
+    "note": "Pencil portrait study of the Sound Hashira from Demon Slayer.",
+    "width": 2007,
+    "height": 2400,
+    "alt": "Pencil portrait sketch of Tengen Uzui from Demon Slayer wearing jeweled headpiece and eye marking.",
+    "blurDataURL": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAABwAwCdASoQABMAPzmEuVOvKKWoMAgB4CcJZwDKACGZiyzvKUAA/qeO0mrmq/jsps4QSddmODx8AAAA"
+  },
+  {
+    "slug": "wings-angel",
+    "file": "wings-angel.webp",
+    "title": "Wings",
+    "medium": "Digital Illustration",
+    "year": "2024",
+    "note": "Character illustration of a winged figure reaching toward iridescent light.",
+    "width": 1668,
+    "height": 2388,
+    "alt": "Anime-style digital illustration of an angelic figure with blue hair and white wings reaching forward into prism light.",
+    "blurDataURL": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAAAQBACdASoQABcAPzmGuVOvKSWisAgB4CcJaADA3CFUzdfTSKIBRJTHoAD+30AefT6q0a6/taTM2u0vs4TV5vMPzALjMZUM7POFFJ1GFhsj0dd4egIL6LpRI9Xx3DMZwm8AAA=="
   }
 ];

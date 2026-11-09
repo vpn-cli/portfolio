@@ -46,6 +46,27 @@ const FILES = [
     maxLongEdge: 2000,
     quality: 78,
   },
+  {
+    input: 'kobeni.jpg',
+    output: 'kobeni-chainsaw-man.webp',
+    slug: 'kobeni-chainsaw-man',
+    maxLongEdge: 2400,
+    quality: 82,
+  },
+  {
+    input: 'tengen.jpg',
+    output: 'tengen-uzui.webp',
+    slug: 'tengen-uzui',
+    maxLongEdge: 2400,
+    quality: 80,
+  },
+  {
+    input: 'wings.jpg',
+    output: 'wings-angel.webp',
+    slug: 'wings-angel',
+    maxLongEdge: 2400,
+    quality: 84,
+  },
 ];
 
 async function processAll() {
@@ -122,4 +143,3 @@ processAll().catch(err => {
   console.error('Processing failed:', err);
   process.exit(1);
 });
-
