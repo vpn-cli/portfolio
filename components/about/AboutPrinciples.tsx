@@ -200,7 +200,7 @@ export function AboutPrinciples() {
 
             {/* (c) Demo box */}
             <div data-ui="demo-ast" className="p-3.5 rounded-xl bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] flex flex-col gap-2.5">
-              <div className="flex items-center justify-between text-xs sm:text-sm">
+              <div className="flex items-center justify-between text-sm">
                 <span className="font-semibold text-[var(--text-tertiary)]">Execution safety</span>
               </div>
 
@@ -216,7 +216,7 @@ export function AboutPrinciples() {
                 />
               </div>
 
-              <div className="p-3 rounded-lg bg-[var(--surface-tile)] border border-[var(--border-subtle)] text-xs sm:text-sm min-h-[82px] flex items-center">
+              <div className="p-3 rounded-lg bg-[var(--surface-tile)] border border-[var(--border-subtle)] text-sm min-h-[82px] flex items-center">
                 {p3Mode === "ast" ? (
                   <span className="text-[var(--text-secondary)]">
                     Checked against the schema, nothing executes directly

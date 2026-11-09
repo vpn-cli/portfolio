@@ -138,7 +138,7 @@ export function AboutTimeline() {
         <h2 id="timeline-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
           How I got here
         </h2>
-        <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
+        <p className="text-sm text-[var(--text-secondary)] mt-1">
           From chemical engineering to backend work.
         </p>
       </div>

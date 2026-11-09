@@ -331,7 +331,7 @@ export function AboutWorkbench() {
           <h2 id="workbench-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
             Three backends, simulated
           </h2>
-          <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-normal">
+          <p className="text-sm text-[var(--text-secondary)] font-normal">
             Press Emit Event to see how each system handles a new event. The logs are simulated.
           </p>
         </div>
@@ -432,10 +432,10 @@ export function AboutWorkbench() {
           <div data-ui="simulator" className="w-full rounded-2xl overflow-hidden border border-[var(--border-subtle)] bg-[var(--surface-tile)]">
             {/* Panel Header */}
             <div className="flex items-center justify-between px-4 sm:px-6 py-3 bg-[var(--surface-tile)]">
-              <span className="text-xs sm:text-sm font-medium text-[var(--text-primary)]">
+              <span className="text-sm font-medium text-[var(--text-primary)]">
                 {currentPipeline.title}
               </span>
-              <span className="text-xs text-[var(--text-tertiary)] font-normal">
+              <span className="text-sm text-[var(--text-tertiary)] font-normal">
                 {isSimulating ? "Emitting..." : "Simulated"}
               </span>
             </div>
@@ -539,7 +539,7 @@ export function AboutWorkbench() {
                 href={currentPipeline.link}
                 trackLocation="about_workbench"
                 trackLabel={currentPipeline.linkLabel}
-                className="inline-flex items-center gap-1 text-xs sm:text-sm font-medium text-[var(--text-primary)] hover:underline visited:text-[var(--text-primary)] whitespace-nowrap shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--border-focus)] rounded"
+                className="inline-flex items-center gap-1 text-sm font-medium text-[var(--text-primary)] hover:underline visited:text-[var(--text-primary)] whitespace-nowrap shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--border-focus)] rounded"
               >
                 <span>Read case study</span>
                 <ArrowUpRight className="w-3.5 h-3.5 text-[var(--text-tertiary)] shrink-0" aria-hidden="true" />
