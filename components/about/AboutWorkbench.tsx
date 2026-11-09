@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { TransitionLink } from "@/components/motion/RouteTransition";
 import {
-  Palette,
   ArrowUpRight,
   Play,
   RotateCcw,
@@ -14,7 +12,7 @@ import {
 import { Stage, Window } from "@/components/stageshow/kit";
 import { useTheme } from "@/components/motion/ThemeProvider";
 
-type WorkbenchMode = "systems" | "visual" | "benchmarks";
+type WorkbenchMode = "systems" | "benchmarks";
 type SystemsSubTab = "kafka" | "sockets" | "ast";
 
 interface StreamLog {
@@ -123,7 +121,6 @@ export function AboutWorkbench() {
   const [kafkaLogs, setKafkaLogs] = useState<StreamLog[]>(initialKafkaLogs);
   const [socketsLogs, setSocketsLogs] = useState<StreamLog[]>(initialSocketsLogs);
   const [astLogs, setAstLogs] = useState<StreamLog[]>(initialAstLogs);
-  const [selectedArtwork, setSelectedArtwork] = useState<number>(0);
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
 
   const handleEmitEvent = () => {
@@ -199,18 +196,6 @@ export function AboutWorkbench() {
           >
             <Cpu className="w-3.5 h-3.5" aria-hidden="true" />
             <span>Systems</span>
-          </button>
-
-          <button
-            onClick={() => setMode("visual")}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-              mode === "visual"
-                ? "bg-[var(--text-primary)] text-[var(--bg-canvas)] shadow-xs"
-                : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-            }`}
-          >
-            <Palette className="w-3.5 h-3.5" aria-hidden="true" />
-            <span>Design</span>
           </button>
 
           <button
@@ -392,106 +377,6 @@ export function AboutWorkbench() {
         </div>
       )}
 
-      {mode === "visual" && (
-        <div className="space-y-4">
-          <div className="flex items-baseline justify-between">
-            <span className="text-xs text-[var(--text-tertiary)]">
-              Vector studies, 2023 to 2025
-            </span>
-            <span className="text-xs text-[var(--text-secondary)] font-medium">
-              Pick one to view it larger
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-            <div className="lg:col-span-8 rounded-2xl overflow-hidden border border-[var(--border-subtle)] bg-[var(--surface-tile)]">
-              <Stage theme={stageshowTheme} fidelity="standard" width={680} height={400} className="w-full">
-                {() => (
-                  <Window
-                    title={`art-0${selectedArtwork + 1}.svg`}
-                    className="w-full h-full"
-                  >
-                    <div className="p-4 sm:p-5 flex flex-col h-full justify-between">
-                      <div className="relative w-full flex-1 rounded-xl overflow-hidden bg-neutral-950 flex items-center justify-center border border-[var(--border-subtle)]">
-                        <Image
-                          src={`/art/art-0${selectedArtwork + 1}.svg`}
-                          alt={`Digital vector study 0${selectedArtwork + 1} by Vipin Kaushik`}
-                          fill
-                          unoptimized
-                          className="object-contain p-4"
-                        />
-                        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
-                      </div>
-
-                      <div className="flex items-center justify-between pt-3 text-xs">
-                        <span className="font-semibold text-[var(--text-primary)]">
-                          {[
-                            "Vector Flow & Axis",
-                            "Topographic Contour",
-                            "Isometric Monolith",
-                            "Triangular Tension",
-                            "Harmonic Cadence",
-                            "Orbital Duality",
-                          ][selectedArtwork]}
-                        </span>
-                      </div>
-                    </div>
-                  </Window>
-                )}
-              </Stage>
-            </div>
-
-            <div className="lg:col-span-4 flex flex-col justify-between space-y-3">
-              <div className="space-y-2">
-                <span className="text-xs font-semibold text-[var(--text-secondary)]">
-                  Vector Studies
-                </span>
-                <div className="grid grid-cols-3 gap-2">
-                  {[0, 1, 2, 3, 4, 5].map((idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setSelectedArtwork(idx)}
-                      className={`relative aspect-square rounded-xl overflow-hidden border transition-all cursor-pointer ${
-                        selectedArtwork === idx
-                          ? "border-[var(--text-primary)] ring-2 ring-[var(--text-primary)]/20 scale-95"
-                          : "border-[var(--border-subtle)] hover:border-[var(--border-hover)] opacity-75 hover:opacity-100"
-                      }`}
-                    >
-                      <Image
-                        src={`/art/art-0${idx + 1}.svg`}
-                        alt={`Study thumbnail 0${idx + 1}`}
-                        fill
-                        unoptimized
-                        className="object-cover"
-                      />
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="p-3.5 rounded-xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-2">
-                <span className="text-[11px] font-semibold text-[var(--text-tertiary)] block">
-                  Campus design leadership
-                </span>
-                <div className="space-y-1.5 text-xs text-[var(--text-secondary)]">
-                  <div className="flex justify-between items-baseline">
-                    <span className="font-medium text-[var(--text-primary)]">Manga & Anime Society</span>
-                    <span className="text-[11px] text-[var(--text-tertiary)]">Head</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="font-medium text-[var(--text-primary)]">Illumination Magazine</span>
-                    <span className="text-[11px] text-[var(--text-tertiary)]">Coordinator</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="font-medium text-[var(--text-primary)]">Inter-Hall Rangoli</span>
-                    <span className="text-[11px] text-amber-500">Silver & Bronze</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {mode === "benchmarks" && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

@@ -1,11 +1,67 @@
 import Image from "next/image";
-import { ArrowUpRight, MapPin, GraduationCap } from "lucide-react";
+import { ArrowUpRight, MapPin, GraduationCap, LayoutTemplate, PenTool } from "lucide-react";
+import {
+  SiApachekafka,
+  SiSocketdotio,
+  SiPostgresql,
+  SiNodedotjs,
+  SiDrizzle,
+  SiDocker,
+  SiNextdotjs,
+  SiReact,
+  SiTypescript,
+  SiTailwindcss,
+} from "react-icons/si";
+import { FaAws } from "react-icons/fa6";
 import { TransitionLink } from "@/components/motion/RouteTransition";
 import { ResumeDownloadButton } from "./ResumeDownloadButton";
+import type { ElementType } from "react";
 
 interface AboutHeroProps {
   status: string;
 }
+
+interface StackTool {
+  name: string;
+  icon: ElementType;
+  projects?: string;
+}
+
+interface StackGroup {
+  label: string;
+  tools: StackTool[];
+}
+
+const STACK_GROUPS: StackGroup[] = [
+  {
+    label: "Backend",
+    tools: [
+      { name: "Kafka", icon: SiApachekafka, projects: "StreamMart" },
+      { name: "WebSockets", icon: SiSocketdotio, projects: "Sportz" },
+      { name: "Postgres", icon: SiPostgresql, projects: "StreamMart, AppForge" },
+      { name: "Node.js", icon: SiNodedotjs, projects: "StreamMart, Sportz" },
+      { name: "Drizzle", icon: SiDrizzle, projects: "StreamMart, Sportz" },
+      { name: "Docker", icon: SiDocker, projects: "StreamMart, Sportz" },
+      { name: "AWS EC2", icon: FaAws },
+    ],
+  },
+  {
+    label: "Frontend",
+    tools: [
+      { name: "Next.js", icon: SiNextdotjs, projects: "AppForge" },
+      { name: "React", icon: SiReact, projects: "AppForge, Sportz" },
+      { name: "TypeScript", icon: SiTypescript, projects: "AppForge" },
+      { name: "Tailwind", icon: SiTailwindcss, projects: "AppForge" },
+    ],
+  },
+  {
+    label: "Design",
+    tools: [
+      { name: "Editorial layout", icon: LayoutTemplate },
+      { name: "Vector illustration", icon: PenTool },
+    ],
+  },
+];
 
 export function AboutHero({ status }: AboutHeroProps) {
   return (
@@ -37,7 +93,7 @@ export function AboutHero({ status }: AboutHeroProps) {
             </div>
 
             <p className="text-base sm:text-lg text-[var(--text-secondary)] font-medium">
-              Software engineer, mostly backend.
+              Software engineer building event-driven backends and real-time systems.
             </p>
 
             <div className="flex items-center gap-4 text-xs text-[var(--text-tertiary)] flex-wrap tabular-nums">
@@ -69,35 +125,68 @@ export function AboutHero({ status }: AboutHeroProps) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <div data-reveal data-reveal-order="4" className="lg:col-span-8 space-y-4">
+        <div data-reveal data-reveal-order="4" className="lg:col-span-7 space-y-4">
           <p className="text-xl sm:text-2xl text-[var(--text-primary)] font-normal leading-relaxed tracking-tight">
-            I&apos;m a chemical engineering student at IIT Kharagpur who ended up writing software. Now I build backend systems with Kafka, WebSockets and Postgres, and I still do design work on the side.
+            I&apos;m finishing a dual degree at IIT Kharagpur and spend most of my time building backend systems with Kafka, WebSockets and Postgres. I also do design work on the side.
           </p>
           <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
             Recent projects include StreamMart, an e-commerce backend that uses a transactional outbox to get order events into Kafka, and Sportz, a WebSocket server that pushes live match scores. Away from code, I&apos;ve led design for campus groups like the Manga &amp; Anime Society and Illumination Magazine.
           </p>
         </div>
 
-        <div data-reveal data-reveal-order="5" className="lg:col-span-4 p-5 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-3">
-          <span className="text-xs font-semibold text-[var(--text-tertiary)] block">
+        <div data-reveal data-reveal-order="5" className="lg:col-span-5 p-5 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-3">
+          <h2 className="text-xs font-normal text-[var(--text-tertiary)]">
             What I work with
-          </span>
+          </h2>
 
-          <div className="space-y-3 text-xs">
-            <div>
-              <span className="font-semibold text-[var(--text-primary)] block">Backend</span>
-              <span className="text-[var(--text-secondary)]">Kafka, WebSockets, Postgres, Node.js, Drizzle, Docker, AWS EC2</span>
-            </div>
+          <div className="divide-y divide-[var(--border-subtle)]">
+            {STACK_GROUPS.map((group, groupIdx) => (
+              <div key={group.label} className={groupIdx === 0 ? "pb-3" : "py-3 first:pt-0 last:pb-0"}>
+                <span className="text-xs font-normal text-[var(--text-tertiary)] block mb-1.5">
+                  {group.label}
+                </span>
 
-            <div>
-              <span className="font-semibold text-[var(--text-primary)] block">Frontend</span>
-              <span className="text-[var(--text-secondary)]">Next.js, React, TypeScript, Tailwind</span>
-            </div>
-
-            <div>
-              <span className="font-semibold text-[var(--text-primary)] block">Design</span>
-              <span className="text-[var(--text-secondary)]">Editorial layout, vector illustration</span>
-            </div>
+                <ul className="space-y-0.5" role="list">
+                  {group.tools.map((tool) => {
+                    const Icon = tool.icon;
+                    return (
+                      <li
+                        key={tool.name}
+                        tabIndex={0}
+                        className="group flex flex-col sm:flex-row sm:items-center sm:justify-between py-1 px-1.5 -mx-1.5 rounded-md hover:bg-[var(--surface-tile-elevated)] focus-visible:bg-[var(--surface-tile-elevated)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--border-focus)] transition-colors cursor-default"
+                        aria-label={tool.projects ? `${tool.name}, used in ${tool.projects}` : tool.name}
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Icon
+                            className="w-3.5 h-3.5 text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)] group-focus-visible:text-[var(--text-primary)] shrink-0 transition-colors"
+                            aria-hidden="true"
+                          />
+                          <span className="text-xs text-[var(--text-primary)] font-normal truncate">
+                            {tool.name}
+                          </span>
+                        </div>
+                        {tool.projects && (
+                          <>
+                            <span
+                              className="text-[11px] text-[var(--text-tertiary)] hidden sm:block opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity tabular-nums truncate text-right ml-2"
+                              aria-hidden="true"
+                            >
+                              {tool.projects}
+                            </span>
+                            <span
+                              className="text-[11px] text-[var(--text-tertiary)] block sm:hidden pl-5.5 pt-0.5 tabular-nums"
+                              aria-hidden="true"
+                            >
+                              {tool.projects}
+                            </span>
+                          </>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
       </div>
