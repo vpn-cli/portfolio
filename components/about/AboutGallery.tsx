@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { Award, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { artworks, type Artwork } from "@/content/artworks";
@@ -45,10 +46,21 @@ const awards = [
 
 export function AboutGallery() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
   const triggerRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
   const viewedArtworks = useRef<Set<string>>(new Set());
+
+  // Track client mount for createPortal
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Touch gesture tracking for mobile swipe & tap
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+  const isSwipeAction = useRef(false);
 
   const { lenis } = useLenisInstance();
   const currentArt: Artwork | null = activeIndex !== null ? artworks[activeIndex] : null;
@@ -73,6 +85,23 @@ export function AboutGallery() {
       };
     }
   }, [activeIndex, lenis]);
+
+  // Preload next and previous images for instant switching
+  useEffect(() => {
+    if (activeIndex === null) return;
+    const prevIdx = activeIndex === 0 ? artworks.length - 1 : activeIndex - 1;
+    const nextIdx = activeIndex === artworks.length - 1 ? 0 : activeIndex + 1;
+
+    const preload = (file: string) => {
+      if (typeof window !== "undefined") {
+        const img = new window.Image();
+        img.src = `/art/${file}`;
+      }
+    };
+
+    preload(artworks[prevIdx].file);
+    preload(artworks[nextIdx].file);
+  }, [activeIndex]);
 
   const openLightbox = (index: number) => {
     setActiveIndex(index);
@@ -142,12 +171,96 @@ export function AboutGallery() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeIndex, closeLightbox, showPrev, showNext]);
 
+  // Touch gesture handling: swipe to switch, tap backdrop to close
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
+
+    if (absX > 40 && absX > absY * 1.5) {
+      isSwipeAction.current = true;
+      setTimeout(() => {
+        isSwipeAction.current = false;
+      }, 350);
+      if (deltaX < 0) {
+        showNext();
+      } else {
+        showPrev();
+      }
+    } else if (absX < 15 && absY < 15 && e.target === e.currentTarget) {
+      // Direct tap on backdrop - prevent synthetic click from hitting underlying gallery buttons
+      e.preventDefault();
+      closeLightbox();
+    } else {
+      isSwipeAction.current = false;
+    }
+    touchStartX.current = null;
+    touchStartY.current = null;
+  };
+
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isSwipeAction.current) {
+      return;
+    }
+    if (e.target === e.currentTarget) {
+      closeLightbox();
+    }
+  };
+
   return (
     <section
       aria-labelledby="design-art-heading"
       className="w-full space-y-8"
       style={{ contentVisibility: "auto", containIntrinsicSize: "auto 700px" }}
     >
+      <style>{`
+        @keyframes artworkFade {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        @media (prefers-reduced-motion: no-preference) {
+          .artwork-crossfade {
+            animation: artworkFade 200ms ease-out forwards;
+          }
+        }
+
+        /* Gallery piece button base: outline-free, border-free, card-free */
+        .gallery-piece-btn {
+          outline: none !important;
+          box-shadow: none !important;
+          border: none !important;
+          background: transparent !important;
+        }
+        .gallery-piece-btn:focus {
+          outline: none !important;
+          box-shadow: none !important;
+        }
+        .gallery-piece-btn:focus:not(:focus-visible) {
+          outline: none !important;
+          box-shadow: none !important;
+        }
+        .gallery-piece-btn:focus:not(:focus-visible) .gallery-piece-img {
+          outline: none !important;
+          box-shadow: none !important;
+        }
+
+        /* Focus-visible ring on the image only for keyboard Tab users */
+        .gallery-piece-btn:focus-visible .gallery-piece-img {
+          box-shadow: 0 0 0 3px var(--bg-canvas-subtle, transparent), 0 0 0 4.5px rgba(130, 130, 130, 0.45) !important;
+        }
+      `}</style>
+
       <div className="pb-2">
         <h2 id="design-art-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
           Design
@@ -157,12 +270,12 @@ export function AboutGallery() {
         </p>
       </div>
 
-      {/* Masonry-style gallery: 3-col desktop, 2-col tablet, 1-col mobile */}
-      <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 sm:gap-6 space-y-5 sm:space-y-6">
+      {/* Gallery grid: unadorned artwork with consistent radius and clean caption */}
+      <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 sm:gap-8">
         {artworks.map((art, index) => (
           <figure
             key={art.slug}
-            className="break-inside-avoid group block"
+            className="break-inside-avoid mb-6 sm:mb-8 block"
           >
             <button
               ref={(el) => {
@@ -170,10 +283,10 @@ export function AboutGallery() {
               }}
               type="button"
               onClick={() => openLightbox(index)}
-              className="w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] rounded-xl cursor-pointer block"
-              aria-label={`Open lightbox for ${art.title}, ${art.medium} (${art.year})`}
+              className="gallery-piece-btn group w-full text-left cursor-pointer block select-none border-0 bg-transparent p-0"
+              aria-label={`Open lightbox for ${art.title}, ${art.medium}`}
             >
-              <div className="overflow-hidden rounded-xl bg-[var(--surface-tile)] transition-transform duration-200 group-hover:scale-[1.01]">
+              <div className="gallery-piece-img overflow-hidden rounded-xl transition-all duration-300">
                 <Image
                   src={`/art/${art.file}`}
                   alt={art.alt}
@@ -184,15 +297,15 @@ export function AboutGallery() {
                   priority={index < 3}
                   loading={index < 3 ? "eager" : "lazy"}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="w-full h-auto object-contain rounded-xl block"
+                  className="w-full h-auto object-contain rounded-xl block transition-all duration-300 ease-out group-hover:scale-[1.015] group-hover:brightness-[1.03]"
                 />
               </div>
-              <figcaption className="pt-2.5 pb-1 space-y-0.5">
-                <h3 className="text-sm font-semibold text-[var(--text-primary)]">
+              <figcaption className="pt-2.5 sm:pt-3 space-y-0.5 text-left">
+                <h3 className="text-sm sm:text-base font-normal text-[var(--text-primary)] leading-snug">
                   {art.title}
                 </h3>
-                <p className="text-sm text-[var(--text-tertiary)]">
-                  {art.medium} · {art.year}
+                <p className="text-xs sm:text-sm text-[var(--text-tertiary)] leading-normal">
+                  {art.medium}
                 </p>
               </figcaption>
             </button>
@@ -267,94 +380,105 @@ export function AboutGallery() {
         </div>
       </div>
 
-      {/* Lightbox Modal */}
-      {currentArt && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label={`Artwork: ${currentArt.title}`}
-          className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-3 sm:p-6 md:p-8 animate-fadeIn transition-opacity duration-200"
-          onClick={closeLightbox}
-        >
+      {/* Lightbox Modal: Portal to document.body for true full-screen overlay */}
+      {currentArt &&
+        mounted &&
+        createPortal(
           <div
             ref={dialogRef}
-            data-ui="lightbox-dialog"
-            className="relative w-full max-w-4xl max-h-[92vh] flex flex-col bg-[var(--surface-tile)] border border-[var(--border-hover)] rounded-2xl sm:rounded-3xl overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Artwork: ${currentArt.title}`}
+            tabIndex={-1}
+            className="fixed inset-0 z-50 flex items-center justify-center select-none overflow-hidden"
+            style={{ backgroundColor: "rgba(5, 5, 5, 0.92)" }}
+            onClick={handleBackdropClick}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
           >
-            {/* Modal header with title, index counter, and close button */}
-            <div className="flex items-center justify-between px-4 py-3 sm:px-6 sm:py-3.5 shrink-0 bg-[var(--surface-tile)]">
-              <div className="flex items-baseline gap-2.5 min-w-0 pr-3">
-                <h3 className="text-sm sm:text-base font-normal text-[var(--text-primary)] truncate">
+            {/* Close icon in top-right corner */}
+            <button
+              ref={closeBtnRef}
+              type="button"
+              onClick={closeLightbox}
+              onTouchEnd={(e) => {
+                e.stopPropagation();
+                closeLightbox();
+              }}
+              aria-label="Close lightbox (Esc)"
+              className="fixed top-3 right-3 sm:top-5 sm:right-5 z-50 min-w-[44px] min-h-[44px] w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center bg-transparent border-0 text-white/50 hover:text-white focus-visible:text-white transition-colors cursor-pointer outline-none focus-visible:ring-1 focus-visible:ring-white/40 rounded-sm"
+            >
+              <X className="w-6 h-6" aria-hidden="true" />
+            </button>
+
+            {/* Previous arrow at left edge */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                showPrev();
+              }}
+              onTouchEnd={(e) => {
+                e.stopPropagation();
+                showPrev();
+              }}
+              aria-label="Previous artwork (Left arrow)"
+              className="fixed left-1 sm:left-4 top-1/2 -translate-y-1/2 z-50 min-w-[44px] min-h-[44px] w-12 h-20 sm:w-16 sm:h-24 flex items-center justify-center bg-transparent border-0 text-white/40 hover:text-white focus-visible:text-white transition-colors cursor-pointer outline-none focus-visible:ring-1 focus-visible:ring-white/40 rounded-sm"
+            >
+              <ChevronLeft className="w-8 h-8 sm:w-9 sm:h-9" aria-hidden="true" />
+            </button>
+
+            {/* Next arrow at right edge */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                showNext();
+              }}
+              onTouchEnd={(e) => {
+                e.stopPropagation();
+                showNext();
+              }}
+              aria-label="Next artwork (Right arrow)"
+              className="fixed right-1 sm:right-4 top-1/2 -translate-y-1/2 z-50 min-w-[44px] min-h-[44px] w-12 h-20 sm:w-16 sm:h-24 flex items-center justify-center bg-transparent border-0 text-white/40 hover:text-white focus-visible:text-white transition-colors cursor-pointer outline-none focus-visible:ring-1 focus-visible:ring-white/40 rounded-sm"
+            >
+              <ChevronRight className="w-8 h-8 sm:w-9 sm:h-9" aria-hidden="true" />
+            </button>
+
+            {/* Centered image & caption: fits fully on screen at all viewports without scrolling */}
+            <div
+              key={currentArt.slug}
+              className="artwork-crossfade relative flex flex-col items-center justify-center max-w-[90vw] max-h-[88vh] pointer-events-auto"
+              onClick={(e) => e.stopPropagation()}
+              onTouchEnd={(e) => e.stopPropagation()}
+            >
+              <Image
+                src={`/art/${currentArt.file}`}
+                alt={currentArt.alt}
+                width={currentArt.width}
+                height={currentArt.height}
+                priority
+                className="max-h-[74vh] sm:max-h-[78vh] max-w-[88vw] sm:max-w-[90vw] w-auto h-auto object-contain block select-none pointer-events-none"
+              />
+
+              {/* Lightbox caption: title, medium, and optional note only */}
+              <div className="mt-3 sm:mt-4 text-center max-w-lg px-3 space-y-0.5 select-text">
+                <h3 className="text-sm sm:text-base font-normal text-white/85 tracking-normal">
                   {currentArt.title}
                 </h3>
-                <span className="text-xs text-[var(--text-tertiary)] tabular-nums shrink-0">
-                  {(activeIndex ?? 0) + 1} of {artworks.length}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-1 shrink-0">
-                <button
-                  type="button"
-                  onClick={showPrev}
-                  className="p-1.5 sm:p-2 rounded-full hover:bg-[var(--surface-tile-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
-                  aria-label="Previous artwork"
-                >
-                  <ChevronLeft className="w-5 h-5" aria-hidden="true" />
-                </button>
-                <button
-                  type="button"
-                  onClick={showNext}
-                  className="p-1.5 sm:p-2 rounded-full hover:bg-[var(--surface-tile-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
-                  aria-label="Next artwork"
-                >
-                  <ChevronRight className="w-5 h-5" aria-hidden="true" />
-                </button>
-                <button
-                  ref={closeBtnRef}
-                  type="button"
-                  onClick={closeLightbox}
-                  className="p-1.5 sm:p-2 rounded-full hover:bg-[var(--surface-tile-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer ml-1"
-                  aria-label="Close artwork lightbox"
-                >
-                  <X className="w-5 h-5" aria-hidden="true" />
-                </button>
-              </div>
-            </div>
-
-            {/* Modal image preview area */}
-            <div className="relative flex-1 min-h-0 bg-neutral-950/60 flex items-center justify-center p-3 sm:p-6 overflow-hidden">
-              <div className="relative max-w-full max-h-[64vh] flex items-center justify-center">
-                <Image
-                  src={`/art/${currentArt.file}`}
-                  alt={currentArt.alt}
-                  width={currentArt.width}
-                  height={currentArt.height}
-                  priority
-                  className="max-h-[64vh] w-auto max-w-full object-contain rounded-lg"
-                />
-              </div>
-            </div>
-
-            {/* Modal footer with medium, year, and note */}
-            <div className="px-4 py-3 sm:px-6 sm:py-3.5 bg-[var(--surface-tile)] shrink-0 space-y-1">
-              <div className="flex items-baseline justify-between gap-2">
-                <span className="text-xs text-[var(--text-secondary)]">
+                <p className="text-xs sm:text-sm text-white/70">
                   {currentArt.medium}
-                </span>
-                <span className="text-xs text-[var(--text-tertiary)] tabular-nums">
-                  {currentArt.year}
-                </span>
-              </div>
-              {currentArt.note && (
-                <p className="text-sm text-[var(--text-tertiary)] leading-relaxed">
-                  {currentArt.note}
                 </p>
-              )}
+                {currentArt.note && (
+                  <p className="text-xs sm:text-sm text-white/65 pt-0.5 leading-relaxed">
+                    {currentArt.note}
+                  </p>
+                )}
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </section>
   );
 }
