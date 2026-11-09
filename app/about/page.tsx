@@ -12,8 +12,8 @@ import { AboutContact } from "@/components/about/AboutContact";
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-primary)] p-3 sm:p-4 lg:p-6 flex flex-col items-center">
-      <div className="w-full max-w-[1280px] min-h-[calc(100vh-48px)] rounded-[32px] sm:rounded-[36px] bg-[var(--bg-canvas-subtle)] border border-[var(--border-subtle)] p-5 sm:p-8 lg:p-12 shadow-sm flex flex-col items-center">
+    <main className="min-h-dvh bg-[var(--bg-canvas)] text-[var(--text-primary)] p-3 sm:p-4 lg:p-6 flex flex-col items-center">
+      <div className="w-full max-w-[1280px] min-h-[calc(100dvh-48px)] rounded-[32px] sm:rounded-[36px] bg-[var(--bg-canvas-subtle)] border border-[var(--border-subtle)] p-5 sm:p-8 lg:p-12 flex flex-col items-center">
         <div data-reveal data-reveal-order="1" className="w-full flex justify-between items-center mb-8 sm:mb-12">
           <TransitionLink
             href="/"
@@ -29,7 +29,7 @@ export default function AboutPage() {
             href="/"
             trackLocation="back_link"
             trackLabel="Close and return to home"
-            className="w-10 h-10 rounded-full bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] flex items-center justify-center transition-colors text-[var(--text-primary)] shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 active:scale-95 cursor-pointer"
+            className="w-10 h-10 rounded-full bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] flex items-center justify-center transition-colors text-[var(--text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 active:scale-95 cursor-pointer"
             title="Close and return to home"
             aria-label="Close and return to home"
           >
@@ -37,7 +37,7 @@ export default function AboutPage() {
           </TransitionLink>
         </div>
 
-        <div className="w-full max-w-5xl space-y-14 sm:space-y-18">
+        <div className="w-full max-w-5xl space-y-20 sm:space-y-28 lg:space-y-32">
           <AboutHero status={siteConfig.status} />
           <AboutWorkbench />
           <AboutExperience />

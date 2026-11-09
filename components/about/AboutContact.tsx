@@ -99,17 +99,17 @@ export function AboutContact() {
       className="w-full"
       style={{ contentVisibility: "auto", containIntrinsicSize: "auto 700px" }}
     >
-      <div className="p-7 sm:p-9 rounded-[28px] sm:rounded-[32px] bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-6">
+      <div className="p-7 sm:p-9 rounded-[28px] sm:rounded-[32px] bg-[var(--surface-tile)] space-y-6">
         <div className="space-y-3">
           <h2 id="contact-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)]">
             Get in touch
           </h2>
 
-          <p className="text-sm sm:text-base text-[var(--text-secondary)] max-w-2xl leading-relaxed">
+          <p className="text-base text-[var(--text-secondary)] max-w-2xl leading-relaxed">
             I&apos;m looking for full-time software engineering roles starting after I graduate in April 2027. Email me if you want to talk about backend systems or design.
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 text-xs text-[var(--text-secondary)] min-h-[24px] pt-1 border-t border-[var(--border-subtle)]">
+          <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-[var(--text-secondary)] min-h-[24px] pt-2">
             <div className="flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-[var(--text-tertiary)] shrink-0" aria-hidden="true" />
               <span>IIT Kharagpur</span>
@@ -119,7 +119,7 @@ export function AboutContact() {
               {timeState ? (
                 <>
                   {timeState.isSun ? (
-                    <Sun className="w-3.5 h-3.5 shrink-0 text-amber-500" aria-hidden="true" />
+                    <Sun className="w-3.5 h-3.5 shrink-0 text-amber-600 dark:text-amber-400" aria-hidden="true" />
                   ) : (
                     <Moon className="w-3.5 h-3.5 shrink-0 text-slate-400" aria-hidden="true" />
                   )}
@@ -137,7 +137,7 @@ export function AboutContact() {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-2xl bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)]">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-2xl bg-[var(--surface-tile-elevated)]">
           <button
             onClick={handleCopy}
             type="button"
@@ -153,12 +153,12 @@ export function AboutContact() {
               type="button"
               data-ph-capture-attribute-location="about_contact"
               aria-label={copied ? "Email copied to clipboard" : "Copy email address"}
-              className="px-3.5 py-2 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center justify-center gap-1.5 transition-colors cursor-pointer active:scale-95 shadow-xs"
+              className="px-3.5 py-2 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center justify-center gap-1.5 transition-colors cursor-pointer active:scale-95"
             >
               {copied ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-emerald-500" aria-hidden="true" />
-                  <span className="text-emerald-500 font-bold">Copied</span>
+                  <Check className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" aria-hidden="true" />
+                  <span className="text-emerald-700 dark:text-emerald-400 font-bold">Copied</span>
                 </>
               ) : (
                 <>
@@ -179,7 +179,7 @@ export function AboutContact() {
                   label: "Send mail",
                 })
               }
-              className="px-4 py-2 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] text-xs font-semibold hover:opacity-90 flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-95 shadow-xs"
+              className="px-4 py-2 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] text-xs font-semibold hover:opacity-90 flex items-center justify-center gap-1.5 transition-opacity transition-transform cursor-pointer active:scale-95"
             >
               <Mail className="w-3.5 h-3.5" aria-hidden="true" />
               <span>Send email</span>

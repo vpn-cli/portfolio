@@ -33,10 +33,10 @@ const milestones: Milestone[] = [
     artifactTitle: "terminal :: iitkgp-hpc-node01",
     terminalLines: [
       { prompt: "vipin@kgp:~$", text: "g++ -O3 sim_transport.cpp -o sim" },
-      { text: "[build] compiled with zero warnings (3.2ms)", color: "text-emerald-500" },
+      { text: "[build] compiled with zero warnings (3.2ms)", color: "text-emerald-700 dark:text-emerald-400 font-medium" },
       { prompt: "vipin@kgp:~$", text: "./sim --nodes 1024 --iterations 50000" },
       { text: "[sim] memory allocated: 12.4 MB | runtime: 184ms", color: "text-[var(--text-secondary)]" },
-      { text: "Convergence achieved: tolerance < 1e-6", color: "text-emerald-500" },
+      { text: "Convergence achieved: tolerance < 1e-6", color: "text-emerald-700 dark:text-emerald-400 font-medium" },
     ],
   },
   {
@@ -50,9 +50,9 @@ const milestones: Milestone[] = [
     artifactTitle: "studio :: illumination-magazine-issue4",
     terminalLines: [
       { prompt: "studio >", text: "grid: 12-column modular, gutter: 16px" },
-      { text: "Typography: Cabinet Grotesk (800) + Inter Display", color: "text-amber-500" },
+      { text: "Typography: Cabinet Grotesk (800) + Inter Display", color: "text-amber-800 dark:text-amber-300 font-medium" },
       { text: "Vectors: 6 custom editorial spreads exported to SVG", color: "text-[var(--text-secondary)]" },
-      { text: "Exhibition: Inter-Hall Rangoli (Silver Medalist 2024)", color: "text-emerald-500" },
+      { text: "Exhibition: Inter-Hall Rangoli (Silver Medalist 2024)", color: "text-emerald-700 dark:text-emerald-400 font-medium" },
     ],
   },
   {
@@ -72,9 +72,9 @@ const milestones: Milestone[] = [
     ],
     terminalLines: [
       { prompt: "ws-server >", text: "listening on 0.0.0.0:8080 (raw ws)" },
-      { text: "[upgrade] client c_102 connected (TLS handshake 0.3ms)", color: "text-sky-400" },
-      { text: "[room] joined 'match:402' -> active room listeners: 4", color: "text-emerald-500" },
-      { text: "[fanout] broadcasted score event (payload 142B, sub-ms tick)", color: "text-amber-400" },
+      { text: "[upgrade] client c_102 connected (TLS handshake 0.3ms)", color: "text-sky-800 dark:text-sky-300 font-medium" },
+      { text: "[room] joined 'match:402' -> active room listeners: 4", color: "text-emerald-700 dark:text-emerald-400 font-medium" },
+      { text: "[fanout] broadcasted score event (payload 142B, sub-ms tick)", color: "text-amber-800 dark:text-amber-300 font-medium" },
     ],
   },
   {
@@ -98,9 +98,9 @@ const milestones: Milestone[] = [
     ],
     terminalLines: [
       { prompt: "outbox >", text: "PostgreSQL ACID txn: order + outbox inserted" },
-      { text: "[cdc] Debezium tailing WAL -> topic: orders.events", color: "text-sky-400" },
-      { text: "[kafka] partition 2 committed offset 49201", color: "text-emerald-500" },
-      { text: "[appforge] prompt token stream -> AST validated (0 eval)", color: "text-amber-400" },
+      { text: "[cdc] Debezium tailing WAL -> topic: orders.events", color: "text-sky-800 dark:text-sky-300 font-medium" },
+      { text: "[kafka] partition 2 committed offset 49201", color: "text-emerald-700 dark:text-emerald-400 font-medium" },
+      { text: "[appforge] prompt token stream -> AST validated (0 eval)", color: "text-amber-800 dark:text-amber-300 font-medium" },
     ],
   },
   {
@@ -114,9 +114,9 @@ const milestones: Milestone[] = [
     artifactTitle: "cluster :: distributed-orchestration",
     terminalLines: [
       { prompt: "kubectl >", text: "get pods -n backend-services -o wide" },
-      { text: "order-svc-pod-7d4b    Running   0 restarts   ready: 3/3", color: "text-emerald-500" },
-      { text: "kafka-broker-node-0    Running   0 restarts   partitions: 12", color: "text-sky-400" },
-      { text: "payment-consumer-pod   Running   0 restarts   lag: 0 msgs", color: "text-emerald-500" },
+      { text: "order-svc-pod-7d4b    Running   0 restarts   ready: 3/3", color: "text-emerald-700 dark:text-emerald-400 font-medium" },
+      { text: "kafka-broker-node-0    Running   0 restarts   partitions: 12", color: "text-sky-800 dark:text-sky-300 font-medium" },
+      { text: "payment-consumer-pod   Running   0 restarts   lag: 0 msgs", color: "text-emerald-700 dark:text-emerald-400 font-medium" },
     ],
   },
 ];
@@ -134,7 +134,7 @@ export function AboutTimeline() {
       className="w-full space-y-6"
       style={{ contentVisibility: "auto", containIntrinsicSize: "auto 700px" }}
     >
-      <div className="border-b border-[var(--border-subtle)] pb-4">
+      <div className="pb-2">
         <h2 id="timeline-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
           How I got here
         </h2>
@@ -152,9 +152,9 @@ export function AboutTimeline() {
               role="tab"
               aria-selected={isActive}
               onClick={() => setActiveId(m.id)}
-              className={`p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${
+              className={`p-3 rounded-xl border text-left transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${
                 isActive
-                  ? "bg-[var(--surface-tile-elevated)] border-[var(--text-primary)] shadow-sm"
+                  ? "bg-[var(--surface-tile-elevated)] border-[var(--text-primary)]"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] hover:border-[var(--border-hover)] opacity-85 hover:opacity-100"
               }`}
             >
@@ -175,21 +175,21 @@ export function AboutTimeline() {
         })}
       </div>
 
-      <article className="p-6 sm:p-7 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-6 motion-safe:animate-fadeIn">
+      <article className="p-6 sm:p-8 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-6 motion-safe:animate-fadeIn">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           <div className="lg:col-span-7 space-y-4">
-            <div className="space-y-1">
+            <div className="space-y-1.5">
               <div>
-                <span className="px-2 py-0.5 rounded text-[11px] bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-[var(--text-tertiary)]">
+                <span className="px-2.5 py-1 rounded text-xs bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-[var(--text-tertiary)]">
                   {currentMilestone.year} · {currentMilestone.stage}
                 </span>
               </div>
-              <h3 className="text-lg sm:text-xl font-bold text-[var(--text-primary)] mt-1">
+              <h3 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-1.5">
                 {currentMilestone.title}
               </h3>
             </div>
 
-            <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
+            <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed font-normal">
               {currentMilestone.description}
             </p>
 
@@ -211,15 +211,15 @@ export function AboutTimeline() {
             )}
           </div>
 
-          <div className="lg:col-span-5 rounded-xl overflow-hidden border border-[var(--border-subtle)] bg-[var(--surface-tile-elevated)] shadow-xs">
+          <div data-ui className="lg:col-span-5 rounded-xl overflow-hidden border border-[var(--border-subtle)] bg-[var(--surface-tile-elevated)]">
             <Stage theme={stageshowTheme} fidelity="standard" width={420} height={220} className="w-full">
               {() => (
                 <Window
                   title={currentMilestone.artifactTitle}
                   className="w-full h-full"
                 >
-                  <div className="p-3.5 h-full flex flex-col justify-start font-mono text-[11px] leading-relaxed overflow-hidden">
-                    <div className="space-y-1.5">
+                  <pre className="p-3.5 h-full flex flex-col justify-start font-mono text-xs leading-relaxed overflow-hidden">
+                    <div className="space-y-1.5 font-mono">
                       {currentMilestone.terminalLines?.map((line, idx) => (
                         <div key={idx} className="space-y-0.5">
                           {line.prompt && (
@@ -236,7 +236,7 @@ export function AboutTimeline() {
                         </div>
                       ))}
                     </div>
-                  </div>
+                  </pre>
                 </Window>
               )}
             </Stage>

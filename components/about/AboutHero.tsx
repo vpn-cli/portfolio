@@ -66,14 +66,14 @@ const STACK_GROUPS: StackGroup[] = [
 export function AboutHero({ status }: AboutHeroProps) {
   return (
     <section aria-labelledby="about-intro-heading" className="w-full space-y-8">
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-8 border-b border-[var(--border-subtle)]">
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-6 sm:pb-8">
         <div data-reveal data-reveal-order="2" className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6">
-          <div className="relative w-22 h-22 sm:w-28 sm:h-28 rounded-2xl overflow-hidden bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] shrink-0 shadow-sm">
+          <div className="relative w-32 h-32 sm:w-36 sm:h-36 rounded-2xl overflow-hidden bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] shrink-0">
             <Image
               src="/avatar.jpg"
               alt="Portrait of Vipin Kaushik"
-              width={112}
-              height={112}
+              width={144}
+              height={144}
               priority
               className="w-full h-full object-cover"
             />
@@ -83,7 +83,7 @@ export function AboutHero({ status }: AboutHeroProps) {
             <div>
               <h1
                 id="about-intro-heading"
-                className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--text-primary)]"
+                className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--text-primary)]"
               >
                 Vipin Kaushik
               </h1>
@@ -139,9 +139,9 @@ export function AboutHero({ status }: AboutHeroProps) {
             What I work with
           </h2>
 
-          <div className="divide-y divide-[var(--border-subtle)]">
+          <div className="space-y-4">
             {STACK_GROUPS.map((group, groupIdx) => (
-              <div key={group.label} className={groupIdx === 0 ? "pb-3" : "py-3 first:pt-0 last:pb-0"}>
+              <div key={group.label} className={groupIdx === 0 ? "pb-1" : "pt-1"}>
                 <span className="text-xs font-normal text-[var(--text-tertiary)] block mb-1.5">
                   {group.label}
                 </span>

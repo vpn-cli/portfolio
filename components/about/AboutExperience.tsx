@@ -38,7 +38,7 @@ const experiences: ExperienceEntry[] = [
 export function AboutExperience() {
   return (
     <section aria-labelledby="experience-heading" className="w-full space-y-6">
-      <div className="border-b border-[var(--border-subtle)] pb-4">
+      <div className="pb-2">
         <h2 id="experience-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
           Experience
         </h2>
@@ -48,26 +48,26 @@ export function AboutExperience() {
         {experiences.map((exp) => (
           <article
             key={exp.company}
-            className="p-6 sm:p-7 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] transition-all space-y-4"
+            className="p-6 sm:p-7 rounded-2xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-elevated)] transition-colors duration-150 space-y-4"
           >
-            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4 border-b border-[var(--border-subtle)] pb-3">
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4 pb-1">
               <div className="flex items-baseline gap-2 flex-wrap">
                 <h3 className="text-base sm:text-lg font-bold text-[var(--text-primary)]">
                   {exp.role}
                 </h3>
-                <span className="text-sm font-semibold text-[var(--text-secondary)]">
+                <span className="text-sm sm:text-base font-semibold text-[var(--text-secondary)]">
                   · {exp.company}
                 </span>
-                <span className="text-xs text-[var(--text-tertiary)]">
+                <span className="text-sm text-[var(--text-tertiary)]">
                   ({exp.type})
                 </span>
               </div>
-              <time className="text-xs sm:text-sm text-[var(--text-tertiary)] tabular-nums shrink-0">
+              <time className="text-sm text-[var(--text-tertiary)] tabular-nums shrink-0">
                 {exp.period}
               </time>
             </div>
 
-            <ul className="space-y-2 text-xs sm:text-sm text-[var(--text-secondary)]">
+            <ul className="space-y-2 text-base text-[var(--text-secondary)]">
               {exp.highlights.map((h, i) => (
                 <li key={i} className="leading-relaxed font-normal">
                   {h}
@@ -79,7 +79,7 @@ export function AboutExperience() {
               {exp.stack.map((t) => (
                 <span
                   key={t}
-                  className="px-2.5 py-0.5 rounded-md text-[11px] bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] text-[var(--text-secondary)]"
+                  className="px-2.5 py-0.5 rounded-md text-xs sm:text-sm bg-[var(--surface-tile-elevated)] text-[var(--text-secondary)]"
                 >
                   {t}
                 </span>

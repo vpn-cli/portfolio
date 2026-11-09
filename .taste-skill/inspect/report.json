@@ -1,23 +1,30 @@
 {
- "url": "http://localhost:3000",
- "at": "2026-11-01T17:17:27.391Z",
+ "url": "http://localhost:3000/about",
+ "at": "2026-11-09T16:37:58.921Z",
  "allow": [],
  "viewports": [
   {
    "width": 1440,
    "height": 900,
    "load": "load",
-   "screens": 1,
+   "screens": 8,
    "filled": [
-    0.99
+    0.91,
+    0.92,
+    0.92,
+    0.92,
+    0.92,
+    0.92,
+    0.92,
+    0.92
    ],
    "motion": {
-    "elements": 10,
-    "css": 10,
+    "elements": 2,
+    "css": 0,
     "transitions": 0,
-    "scripted": 0,
-    "videos": 2,
-    "playingVideos": 2
+    "scripted": 2,
+    "videos": 0,
+    "playingVideos": 0
    },
    "metrics": {
     "viewport": {
@@ -25,24 +32,26 @@
      "h": 900
     },
     "page": {
-     "height": 900,
-     "screens": 1,
-     "words": 189,
-     "img": 2,
-     "video": 2,
-     "canvas": 1,
-     "svg": 41,
-     "sections": 0,
+     "height": 6206,
+     "screens": 6.9,
+     "words": 828,
+     "img": 6,
+     "video": 0,
+     "canvas": 0,
+     "svg": 37,
+     "sections": 8,
      "horizontalOverflow": 0,
      "overflowCulprits": [],
-     "uiFragments": 0,
+     "uiFragments": 2,
      "uiAbuse": false,
      "realPictures": 4,
-     "videoCount": 2,
-     "uiPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 2,
      "pictureSamples": [
-      "image?url=%2Fprojects%2Fstream-mart.png&w=640&q=",
-      "image?url=%2Favatar.jpg&w=640&q=85"
+      "image?url=%2Favatar.jpg&w=256&q=75",
+      "image?url=%2Fart%2Fcat-nom.webp&w=640&q=75",
+      "image?url=%2Fart%2Fclove-valorant.webp&w=640&q=7",
+      "image?url=%2Fart%2Fedward-elric.webp&w=640&q=75"
      ],
      "blendText": 0,
      "sideScrollers": 0,
@@ -51,74 +60,74 @@
      "videosNoPoster": 0
     },
     "hero": {
-     "text": "Hi, I’m Vipin.",
-     "words": 3,
-     "chars": 14,
+     "text": "Vipin Kaushik",
+     "words": 2,
+     "chars": 13,
      "lines": 1,
-     "size": 66,
-     "vw": 4.6,
+     "size": 60,
+     "vw": 4.2,
      "font": "Inter",
      "weight": 700,
-     "tracking": -0.03,
-     "leading": 1.05,
+     "tracking": -0.025,
+     "leading": 1,
      "upper": false,
      "italic": false,
      "mono": false,
      "align": "left",
-     "position": "left",
-     "widthRatio": 0.4,
-     "top": 58,
+     "position": "center",
+     "widthRatio": 0.34,
+     "top": 161,
      "tag": "h1",
      "kind": "heading"
     },
     "h1": {
-     "text": "Hi, I’m Vipin.",
-     "words": 3,
+     "text": "Vipin Kaushik",
+     "words": 2,
      "lines": 1,
-     "size": 66,
+     "size": 60,
      "font": "Inter"
     },
     "headings": [
      {
-      "text": "Hi, I’m Vipin.",
-      "words": 3,
-      "chars": 14,
+      "text": "Vipin Kaushik",
+      "words": 2,
+      "chars": 13,
       "lines": 1,
-      "size": 66,
-      "vw": 4.6,
+      "size": 60,
+      "vw": 4.2,
       "font": "Inter",
       "weight": 700,
-      "tracking": -0.03,
-      "leading": 1.05,
+      "tracking": -0.025,
+      "leading": 1,
       "upper": false,
       "italic": false,
       "mono": false,
       "align": "left",
-      "position": "left",
-      "widthRatio": 0.4,
-      "top": 58,
+      "position": "center",
+      "widthRatio": 0.34,
+      "top": 161,
       "tag": "h1",
       "kind": "heading"
      },
      {
-      "text": "Hiring? Let’s talk.",
+      "text": "Get in touch",
       "words": 3,
-      "chars": 19,
+      "chars": 12,
       "lines": 1,
-      "size": 34,
-      "vw": 2.4,
+      "size": 30,
+      "vw": 2.1,
       "font": "Inter",
       "weight": 700,
-      "tracking": -0.03,
-      "leading": 1.1,
+      "tracking": -0.025,
+      "leading": 1.2,
       "upper": false,
       "italic": false,
       "mono": false,
       "align": "left",
-      "position": "right",
-      "widthRatio": 0.18,
-      "top": 633,
-      "tag": "h3",
+      "position": "center",
+      "widthRatio": 0.66,
+      "top": 5470,
+      "tag": "h2",
       "kind": "heading"
      }
     ],
@@ -135,152 +144,175 @@
      "families": [
       {
        "family": "Inter",
-       "share": 1,
+       "share": 0.92,
+       "mono": false
+      },
+      {
+       "family": "ui-monospace",
+       "share": 0.07,
+       "mono": false
+      },
+      {
+       "family": "system-ui",
+       "share": 0.01,
        "mono": false
       }
      ],
-     "familyCount": 1,
+     "familyCount": 3,
      "sizes": [
-      13,
+      11,
+      12,
       14,
       16,
-      20,
-      22,
-      34,
-      66
+      18,
+      24,
+      30,
+      60
      ],
-     "sizeCount": 7,
+     "sizeCount": 8,
      "notLoaded": [],
      "body": {
       "font": "Inter",
       "size": 16,
-      "leading": 1.5,
+      "leading": 1.63,
       "weight": 400,
       "tracking": 0,
-      "contrast": 8.4
+      "contrast": 7.8
      },
-     "measureChars": 39,
+     "measureChars": 73,
      "max": {
-      "size": 66,
-      "vw": 4.6,
+      "size": 60,
+      "vw": 4.2,
       "font": "Inter",
-      "text": "Hi, I’m Vipin."
+      "text": "Vipin Kaushik"
      },
-     "monoShare": 0,
+     "monoShare": 0.07,
      "monoProseShare": 0,
-     "monoFamilies": [],
+     "monoFamilies": [
+      "ui-monospace"
+     ],
      "monoSamples": [],
      "microLabels": 0,
      "microLabelShare": 0,
      "microSamples": [],
      "upperShare": 0,
      "centerShare": 0.03,
-     "smallText": 0
+     "smallText": 36
     },
     "eyebrows": [],
     "numbered": [],
     "color": {
-     "bodyBg": "#0b0b0b",
+     "bodyBg": "#f7f5f0",
      "bodyBgHsl": {
-      "h": 0,
-      "s": 0,
-      "l": 0.04
+      "h": 43,
+      "s": 0.3,
+      "l": 0.95
      },
-     "dark": true,
+     "dark": false,
      "sectionBgs": [
       {
-       "color": "#0b0b0b",
+       "color": "#f7f5f0",
        "top": 0,
        "hsl": {
-        "h": 0,
-        "s": 0,
-        "l": 0.04
+        "h": 43,
+        "s": 0.3,
+        "l": 0.95
        }
       },
       {
-       "color": "#0f0f0f",
-       "top": 16,
+       "color": "#efece6",
+       "top": 24,
+       "hsl": {
+        "h": 40,
+        "s": 0.22,
+        "l": 0.92
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 3129,
        "hsl": {
         "h": 0,
         "s": 0,
-        "l": 0.06
+        "l": 1
        }
       }
      ],
      "textColors": [
       {
-       "color": "#b8b8b8",
-       "share": 0.5
+       "color": "#4d4741",
+       "share": 0.55
       },
       {
-       "color": "#f2f2f2",
-       "share": 0.26
+       "color": "#1c1917",
+       "share": 0.21
       },
       {
-       "color": "#8e8e93",
-       "share": 0.24
+       "color": "#68625b",
+       "share": 0.19
+      },
+      {
+       "color": "#f7f5f0",
+       "share": 0.01
+      },
+      {
+       "color": "#973c00",
+       "share": 0.01
       }
      ],
      "button": {
-      "bg": "#151515",
+      "bg": "#ffffff",
       "hsl": {
        "h": 0,
        "s": 0,
-       "l": 0.08
+       "l": 1
       },
-      "fg": "#f2f2f2"
+      "fg": "#1c1917"
      },
      "lowContrast": []
     },
     "buttons": {
-     "count": 6,
-     "inHero": 6,
+     "count": 18,
+     "inHero": 2,
      "radius": 12,
-     "height": 79,
+     "height": 30,
      "withShadow": 0,
      "withGradient": 0,
      "mono": 0,
      "upper": 0,
      "heroLabels": [
-      "Get in touch",
-      "GitHub @vpn-cli",
-      "LinkedIn /in/vpnk2003",
-      "Résumé PDF",
-      "Copy"
+      "Download Résumé",
+      "Case Studies"
      ]
     },
     "surfaces": {
-     "shadowStatic": 0,
-     "shadowOverlay": 0,
-     "shadowSamples": [],
+     "shadowStatic": 2,
+     "shadowOverlay": 1,
+     "shadowSamples": [
+      "button.h-7.px-2.5 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "button.h-7.px-2.5 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+     ],
      "gradients": 0,
      "scrims": 0,
      "gradientSamples": [],
      "gradientText": 0,
      "hairlines": 0,
      "hairlineSamples": [],
-     "outlinedBoxes": 0,
+     "outlinedBoxes": 22,
      "dashed": 0,
      "blurred": 0,
-     "roundedBoxes": 11,
-     "boxRadius": 24,
-     "squareMedia": 1,
-     "roundedMedia": 1,
-     "mediaRadius": 24,
+     "roundedBoxes": 25,
+     "boxRadius": 16,
+     "squareMedia": 0,
+     "roundedMedia": 4,
+     "mediaRadius": 12,
      "textShadow": 0,
      "cardRows": []
     },
     "heroMedia": [],
-    "nav": {
-     "links": 2,
-     "fixed": false,
-     "height": 265,
-     "floatingPill": false,
-     "blur": false
-    },
+    "nav": null,
     "fontsLoaded": [
-     "inter",
-     "inter fallback"
+     "inter"
     ]
    },
    "layout": {
@@ -288,50 +320,260 @@
      "w": 1440,
      "h": 900
     },
-    "pageH": 900,
+    "pageH": 6206,
     "margins": {
-     "left": 61,
-     "right": 45
+     "left": 208,
+     "right": 209
     },
-    "sections": [],
-    "gaps": [],
+    "sections": [
+     {
+      "sel": "section.w-full.space-y-8",
+      "tag": "section",
+      "top": 161,
+      "height": 753,
+      "words": 133,
+      "media": 1,
+      "middle": 49,
+      "heading": {
+       "text": "I'm finishing a dual degree at IIT Kharagpur and s",
+       "size": 24,
+       "tag": "p"
+      },
+      "left": 208,
+      "right": 247,
+      "textLeft": 208,
+      "textRight": 247,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full.space-y-6",
+      "tag": "section",
+      "top": 1042,
+      "height": 492,
+      "words": 93,
+      "media": 0,
+      "middle": 112,
+      "heading": {
+       "text": "Three backends, simulated",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 208,
+      "right": 208,
+      "textLeft": 208,
+      "textRight": 225,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full.space-y-6",
+      "tag": "section",
+      "top": 1662,
+      "height": 606,
+      "words": 130,
+      "media": 0,
+      "middle": 182,
+      "heading": {
+       "text": "Experience",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 208,
+      "right": 237,
+      "textLeft": 208,
+      "textRight": 237,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full.space-y-6",
+      "tag": "section",
+      "top": 2396,
+      "height": 517,
+      "words": 116,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "How I got here",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 208,
+      "right": 208,
+      "textLeft": 208,
+      "textRight": 242,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full.space-y-6",
+      "tag": "section",
+      "top": 3041,
+      "height": 608,
+      "words": 170,
+      "media": 0,
+      "middle": 40,
+      "heading": {
+       "text": "How I work",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 208,
+      "right": 268,
+      "textLeft": 208,
+      "textRight": 268,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full.space-y-8",
+      "tag": "section",
+      "top": 3777,
+      "height": 700,
+      "words": 24,
+      "media": 3,
+      "middle": 24,
+      "heading": {
+       "text": "Design",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 208,
+      "right": 208,
+      "textLeft": 208,
+      "textRight": 396,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full.space-y-4",
+      "tag": "section",
+      "top": 4605,
+      "height": 700,
+      "words": 36,
+      "media": 0,
+      "middle": 96,
+      "heading": {
+       "text": "What I'm learning now",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 208,
+      "right": 270,
+      "textLeft": 208,
+      "textRight": 270,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full",
+      "tag": "section",
+      "top": 5433,
+      "height": 700,
+      "words": 45,
+      "media": 0,
+      "middle": 44,
+      "heading": {
+       "text": "Get in touch",
+       "size": 30,
+       "tag": "h2"
+      },
+      "left": 245,
+      "right": 298,
+      "textLeft": 245,
+      "textRight": 298,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [
+     {
+      "top": 4976,
+      "height": 492
+     }
+    ],
     "h1s": [
      {
-      "text": "Hi, I’m Vipin.",
-      "size": 66,
-      "top": 58,
+      "text": "Vipin Kaushik",
+      "size": 60,
+      "top": 161,
       "firstScreen": true
      }
     ],
     "edgeText": [],
     "edges": [
      {
-      "x": 753,
-      "n": 5
+      "x": 208,
+      "n": 10
      },
      {
-      "x": 62,
+      "x": 233,
+      "n": 8
+     },
+     {
+      "x": 571,
       "n": 3
      },
      {
-      "x": 261,
+      "x": 901,
+      "n": 3
+     },
+     {
+      "x": 245,
+      "n": 2
+     },
+     {
+      "x": 376,
+      "n": 2
+     },
+     {
+      "x": 777,
+      "n": 2
+     },
+     {
+      "x": 257,
       "n": 1
      },
      {
-      "x": 292,
+      "x": 753,
       "n": 1
      }
     ],
-    "leftBlocks": 10,
+    "leftBlocks": 32,
     "bodySize": 16,
     "stage": false,
     "explains": true,
     "slivers": [],
-    "voidShare": 0.13,
+    "voidShare": 0.15,
     "voidBox": {
-     "x": 180,
-     "y": 600,
-     "w": 540,
+     "x": 360,
+     "y": 540,
+     "w": 660,
      "h": 300
     }
    },
@@ -342,18 +584,23 @@
    "width": 768,
    "height": 1024,
    "load": "load",
-   "screens": 2,
+   "screens": 7,
    "filled": [
-    1,
-    1
+    0.94,
+    0.93,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96
    ],
    "motion": {
-    "elements": 10,
-    "css": 10,
+    "elements": 0,
+    "css": 0,
     "transitions": 0,
     "scripted": 0,
-    "videos": 2,
-    "playingVideos": 2
+    "videos": 0,
+    "playingVideos": 0
    },
    "metrics": {
     "viewport": {
@@ -361,24 +608,26 @@
      "h": 1024
     },
     "page": {
-     "height": 1888,
-     "screens": 1.8,
-     "words": 189,
-     "img": 2,
-     "video": 2,
-     "canvas": 1,
-     "svg": 41,
-     "sections": 0,
+     "height": 6835,
+     "screens": 6.7,
+     "words": 659,
+     "img": 6,
+     "video": 0,
+     "canvas": 0,
+     "svg": 37,
+     "sections": 8,
      "horizontalOverflow": 0,
      "overflowCulprits": [],
-     "uiFragments": 0,
+     "uiFragments": 2,
      "uiAbuse": false,
      "realPictures": 4,
-     "videoCount": 2,
-     "uiPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 2,
      "pictureSamples": [
-      "image?url=%2Fprojects%2Fstream-mart.png&w=640&q=",
-      "image?url=%2Favatar.jpg&w=640&q=85"
+      "image?url=%2Favatar.jpg&w=256&q=75",
+      "image?url=%2Fart%2Fcat-nom.webp&w=384&q=75",
+      "image?url=%2Fart%2Fclove-valorant.webp&w=384&q=7",
+      "image?url=%2Fart%2Fedward-elric.webp&w=384&q=75"
      ],
      "blendText": 0,
      "sideScrollers": 0,
@@ -387,74 +636,74 @@
      "videosNoPoster": 0
     },
     "hero": {
-     "text": "Hi, I’m Vipin.",
-     "words": 3,
-     "chars": 14,
+     "text": "Vipin Kaushik",
+     "words": 2,
+     "chars": 13,
      "lines": 1,
      "size": 48,
      "vw": 6.3,
      "font": "Inter",
      "weight": 700,
-     "tracking": -0.03,
-     "leading": 1.05,
+     "tracking": -0.025,
+     "leading": 1,
      "upper": false,
      "italic": false,
      "mono": false,
      "align": "left",
-     "position": "center",
-     "widthRatio": 0.75,
-     "top": 50,
+     "position": "right",
+     "widthRatio": 0.65,
+     "top": 137,
      "tag": "h1",
      "kind": "heading"
     },
     "h1": {
-     "text": "Hi, I’m Vipin.",
-     "words": 3,
+     "text": "Vipin Kaushik",
+     "words": 2,
      "lines": 1,
      "size": 48,
      "font": "Inter"
     },
     "headings": [
      {
-      "text": "Hi, I’m Vipin.",
-      "words": 3,
-      "chars": 14,
+      "text": "Vipin Kaushik",
+      "words": 2,
+      "chars": 13,
       "lines": 1,
       "size": 48,
       "vw": 6.3,
       "font": "Inter",
       "weight": 700,
-      "tracking": -0.03,
-      "leading": 1.05,
+      "tracking": -0.025,
+      "leading": 1,
       "upper": false,
       "italic": false,
       "mono": false,
       "align": "left",
-      "position": "center",
-      "widthRatio": 0.75,
-      "top": 50,
+      "position": "right",
+      "widthRatio": 0.65,
+      "top": 137,
       "tag": "h1",
       "kind": "heading"
      },
      {
-      "text": "Hiring? Let’s talk.",
+      "text": "Get in touch",
       "words": 3,
-      "chars": 19,
+      "chars": 12,
       "lines": 1,
       "size": 30,
       "vw": 3.9,
       "font": "Inter",
       "weight": 700,
-      "tracking": -0.03,
-      "leading": 1.1,
+      "tracking": -0.025,
+      "leading": 1.2,
       "upper": false,
       "italic": false,
       "mono": false,
       "align": "left",
-      "position": "left",
-      "widthRatio": 0.3,
-      "top": 1586,
-      "tag": "h3",
+      "position": "center",
+      "widthRatio": 0.78,
+      "top": 6123,
+      "tag": "h2",
       "kind": "heading"
      }
     ],
@@ -471,18 +720,28 @@
      "families": [
       {
        "family": "Inter",
-       "share": 1,
+       "share": 0.92,
+       "mono": false
+      },
+      {
+       "family": "ui-monospace",
+       "share": 0.07,
+       "mono": false
+      },
+      {
+       "family": "system-ui",
+       "share": 0.01,
        "mono": false
       }
      ],
-     "familyCount": 1,
+     "familyCount": 3,
      "sizes": [
-      13,
+      11,
+      12,
       14,
       16,
       18,
-      20,
-      22,
+      24,
       30,
       48
      ],
@@ -491,151 +750,145 @@
      "body": {
       "font": "Inter",
       "size": 16,
-      "leading": 1.5,
+      "leading": 1.63,
       "weight": 400,
       "tracking": 0,
-      "contrast": 8.4
+      "contrast": 7.8
      },
-     "measureChars": 34,
+     "measureChars": 84,
      "max": {
       "size": 48,
       "vw": 6.3,
       "font": "Inter",
-      "text": "Hi, I’m Vipin."
+      "text": "Vipin Kaushik"
      },
-     "monoShare": 0,
+     "monoShare": 0.07,
      "monoProseShare": 0,
-     "monoFamilies": [],
+     "monoFamilies": [
+      "ui-monospace"
+     ],
      "monoSamples": [],
      "microLabels": 0,
      "microLabelShare": 0,
      "microSamples": [],
      "upperShare": 0,
      "centerShare": 0.03,
-     "smallText": 0
+     "smallText": 36
     },
     "eyebrows": [],
     "numbered": [],
     "color": {
-     "bodyBg": "#0b0b0b",
+     "bodyBg": "#f7f5f0",
      "bodyBgHsl": {
-      "h": 0,
-      "s": 0,
-      "l": 0.04
+      "h": 43,
+      "s": 0.3,
+      "l": 0.95
      },
-     "dark": true,
+     "dark": false,
      "sectionBgs": [
       {
-       "color": "#0b0b0b",
+       "color": "#f7f5f0",
        "top": 0,
        "hsl": {
-        "h": 0,
-        "s": 0,
-        "l": 0.04
+        "h": 43,
+        "s": 0.3,
+        "l": 0.95
        }
       },
       {
-       "color": "#0f0f0f",
-       "top": 12,
+       "color": "#efece6",
+       "top": 16,
        "hsl": {
-        "h": 0,
-        "s": 0,
-        "l": 0.06
+        "h": 40,
+        "s": 0.22,
+        "l": 0.92
        }
       },
       {
-       "color": "#151515",
-       "top": 249,
+       "color": "#ffffff",
+       "top": 704,
        "hsl": {
         "h": 0,
         "s": 0,
-        "l": 0.08
+        "l": 1
        }
       }
      ],
      "textColors": [
       {
-       "color": "#b8b8b8",
-       "share": 0.5
+       "color": "#4d4741",
+       "share": 0.55
       },
       {
-       "color": "#f2f2f2",
-       "share": 0.26
+       "color": "#1c1917",
+       "share": 0.21
       },
       {
-       "color": "#8e8e93",
-       "share": 0.24
+       "color": "#68625b",
+       "share": 0.19
+      },
+      {
+       "color": "#f7f5f0",
+       "share": 0.01
+      },
+      {
+       "color": "#973c00",
+       "share": 0.01
       }
      ],
      "button": {
-      "bg": "#151515",
+      "bg": "#ffffff",
       "hsl": {
        "h": 0,
        "s": 0,
-       "l": 0.08
+       "l": 1
       },
-      "fg": "#f2f2f2"
+      "fg": "#1c1917"
      },
      "lowContrast": []
     },
     "buttons": {
-     "count": 6,
-     "inHero": 1,
+     "count": 18,
+     "inHero": 2,
      "radius": 12,
-     "height": 61,
+     "height": 30,
      "withShadow": 0,
      "withGradient": 0,
      "mono": 0,
      "upper": 0,
      "heroLabels": [
-      "Get in touch"
+      "Download Résumé",
+      "Case Studies"
      ]
     },
     "surfaces": {
-     "shadowStatic": 0,
-     "shadowOverlay": 0,
-     "shadowSamples": [],
+     "shadowStatic": 2,
+     "shadowOverlay": 1,
+     "shadowSamples": [
+      "button.h-7.px-2.5 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "button.h-7.px-2.5 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+     ],
      "gradients": 0,
      "scrims": 0,
      "gradientSamples": [],
      "gradientText": 0,
      "hairlines": 0,
      "hairlineSamples": [],
-     "outlinedBoxes": 0,
+     "outlinedBoxes": 22,
      "dashed": 0,
      "blurred": 0,
-     "roundedBoxes": 11,
-     "boxRadius": 24,
-     "squareMedia": 1,
+     "roundedBoxes": 25,
+     "boxRadius": 16,
+     "squareMedia": 0,
      "roundedMedia": 4,
      "mediaRadius": 12,
      "textShadow": 0,
      "cardRows": []
     },
-    "heroMedia": [
-     {
-      "type": "video",
-      "ratio": 0.16
-     },
-     {
-      "type": "img",
-      "ratio": 0.16
-     },
-     {
-      "type": "video",
-      "ratio": 0.16
-     }
-    ],
-    "nav": {
-     "links": 0,
-     "fixed": false,
-     "height": 210,
-     "floatingPill": false,
-     "blur": false
-    },
+    "heroMedia": [],
+    "nav": null,
     "fontsLoaded": [
-     "inter",
-     "inter fallback"
+     "inter"
     ]
    },
    "layout": {
@@ -643,52 +896,29 @@
      "w": 768,
      "h": 1024
     },
-    "pageH": 1888,
+    "pageH": 6835,
     "margins": {
-     "left": 50,
-     "right": 26
+     "left": 49,
+     "right": 49
     },
     "sections": [
      {
-      "sel": "div.tile-intro.w-full",
-      "tag": "div",
-      "top": 25,
-      "height": 212,
-      "words": 32,
-      "media": 0,
-      "middle": 7,
-      "heading": {
-       "text": "Hi, I’m",
-       "size": 48,
-       "tag": "h1"
-      },
-      "left": 50,
-      "right": 50,
-      "textLeft": 50,
-      "textRight": 65,
-      "fullBleed": false,
-      "footer": false,
-      "hero": true,
-      "continues": false,
-      "pinned": false
-     },
-     {
-      "sel": "div.tile-projects.w-full",
-      "tag": "div",
-      "top": 249,
-      "height": 631,
-      "words": 68,
+      "sel": "section.w-full.space-y-8",
+      "tag": "section",
+      "top": 137,
+      "height": 1084,
+      "words": 133,
       "media": 1,
       "middle": 0,
       "heading": {
-       "text": "Selected work",
-       "size": 20,
-       "tag": "h2"
+       "text": "I'm finishing a dual degree at IIT Kharagpur and s",
+       "size": 24,
+       "tag": "p"
       },
-      "left": 50,
-      "right": 50,
-      "textLeft": 50,
-      "textRight": 50,
+      "left": 49,
+      "right": 51,
+      "textLeft": 49,
+      "textRight": 51,
       "fullBleed": false,
       "footer": false,
       "hero": true,
@@ -696,22 +926,22 @@
       "pinned": false
      },
      {
-      "sel": "div.tile-stack.w-full",
-      "tag": "div",
-      "top": 1381,
-      "height": 160,
-      "words": 3,
+      "sel": "section.w-full.space-y-6",
+      "tag": "section",
+      "top": 1333,
+      "height": 512,
+      "words": 93,
       "media": 0,
       "middle": 0,
       "heading": {
-       "text": "Stack I use",
-       "size": 22,
-       "tag": "h3"
+       "text": "Three backends, simulated",
+       "size": 24,
+       "tag": "h2"
       },
-      "left": 50,
-      "right": 609,
-      "textLeft": 50,
-      "textRight": 609,
+      "left": 49,
+      "right": 49,
+      "textLeft": 49,
+      "textRight": 66,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -719,22 +949,137 @@
       "pinned": false
      },
      {
-      "sel": "div.tile-contact.w-full",
-      "tag": "div",
-      "top": 1553,
-      "height": 279,
-      "words": 22,
+      "sel": "section.w-full.space-y-6",
+      "tag": "section",
+      "top": 1957,
+      "height": 706,
+      "words": 130,
       "media": 0,
-      "middle": 181,
+      "middle": 0,
       "heading": {
-       "text": "Hiring? Let’s talk.",
-       "size": 30,
-       "tag": "h3"
+       "text": "Experience",
+       "size": 24,
+       "tag": "h2"
       },
-      "left": 58,
-      "right": 58,
-      "textLeft": 58,
-      "textRight": 58,
+      "left": 49,
+      "right": 78,
+      "textLeft": 49,
+      "textRight": 78,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full.space-y-6",
+      "tag": "section",
+      "top": 2775,
+      "height": 763,
+      "words": 116,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "How I got here",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 49,
+      "right": 49,
+      "textLeft": 49,
+      "textRight": 106,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full.space-y-6",
+      "tag": "section",
+      "top": 3650,
+      "height": 700,
+      "words": 93,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "How I work",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 49,
+      "right": 89,
+      "textLeft": 49,
+      "textRight": 89,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full.space-y-8",
+      "tag": "section",
+      "top": 4462,
+      "height": 700,
+      "words": 25,
+      "media": 3,
+      "middle": 0,
+      "heading": {
+       "text": "Design",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 49,
+      "right": 49,
+      "textLeft": 49,
+      "textRight": 234,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full.space-y-4",
+      "tag": "section",
+      "top": 5274,
+      "height": 700,
+      "words": 36,
+      "media": 0,
+      "middle": 82,
+      "heading": {
+       "text": "What I'm learning now",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 49,
+      "right": 97,
+      "textLeft": 49,
+      "textRight": 97,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full",
+      "tag": "section",
+      "top": 6086,
+      "height": 700,
+      "words": 45,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Get in touch",
+       "size": 30,
+       "tag": "h2"
+      },
+      "left": 86,
+      "right": 100,
+      "textLeft": 86,
+      "textRight": 100,
       "fullBleed": false,
       "footer": true,
       "hero": false,
@@ -745,24 +1090,44 @@
     "gaps": [],
     "h1s": [
      {
-      "text": "Hi, I’m Vipin.",
+      "text": "Vipin Kaushik",
       "size": 48,
-      "top": 50,
+      "top": 137,
       "firstScreen": true
      }
     ],
     "edgeText": [],
     "edges": [
      {
-      "x": 50,
-      "n": 9
+      "x": 74,
+      "n": 14
      },
      {
-      "x": 195,
+      "x": 49,
+      "n": 10
+     },
+     {
+      "x": 86,
+      "n": 2
+     },
+     {
+      "x": 217,
+      "n": 2
+     },
+     {
+      "x": 441,
+      "n": 2
+     },
+     {
+      "x": 98,
+      "n": 1
+     },
+     {
+      "x": 417,
       "n": 1
      }
     ],
-    "leftBlocks": 10,
+    "leftBlocks": 32,
     "bodySize": 16,
     "stage": false,
     "explains": true,
@@ -777,19 +1142,25 @@
    "width": 390,
    "height": 844,
    "load": "load",
-   "screens": 3,
+   "screens": 9,
    "filled": [
-    0.99,
-    1,
-    1
+    0.85,
+    0.92,
+    0.92,
+    0.92,
+    0.92,
+    0.92,
+    0.92,
+    0.92,
+    0.92
    ],
    "motion": {
-    "elements": 10,
-    "css": 10,
+    "elements": 1,
+    "css": 0,
     "transitions": 0,
-    "scripted": 0,
-    "videos": 2,
-    "playingVideos": 2
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
    },
    "metrics": {
     "viewport": {
@@ -797,24 +1168,25 @@
      "h": 844
     },
     "page": {
-     "height": 2475,
-     "screens": 2.9,
-     "words": 189,
-     "img": 2,
-     "video": 2,
-     "canvas": 1,
-     "svg": 41,
-     "sections": 0,
+     "height": 7253,
+     "screens": 8.6,
+     "words": 365,
+     "img": 6,
+     "video": 0,
+     "canvas": 0,
+     "svg": 37,
+     "sections": 8,
      "horizontalOverflow": 0,
      "overflowCulprits": [],
-     "uiFragments": 0,
+     "uiFragments": 2,
      "uiAbuse": false,
-     "realPictures": 4,
-     "videoCount": 2,
-     "uiPictures": 0,
+     "realPictures": 3,
+     "videoCount": 0,
+     "uiPictures": 1,
      "pictureSamples": [
-      "image?url=%2Fprojects%2Fstream-mart.png&w=640&q=",
-      "image?url=%2Favatar.jpg&w=640&q=85"
+      "image?url=%2Fart%2Fcat-nom.webp&w=640&q=75",
+      "image?url=%2Fart%2Fclove-valorant.webp&w=640&q=7",
+      "image?url=%2Fart%2Fedward-elric.webp&w=640&q=75"
      ],
      "blendText": 0,
      "sideScrollers": 0,
@@ -823,74 +1195,74 @@
      "videosNoPoster": 0
     },
     "hero": {
-     "text": "Hi, I’m Vipin.",
-     "words": 3,
-     "chars": 14,
+     "text": "Vipin Kaushik",
+     "words": 2,
+     "chars": 13,
      "lines": 1,
-     "size": 38,
-     "vw": 9.7,
+     "size": 36,
+     "vw": 9.2,
      "font": "Inter",
      "weight": 700,
-     "tracking": -0.03,
-     "leading": 1.05,
+     "tracking": -0.025,
+     "leading": 1.11,
      "upper": false,
      "italic": false,
      "mono": false,
      "align": "left",
      "position": "center",
-     "widthRatio": 0.64,
-     "top": 42,
+     "widthRatio": 0.83,
+     "top": 253,
      "tag": "h1",
      "kind": "heading"
     },
     "h1": {
-     "text": "Hi, I’m Vipin.",
-     "words": 3,
+     "text": "Vipin Kaushik",
+     "words": 2,
      "lines": 1,
-     "size": 38,
+     "size": 36,
      "font": "Inter"
     },
     "headings": [
      {
-      "text": "Hi, I’m Vipin.",
-      "words": 3,
-      "chars": 14,
+      "text": "Vipin Kaushik",
+      "words": 2,
+      "chars": 13,
       "lines": 1,
-      "size": 38,
-      "vw": 9.7,
+      "size": 36,
+      "vw": 9.2,
       "font": "Inter",
       "weight": 700,
-      "tracking": -0.03,
-      "leading": 1.05,
+      "tracking": -0.025,
+      "leading": 1.11,
       "upper": false,
       "italic": false,
       "mono": false,
       "align": "left",
       "position": "center",
-      "widthRatio": 0.64,
-      "top": 42,
+      "widthRatio": 0.83,
+      "top": 253,
       "tag": "h1",
       "kind": "heading"
      },
      {
-      "text": "Hiring? Let’s talk.",
+      "text": "Get in touch",
       "words": 3,
-      "chars": 19,
+      "chars": 12,
       "lines": 1,
-      "size": 26,
-      "vw": 6.7,
+      "size": 24,
+      "vw": 6.2,
       "font": "Inter",
       "weight": 700,
-      "tracking": -0.03,
-      "leading": 1.1,
+      "tracking": -0.025,
+      "leading": 1.33,
       "upper": false,
       "italic": false,
       "mono": false,
       "align": "left",
-      "position": "left",
-      "widthRatio": 0.52,
-      "top": 2131,
-      "tag": "h3",
+      "position": "center",
+      "widthRatio": 0.68,
+      "top": 6549,
+      "tag": "h2",
       "kind": "heading"
      }
     ],
@@ -907,161 +1279,174 @@
      "families": [
       {
        "family": "Inter",
-       "share": 1,
+       "share": 0.93,
+       "mono": false
+      },
+      {
+       "family": "ui-monospace",
+       "share": 0.07,
+       "mono": false
+      },
+      {
+       "family": "system-ui",
+       "share": 0.01,
        "mono": false
       }
      ],
-     "familyCount": 1,
+     "familyCount": 3,
      "sizes": [
-      13,
+      11,
+      12,
+      14,
       16,
-      18,
       20,
-      26,
-      38
+      24,
+      36
      ],
-     "sizeCount": 6,
+     "sizeCount": 7,
      "notLoaded": [],
      "body": {
       "font": "Inter",
-      "size": 16,
-      "leading": 1.5,
+      "size": 14,
+      "leading": 1.63,
       "weight": 400,
       "tracking": 0,
-      "contrast": 8.4
+      "contrast": 7.8
      },
-     "measureChars": 34,
+     "measureChars": 46,
      "max": {
-      "size": 38,
-      "vw": 9.7,
+      "size": 36,
+      "vw": 9.2,
       "font": "Inter",
-      "text": "Hi, I’m Vipin."
+      "text": "Vipin Kaushik"
      },
-     "monoShare": 0,
+     "monoShare": 0.07,
      "monoProseShare": 0,
-     "monoFamilies": [],
+     "monoFamilies": [
+      "ui-monospace"
+     ],
      "monoSamples": [],
      "microLabels": 0,
      "microLabelShare": 0,
      "microSamples": [],
      "upperShare": 0,
      "centerShare": 0.03,
-     "smallText": 0
+     "smallText": 72
     },
     "eyebrows": [],
     "numbered": [],
     "color": {
-     "bodyBg": "#0b0b0b",
+     "bodyBg": "#f7f5f0",
      "bodyBgHsl": {
-      "h": 0,
-      "s": 0,
-      "l": 0.04
+      "h": 43,
+      "s": 0.3,
+      "l": 0.95
      },
-     "dark": true,
+     "dark": false,
      "sectionBgs": [
       {
-       "color": "#0b0b0b",
+       "color": "#f7f5f0",
        "top": 0,
        "hsl": {
-        "h": 0,
-        "s": 0,
-        "l": 0.04
+        "h": 43,
+        "s": 0.3,
+        "l": 0.95
        }
       },
       {
-       "color": "#0f0f0f",
-       "top": 8,
+       "color": "#efece6",
+       "top": 12,
        "hsl": {
-        "h": 0,
-        "s": 0,
-        "l": 0.06
+        "h": 40,
+        "s": 0.22,
+        "l": 0.92
        }
       },
       {
-       "color": "#151515",
-       "top": 21,
+       "color": "#ffffff",
+       "top": 921,
        "hsl": {
         "h": 0,
         "s": 0,
-        "l": 0.08
+        "l": 1
        }
       }
      ],
      "textColors": [
       {
-       "color": "#b8b8b8",
-       "share": 0.5
+       "color": "#4d4741",
+       "share": 0.55
       },
       {
-       "color": "#f2f2f2",
-       "share": 0.26
+       "color": "#1c1917",
+       "share": 0.21
       },
       {
-       "color": "#8e8e93",
-       "share": 0.24
+       "color": "#68625b",
+       "share": 0.18
+      },
+      {
+       "color": "#f7f5f0",
+       "share": 0.01
+      },
+      {
+       "color": "#973c00",
+       "share": 0.01
       }
      ],
      "button": {
-      "bg": "#151515",
+      "bg": "#ffffff",
       "hsl": {
        "h": 0,
        "s": 0,
-       "l": 0.08
+       "l": 1
       },
-      "fg": "#f2f2f2"
+      "fg": "#1c1917"
      },
      "lowContrast": []
     },
     "buttons": {
-     "count": 6,
-     "inHero": 1,
+     "count": 18,
+     "inHero": 2,
      "radius": 12,
-     "height": 55,
+     "height": 62,
      "withShadow": 0,
      "withGradient": 0,
      "mono": 0,
      "upper": 0,
      "heroLabels": [
-      "Get in touch"
+      "Download Résumé",
+      "Case Studies"
      ]
     },
     "surfaces": {
-     "shadowStatic": 0,
-     "shadowOverlay": 0,
-     "shadowSamples": [],
+     "shadowStatic": 2,
+     "shadowOverlay": 1,
+     "shadowSamples": [
+      "button.h-7.px-2.5 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "button.h-7.px-2.5 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+     ],
      "gradients": 0,
      "scrims": 0,
      "gradientSamples": [],
      "gradientText": 0,
      "hairlines": 0,
      "hairlineSamples": [],
-     "outlinedBoxes": 0,
+     "outlinedBoxes": 23,
      "dashed": 0,
      "blurred": 0,
-     "roundedBoxes": 11,
-     "boxRadius": 24,
-     "squareMedia": 1,
+     "roundedBoxes": 26,
+     "boxRadius": 16,
+     "squareMedia": 0,
      "roundedMedia": 4,
      "mediaRadius": 12,
      "textShadow": 0,
      "cardRows": []
     },
-    "heroMedia": [
-     {
-      "type": "img",
-      "ratio": 0.27
-     }
-    ],
-    "nav": {
-     "links": 0,
-     "fixed": false,
-     "height": 188,
-     "floatingPill": false,
-     "blur": false
-    },
+    "heroMedia": [],
+    "nav": null,
     "fontsLoaded": [
-     "inter",
-     "inter fallback"
+     "inter"
     ]
    },
    "layout": {
@@ -1069,71 +1454,75 @@
      "w": 390,
      "h": 844
     },
-    "pageH": 2475,
+    "pageH": 7253,
     "margins": {
-     "left": 22,
-     "right": 22
+     "left": 33,
+     "right": 33
     },
     "sections": [
      {
-      "sel": "div.tile-intro.w-full",
+      "sel": "div.flex.flex-col",
       "tag": "div",
-      "top": 21,
-      "height": 299,
-      "words": 32,
+      "top": 105,
+      "height": 414,
+      "words": 35,
       "media": 0,
       "middle": 0,
       "heading": {
-       "text": "Hi, I’m",
-       "size": 38,
+       "text": "Vipin Kaushik",
+       "size": 36,
        "tag": "h1"
       },
-      "left": 42,
-      "right": 42,
-      "textLeft": 42,
-      "textRight": 75,
+      "left": 33,
+      "right": 49,
+      "textLeft": 33,
+      "textRight": 49,
       "fullBleed": false,
       "footer": false,
       "hero": true,
-      "continues": false,
+      "continues": true,
       "pinned": false
      },
      {
-      "sel": "div.tile-projects.w-full",
+      "sel": "div.grid.grid-cols-1",
       "tag": "div",
-      "top": 332,
-      "height": 656,
-      "words": 68,
-      "media": 1,
+      "top": 551,
+      "height": 1067,
+      "words": 115,
+      "media": 0,
       "middle": 0,
       "heading": {
-       "text": "Selected work",
+       "text": "What I work with",
+       "size": 12,
+       "tag": "h2"
+      },
+      "left": 33,
+      "right": 37,
+      "textLeft": 33,
+      "textRight": 37,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full.space-y-6",
+      "tag": "section",
+      "top": 1698,
+      "height": 602,
+      "words": 86,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Three backends, simulated",
        "size": 20,
        "tag": "h2"
       },
-      "left": 42,
-      "right": 42,
-      "textLeft": 42,
-      "textRight": 42,
-      "fullBleed": false,
-      "footer": false,
-      "hero": true,
-      "continues": false,
-      "pinned": false
-     },
-     {
-      "sel": "div.tile-about.w-full",
-      "tag": "div",
-      "top": 1000,
-      "height": 246,
-      "words": 28,
-      "media": 0,
-      "middle": 0,
-      "heading": null,
-      "left": 42,
-      "right": 68,
-      "textLeft": 42,
-      "textRight": 68,
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 34,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -1141,60 +1530,22 @@
       "pinned": false
      },
      {
-      "sel": "div.tile-portrait.w-full",
-      "tag": "div",
-      "top": 1258,
-      "height": 260,
-      "words": 0,
-      "media": 1,
-      "middle": 0,
-      "heading": null,
-      "left": 22,
-      "right": 22,
-      "textLeft": null,
-      "textRight": null,
-      "fullBleed": false,
-      "footer": false,
-      "hero": false,
-      "continues": false,
-      "pinned": false
-     },
-     {
-      "sel": "div.tile-links.w-full",
-      "tag": "div",
-      "top": 1530,
-      "height": 190,
-      "words": 6,
-      "media": 0,
-      "middle": 0,
-      "heading": null,
-      "left": 85,
-      "right": 222,
-      "textLeft": 85,
-      "textRight": 222,
-      "fullBleed": false,
-      "footer": false,
-      "hero": false,
-      "continues": false,
-      "pinned": false
-     },
-     {
-      "sel": "div.tile-stack.w-full",
-      "tag": "div",
-      "top": 1944,
-      "height": 150,
-      "words": 3,
+      "sel": "section.w-full.space-y-6",
+      "tag": "section",
+      "top": 2380,
+      "height": 940,
+      "words": 130,
       "media": 0,
       "middle": 0,
       "heading": {
-       "text": "Stack I use",
+       "text": "Experience",
        "size": 20,
-       "tag": "h3"
+       "tag": "h2"
       },
-      "left": 42,
-      "right": 249,
-      "textLeft": 42,
-      "textRight": 249,
+      "left": 33,
+      "right": 75,
+      "textLeft": 33,
+      "textRight": 75,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -1202,41 +1553,114 @@
       "pinned": false
      },
      {
-      "sel": "div.tile-byte.tile-cat",
-      "tag": "div",
-      "top": 1732,
-      "height": 200,
-      "words": 6,
-      "media": 1,
-      "middle": 0,
-      "heading": null,
-      "left": 22,
-      "right": 22,
-      "textLeft": 42,
-      "textRight": 42,
-      "fullBleed": false,
-      "footer": false,
-      "hero": false,
-      "continues": false,
-      "pinned": false
-     },
-     {
-      "sel": "div.tile-contact.w-full",
-      "tag": "div",
-      "top": 2106,
-      "height": 298,
-      "words": 22,
+      "sel": "section.w-full.space-y-6",
+      "tag": "section",
+      "top": 3400,
+      "height": 700,
+      "words": 79,
       "media": 0,
       "middle": 0,
       "heading": {
-       "text": "Hiring? Let’s talk.",
-       "size": 26,
-       "tag": "h3"
+       "text": "How I got here",
+       "size": 20,
+       "tag": "h2"
       },
-      "left": 46,
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 47,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full.space-y-6",
+      "tag": "section",
+      "top": 4180,
+      "height": 700,
+      "words": 93,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "How I work",
+       "size": 20,
+       "tag": "h2"
+      },
+      "left": 33,
       "right": 59,
-      "textLeft": 46,
-      "textRight": 64,
+      "textLeft": 33,
+      "textRight": 59,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full.space-y-8",
+      "tag": "section",
+      "top": 4960,
+      "height": 700,
+      "words": 14,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "Design",
+       "size": 20,
+       "tag": "h2"
+      },
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 41,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full.space-y-4",
+      "tag": "section",
+      "top": 5740,
+      "height": 700,
+      "words": 36,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "What I'm learning now",
+       "size": 20,
+       "tag": "h2"
+      },
+      "left": 33,
+      "right": 78,
+      "textLeft": 33,
+      "textRight": 78,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.w-full",
+      "tag": "section",
+      "top": 6520,
+      "height": 700,
+      "words": 45,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Get in touch",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 62,
+      "right": 73,
+      "textLeft": 62,
+      "textRight": 73,
       "fullBleed": false,
       "footer": true,
       "hero": false,
@@ -1247,25 +1671,29 @@
     "gaps": [],
     "h1s": [
      {
-      "text": "Hi, I’m Vipin.",
-      "size": 38,
-      "top": 42,
+      "text": "Vipin Kaushik",
+      "size": 36,
+      "top": 253,
       "firstScreen": true
      }
     ],
     "edgeText": [],
     "edges": [
      {
-      "x": 42,
-      "n": 9
+      "x": 54,
+      "n": 14
      },
      {
-      "x": 157,
-      "n": 1
+      "x": 33,
+      "n": 10
+     },
+     {
+      "x": 78,
+      "n": 2
      }
     ],
-    "leftBlocks": 10,
-    "bodySize": 16,
+    "leftBlocks": 26,
+    "bodySize": 14,
     "stage": false,
     "explains": true,
     "slivers": [],
@@ -1278,14 +1706,76 @@
  ],
  "findings": [
   {
-   "level": "WARN",
-   "id": "off-centre",
+   "level": "FAIL",
+   "id": "shadow",
    "width": 1440,
-   "message": "The margins differ: 61px on the left, 45px on the right, at 1440px.",
-   "fix": "Put the navigation and the content on one pair of margins; check for padding on one side only, a scrollbar gutter, or a header on another inset than the page.",
+   "message": "2 box-shadow(s) on elements at rest: button.h-7.px-2.5 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0 | button.h-7.px-2.5 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+   "fix": "Remove. Separate surfaces with a tone step or space. Shadows are for things that really float (menus, dialogs, sticky bars).",
    "alsoAt": [
-    768
+    768,
+    390
    ]
+  },
+  {
+   "level": "FAIL",
+   "id": "outlined-box",
+   "width": 1440,
+   "message": "22 boxes drawn with a 1px outline.",
+   "fix": "Define a surface by its fill (one tone step from the page) or leave the content unboxed.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "palette-cream",
+   "width": 1440,
+   "message": "Yellow-cream background (page background #f7f5f0, section #f7f5f0, section #efece6).",
+   "fix": "Use the drawn palette. If you want warmth, take a low-chroma stone or bone, not a yellow cream.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "no-footage",
+   "width": 1440,
+   "message": "No video anywhere on the page.",
+   "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+  },
+  {
+   "level": "FAIL",
+   "id": "small-text",
+   "width": 1440,
+   "message": "36 text blocks under 13px.",
+   "fix": "Nothing meant to be read goes below 13px.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "blank-gap",
+   "width": 1440,
+   "message": "A 492px stretch at 4976px holds nothing.",
+   "fix": "Check that it is a deliberate rest (once per page at most); otherwise close it to the normal section gap."
+  },
+  {
+   "level": "FAIL",
+   "id": "still-page",
+   "width": 1440,
+   "message": "Only 2 element(s) moved while the page loaded and scrolled.",
+   "fix": "Build the motion layer (SKILL.md step 9, references/motion.md): the signature move, an entrance for the parts of every section, feedback on every control, and one moving picture. Transform and opacity only, with a reduced-motion fallback."
+  },
+  {
+   "level": "FAIL",
+   "id": "body-size",
+   "width": 390,
+   "message": "Body text is 14px (the size most of the running text is set in).",
+   "fix": "Body copy 16–20px. Map small sizes from blueprints onto your body step."
   }
  ],
  "images": [
@@ -1294,7 +1784,8 @@
    "width": 1440,
    "fold": "D:\\Projects\\portfolio\\.taste-skill\\inspect\\desktop-fold.jpg",
    "pages": [
-    "D:\\Projects\\portfolio\\.taste-skill\\inspect\\desktop-page-01.jpg"
+    "D:\\Projects\\portfolio\\.taste-skill\\inspect\\desktop-page-01.jpg",
+    "D:\\Projects\\portfolio\\.taste-skill\\inspect\\desktop-page-02.jpg"
    ],
    "film": []
   },
@@ -1303,7 +1794,8 @@
    "width": 768,
    "fold": "D:\\Projects\\portfolio\\.taste-skill\\inspect\\tablet-fold.jpg",
    "pages": [
-    "D:\\Projects\\portfolio\\.taste-skill\\inspect\\tablet-page-01.jpg"
+    "D:\\Projects\\portfolio\\.taste-skill\\inspect\\tablet-page-01.jpg",
+    "D:\\Projects\\portfolio\\.taste-skill\\inspect\\tablet-page-02.jpg"
    ],
    "film": []
   },
@@ -1312,7 +1804,8 @@
    "width": 390,
    "fold": "D:\\Projects\\portfolio\\.taste-skill\\inspect\\mobile-fold.jpg",
    "pages": [
-    "D:\\Projects\\portfolio\\.taste-skill\\inspect\\mobile-page-01.jpg"
+    "D:\\Projects\\portfolio\\.taste-skill\\inspect\\mobile-page-01.jpg",
+    "D:\\Projects\\portfolio\\.taste-skill\\inspect\\mobile-page-02.jpg"
    ],
    "film": []
   }
