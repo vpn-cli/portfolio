@@ -168,13 +168,13 @@ export function AboutHero({ status }: AboutHeroProps) {
                         {tool.projects && (
                           <>
                             <span
-                              className="text-xs text-[var(--text-tertiary)] hidden sm:block opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity tabular-nums truncate text-right ml-2"
+                              className="text-sm text-[var(--text-tertiary)] hidden sm:block opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity tabular-nums truncate text-right ml-2"
                               aria-hidden="true"
                             >
                               {tool.projects}
                             </span>
                             <span
-                              className="text-xs text-[var(--text-tertiary)] block sm:hidden pl-5.5 pt-0.5 tabular-nums"
+                              className="text-sm text-[var(--text-tertiary)] block sm:hidden pl-5.5 pt-0.5 tabular-nums"
                               aria-hidden="true"
                             >
                               {tool.projects}
