@@ -79,7 +79,7 @@ export function AboutExperience() {
               {exp.stack.map((t) => (
                 <span
                   key={t}
-                  className="px-2.5 py-0.5 rounded-md text-xs sm:text-sm bg-[var(--surface-tile-elevated)] text-[var(--text-secondary)]"
+                  className="px-2.5 py-0.5 rounded-md text-sm bg-[var(--surface-tile-elevated)] text-[var(--text-secondary)]"
                 >
                   {t}
                 </span>

@@ -37,7 +37,7 @@ function SegmentedControl<T extends string | number>({
             role="radio"
             aria-checked={isActive}
             onClick={() => onChange(opt.value)}
-            className={`h-7 px-2.5 rounded-md text-xs sm:text-sm font-medium leading-none whitespace-nowrap transition-colors cursor-pointer flex items-center justify-center ${
+            className={`h-7 px-2.5 rounded-md text-sm font-medium leading-none whitespace-nowrap transition-colors cursor-pointer flex items-center justify-center ${
               isActive
                 ? "bg-[var(--text-primary)] text-[var(--bg-canvas)] font-semibold"
                 : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
@@ -94,7 +94,7 @@ export function AboutPrinciples() {
 
             {/* (c) Demo box */}
             <div data-ui="demo-memory" className="p-3.5 rounded-xl bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] flex flex-col gap-2.5">
-              <div className="flex items-center justify-between text-xs sm:text-sm">
+              <div className="flex items-center justify-between text-sm">
                 <span className="font-semibold text-[var(--text-tertiary)]">Storage</span>
               </div>
 
@@ -110,7 +110,7 @@ export function AboutPrinciples() {
                 />
               </div>
 
-              <div className="p-3 rounded-lg bg-[var(--surface-tile)] border border-[var(--border-subtle)] text-xs sm:text-sm text-[var(--text-secondary)] min-h-[82px] flex items-center">
+              <div className="p-3 rounded-lg bg-[var(--surface-tile)] border border-[var(--border-subtle)] text-sm text-[var(--text-secondary)] min-h-[82px] flex items-center">
                 {p1Mode === "memory"
                   ? "Rooms live in a Map in the Node process. No network call per broadcast."
                   : "Every room lookup becomes a network round trip to Redis."}
@@ -118,15 +118,15 @@ export function AboutPrinciples() {
             </div>
 
             {/* (d) Footer */}
-            <div className="pt-2 flex flex-col justify-between gap-1 text-xs sm:text-sm h-full">
-              <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed min-h-[40px]">
+            <div className="pt-2 flex flex-col justify-between gap-1 text-sm h-full">
+              <p className="text-sm text-[var(--text-secondary)] leading-relaxed min-h-[40px]">
                 Sportz keeps every room in a Node.js Map, with no Redis.
               </p>
               <TransitionLink
                 href="/work/sockets#decisions"
                 trackLocation="about_principles"
                 trackLabel="Sportz case study"
-                className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-[var(--text-primary)] hover:underline pt-1 w-fit"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--text-primary)] hover:underline pt-1 w-fit"
               >
                 <span>Sportz case study</span>
                 <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
@@ -148,9 +148,9 @@ export function AboutPrinciples() {
 
             {/* (c) Demo box */}
             <div data-ui="demo-outbox" className="p-3.5 rounded-xl bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] flex flex-col gap-2.5">
-              <div className="flex items-center justify-between text-xs sm:text-sm">
+              <div className="flex items-center justify-between text-sm">
                 <span className="font-semibold text-[var(--text-tertiary)]">Outbox steps</span>
-                <span className="text-xs text-[var(--text-tertiary)] font-medium">
+                <span className="text-sm text-[var(--text-tertiary)] font-medium">
                   Step {p2Step + 1} of 4
                 </span>
               </div>
@@ -164,21 +164,21 @@ export function AboutPrinciples() {
                 />
               </div>
 
-              <div className="p-3 rounded-lg bg-[var(--surface-tile)] border border-[var(--border-subtle)] text-xs sm:text-sm text-[var(--text-secondary)] min-h-[82px] flex items-center">
+              <div className="p-3 rounded-lg bg-[var(--surface-tile)] border border-[var(--border-subtle)] text-sm text-[var(--text-secondary)] min-h-[82px] flex items-center">
                 {p2Steps[p2Step].desc}
               </div>
             </div>
 
             {/* (d) Footer */}
-            <div className="pt-2 flex flex-col justify-between gap-1 text-xs sm:text-sm h-full">
-              <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed min-h-[40px]">
+            <div className="pt-2 flex flex-col justify-between gap-1 text-sm h-full">
+              <p className="text-sm text-[var(--text-secondary)] leading-relaxed min-h-[40px]">
                 StreamMart uses a transactional outbox so Kafka gets every order event at least once.
               </p>
               <TransitionLink
                 href="/work/stream-mart#decisions"
                 trackLocation="about_principles"
                 trackLabel="StreamMart case study"
-                className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-[var(--text-primary)] hover:underline pt-1 w-fit"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--text-primary)] hover:underline pt-1 w-fit"
               >
                 <span>StreamMart case study</span>
                 <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
@@ -230,15 +230,15 @@ export function AboutPrinciples() {
             </div>
 
             {/* (d) Footer */}
-            <div className="pt-2 flex flex-col justify-between gap-1 text-xs sm:text-sm h-full">
-              <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed min-h-[40px]">
+            <div className="pt-2 flex flex-col justify-between gap-1 text-sm h-full">
+              <p className="text-sm text-[var(--text-secondary)] leading-relaxed min-h-[40px]">
                 AppForge builds React components from model output without eval().
               </p>
               <TransitionLink
                 href="/work/appforge#decisions"
                 trackLocation="about_principles"
                 trackLabel="AppForge case study"
-                className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-[var(--text-primary)] hover:underline pt-1 w-fit"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--text-primary)] hover:underline pt-1 w-fit"
               >
                 <span>AppForge case study</span>
                 <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />

@@ -152,7 +152,7 @@ export function AboutGallery() {
         <h2 id="design-art-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
           Design
         </h2>
-        <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
+        <p className="text-sm text-[var(--text-secondary)] mt-1">
           Digital illustrations, character studies and campus event posters.
         </p>
       </div>
@@ -188,10 +188,10 @@ export function AboutGallery() {
                 />
               </div>
               <figcaption className="pt-2.5 pb-1 space-y-0.5">
-                <h3 className="text-sm font-normal text-[var(--text-primary)]">
+                <h3 className="text-sm font-semibold text-[var(--text-primary)]">
                   {art.title}
                 </h3>
-                <p className="text-xs text-[var(--text-tertiary)]">
+                <p className="text-sm text-[var(--text-tertiary)]">
                   {art.medium} · {art.year}
                 </p>
               </figcaption>
@@ -223,7 +223,7 @@ export function AboutGallery() {
                 <p className="text-sm text-[var(--text-secondary)]">
                   {lead.org}
                 </p>
-                <p className="text-xs sm:text-sm text-[var(--text-tertiary)] leading-normal">
+                <p className="text-sm text-[var(--text-tertiary)] leading-normal">
                   {lead.scope}
                 </p>
               </li>
@@ -347,7 +347,7 @@ export function AboutGallery() {
                 </span>
               </div>
               {currentArt.note && (
-                <p className="text-xs sm:text-sm text-[var(--text-tertiary)] leading-relaxed">
+                <p className="text-sm text-[var(--text-tertiary)] leading-relaxed">
                   {currentArt.note}
                 </p>
               )}

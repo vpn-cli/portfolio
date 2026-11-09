@@ -180,7 +180,7 @@ export function AboutTimeline() {
           <div className="lg:col-span-7 space-y-4">
             <div className="space-y-1.5">
               <div>
-                <span className="px-2.5 py-1 rounded text-xs bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-[var(--text-tertiary)]">
+                <span className="px-2.5 py-1 rounded text-sm bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-[var(--text-tertiary)]">
                   {currentMilestone.year} · {currentMilestone.stage}
                 </span>
               </div>
@@ -201,7 +201,7 @@ export function AboutTimeline() {
                     href={link.href}
                     trackLocation="about_timeline"
                     trackLabel={link.label}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[var(--surface-tile-hover)] hover:bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] text-[var(--text-primary)] transition-colors active:scale-98"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-sm font-semibold bg-[var(--surface-tile-hover)] hover:bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] text-[var(--text-primary)] transition-colors active:scale-98"
                   >
                     <span>{link.label}</span>
                     <ArrowUpRight className="w-3.5 h-3.5 text-[var(--text-tertiary)]" aria-hidden="true" />

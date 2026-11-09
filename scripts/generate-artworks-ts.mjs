@@ -74,3 +74,4 @@ export const artworks: Artwork[] = ${JSON.stringify(artworks, null, 2)};
 
 fs.writeFileSync('content/artworks.ts', fileContent, 'utf8');
 console.log('content/artworks.ts generated successfully');
+

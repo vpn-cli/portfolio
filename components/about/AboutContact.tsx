@@ -109,7 +109,7 @@ export function AboutContact() {
             I&apos;m looking for full-time software engineering roles starting after I graduate in April 2027. Email me if you want to talk about backend systems or design.
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-[var(--text-secondary)] min-h-[24px] pt-2">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-[var(--text-secondary)] min-h-[24px] pt-2">
             <div className="flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-[var(--text-tertiary)] shrink-0" aria-hidden="true" />
               <span>IIT Kharagpur</span>

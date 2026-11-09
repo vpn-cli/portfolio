@@ -1,6 +1,6 @@
 {
  "url": "http://localhost:3000/about",
- "at": "2026-11-09T16:48:25.358Z",
+ "at": "2026-11-09T16:51:35.627Z",
  "allow": [],
  "viewports": [
   {
@@ -32,7 +32,7 @@
      "h": 900
     },
     "page": {
-     "height": 6313,
+     "height": 6317,
      "screens": 7,
      "words": 828,
      "img": 6,
@@ -126,7 +126,7 @@
       "align": "left",
       "position": "center",
       "widthRatio": 0.66,
-      "top": 5576,
+      "top": 5580,
       "tag": "h2",
       "kind": "heading"
      }
@@ -196,7 +196,7 @@
      "microSamples": [],
      "upperShare": 0,
      "centerShare": 0.03,
-     "smallText": 8
+     "smallText": 0
     },
     "eyebrows": [],
     "numbered": [],
@@ -229,7 +229,7 @@
       },
       {
        "color": "#ffffff",
-       "top": 3238,
+       "top": 3242,
        "hsl": {
         "h": 0,
         "s": 0,
@@ -274,7 +274,7 @@
      "count": 18,
      "inHero": 2,
      "radius": 12,
-     "height": 72,
+     "height": 34,
      "withShadow": 0,
      "withGradient": 0,
      "mono": 0,
@@ -316,7 +316,7 @@
      "w": 1440,
      "h": 900
     },
-    "pageH": 6313,
+    "pageH": 6317,
     "margins": {
      "left": 208,
      "right": 208
@@ -395,7 +395,7 @@
       "sel": "section.w-full.space-y-6",
       "tag": "section",
       "top": 2501,
-      "height": 521,
+      "height": 525,
       "words": 116,
       "media": 0,
       "middle": 0,
@@ -417,7 +417,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 3150,
+      "top": 3154,
       "height": 606,
       "words": 170,
       "media": 0,
@@ -440,7 +440,7 @@
      {
       "sel": "section.w-full.space-y-8",
       "tag": "section",
-      "top": 3884,
+      "top": 3888,
       "height": 700,
       "words": 24,
       "media": 3,
@@ -453,7 +453,7 @@
       "left": 208,
       "right": 208,
       "textLeft": 208,
-      "textRight": 396,
+      "textRight": 373,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -463,7 +463,7 @@
      {
       "sel": "section.w-full.space-y-4",
       "tag": "section",
-      "top": 4712,
+      "top": 4716,
       "height": 700,
       "words": 36,
       "media": 0,
@@ -486,7 +486,7 @@
      {
       "sel": "section.w-full",
       "tag": "section",
-      "top": 5540,
+      "top": 5544,
       "height": 700,
       "words": 45,
       "media": 0,
@@ -509,8 +509,8 @@
     ],
     "gaps": [
      {
-      "top": 5132,
-      "height": 440
+      "top": 5144,
+      "height": 432
      }
     ],
     "h1s": [
@@ -608,7 +608,7 @@
      "h": 1024
     },
     "page": {
-     "height": 7022,
+     "height": 7026,
      "screens": 6.9,
      "words": 659,
      "img": 6,
@@ -702,7 +702,7 @@
       "align": "left",
       "position": "center",
       "widthRatio": 0.78,
-      "top": 6309,
+      "top": 6313,
       "tag": "h2",
       "kind": "heading"
      }
@@ -772,7 +772,7 @@
      "microSamples": [],
      "upperShare": 0,
      "centerShare": 0.03,
-     "smallText": 8
+     "smallText": 0
     },
     "eyebrows": [],
     "numbered": [],
@@ -850,7 +850,7 @@
      "count": 18,
      "inHero": 2,
      "radius": 12,
-     "height": 72,
+     "height": 34,
      "withShadow": 0,
      "withGradient": 0,
      "mono": 0,
@@ -892,7 +892,7 @@
      "w": 768,
      "h": 1024
     },
-    "pageH": 7022,
+    "pageH": 7026,
     "margins": {
      "left": 49,
      "right": 49
@@ -971,7 +971,7 @@
       "sel": "section.w-full.space-y-6",
       "tag": "section",
       "top": 2958,
-      "height": 767,
+      "height": 771,
       "words": 116,
       "media": 0,
       "middle": 0,
@@ -993,7 +993,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 3837,
+      "top": 3841,
       "height": 700,
       "words": 93,
       "media": 0,
@@ -1016,7 +1016,7 @@
      {
       "sel": "section.w-full.space-y-8",
       "tag": "section",
-      "top": 4649,
+      "top": 4653,
       "height": 700,
       "words": 25,
       "media": 3,
@@ -1029,7 +1029,7 @@
       "left": 49,
       "right": 49,
       "textLeft": 49,
-      "textRight": 234,
+      "textRight": 211,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -1039,7 +1039,7 @@
      {
       "sel": "section.w-full.space-y-4",
       "tag": "section",
-      "top": 5461,
+      "top": 5465,
       "height": 700,
       "words": 36,
       "media": 0,
@@ -1062,7 +1062,7 @@
      {
       "sel": "section.w-full",
       "tag": "section",
-      "top": 6273,
+      "top": 6277,
       "height": 700,
       "words": 45,
       "media": 0,
@@ -1326,7 +1326,7 @@
      "microSamples": [],
      "upperShare": 0,
      "centerShare": 0.03,
-     "smallText": 28
+     "smallText": 14
     },
     "eyebrows": [],
     "numbered": [],
@@ -1673,7 +1673,7 @@
     "edges": [
      {
       "x": 53,
-      "n": 16
+      "n": 18
      },
      {
       "x": 33,
@@ -1684,7 +1684,7 @@
       "n": 3
      }
     ],
-    "leftBlocks": 29,
+    "leftBlocks": 31,
     "bodySize": 16,
     "stage": false,
     "explains": true,
@@ -1727,21 +1727,10 @@
    "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
   },
   {
-   "level": "FAIL",
-   "id": "small-text",
-   "width": 1440,
-   "message": "8 text blocks under 13px.",
-   "fix": "Nothing meant to be read goes below 13px.",
-   "alsoAt": [
-    768,
-    390
-   ]
-  },
-  {
    "level": "WARN",
    "id": "blank-gap",
    "width": 1440,
-   "message": "A 440px stretch at 5132px holds nothing.",
+   "message": "A 432px stretch at 5144px holds nothing.",
    "fix": "Check that it is a deliberate rest (once per page at most); otherwise close it to the normal section gap."
   },
   {
@@ -1750,6 +1739,13 @@
    "width": 1440,
    "message": "Little motion: 9 element(s) moved while the page loaded and scrolled.",
    "fix": "Give every section an entrance for its parts (not one fade of the whole block) and add one moving picture: a looping clip or a slow move on a photograph."
+  },
+  {
+   "level": "FAIL",
+   "id": "small-text",
+   "width": 390,
+   "message": "14 text blocks under 13px.",
+   "fix": "Nothing meant to be read goes below 13px."
   }
  ],
  "images": [
