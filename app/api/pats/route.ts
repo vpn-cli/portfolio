@@ -127,13 +127,16 @@ function isAllowedOrigin(req: NextRequest): boolean {
     const parsed = new URL(origin);
     const hostname = parsed.hostname.toLowerCase();
 
-    // localhost / 127.0.0.1 / .local only when NODE_ENV !== "production"
+    // localhost / 127.0.0.1 / .local only when NODE_ENV !== "production" (or when ALLOW_LOCAL_ORIGIN is explicitly set)
     const isLocal =
       hostname === "localhost" ||
       hostname === "127.0.0.1" ||
       hostname.endsWith(".local");
 
     if (isLocal) {
+      if (process.env.ALLOW_LOCAL_ORIGIN === "true") {
+        return true;
+      }
       return process.env.NODE_ENV !== "production";
     }
 
@@ -241,12 +244,8 @@ export async function GET() {
       );
     }
     return NextResponse.json(
-      { total: getFallbackTotal() },
-      {
-        headers: {
-          "Cache-Control": "public, s-maxage=10, stale-while-revalidate=30",
-        },
-      }
+      { error: "database_error" },
+      { status: 500 }
     );
   }
 }
@@ -383,7 +382,7 @@ export async function POST(req: NextRequest) {
 
   const todayStr = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
 
-  // 6. Atomic Database Update in One Transaction
+  // 6. Atomic Database Update in One Batch
   const isProd = process.env.NODE_ENV === "production";
   const db = getDb();
 
@@ -401,8 +400,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const updatedTotal = await db.transaction(async (tx) => {
-      const [totalRow] = await tx
+    const batchResult = await db.batch([
+      db
         .insert(patsTotal)
         .values({ id: 1, total: count, updatedAt: new Date() })
         .onConflictDoUpdate({
@@ -412,9 +411,8 @@ export async function POST(req: NextRequest) {
             updatedAt: new Date(),
           },
         })
-        .returning({ total: patsTotal.total });
-
-      await tx
+        .returning({ total: patsTotal.total }),
+      db
         .insert(patsDailyRegion)
         .values({
           day: todayStr,
@@ -435,23 +433,24 @@ export async function POST(req: NextRequest) {
             pats: sql`${patsDailyRegion.pats} + ${count}`,
             requests: sql`${patsDailyRegion.requests} + 1`,
           },
-        });
+        }),
+    ]);
 
-      return Number(totalRow?.total ?? count);
-    });
+    const totalRow = batchResult[0]?.[0];
+    const updatedTotal = Number(totalRow?.total ?? count);
 
     return NextResponse.json({ total: updatedTotal });
   } catch (err) {
-    console.error("Database update transaction error:", err);
+    console.error("Database update batch error:", err);
     if (isProd) {
       return NextResponse.json(
         { error: "unavailable" },
         { status: 503, headers: { "Retry-After": "60" } }
       );
     }
-    // Fallback in-memory persistence in development only
-    const currentFallback = incrementFallbackTotal(count);
-    updateFallbackDailyRegion(todayStr, country, region, city, count);
-    return NextResponse.json({ total: currentFallback });
+    return NextResponse.json(
+      { error: "database_error" },
+      { status: 500 }
+    );
   }
 }

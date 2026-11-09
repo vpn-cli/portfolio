@@ -55,24 +55,27 @@ export async function GET(req: NextRequest) {
   }
 
   const db = getDb();
-  if (db) {
-    try {
-      const rows = await db
-        .select()
-        .from(patsDailyRegion)
-        .orderBy(desc(patsDailyRegion.day))
-        .limit(100);
-
-      return NextResponse.json({ regions: rows });
-    } catch (err) {
-      console.error("Database query error in admin pats-regions:", err);
+  if (!db) {
+    if (process.env.NODE_ENV === "production") {
+      return NextResponse.json({ error: "unavailable" }, { status: 503 });
     }
+    // Fallback in-memory rows for dev/testing when DATABASE_URL is not set
+    return NextResponse.json({ regions: getFallbackDailyRegions() });
   }
 
-  if (process.env.NODE_ENV === "production") {
-    return NextResponse.json({ error: "unavailable" }, { status: 503 });
-  }
+  try {
+    const rows = await db
+      .select()
+      .from(patsDailyRegion)
+      .orderBy(desc(patsDailyRegion.day))
+      .limit(100);
 
-  // Fallback in-memory rows for dev/testing
-  return NextResponse.json({ regions: getFallbackDailyRegions() });
+    return NextResponse.json({ regions: rows });
+  } catch (err) {
+    console.error("Database query error in admin pats-regions:", err);
+    if (process.env.NODE_ENV === "production") {
+      return NextResponse.json({ error: "unavailable" }, { status: 503 });
+    }
+    return NextResponse.json({ error: "database_error" }, { status: 500 });
+  }
 }
