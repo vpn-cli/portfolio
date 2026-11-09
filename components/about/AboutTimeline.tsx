@@ -152,19 +152,19 @@ export function AboutTimeline() {
               role="tab"
               aria-selected={isActive}
               onClick={() => setActiveId(m.id)}
-              className={`p-3 rounded-xl border text-left transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${
+              className={`p-3 rounded-xl text-left transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${
                 isActive
-                  ? "bg-[var(--surface-tile-elevated)] border-[var(--text-primary)]"
-                  : "bg-[var(--surface-tile)] border-[var(--border-subtle)] hover:border-[var(--border-hover)] opacity-85 hover:opacity-100"
+                  ? "bg-[var(--surface-tile-elevated)] ring-1 ring-[var(--text-primary)]"
+                  : "bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] opacity-85 hover:opacity-100"
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold tabular-nums text-[var(--text-tertiary)] block">
+                <span className="text-sm font-semibold tabular-nums text-[var(--text-tertiary)] block">
                   {m.year}
                 </span>
               </div>
               <span
-                className={`text-xs sm:text-sm font-semibold truncate block mt-1 ${
+                className={`text-sm sm:text-base font-semibold truncate block mt-1 ${
                   isActive ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)]"
                 }`}
               >
@@ -175,7 +175,7 @@ export function AboutTimeline() {
         })}
       </div>
 
-      <article className="p-6 sm:p-8 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-6 motion-safe:animate-fadeIn">
+      <article className="p-6 sm:p-8 rounded-2xl bg-[var(--surface-tile)] space-y-6 motion-safe:animate-fadeIn">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           <div className="lg:col-span-7 space-y-4">
             <div className="space-y-1.5">
