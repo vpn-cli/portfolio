@@ -1,93 +1,81 @@
 import Image from "next/image";
 import { ArrowUpRight, MapPin, GraduationCap } from "lucide-react";
-import {
-  SiApachekafka,
-  SiPostgresql,
-  SiNodedotjs,
-  SiDrizzle,
-  SiDocker,
-  SiNextdotjs,
-  SiTypescript,
-  SiExpress,
-  SiRedis,
-  SiPaytm,
-} from "react-icons/si";
-import { FaAws } from "react-icons/fa6";
 import { TransitionLink } from "@/components/motion/RouteTransition";
 import { ResumeDownloadButton } from "./ResumeDownloadButton";
-import type { ElementType } from "react";
 
 interface AboutHeroProps {
   status: string;
-}
-
-interface ProjectTool {
-  name: string;
-  icon?: ElementType;
 }
 
 interface BuiltWithProject {
   name: string;
   href?: string;
   tagline: string;
-  note?: string;
-  tools: ProjectTool[];
+  tools: string[];
 }
 
 const BUILT_WITH_PROJECTS: BuiltWithProject[] = [
   {
     name: "StreamMart",
-    href: "/projects/stream-mart",
+    href: "/work/stream-mart",
     tagline: "Orders over Kafka",
     tools: [
-      { name: "Node.js", icon: SiNodedotjs },
-      { name: "Express", icon: SiExpress },
-      { name: "Kafka", icon: SiApachekafka },
-      { name: "PostgreSQL", icon: SiPostgresql },
-      { name: "Drizzle", icon: SiDrizzle },
-      { name: "Docker", icon: SiDocker },
+      "Node.js",
+      "Express",
+      "Kafka",
+      "PostgreSQL",
+      "Drizzle",
+      "Docker",
     ],
   },
   {
     name: "Sportz",
-    href: "/projects/sockets",
+    href: "/work/sockets",
     tagline: "Live scores, zero refresh",
     tools: [
-      { name: "Node.js", icon: SiNodedotjs },
-      { name: "Express", icon: SiExpress },
-      { name: "WebSockets" },
-      { name: "PostgreSQL", icon: SiPostgresql },
-      { name: "Drizzle", icon: SiDrizzle },
-      { name: "Arcjet" },
+      "Node.js",
+      "Express",
+      "WebSockets",
+      "PostgreSQL",
+      "Drizzle",
+      "Arcjet",
     ],
   },
   {
     name: "AppForge",
-    href: "/projects/appforge",
+    href: "/work/appforge",
     tagline: "Apps from a sentence",
     tools: [
-      { name: "Next.js", icon: SiNextdotjs },
-      { name: "TypeScript", icon: SiTypescript },
-      { name: "Llama-3.3-70B" },
-      { name: "Groq LPU" },
-      { name: "Upstash Redis", icon: SiRedis },
-      { name: "Upstash Kafka", icon: SiApachekafka },
+      "Next.js",
+      "TypeScript",
+      "Llama-3.3-70B",
+      "Groq LPU",
+      "Upstash Redis",
+      "Upstash Kafka",
     ],
   },
   {
     name: "Clairvyn AI",
-    tagline: "AI floor-planning platform",
-    note: "internship",
+    tagline: "Internship, AI floor-planning platform",
     tools: [
-      { name: "Next.js", icon: SiNextdotjs },
-      { name: "Node.js", icon: SiNodedotjs },
-      { name: "Docker", icon: SiDocker },
-      { name: "AWS EC2", icon: FaAws },
-      { name: "Paytm API", icon: SiPaytm },
-      { name: "PostgreSQL", icon: SiPostgresql },
+      "Next.js",
+      "Node.js",
+      "Docker",
+      "AWS EC2",
+      "Paytm API",
+      "PostgreSQL",
     ],
   },
 ];
+
+function formatTools(tools: string[]): string {
+  if (tools.length <= 6) {
+    return tools.join(", ");
+  }
+  const primary = tools.slice(0, 6);
+  const remaining = tools.length - 6;
+  return `${primary.join(", ")}, and ${remaining} more`;
+}
 
 export function AboutHero({ status }: AboutHeroProps) {
   return (
@@ -162,12 +150,12 @@ export function AboutHero({ status }: AboutHeroProps) {
       </div>
 
       {/* "Built with" block organized by project */}
-      <div data-reveal data-reveal-order="5" className="w-full pt-6 border-t border-[var(--border-subtle)] space-y-3">
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)]">
+      <div data-reveal data-reveal-order="5" className="w-full pt-8 sm:pt-10 space-y-4">
+        <h2 className="text-base font-bold text-[var(--text-primary)]">
           Built with
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 items-start">
           {BUILT_WITH_PROJECTS.map((project) => (
             <div key={project.name} className="space-y-1.5">
               <div>
@@ -175,52 +163,31 @@ export function AboutHero({ status }: AboutHeroProps) {
                   <TransitionLink
                     href={project.href}
                     trackLocation="about_built_with"
-                    trackLabel={`${project.name} case study`}
-                    className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--text-primary)] hover:text-[var(--accent-color)] transition-colors group"
+                    trackLabel={`Built with: ${project.name}`}
+                    className="group inline-flex items-baseline gap-1 text-[17px] font-normal text-[var(--text-primary)] hover:text-[var(--text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 rounded-sm transition-colors"
                   >
                     <span>{project.name}</span>
-                    <ArrowUpRight
-                      className="w-3.5 h-3.5 text-[var(--text-tertiary)] group-hover:text-[var(--accent-color)] transition-colors"
+                    <span
                       aria-hidden="true"
-                    />
+                      className="inline-block text-xs text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)] transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-focus-visible:translate-x-0.5 group-focus-visible:-translate-y-0.5 select-none motion-reduce:transform-none"
+                    >
+                      ↗
+                    </span>
                   </TransitionLink>
                 ) : (
-                  <div className="inline-flex items-center gap-1.5">
-                    <span className="text-sm font-semibold text-[var(--text-primary)]">
-                      {project.name}
-                    </span>
-                    {project.note && (
-                      <span className="text-[11px] font-normal text-[var(--text-tertiary)]">
-                        ({project.note})
-                      </span>
-                    )}
-                  </div>
+                  <span className="text-[17px] font-normal text-[var(--text-primary)]">
+                    {project.name}
+                  </span>
                 )}
               </div>
 
-              <p className="text-xs text-[var(--text-tertiary)] leading-snug">
+              <p className="text-sm text-[var(--text-secondary)] leading-snug">
                 {project.tagline}
               </p>
 
-              <div className="flex flex-wrap gap-1 pt-0.5">
-                {project.tools.map((tool) => {
-                  const Icon = tool.icon;
-                  return (
-                    <span
-                      key={tool.name}
-                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[var(--surface-tile)] border border-[var(--border-subtle)] text-[11px] text-[var(--text-secondary)] font-normal tabular-nums leading-tight"
-                    >
-                      {Icon ? (
-                        <Icon
-                          className="w-3 h-3 text-[var(--text-tertiary)] shrink-0"
-                          aria-hidden="true"
-                        />
-                      ) : null}
-                      <span>{tool.name}</span>
-                    </span>
-                  );
-                })}
-              </div>
+              <p className="text-xs text-[var(--text-tertiary)] leading-relaxed">
+                {formatTools(project.tools)}
+              </p>
             </div>
           ))}
         </div>
