@@ -93,14 +93,14 @@ export function AboutHero({ status }: AboutHeroProps) {
   return (
     <section aria-labelledby="about-intro-heading" className="w-full space-y-8">
       {/* Hero Header Lockup */}
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-6 sm:pb-8 border-b border-[var(--border-subtle)]">
-        <div data-reveal data-reveal-order="2" className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6 min-w-0">
-          <div className="relative w-32 h-32 sm:w-36 sm:h-36 rounded-2xl overflow-hidden bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] shrink-0">
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 sm:gap-6 pb-6 border-b border-[var(--border-subtle)]">
+        <div data-reveal data-reveal-order="2" className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 min-w-0">
+          <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] shrink-0">
             <Image
               src="/avatar.jpg"
               alt="Portrait of Vipin Kaushik"
-              width={144}
-              height={144}
+              width={128}
+              height={128}
               priority
               className="w-full h-full object-cover"
             />
@@ -123,7 +123,7 @@ export function AboutHero({ status }: AboutHeroProps) {
               Software engineer building event-driven backends and real-time systems.
             </p>
 
-            <div className="flex items-center gap-x-3.5 gap-y-1 text-sm text-[var(--text-tertiary)] flex-wrap tabular-nums">
+            <div className="flex items-center gap-x-3 gap-y-1 text-xs sm:text-[13px] text-[var(--text-tertiary)] flex-wrap tabular-nums">
               <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                 <GraduationCap className="w-3.5 h-3.5" aria-hidden="true" />
                 Dual degree at IIT Kharagpur, 2022 to 2027
@@ -162,14 +162,14 @@ export function AboutHero({ status }: AboutHeroProps) {
       </div>
 
       {/* "Built with" block organized by project */}
-      <div data-reveal data-reveal-order="5" className="w-full pt-8 border-t border-[var(--border-subtle)] space-y-4">
+      <div data-reveal data-reveal-order="5" className="w-full pt-6 border-t border-[var(--border-subtle)] space-y-3">
         <h2 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)]">
           Built with
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
           {BUILT_WITH_PROJECTS.map((project) => (
-            <div key={project.name} className="space-y-2">
+            <div key={project.name} className="space-y-1.5">
               <div>
                 {project.href ? (
                   <TransitionLink
@@ -202,13 +202,13 @@ export function AboutHero({ status }: AboutHeroProps) {
                 {project.tagline}
               </p>
 
-              <div className="flex flex-wrap gap-1.5 pt-1">
+              <div className="flex flex-wrap gap-1 pt-0.5">
                 {project.tools.map((tool) => {
                   const Icon = tool.icon;
                   return (
                     <span
                       key={tool.name}
-                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[var(--surface-tile)] border border-[var(--border-subtle)] text-xs text-[var(--text-secondary)] font-normal tabular-nums"
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[var(--surface-tile)] border border-[var(--border-subtle)] text-[11px] text-[var(--text-secondary)] font-normal tabular-nums leading-tight"
                     >
                       {Icon ? (
                         <Icon
