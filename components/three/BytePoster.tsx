@@ -1,11 +1,6 @@
 "use client";
 
-import { useTheme } from "@/components/motion/ThemeProvider";
-
 export default function BytePoster({ patCount }: { patCount?: number | null }) {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-
   return (
     <div
       className="relative w-full h-full min-h-[190px] sm:min-h-[210px] select-none overflow-hidden"
@@ -36,7 +31,7 @@ export default function BytePoster({ patCount }: { patCount?: number | null }) {
               cy="166"
               rx="46"
               ry="11"
-              fill={isDark ? "rgba(0,0,0,0.6)" : "rgba(120,113,108,0.22)"}
+              className="fill-[rgba(120,113,108,0.22)] dark:fill-[rgba(0,0,0,0.6)]"
             />
 
             {/* Tiny Round Left Foot */}
@@ -45,8 +40,7 @@ export default function BytePoster({ patCount }: { patCount?: number | null }) {
               cy="156"
               rx="15"
               ry="9"
-              fill={isDark ? "#1c1f26" : "#e8e5dc"}
-              stroke={isDark ? "#2d313c" : "#ded9cf"}
+              className="fill-[#e8e5dc] dark:fill-[#1c1f26] stroke-[#ded9cf] dark:stroke-[#2d313c]"
               strokeWidth="1.2"
             />
 
@@ -56,8 +50,7 @@ export default function BytePoster({ patCount }: { patCount?: number | null }) {
               cy="156"
               rx="15"
               ry="9"
-              fill={isDark ? "#1c1f26" : "#e8e5dc"}
-              stroke={isDark ? "#2d313c" : "#ded9cf"}
+              className="fill-[#e8e5dc] dark:fill-[#1c1f26] stroke-[#ded9cf] dark:stroke-[#2d313c]"
               strokeWidth="1.2"
             />
 
@@ -68,8 +61,7 @@ export default function BytePoster({ patCount }: { patCount?: number | null }) {
               rx="11"
               ry="16"
               transform="rotate(18 45 114)"
-              fill={isDark ? "#1f2229" : "#eae6dd"}
-              stroke={isDark ? "#2e323e" : "#dfdad0"}
+              className="fill-[#eae6dd] dark:fill-[#1f2229] stroke-[#dfdad0] dark:stroke-[#2e323e]"
               strokeWidth="1.2"
             />
 
@@ -80,8 +72,7 @@ export default function BytePoster({ patCount }: { patCount?: number | null }) {
               rx="11"
               ry="16"
               transform="rotate(-18 155 114)"
-              fill={isDark ? "#1f2229" : "#eae6dd"}
-              stroke={isDark ? "#2e323e" : "#dfdad0"}
+              className="fill-[#eae6dd] dark:fill-[#1f2229] stroke-[#dfdad0] dark:stroke-[#2e323e]"
               strokeWidth="1.2"
             />
 
@@ -92,7 +83,7 @@ export default function BytePoster({ patCount }: { patCount?: number | null }) {
               width="4"
               height="20"
               rx="2"
-              fill={isDark ? "#333844" : "#c4beaf"}
+              className="fill-[#c4beaf] dark:fill-[#333844]"
             />
 
             {/* Antenna Glowing Ball */}
@@ -101,7 +92,7 @@ export default function BytePoster({ patCount }: { patCount?: number | null }) {
               cy="28"
               r="8"
               fill="#38bdf8"
-              stroke={isDark ? "#7dd3fc" : "#0284c7"}
+              className="stroke-[#0284c7] dark:stroke-[#7dd3fc]"
               strokeWidth="1.2"
             />
             {/* Antenna Specular Dot */}
@@ -114,8 +105,7 @@ export default function BytePoster({ patCount }: { patCount?: number | null }) {
               width="104"
               height="96"
               rx="46"
-              fill={isDark ? "url(#darkBodyGrad)" : "url(#lightBodyGrad)"}
-              stroke={isDark ? "#2e323d" : "#e2ded4"}
+              className="fill-[url(#lightBodyGrad)] dark:fill-[url(#darkBodyGrad)] stroke-[#e2ded4] dark:stroke-[#2e323d]"
               strokeWidth="1.2"
             />
 
@@ -127,13 +117,13 @@ export default function BytePoster({ patCount }: { patCount?: number | null }) {
               height="48"
               rx="18"
               fill="#0a0c10"
-              stroke={isDark ? "#1c2029" : "#222630"}
+              className="stroke-[#222630] dark:stroke-[#1c2029]"
               strokeWidth="1.2"
             />
 
             {/* Cheek Blush Dots */}
-            <ellipse cx="73" cy="107" rx="6" ry="3.5" fill="#fb7185" opacity={isDark ? 0.45 : 0.35} />
-            <ellipse cx="127" cy="107" rx="6" ry="3.5" fill="#fb7185" opacity={isDark ? 0.45 : 0.35} />
+            <ellipse cx="73" cy="107" rx="6" ry="3.5" fill="#fb7185" className="opacity-35 dark:opacity-45" />
+            <ellipse cx="127" cy="107" rx="6" ry="3.5" fill="#fb7185" className="opacity-35 dark:opacity-45" />
 
             {/* Big Glowing Oval Eyes */}
             {/* Left Eye */}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { siteConfig } from "@/content/site";
 import { BentoTile } from "./BentoTile";
 import { useTheme } from "@/components/motion/ThemeProvider";
@@ -8,7 +9,11 @@ import { trackEvent } from "@/lib/analytics";
 
 export function IntroTile({ className = "" }: { className?: string }) {
   const { theme, toggleTheme } = useTheme();
-  const isDark = theme === "dark";
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  const isDark = mounted ? theme === "dark" : false;
 
   return (
     <BentoTile className={className} noPadding>
@@ -29,15 +34,13 @@ export function IntroTile({ className = "" }: { className?: string }) {
           <button
             onClick={toggleTheme}
             type="button"
-            aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
-            title={`Switch to ${isDark ? "light" : "dark"} mode`}
+            suppressHydrationWarning
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
             className="w-10 h-10 rounded-full bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-transparent flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 active:scale-95"
           >
-            {isDark ? (
-              <Sun className="w-4 h-4 text-amber-400" aria-hidden="true" />
-            ) : (
-              <Moon className="w-4 h-4 text-slate-700" aria-hidden="true" />
-            )}
+            <Sun className="w-4 h-4 text-amber-400 hidden dark:block" aria-hidden="true" />
+            <Moon className="w-4 h-4 text-slate-700 block dark:hidden" aria-hidden="true" />
           </button>
         </div>
 

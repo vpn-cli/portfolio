@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import dynamic from "next/dynamic";
 import "./globals.css";
@@ -37,13 +37,25 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#F7F5F0",
+  colorScheme: "light",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`dark ${inter.variable}`} suppressHydrationWarning>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{if(localStorage.getItem("portfolio-theme")==="dark"){document.documentElement.classList.add("dark");}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="min-h-screen antialiased font-body">
         <PostHogProvider>
           <ThemeProvider>

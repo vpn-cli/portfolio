@@ -12,7 +12,7 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  theme: "dark",
+  theme: "light",
   toggleTheme: () => { },
   setTheme: () => { },
 });
@@ -20,9 +20,16 @@ const ThemeContext = createContext<ThemeContextType>({
 export const useTheme = () => useContext(ThemeContext);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("dark");
+  // Initialize state from the class already on <html> (set by inline script), defaulting to "light"
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof document !== "undefined") {
+      return document.documentElement.classList.contains("dark") ? "dark" : "light";
+    }
+    return "light";
+  });
 
   const applyTheme = (t: Theme) => {
+    if (typeof document === "undefined") return;
     const root = document.documentElement;
     if (t === "light") {
       root.classList.remove("dark");
@@ -35,35 +42,31 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.setAttribute("data-theme", "dark");
       root.style.colorScheme = "dark";
     }
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute("content", t === "dark" ? "#121211" : "#F7F5F0");
+    }
   };
 
   useEffect(() => {
-    // Check URL override, saved local theme, or system preference
+    // Check URL override
     try {
       const params = new URLSearchParams(window.location.search);
       const themeParam = params.get("theme") as Theme | null;
       if (themeParam === "light" || themeParam === "dark") {
-        setThemeState(themeParam);
-        applyTheme(themeParam);
+        setTheme(themeParam);
         return;
       }
     } catch {
       // ignore URLSearchParams errors
     }
 
-    try {
-      const saved = localStorage.getItem("portfolio-theme") as Theme | null;
-      if (saved === "light" || saved === "dark") {
-        setThemeState(saved);
-        applyTheme(saved);
-        return;
-      }
-    } catch {
-      // ignore localStorage errors
+    const isHtmlDark = document.documentElement.classList.contains("dark");
+    const currentTheme: Theme = isHtmlDark ? "dark" : "light";
+    if (theme !== currentTheme) {
+      setThemeState(currentTheme);
     }
-
-    // Default to dark mode
-    applyTheme("dark");
+    applyTheme(currentTheme);
   }, []);
 
   const setTheme = (t: Theme) => {

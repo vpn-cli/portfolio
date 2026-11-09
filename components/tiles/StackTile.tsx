@@ -289,7 +289,10 @@ export function StackTile({ className = "" }: { className?: string }) {
 
         {/* Reduced motion static wrapped grid */}
         {reducedMotion ? (
-          <div className="my-auto py-1 grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-x-2.5 gap-y-3.5 max-h-[185px] overflow-visible">
+          <div
+            suppressHydrationWarning
+            className="my-auto py-1 grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-x-2.5 gap-y-3.5 max-h-[185px] overflow-visible"
+          >
             {stackItems.map((tech) => {
               const styles = getToolStyles(tech.meta);
               const { Icon, opticalClass, isMultiColor } = tech.meta;
@@ -332,7 +335,10 @@ export function StackTile({ className = "" }: { className?: string }) {
           </div>
         ) : (
           /* Infinite marquee with edge fades, pauses on hover & keyboard focus */
-          <div className="relative w-full overflow-hidden my-auto py-2 [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)]">
+          <div
+            suppressHydrationWarning
+            className="relative w-full overflow-hidden my-auto py-2 [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)]"
+          >
             <div className="animate-marquee flex items-center gap-4 sm:gap-5">
               {marqueeItems.map((tech, idx) => {
                 const styles = getToolStyles(tech.meta);
