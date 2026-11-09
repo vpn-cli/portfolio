@@ -553,7 +553,7 @@ export function AboutWorkbench() {
 
       {mode === "benchmarks" && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-5 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-3 flex flex-col justify-between">
+          <div className="p-5 rounded-2xl bg-[var(--surface-tile)] space-y-3 flex flex-col justify-between">
             <div className="space-y-2">
               <span className="text-xs font-normal text-[var(--text-tertiary)] block">
                 In-memory rooms
@@ -561,7 +561,7 @@ export function AboutWorkbench() {
               <h3 className="text-base font-semibold text-[var(--text-primary)]">
                 Rooms in memory
               </h3>
-              <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed font-normal">
+              <p className="text-sm text-[var(--text-secondary)] leading-relaxed font-normal">
                 Sportz keeps rooms in a <code className="font-mono text-xs">Map&lt;string, Set&lt;Client&gt;&gt;</code> inside the Node process, so broadcasting to a room needs no Redis call.
               </p>
             </div>
@@ -570,7 +570,7 @@ export function AboutWorkbench() {
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-3 flex flex-col justify-between">
+          <div className="p-5 rounded-2xl bg-[var(--surface-tile)] space-y-3 flex flex-col justify-between">
             <div className="space-y-2">
               <span className="text-xs font-normal text-[var(--text-tertiary)] block">
                 Transactional outbox
@@ -578,7 +578,7 @@ export function AboutWorkbench() {
               <h3 className="text-base font-semibold text-[var(--text-primary)]">
                 Orders and events in one transaction
               </h3>
-              <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed font-normal">
+              <p className="text-sm text-[var(--text-secondary)] leading-relaxed font-normal">
                 StreamMart writes the order and its outbox event in the same Postgres transaction. Debezium reads the outbox and publishes to Kafka, so an order can&apos;t exist without its event.
               </p>
             </div>
@@ -587,7 +587,7 @@ export function AboutWorkbench() {
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-3 flex flex-col justify-between">
+          <div className="p-5 rounded-2xl bg-[var(--surface-tile)] space-y-3 flex flex-col justify-between">
             <div className="space-y-2">
               <span className="text-xs font-normal text-[var(--text-tertiary)] block">
                 Schema-checked AST
@@ -595,7 +595,7 @@ export function AboutWorkbench() {
               <h3 className="text-base font-semibold text-[var(--text-primary)]">
                 Validate before rendering
               </h3>
-              <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed font-normal">
+              <p className="text-sm text-[var(--text-secondary)] leading-relaxed font-normal">
                 AppForge checks model output against a JSON schema and a Babel AST pass before building React components. It never calls eval().
               </p>
             </div>

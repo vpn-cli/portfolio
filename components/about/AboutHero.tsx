@@ -87,7 +87,7 @@ export function AboutHero({ status }: AboutHeroProps) {
               >
                 Vipin Kaushik
               </h1>
-              <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
+              <p className="text-sm text-[var(--text-secondary)] mt-1">
                 {status}
               </p>
             </div>
@@ -96,7 +96,7 @@ export function AboutHero({ status }: AboutHeroProps) {
               Software engineer building event-driven backends and real-time systems.
             </p>
 
-            <div className="flex items-center gap-4 text-xs text-[var(--text-tertiary)] flex-wrap tabular-nums">
+            <div className="flex items-center gap-4 text-sm text-[var(--text-tertiary)] flex-wrap tabular-nums">
               <span className="inline-flex items-center gap-1">
                 <GraduationCap className="w-3.5 h-3.5" aria-hidden="true" />
                 Dual degree at IIT Kharagpur, 2022 to 2027
@@ -129,20 +129,20 @@ export function AboutHero({ status }: AboutHeroProps) {
           <p className="text-xl sm:text-2xl text-[var(--text-primary)] font-normal leading-relaxed tracking-tight">
             I&apos;m finishing a dual degree at IIT Kharagpur and spend most of my time building backend systems with Kafka, WebSockets and Postgres. I also do design work on the side.
           </p>
-          <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
+          <p className="text-base text-[var(--text-secondary)] leading-relaxed">
             Recent projects include StreamMart, an e-commerce backend that uses a transactional outbox to get order events into Kafka, and Sportz, a WebSocket server that pushes live match scores. Away from code, I&apos;ve led design for campus groups like the Manga &amp; Anime Society and Illumination Magazine.
           </p>
         </div>
 
-        <div data-reveal data-reveal-order="5" className="lg:col-span-5 p-5 rounded-2xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] space-y-3">
-          <h2 className="text-xs font-normal text-[var(--text-tertiary)]">
+        <div data-reveal data-reveal-order="5" className="lg:col-span-5 p-5 rounded-2xl bg-[var(--surface-tile)] space-y-3">
+          <h2 className="text-sm font-normal text-[var(--text-tertiary)]">
             What I work with
           </h2>
 
           <div className="space-y-4">
             {STACK_GROUPS.map((group, groupIdx) => (
               <div key={group.label} className={groupIdx === 0 ? "pb-1" : "pt-1"}>
-                <span className="text-xs font-normal text-[var(--text-tertiary)] block mb-1.5">
+                <span className="text-sm font-normal text-[var(--text-tertiary)] block mb-1.5">
                   {group.label}
                 </span>
 
@@ -161,20 +161,20 @@ export function AboutHero({ status }: AboutHeroProps) {
                             className="w-3.5 h-3.5 text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)] group-focus-visible:text-[var(--text-primary)] shrink-0 transition-colors"
                             aria-hidden="true"
                           />
-                          <span className="text-xs text-[var(--text-primary)] font-normal truncate">
+                          <span className="text-sm text-[var(--text-primary)] font-normal truncate">
                             {tool.name}
                           </span>
                         </div>
                         {tool.projects && (
                           <>
                             <span
-                              className="text-[11px] text-[var(--text-tertiary)] hidden sm:block opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity tabular-nums truncate text-right ml-2"
+                              className="text-xs text-[var(--text-tertiary)] hidden sm:block opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity tabular-nums truncate text-right ml-2"
                               aria-hidden="true"
                             >
                               {tool.projects}
                             </span>
                             <span
-                              className="text-[11px] text-[var(--text-tertiary)] block sm:hidden pl-5.5 pt-0.5 tabular-nums"
+                              className="text-xs text-[var(--text-tertiary)] block sm:hidden pl-5.5 pt-0.5 tabular-nums"
                               aria-hidden="true"
                             >
                               {tool.projects}
