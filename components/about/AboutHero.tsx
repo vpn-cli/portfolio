@@ -1,16 +1,16 @@
 import Image from "next/image";
-import { ArrowUpRight, MapPin, GraduationCap, LayoutTemplate, PenTool } from "lucide-react";
+import { ArrowUpRight, MapPin, GraduationCap } from "lucide-react";
 import {
   SiApachekafka,
-  SiSocketdotio,
   SiPostgresql,
   SiNodedotjs,
   SiDrizzle,
   SiDocker,
   SiNextdotjs,
-  SiReact,
   SiTypescript,
-  SiTailwindcss,
+  SiExpress,
+  SiRedis,
+  SiPaytm,
 } from "react-icons/si";
 import { FaAws } from "react-icons/fa6";
 import { TransitionLink } from "@/components/motion/RouteTransition";
@@ -21,44 +21,70 @@ interface AboutHeroProps {
   status: string;
 }
 
-interface StackTool {
+interface ProjectTool {
   name: string;
-  icon: ElementType;
-  projects?: string;
+  icon?: ElementType;
 }
 
-interface StackGroup {
-  label: string;
-  tools: StackTool[];
+interface BuiltWithProject {
+  name: string;
+  href?: string;
+  tagline: string;
+  note?: string;
+  tools: ProjectTool[];
 }
 
-const STACK_GROUPS: StackGroup[] = [
+const BUILT_WITH_PROJECTS: BuiltWithProject[] = [
   {
-    label: "Backend",
+    name: "StreamMart",
+    href: "/projects/stream-mart",
+    tagline: "Orders over Kafka",
     tools: [
-      { name: "Kafka", icon: SiApachekafka, projects: "StreamMart" },
-      { name: "WebSockets", icon: SiSocketdotio, projects: "Sportz" },
-      { name: "Postgres", icon: SiPostgresql, projects: "StreamMart, AppForge" },
-      { name: "Node.js", icon: SiNodedotjs, projects: "StreamMart, Sportz" },
-      { name: "Drizzle", icon: SiDrizzle, projects: "StreamMart, Sportz" },
-      { name: "Docker", icon: SiDocker, projects: "StreamMart, Sportz" },
+      { name: "Node.js", icon: SiNodedotjs },
+      { name: "Express", icon: SiExpress },
+      { name: "Kafka", icon: SiApachekafka },
+      { name: "PostgreSQL", icon: SiPostgresql },
+      { name: "Drizzle", icon: SiDrizzle },
+      { name: "Docker", icon: SiDocker },
+    ],
+  },
+  {
+    name: "Sportz",
+    href: "/projects/sockets",
+    tagline: "Live scores, zero refresh",
+    tools: [
+      { name: "Node.js", icon: SiNodedotjs },
+      { name: "Express", icon: SiExpress },
+      { name: "WebSockets" },
+      { name: "PostgreSQL", icon: SiPostgresql },
+      { name: "Drizzle", icon: SiDrizzle },
+      { name: "Arcjet" },
+    ],
+  },
+  {
+    name: "AppForge",
+    href: "/projects/appforge",
+    tagline: "Apps from a sentence",
+    tools: [
+      { name: "Next.js", icon: SiNextdotjs },
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "Llama-3.3-70B" },
+      { name: "Groq LPU" },
+      { name: "Upstash Redis", icon: SiRedis },
+      { name: "Upstash Kafka", icon: SiApachekafka },
+    ],
+  },
+  {
+    name: "Clairvyn AI",
+    tagline: "AI floor-planning platform",
+    note: "internship",
+    tools: [
+      { name: "Next.js", icon: SiNextdotjs },
+      { name: "Node.js", icon: SiNodedotjs },
+      { name: "Docker", icon: SiDocker },
       { name: "AWS EC2", icon: FaAws },
-    ],
-  },
-  {
-    label: "Frontend",
-    tools: [
-      { name: "Next.js", icon: SiNextdotjs, projects: "AppForge" },
-      { name: "React", icon: SiReact, projects: "AppForge, Sportz" },
-      { name: "TypeScript", icon: SiTypescript, projects: "AppForge" },
-      { name: "Tailwind", icon: SiTailwindcss, projects: "AppForge" },
-    ],
-  },
-  {
-    label: "Design",
-    tools: [
-      { name: "Editorial layout", icon: LayoutTemplate },
-      { name: "Vector illustration", icon: PenTool },
+      { name: "Paytm API", icon: SiPaytm },
+      { name: "PostgreSQL", icon: SiPostgresql },
     ],
   },
 ];
@@ -66,8 +92,9 @@ const STACK_GROUPS: StackGroup[] = [
 export function AboutHero({ status }: AboutHeroProps) {
   return (
     <section aria-labelledby="about-intro-heading" className="w-full space-y-8">
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-6 sm:pb-8">
-        <div data-reveal data-reveal-order="2" className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6">
+      {/* Hero Header Lockup */}
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-6 sm:pb-8 border-b border-[var(--border-subtle)]">
+        <div data-reveal data-reveal-order="2" className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6 min-w-0">
           <div className="relative w-32 h-32 sm:w-36 sm:h-36 rounded-2xl overflow-hidden bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] shrink-0">
             <Image
               src="/avatar.jpg"
@@ -79,7 +106,7 @@ export function AboutHero({ status }: AboutHeroProps) {
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 min-w-0">
             <div>
               <h1
                 id="about-intro-heading"
@@ -96,12 +123,12 @@ export function AboutHero({ status }: AboutHeroProps) {
               Software engineer building event-driven backends and real-time systems.
             </p>
 
-            <div className="flex items-center gap-4 text-sm text-[var(--text-tertiary)] flex-wrap tabular-nums">
-              <span className="inline-flex items-center gap-1">
+            <div className="flex items-center gap-x-3.5 gap-y-1 text-sm text-[var(--text-tertiary)] flex-wrap tabular-nums">
+              <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                 <GraduationCap className="w-3.5 h-3.5" aria-hidden="true" />
                 Dual degree at IIT Kharagpur, 2022 to 2027
               </span>
-              <span className="inline-flex items-center gap-1">
+              <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                 <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
                 Kharagpur and New Delhi
               </span>
@@ -124,70 +151,78 @@ export function AboutHero({ status }: AboutHeroProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <div data-reveal data-reveal-order="4" className="lg:col-span-7 space-y-4">
-          <p className="text-xl sm:text-2xl text-[var(--text-primary)] font-normal leading-relaxed tracking-tight">
-            I&apos;m finishing a dual degree at IIT Kharagpur and spend most of my time building backend systems with Kafka, WebSockets and Postgres. I also do design work on the side.
-          </p>
-          <p className="text-base text-[var(--text-secondary)] leading-relaxed">
-            Recent projects include StreamMart, an e-commerce backend that uses a transactional outbox to get order events into Kafka, and Sportz, a WebSocket server that pushes live match scores. Away from code, I&apos;ve led design for campus groups like the Manga &amp; Anime Society and Illumination Magazine.
-          </p>
-        </div>
+      {/* Intro Narrative */}
+      <div data-reveal data-reveal-order="4" className="max-w-[65ch] space-y-4">
+        <p className="text-xl sm:text-2xl text-[var(--text-primary)] font-normal leading-relaxed tracking-tight">
+          I&apos;m finishing a dual degree at IIT Kharagpur and spend most of my time building backend systems with Kafka, WebSockets and Postgres. I also do design work on the side.
+        </p>
+        <p className="text-base text-[var(--text-secondary)] leading-relaxed">
+          Recent projects include StreamMart, an e-commerce backend that uses a transactional outbox to get order events into Kafka, and Sportz, a WebSocket server that pushes live match scores. Away from code, I&apos;ve led design for campus groups like the Manga &amp; Anime Society and Illumination Magazine.
+        </p>
+      </div>
 
-        <div data-reveal data-reveal-order="5" className="lg:col-span-5 p-5 rounded-2xl bg-[var(--surface-tile)] space-y-3">
-          <h2 className="text-sm font-normal text-[var(--text-tertiary)]">
-            What I work with
-          </h2>
+      {/* "Built with" block organized by project */}
+      <div data-reveal data-reveal-order="5" className="w-full pt-8 border-t border-[var(--border-subtle)] space-y-4">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)]">
+          Built with
+        </h2>
 
-          <div className="space-y-4">
-            {STACK_GROUPS.map((group, groupIdx) => (
-              <div key={group.label} className={groupIdx === 0 ? "pb-1" : "pt-1"}>
-                <span className="text-sm font-normal text-[var(--text-tertiary)] block mb-1.5">
-                  {group.label}
-                </span>
-
-                <ul className="space-y-0.5" role="list">
-                  {group.tools.map((tool) => {
-                    const Icon = tool.icon;
-                    return (
-                      <li
-                        key={tool.name}
-                        tabIndex={0}
-                        className="group flex flex-col sm:flex-row sm:items-center sm:justify-between py-1 px-1.5 -mx-1.5 rounded-md hover:bg-[var(--surface-tile-elevated)] focus-visible:bg-[var(--surface-tile-elevated)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--border-focus)] transition-colors cursor-default"
-                        aria-label={tool.projects ? `${tool.name}, used in ${tool.projects}` : tool.name}
-                      >
-                        <div className="flex items-center gap-2 min-w-0">
-                          <Icon
-                            className="w-3.5 h-3.5 text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)] group-focus-visible:text-[var(--text-primary)] shrink-0 transition-colors"
-                            aria-hidden="true"
-                          />
-                          <span className="text-sm text-[var(--text-primary)] font-normal truncate">
-                            {tool.name}
-                          </span>
-                        </div>
-                        {tool.projects && (
-                          <>
-                            <span
-                              className="text-sm text-[var(--text-tertiary)] hidden sm:block opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity tabular-nums truncate text-right ml-2"
-                              aria-hidden="true"
-                            >
-                              {tool.projects}
-                            </span>
-                            <span
-                              className="text-sm text-[var(--text-tertiary)] block sm:hidden pl-5.5 pt-0.5 tabular-nums"
-                              aria-hidden="true"
-                            >
-                              {tool.projects}
-                            </span>
-                          </>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          {BUILT_WITH_PROJECTS.map((project) => (
+            <div key={project.name} className="space-y-2">
+              <div>
+                {project.href ? (
+                  <TransitionLink
+                    href={project.href}
+                    trackLocation="about_built_with"
+                    trackLabel={`${project.name} case study`}
+                    className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--text-primary)] hover:text-[var(--accent-color)] transition-colors group"
+                  >
+                    <span>{project.name}</span>
+                    <ArrowUpRight
+                      className="w-3.5 h-3.5 text-[var(--text-tertiary)] group-hover:text-[var(--accent-color)] transition-colors"
+                      aria-hidden="true"
+                    />
+                  </TransitionLink>
+                ) : (
+                  <div className="inline-flex items-center gap-1.5">
+                    <span className="text-sm font-semibold text-[var(--text-primary)]">
+                      {project.name}
+                    </span>
+                    {project.note && (
+                      <span className="text-[11px] font-normal text-[var(--text-tertiary)]">
+                        ({project.note})
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
-            ))}
-          </div>
+
+              <p className="text-xs text-[var(--text-tertiary)] leading-snug">
+                {project.tagline}
+              </p>
+
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {project.tools.map((tool) => {
+                  const Icon = tool.icon;
+                  return (
+                    <span
+                      key={tool.name}
+                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[var(--surface-tile)] border border-[var(--border-subtle)] text-xs text-[var(--text-secondary)] font-normal tabular-nums"
+                    >
+                      {Icon ? (
+                        <Icon
+                          className="w-3 h-3 text-[var(--text-tertiary)] shrink-0"
+                          aria-hidden="true"
+                        />
+                      ) : null}
+                      <span>{tool.name}</span>
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
