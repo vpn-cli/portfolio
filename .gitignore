@@ -39,6 +39,7 @@ next-env.d.ts
 /public/screenshots/
 /public/comparisons/
 /shots/
+/art-source/
 lighthouse-*.json
 
 
