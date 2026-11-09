@@ -281,55 +281,78 @@ export function ProjectsTile({ className = "" }: { className?: string }) {
                   </p>
                 </div>
 
-                {/* Right: Direct links (GitHub & ArrowUpRight/SiGithub) - hidden by default, fade in on row hover/focus, always visible on touch */}
+                {/* Right: Direct links (Single GitHub icon for demoOnGithub, or GitHub + Live demo) */}
                 <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover/row:opacity-100 group-focus-visible/row:opacity-100 [@media(pointer:coarse)]:opacity-100 transition-opacity duration-200">
-                  <a
-                    href={project.repoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={`${project.title} GitHub repository`}
-                    aria-label={`${project.title} GitHub repository`}
-                    data-ph-capture-attribute-location="selected_work"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      recordUserProjectPreview(project.slug);
-                      trackEvent("outbound_click", {
-                        destination: getOutboundDestination(project.repoUrl, "project_repo"),
-                        url: project.repoUrl,
-                        location: "selected_work",
-                      });
-                    }}
-                    onKeyDown={(e) => e.stopPropagation()}
-                    className="w-7 h-7 flex items-center justify-center rounded-md text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-tile)] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400"
-                  >
-                    <SiGithub className="w-4 h-4" />
-                  </a>
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={isDemoOnGithub ? `View architecture (${project.title})` : `Live demo (${project.title})`}
-                    aria-label={isDemoOnGithub ? `View architecture (${project.title})` : `Live demo (${project.title})`}
-                    data-ph-capture-attribute-location="selected_work"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      recordUserProjectPreview(project.slug);
-                      trackEvent("outbound_click", {
-                        destination: getOutboundDestination(project.liveUrl, "project_live"),
-                        url: project.liveUrl,
-                        location: "selected_work",
-                        label: isDemoOnGithub ? "View architecture" : "Live demo",
-                      });
-                    }}
-                    onKeyDown={(e) => e.stopPropagation()}
-                    className="w-7 h-7 flex items-center justify-center rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-tile)] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400"
-                  >
-                    {isDemoOnGithub ? (
+                  {isDemoOnGithub ? (
+                    <a
+                      href={project.repoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`View on GitHub (${project.title})`}
+                      aria-label={`View on GitHub (${project.title})`}
+                      data-ph-capture-attribute-location="selected_work"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        recordUserProjectPreview(project.slug);
+                        trackEvent("outbound_click", {
+                          destination: "project_repo",
+                          url: project.repoUrl,
+                          location: "selected_work",
+                          label: "View on GitHub",
+                        });
+                      }}
+                      onKeyDown={(e) => e.stopPropagation()}
+                      className="w-7 h-7 flex items-center justify-center rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-tile)] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400"
+                    >
                       <SiGithub className="w-4 h-4" />
-                    ) : (
-                      <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5" />
-                    )}
-                  </a>
+                    </a>
+                  ) : (
+                    <>
+                      <a
+                        href={project.repoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={`${project.title} GitHub repository`}
+                        aria-label={`${project.title} GitHub repository`}
+                        data-ph-capture-attribute-location="selected_work"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          recordUserProjectPreview(project.slug);
+                          trackEvent("outbound_click", {
+                            destination: getOutboundDestination(project.repoUrl, "project_repo"),
+                            url: project.repoUrl,
+                            location: "selected_work",
+                          });
+                        }}
+                        onKeyDown={(e) => e.stopPropagation()}
+                        className="w-7 h-7 flex items-center justify-center rounded-md text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-tile)] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400"
+                      >
+                        <SiGithub className="w-4 h-4" />
+                      </a>
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={`Live demo (${project.title})`}
+                        aria-label={`Live demo (${project.title})`}
+                        data-ph-capture-attribute-location="selected_work"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          recordUserProjectPreview(project.slug);
+                          trackEvent("outbound_click", {
+                            destination: getOutboundDestination(project.liveUrl, "project_live"),
+                            url: project.liveUrl,
+                            location: "selected_work",
+                            label: "Live demo",
+                          });
+                        }}
+                        onKeyDown={(e) => e.stopPropagation()}
+                        className="w-7 h-7 flex items-center justify-center rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-tile)] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400"
+                      >
+                        <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5" />
+                      </a>
+                    </>
+                  )}
                 </div>
 
                 {/* Thin progress bar along bottom edge for active row (replaces left border) */}

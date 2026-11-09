@@ -42,34 +42,45 @@ export function NextStepsSection({
         {/* ━━━ ACTION CTAS (PRIMARY DEMO + SECONDARY REPO) ━━━ */}
         <div className="space-y-2 pt-2 border-t border-[var(--border-subtle)]">
           <div className="flex flex-wrap items-center gap-3">
-            {demoUrl && (
+            {isDemoOnGithub ? (
               <a
-                href={demoUrl}
+                href={repoUrl || demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-sm transition-opacity shadow-sm active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
               >
-                {isDemoOnGithub ? (
-                  <SiGithub className="w-4 h-4" aria-hidden="true" />
-                ) : (
-                  <ExternalLink className="w-4 h-4" aria-hidden="true" />
-                )}
-                <span>{isDemoOnGithub ? "View architecture" : "Launch live demo"}</span>
+                <SiGithub className="w-4 h-4" aria-hidden="true" />
+                <span>View on GitHub</span>
                 <ArrowUpRight className="w-3.5 h-3.5 opacity-80" aria-hidden="true" />
               </a>
-            )}
+            ) : (
+              <>
+                {demoUrl && (
+                  <a
+                    href={demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-sm transition-opacity shadow-sm active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+                  >
+                    <ExternalLink className="w-4 h-4" aria-hidden="true" />
+                    <span>Launch live demo</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 opacity-80" aria-hidden="true" />
+                  </a>
+                )}
 
-            {repoUrl && (
-              <a
-                href={repoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-sm font-medium text-[var(--text-primary)] transition-colors shadow-sm active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
-              >
-                <SiGithub className="w-4 h-4" aria-hidden="true" />
-                <span>Source code</span>
-                <ArrowUpRight className="w-3.5 h-3.5 opacity-60" aria-hidden="true" />
-              </a>
+                {repoUrl && (
+                  <a
+                    href={repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-sm font-medium text-[var(--text-primary)] transition-colors shadow-sm active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                  >
+                    <SiGithub className="w-4 h-4" aria-hidden="true" />
+                    <span>Source code</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 opacity-60" aria-hidden="true" />
+                  </a>
+                )}
+              </>
             )}
           </div>
 

@@ -296,73 +296,95 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
               {/* CTAs on ONE row + Cold Start Note */}
               <div className="space-y-2 pt-2 border-t border-[var(--border-subtle)]">
                 <div className="flex flex-wrap items-center gap-3">
-                  {liveUrl && (
-                    <a
-                      href={liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      data-ph-capture-attribute-location="case_study_hero"
-                      onClick={() =>
-                        trackEvent("outbound_click", {
-                          destination: getOutboundDestination(liveUrl, "project_live"),
-                          url: liveUrl,
-                          location: "case_study_hero",
-                          label: isDemoOnGithub ? "View architecture" : "Live demo",
-                        })
-                      }
-                      className="min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-sm transition-opacity shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
-                    >
-                      {isDemoOnGithub ? (
+                  {isDemoOnGithub ? (
+                    githubUrl ? (
+                      <a
+                        href={githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-ph-capture-attribute-location="case_study_hero"
+                        onClick={() =>
+                          trackEvent("outbound_click", {
+                            destination: "project_repo",
+                            url: githubUrl,
+                            location: "case_study_hero",
+                            label: "View on GitHub",
+                          })
+                        }
+                        className="min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-sm transition-opacity shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+                      >
                         <SiGithub className="w-4 h-4" aria-hidden="true" />
-                      ) : (
-                        <ExternalLink className="w-4 h-4" aria-hidden="true" />
+                        <span>View on GitHub</span>
+                        <ArrowUpRight className="w-3.5 h-3.5 opacity-80" aria-hidden="true" />
+                      </a>
+                    ) : null
+                  ) : (
+                    <>
+                      {liveUrl && (
+                        <a
+                          href={liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          data-ph-capture-attribute-location="case_study_hero"
+                          onClick={() =>
+                            trackEvent("outbound_click", {
+                              destination: getOutboundDestination(liveUrl, "project_live"),
+                              url: liveUrl,
+                              location: "case_study_hero",
+                              label: "Live demo",
+                            })
+                          }
+                          className="min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-sm transition-opacity shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+                        >
+                          <ExternalLink className="w-4 h-4" aria-hidden="true" />
+                          <span>Live demo</span>
+                          <ArrowUpRight className="w-3.5 h-3.5 opacity-80" aria-hidden="true" />
+                        </a>
                       )}
-                      <span>{isDemoOnGithub ? "View architecture" : "Live demo"}</span>
-                      <ArrowUpRight className="w-3.5 h-3.5 opacity-80" aria-hidden="true" />
-                    </a>
-                  )}
 
-                  {githubUrl && (
-                    <a
-                      href={githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      data-ph-capture-attribute-location="case_study_hero"
-                      onClick={() =>
-                        trackEvent("outbound_click", {
-                          destination: getOutboundDestination(githubUrl, "project_repo"),
-                          url: githubUrl,
-                          location: "case_study_hero",
-                          label: "GitHub",
-                        })
-                      }
-                      className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-sm font-medium text-[var(--text-primary)] transition-colors shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
-                    >
-                      <SiGithub className="w-4 h-4" aria-hidden="true" />
-                      <span>GitHub</span>
-                      <ArrowUpRight className="w-3.5 h-3.5 opacity-60" aria-hidden="true" />
-                    </a>
-                  )}
+                      {githubUrl && (
+                        <a
+                          href={githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          data-ph-capture-attribute-location="case_study_hero"
+                          onClick={() =>
+                            trackEvent("outbound_click", {
+                              destination: getOutboundDestination(githubUrl, "project_repo"),
+                              url: githubUrl,
+                              location: "case_study_hero",
+                              label: "GitHub",
+                            })
+                          }
+                          className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-sm font-medium text-[var(--text-primary)] transition-colors shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+                        >
+                          <SiGithub className="w-4 h-4" aria-hidden="true" />
+                          <span>GitHub</span>
+                          <ArrowUpRight className="w-3.5 h-3.5 opacity-60" aria-hidden="true" />
+                        </a>
+                      )}
 
-                  {project.links.readme && (
-                    <a
-                      href={project.links.readme}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      data-ph-capture-attribute-location="case_study_hero"
-                      onClick={() =>
-                        trackEvent("outbound_click", {
-                          destination: getOutboundDestination(project.links.readme!, "project_repo"),
-                          url: project.links.readme!,
-                          location: "case_study_hero",
-                          label: "README",
-                        })
-                      }
-                      className="min-h-[44px] inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors underline decoration-[var(--border-subtle)] underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
-                    >
-                      <FileText className="w-3.5 h-3.5" aria-hidden="true" />
-                      <span>README</span>
-                    </a>
+                      {project.links.readme && (
+                        <a
+                          href={project.links.readme}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          data-ph-capture-attribute-location="case_study_hero"
+                          onClick={() =>
+                            trackEvent("outbound_click", {
+                              destination: getOutboundDestination(project.links.readme!, "project_repo"),
+                              url: project.links.readme!,
+                              location: "case_study_hero",
+                              label: "README",
+                            })
+                          }
+                          className="min-h-[44px] inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors underline decoration-[var(--border-subtle)] underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+                        >
+                          <FileText className="w-3.5 h-3.5" aria-hidden="true" />
+                          <span>README</span>
+                        </a>
+                      )}
+                    </>
                   )}
                 </div>
               </div>
