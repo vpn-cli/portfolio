@@ -22,8 +22,8 @@ async function run() {
   });
 
   console.log("Navigating to http://localhost:3100/about ...");
-  await page.goto("http://localhost:3100/about", { waitUntil: "networkidle" });
-  await page.waitForTimeout(500);
+  await page.goto("http://localhost:3100/about", { waitUntil: "domcontentloaded" });
+  await page.waitForTimeout(1000);
 
   // 1. Verify timeline is gone
   const timelineHeading = await page.$("#timeline-heading");
