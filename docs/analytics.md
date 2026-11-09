@@ -44,6 +44,7 @@ All events are strictly typed in `lib/analytics.ts`. TypeScript enforces type co
 | `byte_scene_failed` | Fired once per page view if WebGL is unavailable or if the 3D scene throws while loading (deferred via `requestIdleCallback`). | `reason: "no_webgl" \| "load_error"` | Reports rendering incompatibilities or loading exceptions. Ensures the tile gracefully shows its fallback SVG illustration rather than a blank box. |
 | `byte_pat_batch` | Byte desk companion pat batch sent to `/api/pats` (flushed at most once per 3s or on pagehide). | `count: number`<br>`session_total: number` | Aggregated pat reporting. Avoids firing high-frequency single-pat events to save bandwidth and event limits. |
 | `case_study_read` | User navigates away or closes a case study page after reading. | `project: string`<br>`max_scroll_pct: number` | Fired on unmount or `pagehide` only if user scrolled deeper than 25% of the case study. |
+| `artwork_view` | Lightbox opens or advances to an artwork piece (once per piece per page view). | `artwork: string` | Measures individual artwork engagement and exploration depth. Property `artwork` holds the piece slug. |
 
 ---
 

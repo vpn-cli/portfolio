@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
-  <rect width="400" height="300" fill="#111318"/>
-  <path d="M30 225 Q 120 80, 200 160 T 370 70" fill="none" stroke="#38bdf8" stroke-width="4"/>
-  <path d="M30 240 Q 120 95, 200 175 T 370 85" fill="none" stroke="#0284c7" stroke-width="2.5" stroke-opacity="0.8"/>
-  <path d="M30 255 Q 120 110, 200 190 T 370 100" fill="none" stroke="#0369a1" stroke-width="2" stroke-opacity="0.5"/>
-  <circle cx="200" cy="160" r="8" fill="#38bdf8"/>
-  <circle cx="370" cy="70" r="10" fill="#0ea5e9"/>
-  <text x="20" y="282" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#94a3b8" letter-spacing="1">02 · TOPOGRAPHIC CONTOUR</text>
-</svg>

@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
-  <rect width="400" height="300" fill="#111318"/>
-  <circle cx="200" cy="145" r="90" fill="none" stroke="#be123c" stroke-width="2"/>
-  <circle cx="160" cy="145" r="65" fill="#f43f5e" fill-opacity="0.3" stroke="#f43f5e" stroke-width="3"/>
-  <circle cx="240" cy="145" r="65" fill="#fb7185" fill-opacity="0.3" stroke="#fb7185" stroke-width="3"/>
-  <ellipse cx="200" cy="145" rx="20" ry="40" fill="#fda4af" fill-opacity="0.6" stroke="#ffffff" stroke-width="2"/>
-  <circle cx="200" cy="145" r="8" fill="#ffffff"/>
-  <text x="20" y="282" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#94a3b8" letter-spacing="1">06 · ORBITAL DUALITY</text>
-</svg>

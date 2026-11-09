@@ -68,6 +68,9 @@ export interface AnalyticsEvents {
     project: string;
     max_scroll_pct: number;
   };
+  artwork_view: {
+    artwork: string;
+  };
 }
 
 interface QueuedEvent {
