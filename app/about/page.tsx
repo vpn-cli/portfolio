@@ -4,7 +4,6 @@ import { X, ArrowLeft } from "lucide-react";
 import { AboutHero } from "@/components/about/AboutHero";
 import { AboutWorkbench } from "@/components/about/AboutWorkbench";
 import { AboutExperience } from "@/components/about/AboutExperience";
-import { AboutTimeline } from "@/components/about/AboutTimeline";
 import { AboutPrinciples } from "@/components/about/AboutPrinciples";
 import { AboutGallery } from "@/components/about/AboutGallery";
 import { AboutCurrentFocus } from "@/components/about/AboutCurrentFocus";
@@ -43,7 +42,6 @@ export default function AboutPage() {
           <AboutHero status={siteConfig.status} />
           <AboutWorkbench />
           <AboutExperience />
-          <AboutTimeline />
           <AboutPrinciples />
           <AboutGallery />
           <AboutCurrentFocus />
