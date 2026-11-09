@@ -154,7 +154,7 @@ export function AboutTimeline() {
               onClick={() => setActiveId(m.id)}
               className={`p-3 rounded-xl text-left transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${
                 isActive
-                  ? "bg-[var(--surface-tile-elevated)] ring-1 ring-[var(--text-primary)]"
+                  ? "bg-[var(--surface-tile-elevated)] outline outline-1 outline-[var(--text-primary)]"
                   : "bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] opacity-85 hover:opacity-100"
               }`}
             >

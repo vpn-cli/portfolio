@@ -366,13 +366,13 @@ export function AboutWorkbench() {
       {mode === "systems" && (
         <div className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-1.5">
+            <div data-ui="pipeline-switcher" className="flex items-center gap-1.5">
               <button
                 onClick={() => {
                   setSystemsTab("kafka");
                   setActiveStageIndex(null);
                 }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--border-focus)] ${
+                className={`px-3.5 py-1.5 rounded-lg text-sm font-medium border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--border-focus)] ${
                   systemsTab === "kafka"
                     ? "bg-[var(--surface-tile)] border-[var(--text-primary)] text-[var(--text-primary)] font-semibold"
                     : "bg-transparent border-[var(--border-subtle)] text-[var(--text-secondary)] hover:border-[var(--border-hover)]"
@@ -385,7 +385,7 @@ export function AboutWorkbench() {
                   setSystemsTab("sockets");
                   setActiveStageIndex(null);
                 }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--border-focus)] ${
+                className={`px-3.5 py-1.5 rounded-lg text-sm font-medium border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--border-focus)] ${
                   systemsTab === "sockets"
                     ? "bg-[var(--surface-tile)] border-[var(--text-primary)] text-[var(--text-primary)] font-semibold"
                     : "bg-transparent border-[var(--border-subtle)] text-[var(--text-secondary)] hover:border-[var(--border-hover)]"
@@ -398,7 +398,7 @@ export function AboutWorkbench() {
                   setSystemsTab("ast");
                   setActiveStageIndex(null);
                 }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--border-focus)] ${
+                className={`px-3.5 py-1.5 rounded-lg text-sm font-medium border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--border-focus)] ${
                   systemsTab === "ast"
                     ? "bg-[var(--surface-tile)] border-[var(--text-primary)] text-[var(--text-primary)] font-semibold"
                     : "bg-transparent border-[var(--border-subtle)] text-[var(--text-secondary)] hover:border-[var(--border-hover)]"

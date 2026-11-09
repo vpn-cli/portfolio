@@ -1,6 +1,6 @@
 {
  "url": "http://localhost:3000/about",
- "at": "2026-11-09T16:45:46.876Z",
+ "at": "2026-11-09T16:48:25.358Z",
  "allow": [],
  "viewports": [
   {
@@ -11,7 +11,7 @@
    "filled": [
     0.9,
     0.9,
-    0.91,
+    0.9,
     0.91,
     0.91,
     0.91,
@@ -32,7 +32,7 @@
      "h": 900
     },
     "page": {
-     "height": 6309,
+     "height": 6313,
      "screens": 7,
      "words": 828,
      "img": 6,
@@ -42,7 +42,7 @@
      "sections": 8,
      "horizontalOverflow": 0,
      "overflowCulprits": [],
-     "uiFragments": 5,
+     "uiFragments": 6,
      "uiAbuse": false,
      "realPictures": 4,
      "videoCount": 0,
@@ -126,7 +126,7 @@
       "align": "left",
       "position": "center",
       "widthRatio": 0.66,
-      "top": 5572,
+      "top": 5576,
       "tag": "h2",
       "kind": "heading"
      }
@@ -196,7 +196,7 @@
      "microSamples": [],
      "upperShare": 0,
      "centerShare": 0.03,
-     "smallText": 16
+     "smallText": 8
     },
     "eyebrows": [],
     "numbered": [],
@@ -229,7 +229,7 @@
       },
       {
        "color": "#ffffff",
-       "top": 3234,
+       "top": 3238,
        "hsl": {
         "h": 0,
         "s": 0,
@@ -274,7 +274,7 @@
      "count": 18,
      "inHero": 2,
      "radius": 12,
-     "height": 30,
+     "height": 72,
      "withShadow": 0,
      "withGradient": 0,
      "mono": 0,
@@ -285,11 +285,9 @@
      ]
     },
     "surfaces": {
-     "shadowStatic": 1,
+     "shadowStatic": 0,
      "shadowOverlay": 1,
-     "shadowSamples": [
-      "button.p-3.rounded-xl → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
-     ],
+     "shadowSamples": [],
      "gradients": 0,
      "scrims": 0,
      "gradientSamples": [],
@@ -318,7 +316,7 @@
      "w": 1440,
      "h": 900
     },
-    "pageH": 6309,
+    "pageH": 6313,
     "margins": {
      "left": 208,
      "right": 208
@@ -351,7 +349,7 @@
       "sel": "section.w-full.space-y-6",
       "tag": "section",
       "top": 1143,
-      "height": 492,
+      "height": 496,
       "words": 93,
       "media": 0,
       "middle": 112,
@@ -373,7 +371,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 1763,
+      "top": 1767,
       "height": 606,
       "words": 130,
       "media": 0,
@@ -396,7 +394,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 2497,
+      "top": 2501,
       "height": 521,
       "words": 116,
       "media": 0,
@@ -419,7 +417,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 3146,
+      "top": 3150,
       "height": 606,
       "words": 170,
       "media": 0,
@@ -442,7 +440,7 @@
      {
       "sel": "section.w-full.space-y-8",
       "tag": "section",
-      "top": 3880,
+      "top": 3884,
       "height": 700,
       "words": 24,
       "media": 3,
@@ -465,7 +463,7 @@
      {
       "sel": "section.w-full.space-y-4",
       "tag": "section",
-      "top": 4708,
+      "top": 4712,
       "height": 700,
       "words": 36,
       "media": 0,
@@ -488,7 +486,7 @@
      {
       "sel": "section.w-full",
       "tag": "section",
-      "top": 5536,
+      "top": 5540,
       "height": 700,
       "words": 45,
       "media": 0,
@@ -511,7 +509,7 @@
     ],
     "gaps": [
      {
-      "top": 5128,
+      "top": 5132,
       "height": 440
      }
     ],
@@ -593,7 +591,7 @@
     0.96,
     0.93,
     0.93,
-    0.96,
+    0.95,
     0.96
    ],
    "motion": {
@@ -610,8 +608,8 @@
      "h": 1024
     },
     "page": {
-     "height": 6978,
-     "screens": 6.8,
+     "height": 7022,
+     "screens": 6.9,
      "words": 659,
      "img": 6,
      "video": 0,
@@ -620,7 +618,7 @@
      "sections": 8,
      "horizontalOverflow": 0,
      "overflowCulprits": [],
-     "uiFragments": 5,
+     "uiFragments": 6,
      "uiAbuse": false,
      "realPictures": 4,
      "videoCount": 0,
@@ -704,7 +702,7 @@
       "align": "left",
       "position": "center",
       "widthRatio": 0.78,
-      "top": 6265,
+      "top": 6309,
       "tag": "h2",
       "kind": "heading"
      }
@@ -774,7 +772,7 @@
      "microSamples": [],
      "upperShare": 0,
      "centerShare": 0.03,
-     "smallText": 16
+     "smallText": 8
     },
     "eyebrows": [],
     "numbered": [],
@@ -852,7 +850,7 @@
      "count": 18,
      "inHero": 2,
      "radius": 12,
-     "height": 30,
+     "height": 72,
      "withShadow": 0,
      "withGradient": 0,
      "mono": 0,
@@ -863,11 +861,9 @@
      ]
     },
     "surfaces": {
-     "shadowStatic": 1,
+     "shadowStatic": 0,
      "shadowOverlay": 1,
-     "shadowSamples": [
-      "button.p-3.rounded-xl → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
-     ],
+     "shadowSamples": [],
      "gradients": 0,
      "scrims": 0,
      "gradientSamples": [],
@@ -896,7 +892,7 @@
      "w": 768,
      "h": 1024
     },
-    "pageH": 6978,
+    "pageH": 7022,
     "margins": {
      "left": 49,
      "right": 49
@@ -929,7 +925,7 @@
       "sel": "section.w-full.space-y-6",
       "tag": "section",
       "top": 1434,
-      "height": 512,
+      "height": 556,
       "words": 93,
       "media": 0,
       "middle": 0,
@@ -939,7 +935,7 @@
        "tag": "h2"
       },
       "left": 49,
-      "right": 49,
+      "right": 54,
       "textLeft": 49,
       "textRight": 66,
       "fullBleed": false,
@@ -951,7 +947,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 2058,
+      "top": 2102,
       "height": 744,
       "words": 130,
       "media": 0,
@@ -974,7 +970,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 2914,
+      "top": 2958,
       "height": 767,
       "words": 116,
       "media": 0,
@@ -997,7 +993,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 3793,
+      "top": 3837,
       "height": 700,
       "words": 93,
       "media": 0,
@@ -1020,7 +1016,7 @@
      {
       "sel": "section.w-full.space-y-8",
       "tag": "section",
-      "top": 4605,
+      "top": 4649,
       "height": 700,
       "words": 25,
       "media": 3,
@@ -1043,7 +1039,7 @@
      {
       "sel": "section.w-full.space-y-4",
       "tag": "section",
-      "top": 5417,
+      "top": 5461,
       "height": 700,
       "words": 36,
       "media": 0,
@@ -1066,7 +1062,7 @@
      {
       "sel": "section.w-full",
       "tag": "section",
-      "top": 6229,
+      "top": 6273,
       "height": 700,
       "words": 45,
       "media": 0,
@@ -1168,8 +1164,8 @@
      "h": 844
     },
     "page": {
-     "height": 7447,
-     "screens": 8.8,
+     "height": 7515,
+     "screens": 8.9,
      "words": 365,
      "img": 6,
      "video": 0,
@@ -1178,7 +1174,7 @@
      "sections": 8,
      "horizontalOverflow": 0,
      "overflowCulprits": [],
-     "uiFragments": 5,
+     "uiFragments": 6,
      "uiAbuse": false,
      "realPictures": 3,
      "videoCount": 0,
@@ -1261,7 +1257,7 @@
       "align": "left",
       "position": "center",
       "widthRatio": 0.69,
-      "top": 6742,
+      "top": 6810,
       "tag": "h2",
       "kind": "heading"
      }
@@ -1330,7 +1326,7 @@
      "microSamples": [],
      "upperShare": 0,
      "centerShare": 0.03,
-     "smallText": 36
+     "smallText": 28
     },
     "eyebrows": [],
     "numbered": [],
@@ -1419,11 +1415,9 @@
      ]
     },
     "surfaces": {
-     "shadowStatic": 1,
+     "shadowStatic": 0,
      "shadowOverlay": 1,
-     "shadowSamples": [
-      "button.p-3.rounded-xl → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
-     ],
+     "shadowSamples": [],
      "gradients": 0,
      "scrims": 0,
      "gradientSamples": [],
@@ -1452,7 +1446,7 @@
      "w": 390,
      "h": 844
     },
-    "pageH": 7447,
+    "pageH": 7515,
     "margins": {
      "left": 33,
      "right": 33
@@ -1485,7 +1479,7 @@
       "sel": "div.grid.grid-cols-1",
       "tag": "div",
       "top": 563,
-      "height": 1177,
+      "height": 1217,
       "words": 115,
       "media": 0,
       "middle": 0,
@@ -1507,8 +1501,8 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 1820,
-      "height": 602,
+      "top": 1860,
+      "height": 630,
       "words": 86,
       "media": 0,
       "middle": 0,
@@ -1518,9 +1512,9 @@
        "tag": "h2"
       },
       "left": 33,
-      "right": 33,
+      "right": 15,
       "textLeft": 33,
-      "textRight": 34,
+      "textRight": 30,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -1530,7 +1524,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 2502,
+      "top": 2570,
       "height": 1012,
       "words": 130,
       "media": 0,
@@ -1553,7 +1547,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 3594,
+      "top": 3662,
       "height": 700,
       "words": 76,
       "media": 0,
@@ -1576,7 +1570,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 4374,
+      "top": 4442,
       "height": 700,
       "words": 88,
       "media": 0,
@@ -1599,7 +1593,7 @@
      {
       "sel": "section.w-full.space-y-8",
       "tag": "section",
-      "top": 5154,
+      "top": 5222,
       "height": 700,
       "words": 14,
       "media": 1,
@@ -1622,7 +1616,7 @@
      {
       "sel": "section.w-full.space-y-4",
       "tag": "section",
-      "top": 5934,
+      "top": 6002,
       "height": 700,
       "words": 36,
       "media": 0,
@@ -1645,7 +1639,7 @@
      {
       "sel": "section.w-full",
       "tag": "section",
-      "top": 6714,
+      "top": 6782,
       "height": 700,
       "words": 45,
       "media": 0,
@@ -1704,17 +1698,6 @@
  ],
  "findings": [
   {
-   "level": "FAIL",
-   "id": "shadow",
-   "width": 1440,
-   "message": "1 box-shadow(s) on elements at rest: button.p-3.rounded-xl → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
-   "fix": "Remove. Separate surfaces with a tone step or space. Shadows are for things that really float (menus, dialogs, sticky bars).",
-   "alsoAt": [
-    768,
-    390
-   ]
-  },
-  {
    "level": "WARN",
    "id": "outlined-box",
    "width": 1440,
@@ -1747,7 +1730,7 @@
    "level": "FAIL",
    "id": "small-text",
    "width": 1440,
-   "message": "16 text blocks under 13px.",
+   "message": "8 text blocks under 13px.",
    "fix": "Nothing meant to be read goes below 13px.",
    "alsoAt": [
     768,
@@ -1758,7 +1741,7 @@
    "level": "WARN",
    "id": "blank-gap",
    "width": 1440,
-   "message": "A 440px stretch at 5128px holds nothing.",
+   "message": "A 440px stretch at 5132px holds nothing.",
    "fix": "Check that it is a deliberate rest (once per page at most); otherwise close it to the normal section gap."
   },
   {
