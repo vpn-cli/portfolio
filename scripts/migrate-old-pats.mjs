@@ -76,7 +76,7 @@ async function runMigration() {
 
   if (tableCheck.length === 0) {
     console.log("Nothing to migrate");
-    process.exit(0);
+    return;
   }
 
   const oldRows = await sql`SELECT count FROM byte_pats WHERE id = 1;`;
@@ -91,12 +91,12 @@ async function runMigration() {
   console.log(`[DRY RUN] Expected pats_total after: ${totalBefore + oldCount}`);
 
   if (isDryRun) {
-    process.exit(0);
+    return;
   }
 
   if (!isYes) {
     console.log("Add --yes to apply");
-    process.exit(0);
+    return;
   }
 
   // Execute INSERT/UPDATE and DROP TABLE in a single atomic transaction via Neon HTTP driver
