@@ -1,6 +1,6 @@
 {
  "url": "http://localhost:3000/about",
- "at": "2026-11-09T16:51:35.627Z",
+ "at": "2026-11-09T16:55:47.464Z",
  "allow": [],
  "viewports": [
   {
@@ -1164,8 +1164,8 @@
      "h": 844
     },
     "page": {
-     "height": 7515,
-     "screens": 8.9,
+     "height": 7573,
+     "screens": 9,
      "words": 365,
      "img": 6,
      "video": 0,
@@ -1257,7 +1257,7 @@
       "align": "left",
       "position": "center",
       "widthRatio": 0.69,
-      "top": 6810,
+      "top": 6868,
       "tag": "h2",
       "kind": "heading"
      }
@@ -1326,7 +1326,7 @@
      "microSamples": [],
      "upperShare": 0,
      "centerShare": 0.03,
-     "smallText": 14
+     "smallText": 1
     },
     "eyebrows": [],
     "numbered": [],
@@ -1359,7 +1359,7 @@
       },
       {
        "color": "#ffffff",
-       "top": 982,
+       "top": 1004,
        "hsl": {
         "h": 0,
         "s": 0,
@@ -1446,7 +1446,7 @@
      "w": 390,
      "h": 844
     },
-    "pageH": 7515,
+    "pageH": 7573,
     "margins": {
      "left": 33,
      "right": 33
@@ -1456,7 +1456,7 @@
       "sel": "div.flex.flex-col",
       "tag": "div",
       "top": 105,
-      "height": 426,
+      "height": 448,
       "words": 35,
       "media": 0,
       "middle": 0,
@@ -1478,7 +1478,7 @@
      {
       "sel": "div.grid.grid-cols-1",
       "tag": "div",
-      "top": 563,
+      "top": 585,
       "height": 1217,
       "words": 115,
       "media": 0,
@@ -1501,8 +1501,8 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 1860,
-      "height": 630,
+      "top": 1882,
+      "height": 646,
       "words": 86,
       "media": 0,
       "middle": 0,
@@ -1524,8 +1524,8 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 2570,
-      "height": 1012,
+      "top": 2608,
+      "height": 1032,
       "words": 130,
       "media": 0,
       "middle": 0,
@@ -1547,7 +1547,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 3662,
+      "top": 3720,
       "height": 700,
       "words": 76,
       "media": 0,
@@ -1570,7 +1570,7 @@
      {
       "sel": "section.w-full.space-y-6",
       "tag": "section",
-      "top": 4442,
+      "top": 4500,
       "height": 700,
       "words": 88,
       "media": 0,
@@ -1593,7 +1593,7 @@
      {
       "sel": "section.w-full.space-y-8",
       "tag": "section",
-      "top": 5222,
+      "top": 5280,
       "height": 700,
       "words": 14,
       "media": 1,
@@ -1606,7 +1606,7 @@
       "left": 33,
       "right": 33,
       "textLeft": 33,
-      "textRight": 41,
+      "textRight": 85,
       "fullBleed": false,
       "footer": false,
       "hero": false,
@@ -1616,7 +1616,7 @@
      {
       "sel": "section.w-full.space-y-4",
       "tag": "section",
-      "top": 6002,
+      "top": 6060,
       "height": 700,
       "words": 36,
       "media": 0,
@@ -1639,7 +1639,7 @@
      {
       "sel": "section.w-full",
       "tag": "section",
-      "top": 6782,
+      "top": 6840,
       "height": 700,
       "words": 45,
       "media": 0,
@@ -1650,9 +1650,9 @@
        "tag": "h2"
       },
       "left": 61,
-      "right": 61,
+      "right": 72,
       "textLeft": 61,
-      "textRight": 61,
+      "textRight": 72,
       "fullBleed": false,
       "footer": true,
       "hero": false,
@@ -1677,14 +1677,14 @@
      },
      {
       "x": 33,
-      "n": 10
+      "n": 12
      },
      {
       "x": 75,
       "n": 3
      }
     ],
-    "leftBlocks": 31,
+    "leftBlocks": 33,
     "bodySize": 16,
     "stage": false,
     "explains": true,
@@ -1741,10 +1741,10 @@
    "fix": "Give every section an entrance for its parts (not one fade of the whole block) and add one moving picture: a looping clip or a slow move on a photograph."
   },
   {
-   "level": "FAIL",
+   "level": "WARN",
    "id": "small-text",
    "width": 390,
-   "message": "14 text blocks under 13px.",
+   "message": "1 text block(s) under 13px.",
    "fix": "Nothing meant to be read goes below 13px."
   }
  ],
