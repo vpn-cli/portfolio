@@ -97,46 +97,46 @@ export function ContactTile({ className = "" }: { className?: string }) {
 
   return (
     <BentoTile className={className} cursorText="Contact" ariaLabel="Contact Vipin Kaushik">
-      <div className="w-full h-full flex flex-col justify-between p-1 sm:p-2">
-        {/* Top Header: CTA */}
-        <div className="space-y-2">
-          <h3 className="text-[26px] sm:text-[30px] xl:text-[32px] 2xl:text-[36px] font-bold text-[var(--text-primary)] leading-[1.1] tracking-[-0.03em]">
+      <div className="w-full h-full flex flex-col justify-between gap-3 sm:gap-0">
+        {/* Top: Heading + Subline + Time line */}
+        <div className="space-y-1.5 sm:space-y-2">
+          <h3 className="text-[20px] sm:text-[22px] xl:text-[24px] font-bold text-[var(--text-primary)] leading-[1.15] tracking-[-0.02em]">
             Let’s talk.
           </h3>
-          <p className="text-[14px] sm:text-[15px] xl:text-[16px] text-[var(--text-secondary)] leading-snug">
+          <p className="text-[13px] sm:text-[14px] text-[var(--text-secondary)] leading-snug">
             Roles, collaborations, or a chat about backend systems or drawing.
           </p>
 
           {/* Inlined Local Time & Status */}
-          <div className="flex items-start sm:items-center gap-2 text-[14px] sm:text-[15px] xl:text-[16px] text-[var(--text-secondary)] min-h-[24px] leading-snug sm:leading-normal pt-1">
+          <div className="flex items-center gap-2 text-[12px] sm:text-[13px] text-[var(--text-tertiary)] min-h-[20px] leading-normal pt-0.5">
             {timeState ? (
               <>
                 {timeState.isSun ? (
-                  <Sun className="w-4 h-4 shrink-0 mt-[2px] sm:mt-0 text-[var(--text-secondary)]" aria-hidden="true" />
+                  <Sun className="w-3.5 h-3.5 shrink-0 text-[var(--text-secondary)]" aria-hidden="true" />
                 ) : (
-                  <Moon className="w-4 h-4 shrink-0 mt-[2px] sm:mt-0 text-[var(--text-secondary)]" aria-hidden="true" />
+                  <Moon className="w-3.5 h-3.5 shrink-0 text-[var(--text-secondary)]" aria-hidden="true" />
                 )}
                 <span className="tabular-nums">
                   {timeState.timeStr} in India · {timeState.statusText}
                 </span>
               </>
             ) : (
-              <span className="invisible select-none inline-flex items-start sm:items-center gap-2" aria-hidden="true">
-                <span className="w-4 h-4 shrink-0 mt-[2px] sm:mt-0 inline-block" />
+              <span className="invisible select-none inline-flex items-center gap-2" aria-hidden="true">
+                <span className="w-3.5 h-3.5 shrink-0 inline-block" />
                 <span>9:27 AM in India · usually replies within a day</span>
               </span>
             )}
           </div>
         </div>
 
-        {/* Center / Bottom: Large Clickable Email + Copy & Mail Actions */}
-        <div className="pt-4 mt-auto space-y-2.5">
-          {/* Large clickable email block with copy button */}
-          <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-2 p-3 sm:p-3.5 rounded-2xl bg-[var(--surface-tile-elevated)] border border-transparent hover:border-[var(--border-hover)] transition-colors">
+        {/* Center / Bottom: Email/copy row then Send mail row */}
+        <div className="flex flex-col gap-2 sm:gap-2.5 pt-1">
+          {/* Email row with copy button */}
+          <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-2 px-3 sm:px-3.5 py-2 rounded-xl bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] transition-colors">
             <button
               onClick={handleCopy}
               type="button"
-              className="text-left font-medium text-[clamp(13px,3.2vw,16px)] text-[var(--text-primary)] hover:text-sky-500 transition-colors focus-visible:outline-none"
+              className="text-left font-medium text-[13px] sm:text-[13.5px] lg:text-[14px] text-[var(--text-primary)] hover:text-sky-500 transition-colors focus-visible:outline-none truncate"
               title="Click to copy email address"
             >
               {email}
@@ -147,7 +147,7 @@ export function ContactTile({ className = "" }: { className?: string }) {
               type="button"
               data-ph-capture-attribute-location="contact_tile"
               aria-label={copied ? "Email copied to clipboard" : "Copy email address"}
-              className="w-full sm:w-auto px-3 py-1.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-transparent text-[13px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center justify-center gap-1.5 transition-colors shrink-0 cursor-pointer active:scale-95"
+              className="w-full sm:w-auto px-2.5 py-1 sm:px-3 sm:py-1 rounded-lg bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-[12px] sm:text-[12.5px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center justify-center gap-1.5 transition-colors shrink-0 cursor-pointer active:scale-95"
             >
               {copied ? (
                 <>
@@ -164,25 +164,25 @@ export function ContactTile({ className = "" }: { className?: string }) {
           </div>
 
           {/* Secondary Action: Send Mail */}
-          <div className="flex items-center gap-3">
-            <a
-              href={mailUrl}
-              data-ph-capture-attribute-location="contact_tile"
-              onClick={() =>
-                trackEvent("outbound_click", {
-                  destination: "email",
-                  url: mailUrl,
-                  location: "contact_tile",
-                  label: "Send mail",
-                })
-              }
-              className="min-h-[44px] w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-transparent hover:border-[var(--border-hover)] text-[13px] sm:text-[14px] font-medium text-[var(--text-primary)] transition-colors active:scale-98 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
-            >
+          <a
+            href={mailUrl}
+            data-ph-capture-attribute-location="contact_tile"
+            onClick={() =>
+              trackEvent("outbound_click", {
+                destination: "email",
+                url: mailUrl,
+                location: "contact_tile",
+                label: "Send mail",
+              })
+            }
+            className="min-h-[40px] sm:min-h-[42px] w-full flex items-center justify-between px-3.5 sm:px-4 py-2 rounded-xl bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] text-[13px] sm:text-[13.5px] font-medium text-[var(--text-primary)] transition-colors active:scale-98 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+          >
+            <div className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-[var(--text-secondary)]" aria-hidden="true" />
               <span>Send mail</span>
-              <ArrowUpRight className="w-4 h-4 text-[var(--text-tertiary)] ml-auto" aria-hidden="true" />
-            </a>
-          </div>
+            </div>
+            <ArrowUpRight className="w-4 h-4 text-[var(--text-tertiary)]" aria-hidden="true" />
+          </a>
         </div>
       </div>
     </BentoTile>
