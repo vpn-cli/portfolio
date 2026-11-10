@@ -77,11 +77,7 @@ export function TableOfContents() {
       {/* ━━━ MOBILE COLLAPSED STICKY TOP PROGRESS BAR ━━━ */}
       <div className="lg:hidden sticky top-0 z-40 w-full bg-[var(--bg-canvas)]/90 backdrop-blur-md border-b border-[var(--border-subtle)] px-4 py-2 flex flex-col gap-1.5 shadow-sm">
         <div className="flex items-center justify-between text-xs">
-          <div className="flex items-center gap-1.5">
-            <span className="text-[var(--text-tertiary)] font-mono">0{TOC_SECTIONS.findIndex((s) => s.id === activeId) + 1}</span>
-            <span className="text-[var(--text-tertiary)]">·</span>
-            <span className="font-medium text-[var(--text-primary)]">{activeLabel}</span>
-          </div>
+          <span className="font-medium text-[var(--text-primary)]">{activeLabel}</span>
           {hasScrolled && progress > 0 && (
             <span className="text-[11px] font-mono text-[var(--text-tertiary)]">
               {Math.round(progress)}% read
@@ -135,9 +131,6 @@ export function TableOfContents() {
                       : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                       }`}
                   >
-                    <span className="text-[11px] font-mono text-[var(--text-tertiary)] mr-1.5">
-                      0{idx + 1}
-                    </span>
                     <span>{sec.label}</span>
                   </button>
                   {isActive && (

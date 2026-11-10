@@ -13,7 +13,6 @@ import {
   FileText,
   Mail,
   HelpCircle,
-  ChevronDown,
 } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 import { trackEvent, getReferrerDomain, getOutboundDestination } from "@/lib/analytics";
@@ -35,7 +34,6 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
   const verifiedMetrics = (project.metrics || []).filter(
     (m) => !m.isTodo && !m.isConfig
   );
-  const [showMetaDetails, setShowMetaDetails] = useState(false);
 
   const { previousPath, getPreviousPath } = usePageTransition();
 
@@ -137,7 +135,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
               |
             </span>
 
-            <span className="hidden sm:inline-flex text-xs font-normal text-[var(--text-secondary)] px-2.5 py-0.5 rounded-full bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)]">
+            <span className="hidden sm:inline-flex text-xs text-[var(--text-secondary)]">
               {project.category}
             </span>
           </div>
@@ -255,42 +253,17 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                 </div>
               )}
 
-              {/* Meta Row: Role · Timeline · Stack Details Expander */}
-              <div className="pt-3 border-t border-[var(--border-subtle)] text-xs">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 text-[var(--text-secondary)]">
-                    <span className="font-medium text-[var(--text-primary)]">{project.role}</span>
-                    <span className="text-[var(--border-subtle)]" aria-hidden="true">·</span>
-                    <span>{project.timeline}</span>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => setShowMetaDetails(!showMetaDetails)}
-                    aria-expanded={showMetaDetails}
-                    aria-controls="hook-meta-details"
-                    className="min-h-[36px] text-xs font-mono text-[var(--text-tertiary)] hover:text-[var(--text-primary)] inline-flex items-center gap-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
-                  >
-                    <span>{showMetaDetails ? "Hide stack" : `Stack (${project.stack.length})`}</span>
-                    <ChevronDown
-                      className={`w-3.5 h-3.5 transition-transform duration-200 ${showMetaDetails ? "rotate-180" : ""}`}
-                      aria-hidden="true"
-                    />
-                  </button>
+              {/* Meta Row: Role · Timeline · Stack */}
+              <div className="pt-3 border-t border-[var(--border-subtle)] text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-y-1 gap-x-4">
+                <div className="flex items-center gap-2 text-[var(--text-secondary)] shrink-0">
+                  <span className="font-medium text-[var(--text-primary)]">{project.role}</span>
+                  <span className="text-[var(--border-subtle)]" aria-hidden="true">·</span>
+                  <span>{project.timeline}</span>
                 </div>
 
-                {showMetaDetails && (
-                  <div id="hook-meta-details" className="pt-3 mt-3 border-t border-[var(--border-subtle)] flex flex-wrap gap-1.5 animate-in fade-in duration-150">
-                    {project.stack.map((tech, idx) => (
-                      <span
-                        key={idx}
-                        className="font-mono text-[11px] px-2 py-0.5 rounded-md bg-[var(--surface-tile)] border border-[var(--border-subtle)] text-[var(--text-secondary)]"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                )}
+                <p className="text-xs text-[var(--text-secondary)]">
+                  {project.stack.join(", ")}
+                </p>
               </div>
 
               {/* CTAs on ONE row + Cold Start Note */}
@@ -396,7 +369,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
             <section id="problem" aria-label="The problem" className="space-y-6">
               <div className="space-y-3">
                 <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-tertiary)]">
-                  02 · The Problem
+                  The Problem
                 </span>
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
                   {project.problemClaim}
@@ -420,7 +393,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
             <section id="architecture" aria-label="Architecture and data flow" className="space-y-6">
               <div className="space-y-3">
                 <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-tertiary)]">
-                  03 · How It Works
+                  How It Works
                 </span>
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
                   {project.architectureClaim}
@@ -439,7 +412,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
             <section id="decisions" aria-label="Key engineering decisions" className="space-y-6">
               <div className="space-y-2">
                 <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-tertiary)]">
-                  04 · Decisions I Made
+                  Decisions I Made
                 </span>
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
                   {project.decisionsClaim}
@@ -455,7 +428,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
             <section id="bugs" aria-label="Bugs and fixes" className="space-y-6">
               <div className="space-y-2">
                 <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-tertiary)]">
-                  05 · Bugs I Fixed
+                  Bugs I Fixed
                 </span>
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
                   {project.bugsClaim}
@@ -471,7 +444,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
             <section id="next" aria-label="Next steps and live verification" className="space-y-6">
               <div className="space-y-3">
                 <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-tertiary)]">
-                  06 · Try It
+                  Try It
                 </span>
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
                   {project.nextStepsClaim}
