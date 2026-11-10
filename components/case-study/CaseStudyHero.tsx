@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { CaseStudy } from "@/data/projects";
 import { Play, Pause } from "lucide-react";
-import { HeroEventFlow } from "./HeroEventFlow";
 import { StreamMartDiagram } from "./StreamMartDiagram";
 
 interface CaseStudyHeroProps {
@@ -68,8 +67,8 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
     return (
       <div className="w-full space-y-2.5">
         <StreamMartDiagram />
-        <p className="text-xs text-[var(--text-tertiary)] font-mono text-center">
-          {clip?.caption || "Diagram shows only the transactional outbox flow (Payment Service → Kafka topic 'payment-successful' → Order & Analytic consumers); direct publish flows omitted."}
+        <p className="text-xs text-[var(--text-secondary)] text-center">
+          {clip?.caption || "Shows the checkout flow through the transactional outbox. Other Kafka publishers are left out."}
         </p>
       </div>
     );
@@ -123,7 +122,7 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
       </div>
 
       {/* Caption directly under visual (≤12 words) */}
-      <p className="text-xs text-[var(--text-tertiary)] font-mono text-center">
+      <p className="text-xs text-[var(--text-secondary)] text-center">
         {clip?.caption || "Live application state updating in real time."}
       </p>
     </div>
