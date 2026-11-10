@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  skipTrailingSlashRedirect: true,
   distDir: process.env.NEXT_DIST_DIR || ".next",
   transpilePackages: ['three', 'gsap'],
   reactStrictMode: false, // Prevents double ticker initialization in development for GSAP / Lenis
@@ -33,6 +34,10 @@ const nextConfig = {
       {
         source: '/ingest/static/:path*',
         destination: `${assetHost}/static/:path*`,
+      },
+      {
+        source: '/ingest/array/:path*',
+        destination: `${assetHost}/array/:path*`,
       },
       {
         source: '/ingest/:path*',
