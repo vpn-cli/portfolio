@@ -17,11 +17,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: `${siteConfig.name} — ${siteConfig.role}`,
+  title: `${siteConfig.name} | ${siteConfig.role}`,
   description: siteConfig.bio,
   metadataBase: new URL("https://vipinkaushik.dev"),
   openGraph: {
-    title: `${siteConfig.name} — ${siteConfig.role}`,
+    title: `${siteConfig.name} | ${siteConfig.role}`,
     description: siteConfig.bio,
     siteName: siteConfig.name,
     locale: "en_US",
