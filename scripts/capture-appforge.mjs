@@ -66,17 +66,12 @@ async function captureAppForge() {
   await input.pressSequentially(promptText, { delay: 35 });
   await page.waitForTimeout(1000);
 
-  // --- CAPTURE 3: Prompt Input View ---
-  const modalBox = page.locator("[role='dialog'], .fixed.inset-0").first();
-  if (await modalBox.count() > 0) {
-    await modalBox.screenshot({ path: path.join(TEMP_DIR, "prompt-input.png") });
-  } else {
-    await page.screenshot({
-      path: path.join(TEMP_DIR, "prompt-input.png"),
-      clip: { x: 260, y: 220, width: 920, height: 460 },
-    });
-  }
-  execSync(`ffmpeg -y -i "${path.join(TEMP_DIR, "prompt-input.png")}" "${path.join(OUT_DIR, "appforge-prompt-input.webp")}"`);
+  // --- CAPTURE 3: Prompt Input View & Workspace ---
+  await page.screenshot({
+    path: path.join(TEMP_DIR, "prompt-input.png"),
+    fullPage: false,
+  });
+  execSync(`ffmpeg -y -i "${path.join(TEMP_DIR, "prompt-input.png")}" -c:v libwebp -quality 90 "${path.join(OUT_DIR, "appforge-prompt-input.webp")}"`);
   console.log("Captured: appforge-prompt-input.webp");
 
   // --- Submit Prompt & Capture Generating State ---

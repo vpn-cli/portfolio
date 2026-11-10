@@ -61,8 +61,8 @@ This document catalogs every captured visual asset for Sportz, AppForge, and Str
    - **What it proves to a recruiter**: Demonstrates streaming token ingestion from Groq LPUs directly into an AST renderer with zero eval().
    - **Story beat**: Hook / Result.
 2. `public/projects/appforge/appforge-prompt-input.webp`
-   - **What it shows**: Focused crop of the AI Copilot modal with the user's natural language prompt and model submission action.
-   - **What it proves to a recruiter**: Shows the input boundary and prompt engineering interface.
+   - **What it shows**: Complete workspace capture of the AI Copilot modal with natural language prompt input and live canvas generation.
+   - **What it proves to a recruiter**: Shows the prompt input boundary alongside the streaming generation workspace.
    - **Story beat**: The Problem / Hook.
 3. `public/projects/appforge/appforge-editor-view.webp`
    - **What it shows**: Code editor panel displaying the validated JSON AST tree (`app`, `pages`, `components`, typed props).

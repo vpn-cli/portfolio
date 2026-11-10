@@ -182,7 +182,7 @@ export const projects: CaseStudy[] = [
         tech: "Next.js 15 & Vercel Edge",
         role: "Streams prompt chunks to edge.",
         screenshotUrl: "/projects/appforge/appforge-prompt-input.webp",
-        screenshotCaption: "Prompt input modal with structured layout instructions.",
+        screenshotCaption: "AI Copilot prompt modal with live canvas generation workspace.",
         codeSnippet: {
           filename: "app/api/copilot/route.ts",
           language: "typescript",
