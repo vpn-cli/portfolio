@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Server, Database, Radio, Smartphone, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Server, Database, Radio, Smartphone, CheckCircle2 } from "lucide-react";
 
 interface HeroEventFlowProps {
   slug: string;
@@ -56,9 +56,9 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
       aria-label={`${title} system architecture visual simulation`}
     >
       {/* Top Bar: Visual label */}
-      <div className="flex items-center justify-between pb-3 mb-3 border-b border-[var(--border-subtle)] text-xs text-[var(--text-tertiary)]">
+      <div className="flex items-center justify-between pb-3 mb-3 border-b border-[var(--border-subtle)] text-[13px] text-[var(--text-tertiary)]">
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[var(--text-primary)]" aria-hidden="true" />
+          <span className="w-2 h-2 rounded-full bg-[var(--accent-color)]" aria-hidden="true" />
           <span className="font-medium text-[var(--text-primary)]">
             {slug === "sockets"
               ? "Event Flow"
@@ -77,21 +77,21 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
             <div
               className={`rounded-xl p-4 border transition-all duration-300 ${
                 phase === 0
-                  ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-md"
+                  ? "bg-[var(--surface-tile)] border-[var(--accent-color)] ring-1 ring-[var(--accent-color)] shadow-md"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] opacity-85"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-mono text-[11px] text-[var(--text-tertiary)]">01 · POST</span>
+                <span className="font-mono text-[13px] text-[var(--text-tertiary)]">01 · POST</span>
                 <Server className="w-4 h-4 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
-              <div className="font-mono text-xs font-medium text-[var(--text-primary)] truncate">
+              <div className="font-mono text-sm font-medium text-[var(--text-primary)] truncate">
                 /matches/1/score
               </div>
-              <p className="text-[11px] text-[var(--text-secondary)] mt-1">
+              <p className="text-[13px] text-[var(--text-secondary)] mt-1">
                 Score mutation received (ARS 2 - 1 CHE)
               </p>
-              <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)] text-[10px] font-mono text-[var(--text-tertiary)] flex items-center gap-1.5">
+              <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)] text-[13px] font-mono text-[var(--text-tertiary)] flex items-center gap-1.5">
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
                     phase === 0 ? "bg-[var(--accent-color)] animate-pulse" : "bg-neutral-400"
@@ -105,21 +105,21 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
             <div
               className={`rounded-xl p-4 border transition-all duration-300 ${
                 phase === 1
-                  ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-md"
+                  ? "bg-[var(--surface-tile)] border-[var(--accent-color)] ring-1 ring-[var(--accent-color)] shadow-md"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] opacity-85"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-mono text-[11px] text-[var(--text-tertiary)]">02 · WRITE</span>
+                <span className="font-mono text-[13px] text-[var(--text-tertiary)]">02 · WRITE</span>
                 <Database className="w-4 h-4 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
-              <div className="font-mono text-xs font-medium text-[var(--text-primary)]">
+              <div className="font-mono text-sm font-medium text-[var(--text-primary)]">
                 Neon PostgreSQL
               </div>
-              <p className="text-[11px] text-[var(--text-secondary)] mt-1">
+              <p className="text-[13px] text-[var(--text-secondary)] mt-1">
                 Drizzle ORM schema update committed
               </p>
-              <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)] text-[10px] font-mono text-[var(--text-tertiary)] flex items-center gap-1.5">
+              <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)] text-[13px] font-mono text-[var(--text-tertiary)] flex items-center gap-1.5">
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
                     phase === 1 ? "bg-[var(--accent-color)] animate-pulse" : "bg-neutral-400"
@@ -133,21 +133,21 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
             <div
               className={`rounded-xl p-4 border transition-all duration-300 ${
                 phase === 2
-                  ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-md"
+                  ? "bg-[var(--surface-tile)] border-[var(--accent-color)] ring-1 ring-[var(--accent-color)] shadow-md"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] opacity-85"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-mono text-[11px] text-[var(--text-tertiary)]">03 · GATEWAY</span>
+                <span className="font-mono text-[13px] text-[var(--text-tertiary)]">03 · GATEWAY</span>
                 <Radio className="w-4 h-4 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
-              <div className="font-mono text-xs font-medium text-[var(--text-primary)] truncate">
+              <div className="font-mono text-sm font-medium text-[var(--text-primary)] truncate">
                 Topic Map Fanout
               </div>
-              <p className="text-[11px] text-[var(--text-secondary)] mt-1">
+              <p className="text-[13px] text-[var(--text-secondary)] mt-1">
                 Lookup Map&lt;match:1, Set&lt;ws&gt;&gt;
               </p>
-              <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)] text-[10px] font-mono text-[var(--text-tertiary)] flex items-center gap-1.5">
+              <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)] text-[13px] font-mono text-[var(--text-tertiary)] flex items-center gap-1.5">
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
                     phase === 2 ? "bg-[var(--accent-color)] animate-pulse" : "bg-neutral-400"
@@ -161,17 +161,17 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
             <div
               className={`rounded-xl p-4 border transition-all duration-300 space-y-2.5 ${
                 phase === 3
-                  ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-md"
+                  ? "bg-[var(--surface-tile)] border-[var(--accent-color)] ring-1 ring-[var(--accent-color)] shadow-md"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] opacity-85"
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="font-mono text-[11px] text-[var(--text-tertiary)]">04 · CLIENTS</span>
+                <span className="font-mono text-[13px] text-[var(--text-tertiary)]">04 · CLIENTS</span>
                 <Smartphone className="w-4 h-4 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
 
               {/* Subscribed Phone 1 */}
-              <div className="flex items-center justify-between p-2 rounded-lg bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] text-[11px]">
+              <div className="flex items-center justify-between p-2 rounded-lg bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] text-[13px]">
                 <div className="flex items-center gap-1.5">
                   <span
                     className={`w-2 h-2 rounded-full ${
@@ -180,13 +180,13 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
                   />
                   <span className="font-mono font-medium text-[var(--text-primary)]">Client A (Match 1)</span>
                 </div>
-                <span className="font-mono text-[10px] text-[var(--text-primary)] font-medium">
+                <span className="font-mono text-[13px] text-[var(--text-primary)] font-medium">
                   {phase === 3 ? "⚡ 2-1" : "1-1"}
                 </span>
               </div>
 
               {/* Subscribed Phone 2 */}
-              <div className="flex items-center justify-between p-2 rounded-lg bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] text-[11px]">
+              <div className="flex items-center justify-between p-2 rounded-lg bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] text-[13px]">
                 <div className="flex items-center gap-1.5">
                   <span
                     className={`w-2 h-2 rounded-full ${
@@ -195,24 +195,24 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
                   />
                   <span className="font-mono font-medium text-[var(--text-primary)]">Client B (Match 1)</span>
                 </div>
-                <span className="font-mono text-[10px] text-[var(--text-primary)] font-medium">
+                <span className="font-mono text-[13px] text-[var(--text-primary)] font-medium">
                   {phase === 3 ? "⚡ 2-1" : "1-1"}
                 </span>
               </div>
 
               {/* Idle Phone (Match 2) - Topic Isolation in Action */}
-              <div className="flex items-center justify-between p-2 rounded-lg bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] text-[11px] opacity-60">
+              <div className="flex items-center justify-between p-2 rounded-lg bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] text-[13px] opacity-60">
                 <div className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-neutral-400" />
                   <span className="font-mono text-[var(--text-tertiary)]">Client C (Match 2)</span>
                 </div>
-                <span className="font-mono text-[10px] text-[var(--text-tertiary)]">Idle</span>
+                <span className="font-mono text-[13px] text-[var(--text-tertiary)]">Idle</span>
               </div>
             </div>
           </div>
 
           {/* Caption highlighting topic isolation */}
-          <div className="p-3 rounded-lg bg-[var(--surface-tile)] border border-[var(--border-subtle)] flex items-center justify-between text-xs text-[var(--text-secondary)]">
+          <div className="p-3 rounded-lg bg-[var(--surface-tile)] border border-[var(--border-subtle)] flex items-center justify-between text-[13px] text-[var(--text-secondary)]">
             <span className="leading-relaxed">
               <strong className="text-[var(--text-primary)] font-medium">Topic isolation in action:</strong>{" "}
               The score update travels only to clients subscribed to Match #1. Sockets watching other matches stay completely idle with zero network or CPU overhead.
@@ -227,18 +227,18 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
             <div
               className={`rounded-xl p-3.5 border transition-all duration-300 ${
                 phase === 0
-                  ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-md"
+                  ? "bg-[var(--surface-tile)] border-[var(--accent-color)] ring-1 ring-[var(--accent-color)] shadow-md"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] opacity-85"
               }`}
             >
               <div className="flex items-center justify-between mb-1.5">
-                <span className="font-mono text-[10px] text-[var(--text-tertiary)]">01 · Request</span>
+                <span className="font-mono text-[13px] text-[var(--text-tertiary)]">01 · Request</span>
                 <Server className="w-3.5 h-3.5 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
-              <div className="font-mono text-xs font-medium text-[var(--text-primary)] truncate">
+              <div className="font-mono text-sm font-medium text-[var(--text-primary)] truncate">
                 API Gateway
               </div>
-              <span className="text-[10px] text-[var(--text-secondary)] font-mono block mt-0.5">
+              <span className="text-[13px] text-[var(--text-secondary)] font-mono block mt-0.5">
                 JWT auth & proxy
               </span>
             </div>
@@ -247,18 +247,18 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
             <div
               className={`rounded-xl p-3.5 border transition-all duration-300 ${
                 phase === 1
-                  ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-md"
+                  ? "bg-[var(--surface-tile)] border-[var(--accent-color)] ring-1 ring-[var(--accent-color)] shadow-md"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] opacity-85"
               }`}
             >
               <div className="flex items-center justify-between mb-1.5">
-                <span className="font-mono text-[10px] text-[var(--text-tertiary)]">02 · ATOMIC DB</span>
+                <span className="font-mono text-[13px] text-[var(--text-tertiary)]">02 · ATOMIC DB</span>
                 <Database className="w-3.5 h-3.5 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
-              <div className="font-mono text-xs font-medium text-[var(--text-primary)] truncate">
+              <div className="font-mono text-sm font-medium text-[var(--text-primary)] truncate">
                 Payment Outbox
               </div>
-              <span className="text-[10px] text-[var(--text-secondary)] font-mono block mt-0.5">
+              <span className="text-[13px] text-[var(--text-secondary)] font-mono block mt-0.5">
                 payments & outbox_events
               </span>
             </div>
@@ -267,18 +267,18 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
             <div
               className={`rounded-xl p-3.5 border transition-all duration-300 ${
                 phase === 2
-                  ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-md"
+                  ? "bg-[var(--surface-tile)] border-[var(--accent-color)] ring-1 ring-[var(--accent-color)] shadow-md"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] opacity-85"
               }`}
             >
               <div className="flex items-center justify-between mb-1.5">
-                <span className="font-mono text-[10px] text-[var(--text-tertiary)]">03 · BROKER</span>
+                <span className="font-mono text-[13px] text-[var(--text-tertiary)]">03 · BROKER</span>
                 <Radio className="w-3.5 h-3.5 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
-              <div className="font-mono text-xs font-medium text-[var(--text-primary)] truncate">
+              <div className="font-mono text-sm font-medium text-[var(--text-primary)] truncate">
                 Apache Kafka
               </div>
-              <span className="text-[10px] text-[var(--text-secondary)] font-mono block mt-0.5">
+              <span className="text-[13px] text-[var(--text-secondary)] font-mono block mt-0.5">
                 payment-successful
               </span>
             </div>
@@ -287,15 +287,15 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
             <div
               className={`rounded-xl p-3.5 border transition-all duration-300 space-y-1.5 ${
                 phase === 3
-                  ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-md"
+                  ? "bg-[var(--surface-tile)] border-[var(--accent-color)] ring-1 ring-[var(--accent-color)] shadow-md"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] opacity-85"
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="font-mono text-[10px] text-[var(--text-tertiary)]">04 · CONSUMERS</span>
+                <span className="font-mono text-[13px] text-[var(--text-tertiary)]">04 · CONSUMERS</span>
                 <CheckCircle2 className="w-3.5 h-3.5 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
-              <div className="flex items-center justify-between text-[10px] font-mono">
+              <div className="flex items-center justify-between text-[13px] font-mono">
                 <span className="text-[var(--text-secondary)] truncate">Order & Analytics</span>
                 <span className="text-[var(--accent-text)] font-medium shrink-0">Done</span>
               </div>
@@ -310,18 +310,18 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
             <div
               className={`rounded-xl p-4 border transition-all duration-300 ${
                 phase === 0
-                  ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-md"
+                  ? "bg-[var(--surface-tile)] border-[var(--accent-color)] ring-1 ring-[var(--accent-color)] shadow-md"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] opacity-85"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-mono text-[11px] text-[var(--text-tertiary)]">01 · PROMPT</span>
+                <span className="font-mono text-[13px] text-[var(--text-tertiary)]">01 · PROMPT</span>
                 <Server className="w-4 h-4 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
-              <div className="font-mono text-xs font-medium text-[var(--text-primary)] truncate">
+              <div className="font-mono text-sm font-medium text-[var(--text-primary)] truncate">
                 &ldquo;Kanban board&rdquo;
               </div>
-              <p className="text-[11px] text-[var(--text-secondary)] mt-1">
+              <p className="text-[13px] text-[var(--text-secondary)] mt-1">
                 Prompt streams to Groq LPU (Llama-3.3)
               </p>
             </div>
@@ -330,18 +330,18 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
             <div
               className={`rounded-xl p-4 border transition-all duration-300 ${
                 phase === 1
-                  ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-md"
+                  ? "bg-[var(--surface-tile)] border-[var(--accent-color)] ring-1 ring-[var(--accent-color)] shadow-md"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] opacity-85"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-mono text-[11px] text-[var(--text-tertiary)]">02 · COMPILATION</span>
+                <span className="font-mono text-[13px] text-[var(--text-tertiary)]">02 · COMPILATION</span>
                 <Database className="w-4 h-4 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
-              <div className="font-mono text-xs font-medium text-[var(--text-primary)]">
+              <div className="font-mono text-sm font-medium text-[var(--text-primary)]">
                 Structured AST
               </div>
-              <p className="text-[11px] text-[var(--text-secondary)] mt-1">
+              <p className="text-[13px] text-[var(--text-secondary)] mt-1">
                 Model outputs JSON UI tree, not raw JS
               </p>
             </div>
@@ -350,18 +350,18 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
             <div
               className={`rounded-xl p-4 border transition-all duration-300 ${
                 phase === 2
-                  ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-md"
+                  ? "bg-[var(--surface-tile)] border-[var(--accent-color)] ring-1 ring-[var(--accent-color)] shadow-md"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] opacity-85"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-mono text-[11px] text-[var(--text-tertiary)]">03 · SANITIZATION</span>
+                <span className="font-mono text-[13px] text-[var(--text-tertiary)]">03 · SANITIZATION</span>
                 <Radio className="w-4 h-4 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
-              <div className="font-mono text-xs font-medium text-[var(--text-primary)]">
+              <div className="font-mono text-sm font-medium text-[var(--text-primary)]">
                 Zod Validator
               </div>
-              <p className="text-[11px] text-[var(--text-secondary)] mt-1">
+              <p className="text-[13px] text-[var(--text-secondary)] mt-1">
                 Strips code fences & validates schema
               </p>
             </div>
@@ -370,24 +370,24 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
             <div
               className={`rounded-xl p-4 border transition-all duration-300 ${
                 phase === 3
-                  ? "bg-[var(--surface-tile)] border-[var(--text-primary)] shadow-md"
+                  ? "bg-[var(--surface-tile)] border-[var(--accent-color)] ring-1 ring-[var(--accent-color)] shadow-md"
                   : "bg-[var(--surface-tile)] border-[var(--border-subtle)] opacity-85"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-mono text-[11px] text-[var(--text-tertiary)]">04 · MOUNT</span>
+                <span className="font-mono text-[13px] text-[var(--text-tertiary)]">04 · MOUNT</span>
                 <CheckCircle2 className="w-4 h-4 text-[var(--text-primary)]" aria-hidden="true" />
               </div>
-              <div className="font-mono text-xs font-medium text-[var(--text-primary)]">
+              <div className="font-mono text-sm font-medium text-[var(--text-primary)]">
                 React Registry
               </div>
-              <p className="text-[11px] text-[var(--text-secondary)] mt-1">
+              <p className="text-[13px] text-[var(--text-secondary)] mt-1">
                 Zero eval() · Deterministic component DOM
               </p>
             </div>
           </div>
 
-          <div className="p-3 rounded-lg bg-[var(--surface-tile)] border border-[var(--border-subtle)] text-xs text-[var(--text-secondary)]">
+          <div className="p-3 rounded-lg bg-[var(--surface-tile)] border border-[var(--border-subtle)] text-[13px] text-[var(--text-secondary)]">
             <strong className="text-[var(--text-primary)] font-medium">Zero arbitrary eval():</strong>{" "}
             Instead of executing unchecked script tags, AppForge parses prompts into typed JSON and maps nodes directly to verified React primitives.
           </div>
@@ -396,4 +396,3 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
     </div>
   );
 }
-

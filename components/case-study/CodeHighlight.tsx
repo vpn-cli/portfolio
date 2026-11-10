@@ -62,7 +62,7 @@ export function CodeHighlight({
           <tbody>
             {lines.map((line, idx) => (
               <tr key={idx} className="leading-relaxed">
-                <td className="select-none pr-4 text-right text-[var(--text-tertiary)] text-xs w-8 opacity-50 align-top">
+                <td className="select-none pr-4 text-right text-[var(--text-tertiary)] text-xs w-8 align-top" aria-hidden="true">
                   {idx + 1}
                 </td>
                 <td className="whitespace-pre font-mono align-top text-[var(--text-primary)]">
