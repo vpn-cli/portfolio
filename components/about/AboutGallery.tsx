@@ -10,7 +10,7 @@ import { trackEvent } from "@/lib/analytics";
 
 const leadershipRoles = [
   {
-    role: "Design Team Head",
+    role: "Web & Design Team Head",
     org: "Manga & Anime Society, IIT Kharagpur",
     period: "Aug 2024 to Apr 2025",
     scope: "Led 14 student designers on publications, banners and social graphics.",
