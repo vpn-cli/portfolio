@@ -19,7 +19,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: `${siteConfig.name} | ${siteConfig.role}`,
   description: siteConfig.bio,
-  metadataBase: new URL("https://vipinkaushik.dev"),
+  metadataBase: new URL("https://vipin-kaushik.vercel.app"),
   openGraph: {
     title: `${siteConfig.name} | ${siteConfig.role}`,
     description: siteConfig.bio,

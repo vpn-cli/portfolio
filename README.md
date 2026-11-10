@@ -6,7 +6,7 @@
 **Dual Degree, Indian Institute of Technology (IIT) Kharagpur (2022 – 2027)**  
 *Graduating April 2027 · Actively seeking Software Development Engineer (SDE) roles*
 
-[![Website](https://img.shields.io/badge/Live_Portfolio-vipinkaushik.dev-0c0f16?style=for-the-badge&logo=vercel&logoColor=white)](https://vipinkaushik.dev)
+[![Website](https://img.shields.io/badge/Live_Portfolio-vipin--kaushik.vercel.app-0c0f16?style=for-the-badge&logo=vercel&logoColor=white)](https://vipin-kaushik.vercel.app)
 [![GitHub](https://img.shields.io/badge/GitHub-vpn--cli-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/vpn-cli)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-vpnk2003-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/vpnk2003)
 [![Email](https://img.shields.io/badge/Email-vipinkaushik20771041@gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:vipinkaushik20771041@gmail.com)
@@ -29,7 +29,7 @@
 
 ## 📌 Overview
 
-This repository houses the source code for **[vipinkaushik.dev](https://vipinkaushik.dev)**, my personal engineering portfolio, systems playground, and case study showcase.
+This repository houses the source code for **[vipin-kaushik.vercel.app](https://vipin-kaushik.vercel.app)**, my personal engineering portfolio, systems playground, and case study showcase.
 
 I specialize in building full-stack web applications and resilient distributed backends—focusing on event-driven streaming with Apache Kafka, real-time WebSocket pipelines, transactional consistency patterns, and high-performance user interfaces.
 
@@ -42,19 +42,19 @@ The portfolio is architected as an interactive **Bento Grid Hub** paired with an
 Each featured project includes an in-depth case study analyzing real production bugs, architecture decisions, trade-offs, and verifiable system workflows:
 
 ### 1. [StreamMart](https://github.com/vpn-cli/StreamMart) — Event-Driven Microservices Backend
-> **Category:** Distributed Systems & Microservices · [Read Case Study](https://vipinkaushik.dev/work/stream-mart) · [GitHub](https://github.com/vpn-cli/StreamMart)
+> **Category:** Distributed Systems & Microservices · [Read Case Study](https://vipin-kaushik.vercel.app/work/stream-mart) · [GitHub](https://github.com/vpn-cli/StreamMart)
 - **Problem Solved:** Prevents dual-write inconsistencies and data loss between database operations and asynchronous message brokers across distributed payment and order services.
 - **Architecture:** Implements the **Transactional Outbox Pattern** with **Apache Kafka** and **PostgreSQL**. Atomically commits order states and outbox events in a single SQL transaction; a dedicated relay worker continuously polls and reliably dispatches events to partitioned Kafka topics.
 - **Tech Stack:** Node.js, Express, Apache Kafka, PostgreSQL, Docker, JWT Authentication.
 
 ### 2. [Sportz Sockets Engine](https://github.com/vpn-cli/sockets) — Real-Time Match Broadcasting Hub
-> **Category:** Real-Time Networking & Distributed State · [Live App](https://sportz-rho.vercel.app) · [Read Case Study](https://vipinkaushik.dev/work/sockets) · [GitHub](https://github.com/vpn-cli/sockets)
+> **Category:** Real-Time Networking & Distributed State · [Live App](https://sportz-rho.vercel.app) · [Read Case Study](https://vipin-kaushik.vercel.app/work/sockets) · [GitHub](https://github.com/vpn-cli/sockets)
 - **Problem Solved:** Eliminates client polling overhead for live sports scores by maintaining stateful persistent WebSocket connections with topic-based fanout.
 - **Architecture:** High-throughput `ws` gateway with partitioned match room subscriptions. Scores are ingested via authenticated REST webhooks, persisted to PostgreSQL via Drizzle ORM, and broadcasted to subscriber clusters in $O(k)$ time. Shielded against scraping and abuse via **Arcjet** rate limiting.
 - **Tech Stack:** Node.js, TypeScript, WebSockets (`ws`), Drizzle ORM, PostgreSQL, Arcjet, React.
 
 ### 3. [AppForge](https://github.com/vpn-cli/appforge) — Generative AI Application Engine
-> **Category:** Generative AI & Developer Tools · [Live App](https://appforge-studios.vercel.app) · [Read Case Study](https://vipinkaushik.dev/work/appforge) · [GitHub](https://github.com/vpn-cli/appforge)
+> **Category:** Generative AI & Developer Tools · [Live App](https://appforge-studios.vercel.app) · [Read Case Study](https://vipin-kaushik.vercel.app/work/appforge) · [GitHub](https://github.com/vpn-cli/appforge)
 - **Problem Solved:** Generates executable UI components and schemas from natural language while strictly eliminating arbitrary `eval()` and client-side code injection vulnerabilities.
 - **Architecture:** Streams prompt tokens through **Groq LPU (Llama-3.3-70B)** directly into structured JSON Abstract Syntax Tree (AST) definitions. Validates AST nodes against strict **Zod** boundary schemas before mounting nodes onto a constrained, pre-compiled React component registry.
 - **Tech Stack:** Next.js 15, TypeScript, Groq LPU, Llama-3.3-70B, Zod, Upstash Redis, Upstash Kafka, Supabase, Tailwind CSS.
@@ -65,7 +65,7 @@ Each featured project includes an in-depth case study analyzing real production 
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                            vipinkaushik.dev                                 │
+│                          vipin-kaushik.vercel.app                           │
 ├───────────────────────┬─────────────────────────────┬───────────────────────┤
 │    Bento Grid Hub     │     Systems Workbench       │      Interactive 3D   │
 │  - 8 Responsive Tiles │  - Live Kafka CDC Simulator │  - "Byte" Companion   │
@@ -221,7 +221,7 @@ Navigate to **[http://localhost:3000](http://localhost:3000)** to explore the po
 
 I am currently in my final year at **IIT Kharagpur** (graduating April 2027) and actively seeking **Software Development Engineer (SDE)** roles focusing on backend systems, distributed architectures, and full-stack engineering.
 
-- **Portfolio:** [vipinkaushik.dev](https://vipinkaushik.dev)
+- **Portfolio:** [vipin-kaushik.vercel.app](https://vipin-kaushik.vercel.app)
 - **GitHub:** [@vpn-cli](https://github.com/vpn-cli)
 - **LinkedIn:** [linkedin.com/in/vpnk2003](https://www.linkedin.com/in/vpnk2003)
 - **Email:** [vipinkaushik20771041@gmail.com](mailto:vipinkaushik20771041@gmail.com)

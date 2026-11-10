@@ -140,8 +140,12 @@ function isAllowedOrigin(req: NextRequest): boolean {
       return process.env.NODE_ENV !== "production";
     }
 
-    // Allow vipinkaushik.dev and www.vipinkaushik.dev
-    if (hostname === "vipinkaushik.dev" || hostname === "www.vipinkaushik.dev") {
+    // Allow production domains: vipin-kaushik.vercel.app, vipinkaushik.dev, www.vipinkaushik.dev
+    if (
+      hostname === "vipin-kaushik.vercel.app" ||
+      hostname === "vipinkaushik.dev" ||
+      hostname === "www.vipinkaushik.dev"
+    ) {
       return true;
     }
 
