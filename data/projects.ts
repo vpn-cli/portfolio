@@ -104,7 +104,7 @@ export const projects: CaseStudy[] = [
     category: "Generative AI & App Engine",
     year: "2026",
     role: "Full-Stack Architect",
-    timeline: "May 2026 — Aug 2026",
+    timeline: "May 2026 to Aug 2026",
     stack: [
       "Next.js 15",
       "TypeScript",
@@ -311,7 +311,7 @@ export function AstRenderer({ node }: { node: AstNode }) {
           "Groq LPU running Llama-3.3-70B",
         ],
         problemFaced:
-          "Standard LLM API calls take 3–5 seconds, breaking the interactive feedback loop while designing interfaces.",
+          "Standard LLM API calls take 3 to 5 seconds, breaking the interactive feedback loop while designing interfaces.",
         fullReasoning:
           "Groq LPU hardware streams tokens at 250+ tokens/second, completing multi-card layout generation rapidly.",
       },
@@ -399,7 +399,7 @@ export function AstRenderer({ node }: { node: AstNode }) {
     category: "Distributed Systems & Real-Time",
     year: "2026",
     role: "Backend & Systems Engineer",
-    timeline: "Mar 2025 — Oct 2026",
+    timeline: "Mar 2025 to Oct 2026",
     stack: [
       "Node.js",
       "Express",
@@ -454,7 +454,7 @@ export function AstRenderer({ node }: { node: AstNode }) {
           "Each client sends recurring GET requests every 2 seconds",
           "90%+ of polling queries return identical, un-mutated data",
           "Database connection pool exhausts during scoring bursts",
-          "Scores lag 2–4 seconds behind real-time events",
+          "Scores lag 2 to 4 seconds behind real-time events",
         ],
       },
       after: {
@@ -646,7 +646,7 @@ function broadcastToMatch(matchId, payload) {
         problemFaced:
           "When a free-tier backend sleeps or boots, hundreds of reconnecting clients can overwhelm and re-crash the instance.",
         fullReasoning:
-          "Randomized jitter spaces client reconnects over a 1–10s window, allowing reviving backend instances to settle cleanly.",
+          "Randomized jitter spaces client reconnects over a 1 to 10s window, allowing reviving backend instances to settle cleanly.",
       },
     ],
     bugsClaim: "Three production bugs and how I fixed them",
@@ -704,7 +704,7 @@ function broadcastToMatch(matchId, payload) {
     category: "Distributed Systems & Microservices",
     year: "2026",
     role: "Backend Systems Engineer",
-    timeline: "Aug 2026 — Sep 2026",
+    timeline: "Aug 2026 to Sep 2026",
     stack: [
       "Node.js",
       "Express",
@@ -718,7 +718,7 @@ function broadcastToMatch(matchId, payload) {
       mp4: "/videos/stream-mart/brag.mp4",
       webm: "/videos/stream-mart/brag.webm",
       poster: "/projects/stream-mart/stream-mart-diagram.webp",
-      caption: "Diagram shows only the transactional outbox flow (Payment Service → Kafka topic 'payment-successful' → Order & Analytic consumers); direct publish flows omitted.",
+      caption: "Shows the checkout flow through the transactional outbox. Other Kafka publishers are left out.",
     },
     problemVisualCaption: "Synchronous HTTP cascades versus asynchronous Kafka outbox events.",
     links: {

@@ -105,7 +105,7 @@ export const siteConfig = {
   resources: [
     {
       id: "crysta",
-      title: "Crysta – Portfolio Template",
+      title: "Crysta - Portfolio Template",
       category: "Developer Template",
       type: "Next.js 15 & GSAP",
       price: "Free",
@@ -124,7 +124,7 @@ export const siteConfig = {
     },
     {
       id: "klear",
-      title: "Klear – SaaS Boilerplate",
+      title: "Klear - SaaS Boilerplate",
       category: "Full-Stack Starter",
       type: "Next.js & Supabase",
       price: "Free",
@@ -142,7 +142,7 @@ export const siteConfig = {
     },
     {
       id: "bolder",
-      title: "Bolder – 3D Component Kit",
+      title: "Bolder - 3D Component Kit",
       category: "Graphics Kit",
       type: "Three.js & R3F",
       price: "Free",
@@ -160,7 +160,7 @@ export const siteConfig = {
     },
     {
       id: "sharm",
-      title: "Sharm – Cloud Platform",
+      title: "Sharm - Cloud Platform",
       category: "Enterprise Template",
       type: "Next.js & Microservices",
       price: "$49",
@@ -178,7 +178,7 @@ export const siteConfig = {
     },
     {
       id: "benbox",
-      title: "BenBox – Tech Blog Template",
+      title: "BenBox - Tech Blog Template",
       category: "Content System",
       type: "Next.js & MDX",
       price: "Free",
@@ -196,7 +196,7 @@ export const siteConfig = {
     },
     {
       id: "project-tracker",
-      title: "Project Tracker – Notion System",
+      title: "Project Tracker - Notion System",
       category: "Productivity",
       type: "Notion Architecture",
       price: "Free",
@@ -217,13 +217,13 @@ export const siteConfig = {
   // === EXPERIENCE ===
   experience: [
     {
-      period: "May 2026 – Jul 2026",
+      period: "May 2026 to Jul 2026",
       role: "Full-Stack Developer Intern",
       company: "Clairvyn AI",
       description: "AI floor-planning platform. Built Next.js UI panels, a Paytm subscription paywall, GitHub Actions + Docker deploys to AWS EC2, and fixed N+1 queries in Node.js pipelines.",
     },
     {
-      period: "Mar 2025 – May 2025",
+      period: "Mar 2025 to May 2025",
       role: "Frontend Engineering Intern",
       company: "Unnati",
       description: "SME onboarding platform. Built an admin dashboard, a reusable React design system, and accessible (WCAG 2.1) components.",
