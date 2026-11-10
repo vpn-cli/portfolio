@@ -20,7 +20,7 @@ export default function AboutPage() {
             href="/"
             trackLocation="back_link"
             trackLabel="Back to Home"
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[var(--text-secondary)] hover:text-[var(--accent-text)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] rounded"
           >
             <ArrowLeft className="w-4 h-4" aria-hidden="true" />
             <span>Back to Home</span>
@@ -30,7 +30,7 @@ export default function AboutPage() {
             href="/"
             trackLocation="back_link"
             trackLabel="Close and return to home"
-            className="w-10 h-10 rounded-full bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] flex items-center justify-center transition-colors text-[var(--text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 active:scale-95 cursor-pointer"
+            className="w-10 h-10 rounded-full bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-focus)] flex items-center justify-center transition-colors text-[var(--text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] active:scale-95 cursor-pointer"
             title="Close and return to home"
             aria-label="Close and return to home"
           >
