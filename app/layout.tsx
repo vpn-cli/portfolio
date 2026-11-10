@@ -8,6 +8,7 @@ import { RouteTransitionProvider } from "@/components/motion/RouteTransition";
 import { ThemeProvider } from "@/components/motion/ThemeProvider";
 import { ClientCursor } from "@/components/motion/ClientCursor";
 import { PostHogProvider } from "@/components/providers/PostHogProvider";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -67,6 +68,7 @@ export default function RootLayout({
             </SmoothScrollProvider>
           </ThemeProvider>
         </PostHogProvider>
+        <Analytics />
       </body>
     </html>
   );
