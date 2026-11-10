@@ -49,9 +49,9 @@ export function FlowStepper({ steps }: FlowStepperProps) {
               role="tab"
               aria-selected={isActive}
               onClick={() => setActiveStep(idx)}
-              className={`min-h-[44px] px-4 py-2 rounded-xl text-xs font-medium transition-colors flex items-center gap-2 shrink-0 border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 ${
+              className={`min-h-[44px] px-4 py-2 rounded-xl text-xs font-medium transition-colors flex items-center gap-2 shrink-0 border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2 ${
                 isActive
-                  ? "bg-[var(--text-primary)] text-[var(--bg-canvas)] border-transparent shadow-sm"
+                  ? "bg-[var(--surface-tile-elevated)] text-[var(--text-primary)] border-[var(--border-hover)] shadow-xs"
                   : "bg-[var(--surface-tile)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:text-[var(--text-primary)] hover:border-[var(--border-hover)]"
               }`}
             >
@@ -91,7 +91,7 @@ export function FlowStepper({ steps }: FlowStepperProps) {
               type="button"
               onClick={goPrev}
               disabled={activeStep === 0}
-              className="min-h-[44px] px-3.5 py-2 rounded-lg bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-xs font-medium text-[var(--text-primary)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+              className="btn-secondary min-h-[44px] px-3.5 py-2 rounded-lg text-xs font-medium text-[var(--text-primary)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
               aria-label="Previous step"
             >
               <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
@@ -106,7 +106,7 @@ export function FlowStepper({ steps }: FlowStepperProps) {
               type="button"
               onClick={goNext}
               disabled={activeStep === steps.length - 1}
-              className="min-h-[44px] px-3.5 py-2 rounded-lg bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-xs font-medium text-[var(--text-primary)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+              className="btn-secondary min-h-[44px] px-3.5 py-2 rounded-lg text-xs font-medium text-[var(--text-primary)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
               aria-label="Next step"
             >
               <span>Next</span>
@@ -133,7 +133,7 @@ export function FlowStepper({ steps }: FlowStepperProps) {
               <p className="font-mono text-xs text-[var(--text-primary)] leading-relaxed bg-[var(--surface-tile)] p-4 rounded-xl border border-[var(--border-subtle)]">
                 {current.logLine}
               </p>
-              <span className="text-[11px] text-[var(--text-tertiary)] block">
+              <span className="text-[13px] text-[var(--text-tertiary)] block">
                 Source: Real-time telemetry payload captured in client browser devtools.
               </span>
             </div>

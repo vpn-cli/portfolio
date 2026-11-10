@@ -7,8 +7,21 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { artworks, type Artwork } from "@/content/artworks";
 import { useLenisInstance } from "@/components/motion/SmoothScrollProvider";
 import { trackEvent } from "@/lib/analytics";
+import { Window } from "@/components/stageshow/kit";
 
-const leadershipRoles = [
+interface LeadershipRole {
+  role: string;
+  org: string;
+  period: string;
+  scope: string;
+  sample?: {
+    src: string;
+    caption: string;
+    alt?: string;
+  };
+}
+
+const leadershipRoles: LeadershipRole[] = [
   {
     role: "Web & Design Team Head",
     org: "Manga & Anime Society, IIT Kharagpur",
@@ -34,13 +47,11 @@ const awards = [
     title: "Silver Medal",
     event: "Inter-Hall Rangoli Competition, IIT Kharagpur",
     year: "2024",
-    badge: "2nd place",
   },
   {
     title: "Bronze Medal",
     event: "Inter-Hall Rangoli Competition, IIT Kharagpur",
     year: "2023",
-    badge: "3rd place",
   },
 ];
 
@@ -195,7 +206,6 @@ export function AboutGallery() {
         showPrev();
       }
     } else if (absX < 15 && absY < 15 && e.target === e.currentTarget) {
-      // Direct tap on backdrop - prevent synthetic click from hitting underlying gallery buttons
       e.preventDefault();
       closeLightbox();
     } else {
@@ -213,6 +223,9 @@ export function AboutGallery() {
       closeLightbox();
     }
   };
+
+  const rolesWithSamples = leadershipRoles.filter((r) => Boolean(r.sample));
+  const rolesWithoutSamples = leadershipRoles.filter((r) => !r.sample);
 
   return (
     <section
@@ -257,21 +270,21 @@ export function AboutGallery() {
 
         /* Focus-visible ring on the image only for keyboard Tab users */
         .gallery-piece-btn:focus-visible .gallery-piece-img {
-          box-shadow: 0 0 0 3px var(--bg-canvas-subtle, transparent), 0 0 0 4.5px var(--accent-color, #2B4EFF) !important;
+          box-shadow: 0 0 0 2px var(--bg-canvas-subtle, transparent), 0 0 0 4px var(--accent-color, #2B4EFF) !important;
         }
       `}</style>
 
-      <div className="pb-2">
+      <div className="pb-2 border-b border-[var(--border-subtle)]">
         <h2 id="design-art-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
           Design
         </h2>
-        <p className="text-sm text-[var(--text-secondary)] mt-1">
+        <p className="text-sm sm:text-base text-[var(--text-secondary)] mt-1 font-normal">
           Digital illustrations, character studies and campus event posters.
         </p>
       </div>
 
-      {/* Gallery grid: runs wider than the text column so the art has more presence */}
-      <div className="-mx-2 sm:-mx-6 lg:-mx-10 columns-1 sm:columns-2 lg:columns-3 gap-6 sm:gap-8">
+      {/* Gallery grid: placed strictly inside normal content width without negative-margin breakouts */}
+      <div className="w-full columns-1 sm:columns-2 lg:columns-3 gap-6 sm:gap-8">
         {artworks.map((art, index) => (
           <figure
             key={art.slug}
@@ -283,7 +296,7 @@ export function AboutGallery() {
               }}
               type="button"
               onClick={() => openLightbox(index)}
-              className="gallery-piece-btn group w-full text-left cursor-pointer block select-none border-0 bg-transparent p-0"
+              className="gallery-piece-btn group w-full text-left cursor-pointer block select-none border-0 bg-transparent p-0 min-h-[44px]"
               aria-label={`Open lightbox for ${art.title}, ${art.medium}`}
             >
               <div className="gallery-piece-img overflow-hidden rounded-xl transition-all duration-300">
@@ -304,7 +317,7 @@ export function AboutGallery() {
                 <h3 className="text-sm sm:text-base font-normal text-[var(--text-primary)] leading-snug">
                   {art.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-[var(--text-tertiary)] leading-normal">
+                <p className="text-[13px] sm:text-sm text-[var(--text-tertiary)] leading-normal">
                   {art.medium}
                 </p>
               </figcaption>
@@ -313,60 +326,107 @@ export function AboutGallery() {
         ))}
       </div>
 
-      {/* Campus design roles and Competitions: Compact two-column directory, NO cards, NO orange badges/dots */}
-      <div className="pt-8 border-t border-[var(--border-subtle)] grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start">
-        {/* Campus design roles */}
-        <div className="space-y-4">
-          <h3 className="text-sm font-semibold text-[var(--text-primary)] tracking-tight">
-            Campus design roles
-          </h3>
-          <ul className="divide-y divide-[var(--border-subtle)] text-sm" role="list">
-            {leadershipRoles.map((lead) => (
-              <li key={lead.org} className="py-3 first:pt-0 last:pb-0 space-y-1">
-                <div className="flex items-baseline justify-between gap-3">
-                  <span className="font-normal text-[var(--text-primary)]">
-                    {lead.role}
-                  </span>
-                  <span className="text-xs text-[var(--text-tertiary)] tabular-nums shrink-0 font-normal">
-                    {lead.period}
-                  </span>
+      {/* Campus design roles and Competitions */}
+      <div className="pt-8 border-t border-[var(--border-subtle)] space-y-8">
+        {/* Roles with work samples (if any role defines sample) */}
+        {rolesWithSamples.length > 0 && (
+          <div className="space-y-4">
+            <h3 className="text-sm sm:text-base font-semibold text-[var(--text-primary)] tracking-tight">
+              Design roles &amp; work samples
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {rolesWithSamples.map((role) => (
+                <div key={role.org} className="space-y-3">
+                  <Window
+                    chrome="hairline"
+                    className="w-full overflow-hidden [&_.ss-window__lights]:hidden border border-[var(--border-subtle)] bg-[var(--surface-tile-elevated)] rounded-xl"
+                  >
+                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-[var(--surface-tile)]">
+                      <Image
+                        src={role.sample!.src}
+                        alt={role.sample!.alt || role.sample!.caption}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </Window>
+                  <p className="text-[13px] text-[var(--text-tertiary)] italic">
+                    {role.sample!.caption}
+                  </p>
+                  <div className="space-y-1">
+                    <div className="flex items-baseline justify-between gap-3">
+                      <span className="font-semibold text-sm sm:text-base text-[var(--text-primary)]">
+                        {role.role}
+                      </span>
+                      <span className="text-[13px] text-[var(--text-tertiary)] tabular-nums shrink-0 font-normal">
+                        {role.period}
+                      </span>
+                    </div>
+                    <p className="text-sm text-[var(--text-secondary)]">
+                      {role.org}
+                    </p>
+                    <p className="text-[13px] text-[var(--text-tertiary)] leading-relaxed">
+                      {role.scope}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-xs text-[var(--text-secondary)]">
-                  {lead.org}
-                </p>
-                <p className="text-xs text-[var(--text-tertiary)] leading-relaxed">
-                  {lead.scope}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </div>
+              ))}
+            </div>
+          </div>
+        )}
 
-        {/* Competitions */}
-        <div className="space-y-4">
-          <h3 className="text-sm font-semibold text-[var(--text-primary)] tracking-tight">
-            Competitions
-          </h3>
-          <ul className="divide-y divide-[var(--border-subtle)] text-sm" role="list">
-            {awards.map((award) => (
-              <li key={award.year} className="py-3 first:pt-0 last:pb-0 space-y-1">
-                <div className="flex items-baseline justify-between gap-3">
-                  <span className="font-normal text-[var(--text-primary)]">
-                    {award.title}
-                  </span>
-                  <span className="text-xs text-[var(--text-tertiary)] tabular-nums shrink-0 font-normal">
-                    {award.year}
-                  </span>
-                </div>
-                <p className="text-xs text-[var(--text-secondary)]">
-                  {award.event}
-                </p>
-                <p className="text-xs text-[var(--text-tertiary)] font-normal">
-                  {award.badge}
-                </p>
-              </li>
-            ))}
-          </ul>
+        {/* Compact two-column directory for text-only roles & competitions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start">
+          {/* Campus design roles (text only when no sample image) */}
+          <div className="space-y-4">
+            <h3 className="text-sm sm:text-base font-semibold text-[var(--text-primary)] tracking-tight">
+              Campus design roles
+            </h3>
+            <ul className="divide-y divide-[var(--border-subtle)] text-sm" role="list">
+              {rolesWithoutSamples.map((lead) => (
+                <li key={lead.org} className="py-3 first:pt-0 last:pb-0 space-y-1">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="font-medium text-[var(--text-primary)]">
+                      {lead.role}
+                    </span>
+                    <span className="text-[13px] text-[var(--text-tertiary)] tabular-nums shrink-0 font-normal">
+                      {lead.period}
+                    </span>
+                  </div>
+                  <p className="text-sm text-[var(--text-secondary)]">
+                    {lead.org}
+                  </p>
+                  <p className="text-[13px] text-[var(--text-tertiary)] leading-relaxed">
+                    {lead.scope}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Competitions: compact list, redundant 2nd/3rd place lines removed */}
+          <div className="space-y-4">
+            <h3 className="text-sm sm:text-base font-semibold text-[var(--text-primary)] tracking-tight">
+              Competitions
+            </h3>
+            <ul className="divide-y divide-[var(--border-subtle)] text-sm" role="list">
+              {awards.map((award) => (
+                <li key={award.year} className="py-3 first:pt-0 last:pb-0 space-y-1">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="font-medium text-[var(--text-primary)]">
+                      {award.title}
+                    </span>
+                    <span className="text-[13px] text-[var(--text-tertiary)] tabular-nums shrink-0 font-normal">
+                      {award.year}
+                    </span>
+                  </div>
+                  <p className="text-sm text-[var(--text-secondary)]">
+                    {award.event}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -378,89 +438,81 @@ export function AboutGallery() {
             ref={dialogRef}
             role="dialog"
             aria-modal="true"
-            aria-label={`Artwork: ${currentArt.title}`}
-            tabIndex={-1}
-            className="fixed inset-0 z-50 flex items-center justify-center select-none overflow-hidden"
-            style={{ backgroundColor: "rgba(5, 5, 5, 0.92)" }}
+            aria-label={`${currentArt.title} detailed view`}
+            className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/90 p-4 sm:p-8 backdrop-blur-sm select-none"
             onClick={handleBackdropClick}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
-            {/* Close icon in top-right corner */}
-            <button
-              ref={closeBtnRef}
-              type="button"
-              onClick={closeLightbox}
-              onTouchEnd={(e) => {
-                e.stopPropagation();
-                closeLightbox();
-              }}
-              aria-label="Close lightbox (Esc)"
-              className="fixed top-3 right-3 sm:top-5 sm:right-5 z-50 min-w-[44px] min-h-[44px] w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center bg-transparent border-0 text-white/50 hover:text-white focus-visible:text-white transition-colors cursor-pointer outline-none focus-visible:ring-1 focus-visible:ring-white/40 rounded-sm"
-            >
-              <X className="w-6 h-6" aria-hidden="true" />
-            </button>
+            {/* Top Close Bar */}
+            <div className="absolute top-4 right-4 z-50">
+              <button
+                ref={closeBtnRef}
+                type="button"
+                onClick={closeLightbox}
+                className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] active:scale-95"
+                aria-label="Close dialog (Escape)"
+                title="Close (Escape)"
+              >
+                <X className="w-5 h-5" aria-hidden="true" />
+              </button>
+            </div>
 
-            {/* Previous arrow at left edge */}
+            {/* Left Nav Button */}
             <button
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 showPrev();
               }}
-              onTouchEnd={(e) => {
-                e.stopPropagation();
-                showPrev();
-              }}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-50 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] active:scale-95 hidden sm:flex"
               aria-label="Previous artwork (Left arrow)"
-              className="fixed left-1 sm:left-4 top-1/2 -translate-y-1/2 z-50 min-w-[44px] min-h-[44px] w-12 h-20 sm:w-16 sm:h-24 flex items-center justify-center bg-transparent border-0 text-white/40 hover:text-white focus-visible:text-white transition-colors cursor-pointer outline-none focus-visible:ring-1 focus-visible:ring-white/40 rounded-sm"
+              title="Previous (Left arrow)"
             >
-              <ChevronLeft className="w-8 h-8 sm:w-9 sm:h-9" aria-hidden="true" />
+              <ChevronLeft className="w-6 h-6" aria-hidden="true" />
             </button>
 
-            {/* Next arrow at right edge */}
+            {/* Right Nav Button */}
             <button
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 showNext();
               }}
-              onTouchEnd={(e) => {
-                e.stopPropagation();
-                showNext();
-              }}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-50 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] active:scale-95 hidden sm:flex"
               aria-label="Next artwork (Right arrow)"
-              className="fixed right-1 sm:right-4 top-1/2 -translate-y-1/2 z-50 min-w-[44px] min-h-[44px] w-12 h-20 sm:w-16 sm:h-24 flex items-center justify-center bg-transparent border-0 text-white/40 hover:text-white focus-visible:text-white transition-colors cursor-pointer outline-none focus-visible:ring-1 focus-visible:ring-white/40 rounded-sm"
+              title="Next (Right arrow)"
             >
-              <ChevronRight className="w-8 h-8 sm:w-9 sm:h-9" aria-hidden="true" />
+              <ChevronRight className="w-6 h-6" aria-hidden="true" />
             </button>
 
-            {/* Centered image & caption: fits fully on screen at all viewports without scrolling */}
+            {/* Center Content */}
             <div
-              key={currentArt.slug}
-              className="artwork-crossfade relative flex flex-col items-center justify-center max-w-[90vw] max-h-[88vh] pointer-events-auto"
+              className="relative max-w-5xl max-h-[85vh] flex flex-col items-center justify-center pointer-events-auto"
               onClick={(e) => e.stopPropagation()}
-              onTouchEnd={(e) => e.stopPropagation()}
             >
-              <Image
-                src={`/art/${currentArt.file}`}
-                alt={currentArt.alt}
-                width={currentArt.width}
-                height={currentArt.height}
-                priority
-                className="max-h-[74vh] sm:max-h-[78vh] max-w-[88vw] sm:max-w-[90vw] w-auto h-auto object-contain block select-none pointer-events-none"
-              />
+              <div className="relative max-h-[75vh] w-auto overflow-hidden rounded-lg">
+                <Image
+                  key={currentArt.slug}
+                  src={`/art/${currentArt.file}`}
+                  alt={currentArt.alt}
+                  width={currentArt.width}
+                  height={currentArt.height}
+                  priority
+                  className="max-h-[75vh] w-auto object-contain rounded-lg block artwork-crossfade"
+                />
+              </div>
 
-              {/* Lightbox caption: title, medium, and optional note only */}
-              <div className="mt-3 sm:mt-4 text-center max-w-lg px-3 space-y-0.5 select-text">
-                <h3 className="text-sm sm:text-base font-normal text-white/85 tracking-normal">
+              {/* Caption */}
+              <div className="mt-3 text-center text-white space-y-1">
+                <h3 className="text-base sm:text-lg font-medium">
                   {currentArt.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-white/70">
-                  {currentArt.medium}
+                <p className="text-sm text-neutral-300">
+                  {currentArt.medium} ({currentArt.year})
                 </p>
                 {currentArt.note && (
-                  <p className="text-xs sm:text-sm text-white/65 pt-0.5 leading-relaxed">
+                  <p className="text-[13px] text-neutral-400 max-w-md mx-auto">
                     {currentArt.note}
                   </p>
                 )}

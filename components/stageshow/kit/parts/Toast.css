@@ -10,7 +10,7 @@
     background: #1c1c1f;
     box-shadow: var(--ss-shadow-satellite);
     color: #fff;
-    font-size: 12px;
+    font-size: 13px;
     opacity: 0;
     /* Rises by margin on a layer it keeps: the equal and opposite margins move
        it the same whether it's placed by its top, its bottom or the flow, and

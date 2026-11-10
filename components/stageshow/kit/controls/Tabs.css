@@ -10,7 +10,7 @@
 
   .ss-tabs__tab {
     padding-bottom: 9px;
-    font-size: 12.5px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--ss-text);
     transition: color 0.2s ease;

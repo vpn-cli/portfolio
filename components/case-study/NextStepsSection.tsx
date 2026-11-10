@@ -47,7 +47,7 @@ export function NextStepsSection({
                 href={repoUrl || demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-sm transition-opacity shadow-sm active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+                className="btn-primary min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-medium text-sm transition-opacity shadow-sm active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
               >
                 <SiGithub className="w-4 h-4" aria-hidden="true" />
                 <span>View on GitHub</span>
@@ -60,7 +60,7 @@ export function NextStepsSection({
                     href={demoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-sm transition-opacity shadow-sm active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+                    className="btn-primary min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-medium text-sm transition-opacity shadow-sm active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
                   >
                     <ExternalLink className="w-4 h-4" aria-hidden="true" />
                     <span>Launch live demo</span>
@@ -73,7 +73,7 @@ export function NextStepsSection({
                     href={repoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-sm font-medium text-[var(--text-primary)] transition-colors shadow-sm active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                    className="btn-secondary min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors shadow-sm active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
                   >
                     <SiGithub className="w-4 h-4" aria-hidden="true" />
                     <span>Source code</span>
@@ -96,7 +96,7 @@ export function NextStepsSection({
           <button
             type="button"
             onClick={() => setShowDetails(!showDetails)}
-            className="min-h-[44px] text-xs text-[var(--text-tertiary)] hover:text-[var(--text-primary)] inline-flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+            className="min-h-[44px] text-xs text-[var(--text-tertiary)] hover:text-[var(--text-primary)] inline-flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
             aria-expanded={showDetails}
             aria-controls="try-it-details"
           >

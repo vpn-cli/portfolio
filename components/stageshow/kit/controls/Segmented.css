@@ -28,7 +28,7 @@
     place-items: center;
     height: var(--ss-row);
     padding: 0 10px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--ss-text);
     transition: color 0.2s ease;

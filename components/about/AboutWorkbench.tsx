@@ -102,26 +102,26 @@ const initialSocketsLogs: StreamLog[] = [
   {
     id: "s-1",
     offset: "+0.0 ms",
-    stage: "Rate limiter",
-    message: "GET /ws -> Rate limiter: PASS (client_309)",
-    meta: "sub-ms",
-    latency: "0.3 ms",
+    stage: "Client",
+    message: "Client connected, subscribing to room match:402",
+    meta: "ws_handshake",
+    latency: "1.2 ms",
   },
   {
     id: "s-2",
-    offset: "+1.2 ms",
+    offset: "+0.4 ms",
     stage: "Room",
-    message: "Client joined room 'match:arsenal-chelsea' (listeners: 4)",
-    meta: "in-memory map",
-    latency: "0.1 ms",
+    message: "Client added to in-memory room Set (subscribers: 142)",
+    meta: "map_lookup",
+    latency: "0.04 ms",
   },
   {
     id: "s-3",
-    offset: "+2.8 ms",
+    offset: "+1.1 ms",
     stage: "Broadcast",
-    message: "Broadcast score tick to 4 listeners across room map",
-    meta: "payload: 128B",
-    latency: "0.15 ms",
+    message: "Goal event dispatched to 142 sockets without Redis call",
+    meta: "zero_copy",
+    latency: "0.3 ms",
   },
 ];
 
@@ -130,25 +130,25 @@ const initialAstLogs: StreamLog[] = [
     id: "a-1",
     offset: "+0.0 ms",
     stage: "Prompt",
-    message: "Prompt token stream received: 'Analytics Dashboard Grid'",
-    meta: "prompt_in",
-    latency: "0.5 ms",
+    message: "User: 'Generate a dashboard with revenue cards and recent orders'",
+    meta: "input_tokens: 34",
+    latency: "0.1 ms",
   },
   {
     id: "a-2",
-    offset: "+4.2 ms",
+    offset: "+82.0 ms",
     stage: "Schema check",
-    message: "Parsed into 4 AST nodes: Container, MetricTile, ChartView",
-    meta: "100% schema bounded",
-    latency: "1.2 ms",
+    message: "Payload validated against strict component schema (Zod)",
+    meta: "no_eval",
+    latency: "1.4 ms",
   },
   {
     id: "a-3",
-    offset: "+6.8 ms",
-    stage: "React",
-    message: "React JSX AST tree safely instantiated without eval()",
-    meta: "sandbox: secure",
-    latency: "0.3 ms",
+    offset: "+88.5 ms",
+    stage: "AST",
+    message: "JSX AST verified: 4 elements created, 0 unsafe expressions",
+    meta: "babel_ast",
+    latency: "2.1 ms",
   },
 ];
 
@@ -158,15 +158,16 @@ export function AboutWorkbench() {
   const [kafkaLogs, setKafkaLogs] = useState<StreamLog[]>(initialKafkaLogs);
   const [socketsLogs, setSocketsLogs] = useState<StreamLog[]>(initialSocketsLogs);
   const [astLogs, setAstLogs] = useState<StreamLog[]>(initialAstLogs);
-  const [isSimulating, setIsSimulating] = useState<boolean>(false);
+
   const [activeStageIndex, setActiveStageIndex] = useState<number | null>(null);
   const [newestLogId, setNewestLogId] = useState<string | null>(null);
+  const [isSimulating, setIsSimulating] = useState(false);
 
+  const markerRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const stageRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const markerRef = useRef<HTMLDivElement | null>(null);
+  const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const animationRef = useRef<Animation | null>(null);
-  const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
 
   const currentPipeline = PIPELINES[systemsTab];
   const logs =
@@ -176,30 +177,26 @@ export function AboutWorkbench() {
       ? socketsLogs
       : astLogs;
 
-  // Cleanup timeouts and animations on unmount or tab switch
   useEffect(() => {
     return () => {
       timeoutsRef.current.forEach(clearTimeout);
-      timeoutsRef.current = [];
       if (animationRef.current) {
         animationRef.current.cancel();
       }
     };
-  }, [systemsTab]);
+  }, []);
 
   const handleEmitEvent = () => {
-    if (isSimulating) return;
-    setIsSimulating(true);
-
-    // Clear previous timeouts and animations
     timeoutsRef.current.forEach(clearTimeout);
     timeoutsRef.current = [];
     if (animationRef.current) {
       animationRef.current.cancel();
     }
 
+    setIsSimulating(true);
+
     const stagesCount = currentPipeline.stages.length;
-    const duration = 600; // ~600ms total
+    const duration = 600;
     const stepDuration = duration / (stagesCount - 1);
 
     const prefersReducedMotion =
@@ -226,7 +223,6 @@ export function AboutWorkbench() {
       const track = trackRef.current;
       const trackRect = track.getBoundingClientRect();
 
-      // Collect node center positions relative to the track
       const nodeCenters = currentPipeline.stages.map((_, i) => {
         const el = stageRefs.current[i];
         if (!el) return 0;
@@ -235,12 +231,11 @@ export function AboutWorkbench() {
       });
 
       const keyframes = nodeCenters.map((x, i) => ({
-        transform: `translate3d(${x - 4}px, 0, 0)`,
+        transform: `translate3d(${x - 5}px, 0, 0)`,
         opacity: 1,
         offset: i / (stagesCount - 1),
       }));
 
-      // Start with opacity 0 at origin, quickly fade in
       keyframes[0].opacity = 0.9;
 
       marker.style.opacity = "1";
@@ -252,7 +247,6 @@ export function AboutWorkbench() {
       animationRef.current = anim;
 
       anim.onfinish = () => {
-        // Fade out marker
         const fadeAnim = marker.animate(
           [{ opacity: 1 }, { opacity: 0 }],
           { duration: 150, fill: "forwards" }
@@ -299,7 +293,7 @@ export function AboutWorkbench() {
       setAstLogs((prev) => [newLog, ...prev.slice(0, 5)]);
     }
 
-    // ONE accent color on newest row for a moment after it appears
+    // Accent highlight on newest row
     setNewestLogId(newLog.id);
     const clearAccentTimeout = setTimeout(() => {
       setNewestLogId((current) => (current === newLog.id ? null : current));
@@ -327,40 +321,51 @@ export function AboutWorkbench() {
   return (
     <section
       aria-labelledby="workbench-heading"
-      className="w-full -mx-3 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-8 sm:py-12 rounded-[28px] sm:rounded-[32px] bg-[#0E1014] text-[#F0F2F5] border border-white/[0.08] shadow-2xl space-y-6"
+      className="w-full rounded-[28px] sm:rounded-[32px] bg-[var(--surface-tile)] text-[var(--text-primary)] border border-[var(--border-subtle)] p-6 sm:p-8 lg:p-10 space-y-6"
     >
-      <div data-reveal data-reveal-order="6" className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2">
+      <div data-reveal data-reveal-order="6" className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-[var(--border-subtle)]">
         <div className="space-y-1">
-          <h2 id="workbench-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[#F0F2F5]">
+          <h2 id="workbench-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
             Three backends, simulated
           </h2>
-          <p className="text-sm text-[#9DA3AE] font-normal">
+          <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal">
             Press Emit Event to see how each system handles a new event. The logs are simulated.
           </p>
         </div>
 
-        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#181B21] border border-white/10 shrink-0 self-start md:self-auto">
+        {/* Selected state in ALL toggles, segmented controls and tabs: neutral pill in primary text color */}
+        <div
+          role="radiogroup"
+          aria-label="Workbench display mode"
+          className="inline-flex items-center gap-1.5 p-1 rounded-xl bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] shrink-0 self-start md:self-auto"
+        >
           <button
+            type="button"
+            role="radio"
+            aria-checked={mode === "systems"}
             onClick={() => setMode("systems")}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2B4EFF] ${
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[13px] sm:text-sm font-semibold transition-colors cursor-pointer min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] focus-visible:ring-offset-2 ${
               mode === "systems"
-                ? "bg-[#2B4EFF] text-white shadow-sm"
-                : "text-[#9DA3AE] hover:text-[#F0F2F5]"
+                ? "bg-[var(--surface-tile)] text-[var(--text-primary)] shadow-sm"
+                : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
             }`}
           >
-            <Cpu className="w-3.5 h-3.5" aria-hidden="true" />
+            <Cpu className="w-4 h-4" aria-hidden="true" />
             <span>Systems</span>
           </button>
 
           <button
+            type="button"
+            role="radio"
+            aria-checked={mode === "benchmarks"}
             onClick={() => setMode("benchmarks")}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2B4EFF] ${
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[13px] sm:text-sm font-semibold transition-colors cursor-pointer min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] focus-visible:ring-offset-2 ${
               mode === "benchmarks"
-                ? "bg-[#2B4EFF] text-white shadow-sm"
-                : "text-[#9DA3AE] hover:text-[#F0F2F5]"
+                ? "bg-[var(--surface-tile)] text-[var(--text-primary)] shadow-sm"
+                : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
             }`}
           >
-            <Zap className="w-3.5 h-3.5" aria-hidden="true" />
+            <Zap className="w-4 h-4" aria-hidden="true" />
             <span>Trade-offs</span>
           </button>
         </div>
@@ -369,42 +374,46 @@ export function AboutWorkbench() {
       {mode === "systems" && (
         <div className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div data-ui="pipeline-switcher" className="flex items-center gap-1.5">
+            {/* Selected state in ALL toggles, segmented controls and tabs: primary text color plus 2px underline */}
+            <div data-ui="pipeline-switcher" className="flex items-center gap-4 sm:gap-6 border-b border-[var(--border-subtle)]">
               <button
+                type="button"
                 onClick={() => {
                   setSystemsTab("kafka");
                   setActiveStageIndex(null);
                 }}
-                className={`px-3.5 py-1.5 rounded-lg text-sm font-medium border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2B4EFF] ${
+                className={`pb-2.5 pt-1.5 text-[13px] sm:text-sm font-medium transition-colors cursor-pointer border-b-2 -mb-[1px] min-h-[44px] flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] focus-visible:ring-offset-2 ${
                   systemsTab === "kafka"
-                    ? "bg-[#20242D] border-[#2B4EFF] text-[#F0F2F5] font-semibold ring-1 ring-[#2B4EFF]"
-                    : "bg-transparent border-white/10 text-[#9DA3AE] hover:border-white/20 hover:text-[#F0F2F5]"
+                    ? "text-[var(--text-primary)] font-semibold border-[var(--text-primary)]"
+                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] border-transparent"
                 }`}
               >
                 StreamMart (Kafka)
               </button>
               <button
+                type="button"
                 onClick={() => {
                   setSystemsTab("sockets");
                   setActiveStageIndex(null);
                 }}
-                className={`px-3.5 py-1.5 rounded-lg text-sm font-medium border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2B4EFF] ${
+                className={`pb-2.5 pt-1.5 text-[13px] sm:text-sm font-medium transition-colors cursor-pointer border-b-2 -mb-[1px] min-h-[44px] flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] focus-visible:ring-offset-2 ${
                   systemsTab === "sockets"
-                    ? "bg-[#20242D] border-[#2B4EFF] text-[#F0F2F5] font-semibold ring-1 ring-[#2B4EFF]"
-                    : "bg-transparent border-white/10 text-[#9DA3AE] hover:border-white/20 hover:text-[#F0F2F5]"
+                    ? "text-[var(--text-primary)] font-semibold border-[var(--text-primary)]"
+                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] border-transparent"
                 }`}
               >
                 Sportz (WebSockets)
               </button>
               <button
+                type="button"
                 onClick={() => {
                   setSystemsTab("ast");
                   setActiveStageIndex(null);
                 }}
-                className={`px-3.5 py-1.5 rounded-lg text-sm font-medium border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2B4EFF] ${
+                className={`pb-2.5 pt-1.5 text-[13px] sm:text-sm font-medium transition-colors cursor-pointer border-b-2 -mb-[1px] min-h-[44px] flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] focus-visible:ring-offset-2 ${
                   systemsTab === "ast"
-                    ? "bg-[#20242D] border-[#2B4EFF] text-[#F0F2F5] font-semibold ring-1 ring-[#2B4EFF]"
-                    : "bg-transparent border-white/10 text-[#9DA3AE] hover:border-white/20 hover:text-[#F0F2F5]"
+                    ? "text-[var(--text-primary)] font-semibold border-[var(--text-primary)]"
+                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] border-transparent"
                 }`}
               >
                 AppForge (AST parser)
@@ -412,42 +421,49 @@ export function AboutWorkbench() {
             </div>
 
             <div className="flex items-center gap-2">
+              {/* Primary action CTA: Exactly one primary style (accent fill, white text) */}
               <button
+                type="button"
+                data-cta="primary"
                 onClick={handleEmitEvent}
                 disabled={isSimulating}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#2B4EFF] text-white text-xs font-medium hover:bg-[#213ECC] active:scale-95 transition-all cursor-pointer disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2B4EFF]"
+                className="btn-primary text-[13px] sm:text-sm"
               >
-                <Play className={`w-3 h-3 ${isSimulating ? "animate-spin" : ""}`} aria-hidden="true" />
+                <Play className={`w-3.5 h-3.5 ${isSimulating ? "animate-spin" : ""}`} aria-hidden="true" />
                 <span>Emit Event</span>
               </button>
+
+              {/* Secondary button: neutral surface with hairline border, primary text color */}
               <button
+                type="button"
+                data-cta="secondary"
                 onClick={handleReset}
                 title="Reset simulation logs"
                 aria-label="Reset simulation logs"
-                className="p-1.5 rounded-lg border border-white/10 hover:border-white/20 text-[#808794] hover:text-[#F0F2F5] transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2B4EFF]"
+                className="btn-secondary !p-2.5"
               >
-                <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
+                <RotateCcw className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
           </div>
 
-          {/* Clean full-width single panel */}
-          <div data-ui="simulator" className="w-full rounded-2xl overflow-hidden border border-white/10 bg-[#14161C]">
+          {/* Clean full-width single panel with theme surface tokens */}
+          <div data-ui="simulator" className="w-full rounded-2xl overflow-hidden border border-[var(--border-subtle)] bg-[var(--surface-tile-elevated)]">
             {/* Panel Header */}
-            <div className="flex items-center justify-between px-4 sm:px-6 py-3 bg-[#181B21] border-b border-white/5">
-              <span className="text-sm font-medium text-[#F0F2F5]">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-3 bg-[var(--surface-tile)] border-b border-[var(--border-subtle)]">
+              <span className="text-sm sm:text-base font-semibold text-[var(--text-primary)]">
                 {currentPipeline.title}
               </span>
-              <span className="text-xs text-[#808794] font-normal">
+              <span className="text-[13px] text-[var(--text-tertiary)] font-normal">
                 {isSimulating ? "Emitting..." : "Simulated"}
               </span>
             </div>
 
             {/* Pipeline stages */}
-            <div className="px-4 sm:px-6 py-4 bg-[#101217] overflow-x-auto no-scrollbar border-b border-white/5">
+            <div className="px-4 sm:px-6 py-4 bg-[var(--surface-tile-elevated)] overflow-x-auto no-scrollbar border-b border-[var(--border-subtle)]">
               <div
                 ref={trackRef}
-                className="relative flex items-center justify-between min-w-[520px] sm:min-w-0 py-1"
+                className="relative flex items-center justify-between min-w-[520px] sm:min-w-0 py-2"
               >
                 {currentPipeline.stages.map((stage, idx) => {
                   const isActive = activeStageIndex === idx;
@@ -457,17 +473,17 @@ export function AboutWorkbench() {
                         ref={(el) => {
                           stageRefs.current[idx] = el;
                         }}
-                        className={`relative z-10 px-2.5 py-1 rounded-md text-xs transition-colors duration-150 select-none ${
+                        className={`relative z-10 px-3 py-1.5 rounded-lg text-[13px] transition-colors duration-150 select-none ${
                           isActive
-                            ? "text-[#F0F2F5] font-medium bg-[#20242D] ring-1 ring-[#2B4EFF]"
-                            : "text-[#9DA3AE] font-normal bg-[#181B21] border border-white/10"
+                            ? "text-[var(--text-primary)] font-semibold bg-[var(--surface-tile)] ring-2 ring-[var(--accent-color)] border border-transparent shadow-sm"
+                            : "text-[var(--text-secondary)] font-normal bg-[var(--surface-tile)] border border-[var(--border-subtle)]"
                         }`}
                       >
                         {stage}
                       </div>
                       {idx < currentPipeline.stages.length - 1 && (
                         <div
-                          className="flex-1 h-[1px] bg-white/10 mx-1.5"
+                          className="flex-1 h-[1px] bg-[var(--border-subtle)] mx-2"
                           aria-hidden="true"
                         />
                       )}
@@ -475,10 +491,10 @@ export function AboutWorkbench() {
                   );
                 })}
 
-                {/* Animated marker: accent circle with subtle glow, Web Animations API (transform/opacity only) */}
+                {/* Animated marker: Data highlight in accent */}
                 <div
                   ref={markerRef}
-                  className="absolute top-1/2 -translate-y-1/2 pointer-events-none z-20 w-2.5 h-2.5 rounded-full bg-[#2B4EFF] shadow-[0_0_8px_rgba(43,78,255,0.7)] opacity-0"
+                  className="absolute top-1/2 -translate-y-1/2 pointer-events-none z-20 w-3 h-3 rounded-full bg-[var(--accent-color)] shadow-[0_0_8px_rgba(43,78,255,0.7)] opacity-0"
                   aria-hidden="true"
                 />
               </div>
@@ -486,43 +502,43 @@ export function AboutWorkbench() {
 
             {/* Event Log */}
             <div className="p-4 sm:p-6 space-y-2">
-              <div className="text-xs text-[#808794] flex items-center justify-between pb-1 font-normal">
+              <div className="text-[13px] text-[var(--text-tertiary)] flex items-center justify-between pb-1 font-normal">
                 <span>Event log</span>
                 <span className="tabular-nums">{logs.length} events</span>
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 {logs.map((log) => {
                   const isNew = log.id === newestLogId;
                   return (
                     <div
                       key={log.id}
-                      className={`flex items-center justify-between gap-3 p-2.5 rounded-lg border text-xs leading-tight transition-colors duration-300 ${
+                      className={`flex items-center justify-between gap-3 p-3 rounded-xl border text-[13px] leading-snug transition-colors duration-300 ${
                         isNew
-                          ? "border-l-2 border-l-[#2B4EFF] border-white/15 bg-[#2B4EFF]/10"
-                          : "border-white/5 bg-[#181B21]"
+                          ? "border-[var(--accent-color)] bg-[var(--accent-color)]/10 text-[var(--text-primary)]"
+                          : "border-[var(--border-subtle)] bg-[var(--surface-tile)]"
                       }`}
                     >
                       <div className="flex items-center gap-3 truncate min-w-0">
-                        <span className="text-[#808794] font-normal tabular-nums shrink-0 text-xs">
+                        <span className="text-[var(--text-tertiary)] font-normal tabular-nums shrink-0 text-[13px]">
                           {log.offset}
                         </span>
-                        <span className="text-[#808794] font-normal shrink-0 text-xs">
+                        <span className="text-[var(--text-tertiary)] font-normal shrink-0 text-[13px]">
                           {log.stage}
                         </span>
-                        <code className="text-[#F0F2F5] font-mono text-xs truncate">
+                        <code className="text-[var(--text-primary)] font-mono text-[13px] truncate">
                           {log.message}
                         </code>
                       </div>
 
                       <div className="flex items-center gap-3 shrink-0">
                         {log.meta && (
-                          <code className="text-xs text-[#808794] hidden sm:inline font-mono">
+                          <code className="text-[13px] text-[var(--text-tertiary)] hidden sm:inline font-mono">
                             {log.meta}
                           </code>
                         )}
                         {log.latency && (
-                          <span className="text-xs text-[#808794] font-normal tabular-nums">
+                          <span className="text-[13px] text-[var(--text-tertiary)] font-normal tabular-nums">
                             {log.latency}
                           </span>
                         )}
@@ -534,18 +550,18 @@ export function AboutWorkbench() {
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-between px-4 sm:px-6 py-3 text-xs text-[#9DA3AE] bg-[#181B21] border-t border-white/5">
-              <span className="text-xs text-[#808794] font-normal">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-3 text-[13px] text-[var(--text-secondary)] bg-[var(--surface-tile)] border-t border-[var(--border-subtle)]">
+              <span className="text-[13px] text-[var(--text-tertiary)] font-normal">
                 {currentPipeline.source}
               </span>
               <TransitionLink
                 href={currentPipeline.link}
                 trackLocation="about_workbench"
                 trackLabel={currentPipeline.linkLabel}
-                className="inline-flex items-center gap-1 text-sm font-medium text-[#6E8CFF] hover:underline visited:text-[#6E8CFF] whitespace-nowrap shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2B4EFF] rounded"
+                className="text-link inline-flex items-center gap-1 text-sm font-semibold whitespace-nowrap shrink-0 transition-colors rounded min-h-[44px]"
               >
                 <span>Read case study</span>
-                <ArrowUpRight className="w-3.5 h-3.5 text-[#6E8CFF] shrink-0" aria-hidden="true" />
+                <ArrowUpRight className="w-4 h-4 shrink-0" aria-hidden="true" />
               </TransitionLink>
             </div>
           </div>
@@ -554,53 +570,53 @@ export function AboutWorkbench() {
 
       {mode === "benchmarks" && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-5 rounded-2xl bg-[#181B21] border border-white/10 space-y-3 flex flex-col justify-between">
+          <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] space-y-3 flex flex-col justify-between">
             <div className="space-y-2">
-              <span className="text-xs font-normal text-[#808794] block">
+              <span className="text-[13px] font-normal text-[var(--text-tertiary)] block">
                 In-memory rooms
               </span>
-              <h3 className="text-base font-semibold text-[#F0F2F5]">
+              <h3 className="text-base sm:text-lg font-semibold text-[var(--text-primary)]">
                 Rooms in memory
               </h3>
-              <p className="text-sm text-[#9DA3AE] leading-relaxed font-normal">
-                Sportz keeps rooms in a <code className="font-mono text-xs text-[#F0F2F5]">Map&lt;string, Set&lt;Client&gt;&gt;</code> inside the Node process, so broadcasting to a room needs no Redis call.
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
+                Sportz keeps rooms in a <code className="font-mono text-[13px] bg-[var(--surface-tile)] text-[var(--text-primary)] px-1.5 py-0.5 rounded border border-[var(--border-subtle)]">Map&lt;string, Set&lt;Client&gt;&gt;</code> inside the Node process, so broadcasting to a room needs no Redis call.
               </p>
             </div>
-            <div className="pt-2 text-xs text-[#808794] font-normal">
+            <div className="pt-2 text-[13px] text-[var(--text-tertiary)] font-normal">
               Used in Sportz
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-[#181B21] border border-white/10 space-y-3 flex flex-col justify-between">
+          <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] space-y-3 flex flex-col justify-between">
             <div className="space-y-2">
-              <span className="text-xs font-normal text-[#808794] block">
+              <span className="text-[13px] font-normal text-[var(--text-tertiary)] block">
                 Transactional outbox
               </span>
-              <h3 className="text-base font-semibold text-[#F0F2F5]">
+              <h3 className="text-base sm:text-lg font-semibold text-[var(--text-primary)]">
                 Orders and events in one transaction
               </h3>
-              <p className="text-sm text-[#9DA3AE] leading-relaxed font-normal">
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
                 StreamMart writes the order and its outbox event in the same Postgres transaction. Debezium reads the outbox and publishes to Kafka, so an order can&apos;t exist without its event.
               </p>
             </div>
-            <div className="pt-2 text-xs text-[#808794] font-normal">
+            <div className="pt-2 text-[13px] text-[var(--text-tertiary)] font-normal">
               Used in StreamMart
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-[#181B21] border border-white/10 space-y-3 flex flex-col justify-between">
+          <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] space-y-3 flex flex-col justify-between">
             <div className="space-y-2">
-              <span className="text-xs font-normal text-[#808794] block">
+              <span className="text-[13px] font-normal text-[var(--text-tertiary)] block">
                 Schema-checked AST
               </span>
-              <h3 className="text-base font-semibold text-[#F0F2F5]">
+              <h3 className="text-base sm:text-lg font-semibold text-[var(--text-primary)]">
                 Validate before rendering
               </h3>
-              <p className="text-sm text-[#9DA3AE] leading-relaxed font-normal">
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
                 AppForge checks model output against a JSON schema and a Babel AST pass before building React components. It never calls eval().
               </p>
             </div>
-            <div className="pt-2 text-xs text-[#808794] font-normal">
+            <div className="pt-2 text-[13px] text-[var(--text-tertiary)] font-normal">
               Used in AppForge
             </div>
           </div>

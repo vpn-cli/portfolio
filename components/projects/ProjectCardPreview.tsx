@@ -118,14 +118,14 @@ export function ProjectCardPreview({
         </div>
 
         {/* Quiet Window Title / Route */}
-        <span className="text-[11px] font-mono text-[var(--text-tertiary)] truncate max-w-[200px] sm:max-w-xs">
+        <span className="text-[13px] font-mono text-[var(--text-tertiary)] truncate max-w-[200px] sm:max-w-xs">
           {config.chromeTitle}
         </span>
 
         {/* Status Badge */}
         <div className="flex items-center">
           <span
-            className={`text-[9.5px] font-mono tracking-wider px-2 py-0.5 rounded border inline-flex items-center gap-1.5 ${
+            className={`text-[13px] font-mono tracking-wider px-2 py-0.5 rounded border inline-flex items-center gap-1.5 ${
               config.statusBadge.isLive
                 ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
                 : config.statusBadge.isDiagram

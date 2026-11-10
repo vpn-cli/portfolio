@@ -32,7 +32,7 @@ export default function ResourcesPage() {
             href="/"
             trackLocation="back_link"
             trackLabel="Back to home"
-            className="w-10 h-10 rounded-full bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] flex items-center justify-center transition-colors text-[var(--text-primary)] shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 active:scale-95"
+            className="w-11 h-11 rounded-full bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] flex items-center justify-center transition-colors text-[var(--text-primary)] shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2 active:scale-95"
             title="Back to home"
             aria-label="Back to home"
           >
@@ -65,10 +65,10 @@ export default function ResourcesPage() {
                   className={`w-full aspect-[16/10] rounded-[20px] bg-gradient-to-br ${item.gradient} border border-[var(--border-subtle)] p-5 flex flex-col justify-between overflow-hidden relative shadow-sm`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-medium text-white/80">
+                    <span className="text-[13px] font-medium text-white/80">
                       {item.type}
                     </span>
-                    <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-black/50 border border-white/10 text-white/90">
+                    <span className="text-[13px] font-mono px-2.5 py-0.5 rounded-full bg-black/50 border border-white/10 text-white/90">
                       {item.price}
                     </span>
                   </div>
@@ -118,7 +118,7 @@ export default function ResourcesPage() {
               onClick={() => setActiveItem(null)}
               type="button"
               aria-label="Close modal"
-              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] flex items-center justify-center text-[var(--text-primary)] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 active:scale-95 disabled:opacity-50"
+              className="absolute top-5 right-5 w-11 h-11 rounded-full bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] flex items-center justify-center text-[var(--text-primary)] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2 active:scale-95 disabled:opacity-50"
             >
               <X className="w-4 h-4" aria-hidden="true" />
             </button>
@@ -170,7 +170,7 @@ export default function ResourcesPage() {
                       label: `${activeItem.title} (${activeItem.isFree ? "Free" : "Template"})`,
                     })
                   }
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-xs transition-opacity active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+                  className="btn-primary min-h-[44px] w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium text-xs transition-opacity active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
                 >
                   <span>{activeItem.isFree ? "Get it for free" : "Get template"}</span>
                   <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
@@ -189,7 +189,7 @@ export default function ResourcesPage() {
                       label: `${activeItem.title} Live Preview`,
                     })
                   }
-                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-[var(--border-subtle)] hover:border-[var(--border-hover)] bg-[var(--surface-tile-hover)] text-[var(--text-primary)] font-medium text-xs transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+                  className="btn-secondary min-h-[44px] w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-medium text-xs transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
                 >
                   <span>Live preview</span>
                   <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />

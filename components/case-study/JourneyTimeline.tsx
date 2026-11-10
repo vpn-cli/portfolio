@@ -68,14 +68,14 @@ export function JourneyTimeline({ journey }: JourneyTimelineProps) {
               {/* 4-Part Structured Decision Format */}
               <div className="space-y-3 text-xs leading-relaxed">
                 <div>
-                  <span className="text-[11px] font-medium text-[var(--text-tertiary)] block mb-0.5">
+                  <span className="text-[13px] font-medium text-[var(--text-tertiary)] block mb-0.5">
                     → The problem I hit:
                   </span>
                   <p className="text-[var(--text-secondary)]">{item.decision.problem}</p>
                 </div>
 
                 <div>
-                  <span className="text-[11px] font-medium text-[var(--text-tertiary)] block mb-1">
+                  <span className="text-[13px] font-medium text-[var(--text-tertiary)] block mb-1">
                     → Options I considered:
                   </span>
                   <ul className="space-y-1 pl-3 border-l border-[var(--border-subtle)]">
@@ -88,7 +88,7 @@ export function JourneyTimeline({ journey }: JourneyTimelineProps) {
                 </div>
 
                 <div>
-                  <span className="text-[11px] font-medium text-[var(--text-tertiary)] block mb-0.5">
+                  <span className="text-[13px] font-medium text-[var(--text-tertiary)] block mb-0.5">
                     → What I chose:
                   </span>
                   <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] text-[var(--text-primary)] font-medium">
@@ -98,7 +98,7 @@ export function JourneyTimeline({ journey }: JourneyTimelineProps) {
                 </div>
 
                 <div>
-                  <span className="text-[11px] font-medium text-[var(--text-tertiary)] block mb-0.5">
+                  <span className="text-[13px] font-medium text-[var(--text-tertiary)] block mb-0.5">
                     → The trade-off:
                   </span>
                   <p className="text-[var(--text-secondary)] italic">{item.decision.tradeoff}</p>

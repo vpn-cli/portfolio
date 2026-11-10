@@ -47,7 +47,7 @@ export default function ProjectsPage() {
             href="/"
             trackLocation="back_link"
             trackLabel="Home"
-            className="min-h-[40px] px-4 py-2 rounded-full bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] inline-flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 active:scale-95"
+            className="btn-secondary min-h-[44px] px-4 py-2 rounded-full inline-flex items-center gap-2 text-sm font-medium text-[var(--text-primary)] transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2 active:scale-95"
             title="Back to home"
             aria-label="Back to home"
           >

@@ -11,7 +11,7 @@ export default function BytePoster({ patCount }: { patCount?: number | null }) {
         <span className="text-[13px] font-medium text-[var(--text-secondary)] shrink-0">
           Byte
         </span>
-        <span className="text-[12px] sm:text-[13px] text-[var(--text-tertiary)] truncate text-right">
+        <span className="text-[13px] text-[var(--text-tertiary)] truncate text-right">
           <span className="hidden xl:inline">desk </span>companion
         </span>
       </div>
@@ -150,7 +150,7 @@ export default function BytePoster({ patCount }: { patCount?: number | null }) {
       </div>
 
       {/* Bottom Footer Labels - matching ByteScene */}
-      <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between pointer-events-none z-20 text-[12.5px] sm:text-[13px] text-[var(--text-tertiary)] gap-2">
+      <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between pointer-events-none z-20 text-[13px] text-[var(--text-tertiary)] gap-2">
         <span className="truncate">pat me</span>
         <span className="shrink-0 text-right tabular-nums">
           {patCount !== undefined && patCount !== null

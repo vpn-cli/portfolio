@@ -14,7 +14,7 @@ export function ResourcesTile({ className = "" }: { className?: string }) {
         className="w-full h-full flex flex-col justify-between cursor-pointer group py-0.5 no-underline text-inherit"
       >
         <div>
-          <span className="text-[12px] sm:text-[13px] text-[var(--text-tertiary)] block mb-2 font-medium">
+          <span className="text-[13px] text-[var(--text-tertiary)] block mb-2 font-medium">
             Resources
           </span>
 

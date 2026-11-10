@@ -1579,14 +1579,14 @@ export default function ByteScene({
       }}
       onKeyDown={handleKeyDown}
       style={{ touchAction: "pan-y" }}
-      className="relative w-full h-full min-h-[190px] sm:min-h-[210px] flex items-center justify-center cursor-pointer select-none overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 rounded-[24px]"
+      className="relative w-full h-full min-h-[190px] sm:min-h-[210px] flex items-center justify-center cursor-pointer select-none overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2 rounded-[24px]"
     >
       {/* Top Header Labels (Outside 3D Canvas) */}
       <div className="absolute top-3.5 left-4 right-4 flex items-center justify-between pointer-events-none z-20 gap-2">
         <span className="text-[13px] font-medium text-[var(--text-secondary)] shrink-0">
           Byte
         </span>
-        <span className="text-[12px] sm:text-[13px] text-[var(--text-tertiary)] truncate text-right">
+        <span className="text-[13px] text-[var(--text-tertiary)] truncate text-right">
           <span className="hidden xl:inline">desk </span>companion
         </span>
       </div>
@@ -1678,7 +1678,7 @@ export default function ByteScene({
       </div>
 
       {/* Bottom Footer Labels (Outside 3D Canvas) */}
-      <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between pointer-events-none z-20 text-[12.5px] sm:text-[13px] text-[var(--text-tertiary)] gap-2">
+      <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between pointer-events-none z-20 text-[13px] text-[var(--text-tertiary)] gap-2">
         <span className="truncate">pat me</span>
         <span className="shrink-0 text-right tabular-nums">
           {patCount !== null ? `${patCount.toLocaleString()} pats` : "…"}

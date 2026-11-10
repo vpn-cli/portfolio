@@ -69,7 +69,7 @@ export function SocialTile({ className = "" }: { className?: string }) {
               </span>
 
               <div className="flex items-end justify-between w-full mt-1 sm:mt-1.5 gap-1">
-                <span className="text-[10.5px] sm:text-[11.5px] 2xl:text-[12px] text-[var(--text-tertiary)] block truncate font-normal leading-tight min-w-0 flex-1">
+                <span className="text-[13px] text-[var(--text-tertiary)] block truncate font-normal leading-tight min-w-0 flex-1">
                   {item.handle}
                 </span>
 

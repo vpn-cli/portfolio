@@ -96,19 +96,19 @@ export function StreamMartDiagram({ active = true }: StreamMartDiagramProps) {
       {/* Top Header Row */}
       <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-2.5">
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--text-tertiary)] font-semibold">
+          <span className="text-[13px] font-mono uppercase tracking-widest text-[var(--text-tertiary)] font-semibold">
             Diagram
           </span>
           <span className="text-[var(--border-subtle)]" aria-hidden="true">
             /
           </span>
-          <span className="text-[11px] font-medium text-[var(--text-secondary)]">
+          <span className="text-[13px] font-medium text-[var(--text-secondary)]">
             Transactional Outbox Flow (payment-service)
           </span>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[9.5px] font-mono tracking-wider bg-[var(--surface-tile)] text-[var(--text-secondary)] border border-[var(--border-subtle)] font-medium">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[13px] font-mono tracking-wider bg-[var(--surface-tile)] text-[var(--text-secondary)] border border-[var(--border-subtle)] font-medium">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 motion-safe:animate-pulse" />
             LIVE PIPELINE
           </span>
@@ -117,7 +117,7 @@ export function StreamMartDiagram({ active = true }: StreamMartDiagramProps) {
 
       {/* Main Diagram Area: 4 Connected Nodes with Service Ownership Callout */}
       <div className="my-auto py-2.5 space-y-2">
-        <div className="flex items-center justify-between text-[10px] font-mono text-[var(--text-tertiary)] px-1">
+        <div className="flex items-center justify-between text-[13px] font-mono text-[var(--text-tertiary)] px-1">
           <span>Ingress → Service Boundary (Owns Outbox) → Kafka Broker → Consumers</span>
           <span className="text-emerald-500/90 font-medium">Topic: payment-successful</span>
         </div>
@@ -145,11 +145,11 @@ export function StreamMartDiagram({ active = true }: StreamMartDiagramProps) {
                 {/* Node Header: Step Number + Role */}
                 <div className="flex items-center justify-between mb-1.5">
                   <div className="flex items-center gap-1.5">
-                    <span className="font-mono text-[10px] font-bold text-[var(--text-secondary)]">
+                    <span className="font-mono text-[13px] font-bold text-[var(--text-secondary)]">
                       {step.number}
                     </span>
                     <span
-                      className={`text-[8.5px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border ${
+                      className={`text-[13px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border ${
                         isInsidePaymentService
                           ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20"
                           : "bg-[var(--surface-tile-elevated)] border-[var(--border-subtle)] text-[var(--text-tertiary)]"
@@ -175,13 +175,13 @@ export function StreamMartDiagram({ active = true }: StreamMartDiagramProps) {
                   <div className="text-xs sm:text-[13px] font-medium text-[var(--text-primary)] truncate">
                     {step.title}
                   </div>
-                  <div className="font-mono text-[10px] sm:text-[10.5px] text-[var(--text-secondary)] truncate">
+                  <div className="font-mono text-[13px] text-[var(--text-secondary)] truncate">
                     {step.endpoint}
                   </div>
                 </div>
 
                 {/* Node Footer: Service Owner & Tech Tag */}
-                <div className="pt-2 mt-2 border-t border-[var(--border-subtle)]/70 flex items-center justify-between font-mono text-[9px] text-[var(--text-tertiary)]">
+                <div className="pt-2 mt-2 border-t border-[var(--border-subtle)]/70 flex items-center justify-between font-mono text-[13px] text-[var(--text-tertiary)]">
                   <span className="truncate max-w-[120px]">{step.tech}</span>
                   {isCurrent && (
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 motion-safe:animate-ping" />
@@ -201,7 +201,7 @@ export function StreamMartDiagram({ active = true }: StreamMartDiagramProps) {
       </div>
 
       {/* Honest Architecture Flow Status Bar & Explicit Caption */}
-      <div className="rounded-lg bg-[var(--surface-tile)] border border-[var(--border-subtle)] p-2.5 sm:p-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-[11px] font-mono">
+      <div className="rounded-lg bg-[var(--surface-tile)] border border-[var(--border-subtle)] p-2.5 sm:p-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-[13px] font-mono">
         <div className="flex items-center gap-2 truncate max-w-full">
           <span className="shrink-0 flex items-center gap-1.5">
             <span
@@ -209,7 +209,7 @@ export function StreamMartDiagram({ active = true }: StreamMartDiagramProps) {
                 active && !reducedMotion ? "bg-emerald-500 motion-safe:animate-pulse" : "bg-neutral-400"
               }`}
             />
-            <span className="font-semibold text-[var(--text-primary)] uppercase text-[9.5px] tracking-wider">
+            <span className="font-semibold text-[var(--text-primary)] uppercase text-[13px] tracking-wider">
               Step {activeStep.number}:
             </span>
           </span>
@@ -218,7 +218,7 @@ export function StreamMartDiagram({ active = true }: StreamMartDiagramProps) {
           </span>
         </div>
 
-        <div className="shrink-0 text-[10px] text-[var(--text-tertiary)] hidden sm:block border-l border-[var(--border-subtle)] pl-2.5">
+        <div className="shrink-0 text-[13px] text-[var(--text-tertiary)] hidden sm:block border-l border-[var(--border-subtle)] pl-2.5">
           Outbox flow only · Direct publishes omitted
         </div>
       </div>

@@ -82,7 +82,7 @@ export function CustomCursor() {
         }`}
       >
         {cursorText && (
-          <span className="text-[10px] font-medium text-neutral-900 dark:text-white transition-opacity duration-200">
+          <span className="text-[13px] font-medium text-neutral-900 dark:text-white transition-opacity duration-200">
             {cursorText}
           </span>
         )}

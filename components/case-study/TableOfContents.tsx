@@ -79,7 +79,7 @@ export function TableOfContents() {
         <div className="flex items-center justify-between text-xs">
           <span className="font-medium text-[var(--text-primary)]">{activeLabel}</span>
           {hasScrolled && progress > 0 && (
-            <span className="text-[11px] font-mono text-[var(--text-tertiary)]">
+            <span className="text-[13px] font-mono text-[var(--text-tertiary)]">
               {Math.round(progress)}% read
             </span>
           )}
@@ -126,7 +126,7 @@ export function TableOfContents() {
                   <button
                     type="button"
                     onClick={() => scrollTo(sec.id)}
-                    className={`block w-full text-left py-1.5 text-xs transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 ${isActive
+                    className={`block w-full text-left py-1.5 text-xs transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2 ${isActive
                       ? "font-medium text-[var(--text-primary)] translate-x-1"
                       : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                       }`}

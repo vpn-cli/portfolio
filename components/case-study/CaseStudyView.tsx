@@ -122,7 +122,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
               href="/projects"
               trackLocation="case_study_nav"
               trackLabel="All work"
-              className="inline-flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+              className="inline-flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
             >
               <ArrowLeft
                 className="w-4 h-4 transition-transform motion-reduce:transform-none group-hover:-translate-x-1"
@@ -146,7 +146,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
               href={`/work/${prevProject.slug}`}
               trackLocation="case_study_nav"
               trackLabel={`Previous: ${prevProject.title}`}
-              className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors hidden sm:inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+              className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors hidden sm:inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
               title={`Previous project: ${prevProject.title}`}
             >
               <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
@@ -161,7 +161,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
               href={`/work/${nextProject.slug}`}
               trackLocation="case_study_nav"
               trackLabel={`Next: ${nextProject.title}`}
-              className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors inline-flex items-center gap-1.5 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+              className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors inline-flex items-center gap-1.5 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
               title={`Next project: ${nextProject.title}`}
             >
               <span>{nextProject.title}</span>
@@ -228,10 +228,10 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                           onClick={() => setActiveTooltip(activeTooltip === idx ? null : idx)}
                           onMouseEnter={() => setActiveTooltip(idx)}
                           onMouseLeave={() => setActiveTooltip(null)}
-                          className="text-[var(--text-tertiary)] hover:text-[var(--text-primary)] p-1 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                          className="min-w-[44px] min-h-[44px] inline-flex items-center justify-center text-[var(--text-tertiary)] hover:text-[var(--text-primary)] p-1 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
                           aria-label={`How ${metric.label} was measured`}
                         >
-                          <HelpCircle className="w-3.5 h-3.5" aria-hidden="true" />
+                          <HelpCircle className="w-4 h-4" aria-hidden="true" />
                         </button>
                       </div>
 
@@ -241,7 +241,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
 
                       {/* Measurement Tooltip Box */}
                       {activeTooltip === idx && (
-                        <div className="absolute left-2 right-2 bottom-full mb-2 p-3 rounded-lg bg-[var(--surface-tile-elevated)] border border-[var(--border-hover)] text-[11px] text-[var(--text-secondary)] shadow-lg z-30 animate-in fade-in duration-150">
+                        <div className="absolute left-2 right-2 bottom-full mb-2 p-3 rounded-lg bg-[var(--surface-tile-elevated)] border border-[var(--border-hover)] text-[13px] text-[var(--text-secondary)] shadow-lg z-30 animate-in fade-in duration-150">
                           <span className="font-medium text-[var(--text-primary)] block mb-0.5">
                             How measured:
                           </span>
@@ -284,7 +284,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                             label: "View on GitHub",
                           })
                         }
-                        className="min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-sm transition-opacity shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+                        className="btn-primary min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-medium text-sm transition-opacity shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
                       >
                         <SiGithub className="w-4 h-4" aria-hidden="true" />
                         <span>View on GitHub</span>
@@ -307,7 +307,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                               label: "Live demo",
                             })
                           }
-                          className="min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-sm transition-opacity shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+                          className="btn-primary min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-medium text-sm transition-opacity shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
                         >
                           <ExternalLink className="w-4 h-4" aria-hidden="true" />
                           <span>Live demo</span>
@@ -329,7 +329,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                               label: "GitHub",
                             })
                           }
-                          className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-sm font-medium text-[var(--text-primary)] transition-colors shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+                          className="btn-secondary min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors shadow-sm motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
                         >
                           <SiGithub className="w-4 h-4" aria-hidden="true" />
                           <span>GitHub</span>
@@ -351,7 +351,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                               label: "README",
                             })
                           }
-                          className="min-h-[44px] inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors underline decoration-[var(--border-subtle)] underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+                          className="min-h-[44px] inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors underline decoration-[var(--border-subtle)] underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
                         >
                           <FileText className="w-3.5 h-3.5" aria-hidden="true" />
                           <span>README</span>
@@ -510,7 +510,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                       label: "Send email",
                     })
                   }
-                  className="min-h-[44px] inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--text-primary)] text-[var(--bg-canvas)] hover:opacity-90 font-medium text-sm transition-opacity shadow-sm motion-safe:active:scale-95 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+                  className="btn-primary min-h-[44px] inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-opacity shadow-sm motion-safe:active:scale-95 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
                 >
                   <Mail className="w-4 h-4" aria-hidden="true" />
                   <span>Send email</span>

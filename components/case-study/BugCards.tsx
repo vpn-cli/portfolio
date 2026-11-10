@@ -37,7 +37,7 @@ export function BugCards({ bugs }: BugCardsProps) {
                   href={bug.commitUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline transition-colors self-start sm:self-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                  className="inline-flex items-center gap-1 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline transition-colors self-start sm:self-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
                   title={`View GitHub commit ${bug.commitHash}`}
                 >
                   <GitCommit className="w-3.5 h-3.5" aria-hidden="true" />
@@ -82,7 +82,7 @@ export function BugCards({ bugs }: BugCardsProps) {
               <button
                 type="button"
                 onClick={() => toggleExpand(idx)}
-                className="min-h-[44px] text-xs text-[var(--text-tertiary)] hover:text-[var(--text-primary)] inline-flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                className="min-h-[44px] text-xs text-[var(--text-tertiary)] hover:text-[var(--text-primary)] inline-flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
                 aria-expanded={isExpanded}
                 aria-controls={panelId}
               >
@@ -113,7 +113,7 @@ export function BugCards({ bugs }: BugCardsProps) {
                     {bug.fix}
                   </div>
                   {bug.context && (
-                    <div className="pt-1 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-tertiary)]">
+                    <div className="pt-1 border-t border-[var(--border-subtle)] text-[13px] text-[var(--text-tertiary)]">
                       {bug.context}
                     </div>
                   )}

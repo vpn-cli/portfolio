@@ -68,7 +68,7 @@ export function BentoTile({
 
   const tileClasses = `bento-tile bento-surface group relative rounded-[24px] ${
     noPadding ? "" : "p-5 sm:p-6"
-  } focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 overflow-hidden flex flex-col justify-between ${
+  } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2 overflow-hidden flex flex-col justify-between ${
     enableTilt ? "transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transform-none" : ""
   } ${className}`;
 

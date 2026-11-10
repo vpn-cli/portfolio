@@ -84,11 +84,11 @@ function DiagramBox({
           : "border-[var(--border-subtle)] bg-[var(--surface-tile)]"
       } ${className}`}
     >
-      <div className="text-xs sm:text-sm font-normal text-[var(--text-primary)] leading-snug">
+      <div className="text-sm font-semibold text-[var(--text-primary)] leading-snug">
         {title}
       </div>
       {subline && (
-        <div className="text-[11px] sm:text-xs text-[var(--text-secondary)] mt-0.5 leading-snug">
+        <div className="text-[13px] text-[var(--text-secondary)] mt-0.5 leading-snug">
           {subline}
         </div>
       )}
@@ -206,7 +206,7 @@ export function StreamMartDiagram() {
 
         {/* Service boundary: single dashed outline with small plain label */}
         <div className="rounded-xl border border-dashed border-[var(--border-subtle)] p-3 space-y-2">
-          <div className="text-xs text-[var(--text-secondary)] font-normal">
+          <div className="text-[13px] text-[var(--text-secondary)] font-normal">
             Payment Service (Port 8000)
           </div>
           <DiagramBox
@@ -311,7 +311,7 @@ export function StreamMartDiagram() {
 
         {/* Row 2: Service boundary - Payment Service with dashed outline */}
         <div className="rounded-xl border border-dashed border-[var(--border-subtle)] p-4 space-y-2.5">
-          <div className="text-xs text-[var(--text-secondary)] font-normal">
+          <div className="text-[13px] text-[var(--text-secondary)] font-normal">
             Payment Service (Port 8000)
           </div>
           <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-3">
@@ -386,27 +386,27 @@ export function StreamMartDiagram() {
 
       {/* ━━━ STEPPING BANNER: STEP DESCRIPTION + VIEW SOURCE + CONTROLS ━━━ */}
       <div className="pt-4 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <p className="text-xs sm:text-sm text-[var(--text-primary)] leading-relaxed">
+        <p className="text-sm sm:text-base text-[var(--text-primary)] leading-relaxed">
           {activePhase.description}{" "}
           <a
             href={activePhase.sourceUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-[var(--accent-text)] hover:underline inline-flex items-center gap-1 ml-1"
+            className="text-[13px] text-[var(--accent-text)] hover:underline inline-flex items-center gap-1 ml-1"
           >
             <span>View source</span>
-            <ArrowUpRight className="w-3 h-3" aria-hidden="true" />
+            <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
           </a>
         </p>
 
         <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
-          <span className="text-xs text-[var(--text-secondary)] font-normal mr-1">
+          <span className="text-[13px] text-[var(--text-secondary)] font-normal mr-1">
             {currentPhase + 1} of {PHASES.length}
           </span>
           <button
             type="button"
             onClick={handlePrev}
-            className="w-8 h-8 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+            className="w-11 h-11 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] focus-visible:ring-offset-2"
             aria-label="Previous step"
           >
             <ChevronLeft className="w-4 h-4" aria-hidden="true" />
@@ -414,7 +414,7 @@ export function StreamMartDiagram() {
           <button
             type="button"
             onClick={handleTogglePlay}
-            className="w-8 h-8 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+            className="w-11 h-11 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] focus-visible:ring-offset-2"
             aria-label={isPlaying ? "Pause simulation" : "Play simulation"}
           >
             {isPlaying ? (
@@ -426,7 +426,7 @@ export function StreamMartDiagram() {
           <button
             type="button"
             onClick={handleNext}
-            className="w-8 h-8 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+            className="w-11 h-11 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] focus-visible:ring-offset-2"
             aria-label="Next step"
           >
             <ChevronRight className="w-4 h-4" aria-hidden="true" />

@@ -55,7 +55,7 @@ export function BentoGrid() {
       </div>
 
       {/* Footer Credit Line */}
-      <footer className="w-full pt-3 px-2 flex flex-col sm:flex-row items-center justify-between gap-2 text-[12px] sm:text-[13px] text-[var(--text-tertiary)] select-none">
+      <footer className="w-full pt-3 px-2 flex flex-col sm:flex-row items-center justify-between gap-2 text-[13px] sm:text-sm text-[var(--text-tertiary)] select-none">
         <div className="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
           <span>© {new Date().getFullYear()} Vipin Kaushik</span>
           <span aria-hidden="true" className="opacity-40">·</span>

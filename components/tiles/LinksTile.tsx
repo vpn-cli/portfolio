@@ -82,7 +82,7 @@ export function LinksTile({ className = "" }: { className?: string }) {
                 label: item.label,
               });
             }}
-            className="group/row min-h-0 w-full flex-1 flex items-center justify-between px-2.5 sm:px-3 xl:px-4 rounded-xl bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-transparent transition-[background-color,transform] duration-150 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 gap-2"
+            className="group/row min-h-[44px] w-full flex-1 flex items-center justify-between px-2.5 sm:px-3 xl:px-4 rounded-xl bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-transparent transition-[background-color,transform] duration-150 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] focus-visible:ring-offset-2 gap-2"
           >
             {/* 1. Left: Icon + Text */}
             <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
@@ -94,7 +94,7 @@ export function LinksTile({ className = "" }: { className?: string }) {
                 <span className="text-[13.5px] sm:text-[14px] xl:text-[15px] font-medium text-[var(--text-primary)] leading-tight truncate">
                   {item.label}
                 </span>
-                <span className="text-[10.5px] sm:text-[11px] xl:text-[11.5px] font-mono tracking-tight text-[var(--text-tertiary)] leading-tight mt-0.5 whitespace-nowrap overflow-visible">
+                <span className="text-[13px] font-mono tracking-tight text-[var(--text-tertiary)] leading-tight mt-0.5 whitespace-nowrap overflow-visible">
                   {item.subtext}
                 </span>
               </div>

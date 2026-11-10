@@ -30,23 +30,23 @@ export function IntroTile({ className = "" }: { className?: string }) {
             </p>
           </div>
 
-          {/* Compact Integrated Theme Switch */}
+          {/* Compact Integrated Theme Switch: 44x44 target, accent focus ring */}
           <button
             onClick={toggleTheme}
             type="button"
             suppressHydrationWarning
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
             title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            className="w-10 h-10 rounded-full bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-transparent flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 active:scale-95"
+            className="w-11 h-11 rounded-full bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] focus-visible:ring-offset-2 active:scale-95"
           >
             <Sun className="w-4 h-4 text-amber-400 hidden dark:block" aria-hidden="true" />
             <Moon className="w-4 h-4 text-slate-700 block dark:hidden" aria-hidden="true" />
           </button>
         </div>
 
-        {/* Bottom Bar: Availability Status Badge */}
+        {/* Bottom Bar: Availability Status Badge + Primary CTA */}
         <div className="mt-auto pt-4 flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-2 text-[12px] sm:text-[13px] font-medium text-[var(--text-secondary)]">
+          <div className="flex items-center gap-2 text-[13px] font-medium text-[var(--text-secondary)]">
             <span className="w-2 h-2 rounded-full bg-emerald-500 motion-safe:animate-pulse shrink-0" aria-hidden="true" />
             <span className="text-pretty">
               <span className="inline-block">Graduating April 2027,</span>{" "}
@@ -54,8 +54,10 @@ export function IntroTile({ className = "" }: { className?: string }) {
             </span>
           </div>
 
+          {/* Primary Action CTA: Accent fill, white text */}
           <a
             href={`mailto:${siteConfig.email}?subject=Opportunity%20Inquiry`}
+            data-cta="primary"
             data-ph-capture-attribute-location="intro_tile"
             onClick={() =>
               trackEvent("outbound_click", {
@@ -65,7 +67,7 @@ export function IntroTile({ className = "" }: { className?: string }) {
                 label: "Get in touch",
               })
             }
-            className="text-[13px] font-medium px-3.5 py-1.5 rounded-full bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-transparent text-[var(--text-primary)] transition-colors active:scale-95 cursor-pointer"
+            className="btn-primary text-[13px] min-h-[44px] px-4 py-2 rounded-xl"
           >
             Get in touch
           </a>

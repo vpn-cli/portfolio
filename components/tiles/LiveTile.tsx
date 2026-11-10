@@ -45,7 +45,7 @@ export function LiveTile({ className = "" }: { className?: string }) {
           <span className="type-label2 text-[var(--text-tertiary)] font-medium">
             Local Time
           </span>
-          <span className="text-[10px] font-mono text-[var(--text-tertiary)]">
+          <span className="text-[13px] font-mono text-[var(--text-tertiary)]">
             {siteConfig.city}
           </span>
         </div>
@@ -55,12 +55,12 @@ export function LiveTile({ className = "" }: { className?: string }) {
             <span className="text-2xl sm:text-3xl font-semibold tracking-tight text-[var(--text-primary)]">
               {timeString}
             </span>
-            <span className="text-xs font-medium text-[var(--text-tertiary)]">{period}</span>
+            <span className="text-[13px] font-medium text-[var(--text-tertiary)]">{period}</span>
           </div>
         </div>
 
         {/* Ambient Waveform Audio Indicator */}
-        <div className="pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between text-[11px] text-[var(--text-secondary)]">
+        <div className="pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between text-[13px] text-[var(--text-secondary)]">
           <span>Focus: Coding</span>
           <div className="flex items-end gap-1 h-3">
             {[35, 75, 45, 90, 40].map((h, i) => (

@@ -21,14 +21,40 @@
 
   --font-display: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-body: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Strict type scale: smallest text anywhere >= 13px, secondary >= 14px, body >= 16px */
+  --text-xs: 13px;
+  --text-xs--line-height: 1.4;
+  --text-sm: 14px;
+  --text-sm--line-height: 1.5;
+  --text-base: 16px;
+  --text-base--line-height: 1.6;
+  --text-lg: 18px;
+  --text-lg--line-height: 1.5;
+  --text-xl: 20px;
+  --text-xl--line-height: 1.35;
+  --text-2xl: 24px;
+  --text-2xl--line-height: 1.3;
+  --text-3xl: 28px;
+  --text-3xl--line-height: 1.25;
+  --text-4xl: 36px;
+  --text-4xl--line-height: 1.2;
+  --text-5xl: 48px;
+  --text-5xl--line-height: 1.15;
+  --text-6xl: 56px;
+  --text-6xl--line-height: 1.1;
+  --text-7xl: 64px;
+  --text-7xl--line-height: 1.05;
 }
 
 :root {
-  /* ━━━ TYPE SCALE (Fixed set: 14 / 16 / 20 / 28 / 40 / 56px) ━━━ */
+  /* ━━━ TYPE SCALE (Site-wide: 13 / 14 / 16 / 20 / 28 / 40 / 56px) ━━━ */
+  --text-micro: 13px;
+  --text-micro-lh: 1.4;
   --text-caption: 14px;
-  --text-caption-lh: 1.4;
+  --text-caption-lh: 1.45;
   --text-body: 16px;
-  --text-body-lh: 1.5;
+  --text-body-lh: 1.6;
   --text-heading: 20px;
   --text-heading-lh: 1.35;
   --text-section: 28px;
@@ -78,8 +104,8 @@ html.light {
   --border-hover: rgba(18, 20, 24, 0.16);
   --border-focus: #2B4EFF;
   --text-primary: #121417;
-  --text-secondary: #535A68;
-  --text-tertiary: #697180;
+  --text-secondary: #484E5B;
+  --text-tertiary: #525966;
   --accent-color: #2B4EFF;
   --accent-hover: #213ECC;
   --accent-text: #2042E0;
@@ -109,8 +135,8 @@ html.dark {
   --border-hover: rgba(240, 242, 245, 0.16);
   --border-focus: #5274FF;
   --text-primary: #F0F2F5;
-  --text-secondary: #9DA3AE;
-  --text-tertiary: #808794;
+  --text-secondary: #A6ACB8;
+  --text-tertiary: #989EA8;
   --accent-color: #2B4EFF;
   --accent-hover: #4567FF;
   --accent-text: #6E8CFF;

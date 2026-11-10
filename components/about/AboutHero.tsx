@@ -32,7 +32,7 @@ export function AboutHero({ status }: AboutHeroProps) {
               >
                 Vipin Kaushik
               </h1>
-              <p className="text-sm text-[var(--text-secondary)] mt-1.5">
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] mt-1.5 font-normal">
                 {status}
               </p>
             </div>
@@ -41,13 +41,13 @@ export function AboutHero({ status }: AboutHeroProps) {
               Software engineer building event-driven backends and real-time systems.
             </p>
 
-            <div className="flex items-center gap-x-3 gap-y-1 text-xs sm:text-[13px] text-[var(--text-tertiary)] flex-wrap tabular-nums pt-1">
+            <div className="flex items-center gap-x-3 gap-y-1 text-[13px] sm:text-sm text-[var(--text-tertiary)] flex-wrap tabular-nums pt-1">
               <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-                <GraduationCap className="w-3.5 h-3.5" aria-hidden="true" />
+                <GraduationCap className="w-4 h-4" aria-hidden="true" />
                 Dual degree at IIT Kharagpur, 2022 to 2027
               </span>
               <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-                <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
+                <MapPin className="w-4 h-4" aria-hidden="true" />
                 Kharagpur and New Delhi
               </span>
             </div>
@@ -61,7 +61,8 @@ export function AboutHero({ status }: AboutHeroProps) {
             href="/projects"
             trackLocation="about_hero"
             trackLabel="Case Studies"
-            className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-focus)] text-[var(--text-primary)] text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] active:scale-98"
+            data-cta="secondary"
+            className="btn-secondary text-sm flex-1 sm:flex-initial"
           >
             <span>Case Studies</span>
             <ArrowUpRight className="w-4 h-4 text-[var(--text-tertiary)]" aria-hidden="true" />

@@ -108,7 +108,7 @@ export function ContactTile({ className = "" }: { className?: string }) {
           </p>
 
           {/* Inlined Local Time & Status */}
-          <div className="flex items-center gap-2 text-[12px] sm:text-[13px] text-[var(--text-tertiary)] min-h-[20px] leading-normal pt-0.5">
+          <div className="flex items-center gap-2 text-[13px] text-[var(--text-tertiary)] min-h-[24px] leading-normal pt-0.5">
             {timeState ? (
               <>
                 {timeState.isSun ? (
@@ -132,31 +132,33 @@ export function ContactTile({ className = "" }: { className?: string }) {
         {/* Center / Bottom: Email/copy row then Send mail row */}
         <div className="flex flex-col gap-2 sm:gap-2.5 pt-1">
           {/* Email row with copy button */}
-          <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-2 px-3 sm:px-3.5 py-2 rounded-xl bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] transition-colors">
+          <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 px-3 sm:px-3.5 py-1.5 rounded-xl bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] transition-colors min-h-[44px]">
             <button
               onClick={handleCopy}
               type="button"
-              className="text-left font-medium text-[13px] sm:text-[13.5px] lg:text-[14px] text-[var(--text-primary)] hover:text-sky-500 transition-colors focus-visible:outline-none truncate"
+              className="text-left font-medium text-[13px] sm:text-[14px] text-[var(--text-primary)] hover:text-[var(--accent-text)] transition-colors focus-visible:outline-none truncate min-h-[44px] flex items-center"
               title="Click to copy email address"
             >
               {email}
             </button>
 
+            {/* Secondary button: neutral surface with hairline border, primary text color */}
             <button
               onClick={handleCopy}
               type="button"
+              data-cta="secondary"
               data-ph-capture-attribute-location="contact_tile"
               aria-label={copied ? "Email copied to clipboard" : "Copy email address"}
-              className="w-full sm:w-auto px-2.5 py-1 sm:px-3 sm:py-1 rounded-lg bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-[12px] sm:text-[12.5px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center justify-center gap-1.5 transition-colors shrink-0 cursor-pointer active:scale-95"
+              className="btn-secondary w-full sm:w-auto text-[13px] min-h-[44px] px-3.5 py-1.5"
             >
               {copied ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-emerald-500" aria-hidden="true" />
-                  <span className="text-emerald-500 font-medium">Copied</span>
+                  <Check className="w-4 h-4 text-[var(--accent-color)]" aria-hidden="true" />
+                  <span className="text-[var(--accent-color)] font-semibold">Copied</span>
                 </>
               ) : (
                 <>
-                  <Copy className="w-3.5 h-3.5" aria-hidden="true" />
+                  <Copy className="w-4 h-4" aria-hidden="true" />
                   <span>Copy</span>
                 </>
               )}
@@ -166,6 +168,7 @@ export function ContactTile({ className = "" }: { className?: string }) {
           {/* Secondary Action: Send Mail */}
           <a
             href={mailUrl}
+            data-cta="secondary"
             data-ph-capture-attribute-location="contact_tile"
             onClick={() =>
               trackEvent("outbound_click", {
@@ -175,7 +178,7 @@ export function ContactTile({ className = "" }: { className?: string }) {
                 label: "Send mail",
               })
             }
-            className="min-h-[40px] sm:min-h-[42px] w-full flex items-center justify-between px-3.5 sm:px-4 py-2 rounded-xl bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] text-[13px] sm:text-[13.5px] font-medium text-[var(--text-primary)] transition-colors active:scale-98 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+            className="btn-secondary w-full text-[13px] sm:text-sm min-h-[44px] justify-between px-4 py-2"
           >
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-[var(--text-secondary)]" aria-hidden="true" />

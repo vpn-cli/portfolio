@@ -43,7 +43,8 @@ export function NewsletterTile({ className = "" }: { className?: string }) {
               />
               <button
                 type="submit"
-                className="px-5 py-2 rounded-full bg-[var(--text-primary)] hover:opacity-90 text-[var(--bg-canvas)] text-xs sm:text-sm font-medium transition-opacity duration-200 shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 active:scale-95 disabled:opacity-50"
+                data-cta="primary"
+                className="btn-primary !rounded-full text-sm min-h-[44px] px-5 py-2 shrink-0 disabled:opacity-50"
               >
                 Subscribe
               </button>

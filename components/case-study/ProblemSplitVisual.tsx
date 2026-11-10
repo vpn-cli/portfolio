@@ -96,7 +96,7 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
                     ? "Checkout Pipeline"
                     : "Copilot Canvas"}
                 </span>
-                <span className="font-mono text-[11px] text-[var(--text-tertiary)]">
+                <span className="font-mono text-[13px] text-[var(--text-tertiary)]">
                   {slug === "sockets"
                     ? step === 2
                       ? "Updated late"
@@ -119,7 +119,7 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
             </div>
           </div>
 
-          <div className="pt-2 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-tertiary)] flex items-center gap-1.5 font-mono">
+          <div className="pt-2 border-t border-[var(--border-subtle)] text-[13px] text-[var(--text-tertiary)] flex items-center gap-1.5 font-mono">
             <XCircle className="w-3.5 h-3.5 text-neutral-400 dark:text-neutral-500 shrink-0" aria-hidden="true" />
             <span>High latency</span>
           </div>
@@ -179,7 +179,7 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
             </div>
           </div>
 
-          <div className="pt-2 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-primary)] flex items-center gap-1.5 font-mono">
+          <div className="pt-2 border-t border-[var(--border-subtle)] text-[13px] text-[var(--text-primary)] flex items-center gap-1.5 font-mono">
             <CheckCircle2 className="w-3.5 h-3.5 text-[var(--text-primary)] shrink-0" aria-hidden="true" />
             <span>Sub-second delivery</span>
           </div>
@@ -196,7 +196,7 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
         <button
           type="button"
           onClick={() => setShowDetails(!showDetails)}
-          className="min-h-[44px] px-5 py-2.5 rounded-lg bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] inline-flex items-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 active:scale-95 shadow-sm"
+          className="btn-secondary min-h-[44px] px-5 py-2.5 rounded-lg text-xs font-medium text-[var(--text-primary)] inline-flex items-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2 active:scale-95 shadow-sm"
           aria-expanded={showDetails}
           aria-controls="problem-details-panel"
         >

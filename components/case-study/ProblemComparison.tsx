@@ -37,7 +37,7 @@ export function ProblemComparison({ before, after, coreChallenge }: ProblemCompa
               ))}
             </ul>
           </div>
-          <div className="pt-3 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-tertiary)]">
+          <div className="pt-3 border-t border-[var(--border-subtle)] text-[13px] text-[var(--text-tertiary)]">
             Status: Latency bottlenecks and connection exhaustion
           </div>
         </div>
@@ -60,7 +60,7 @@ export function ProblemComparison({ before, after, coreChallenge }: ProblemCompa
               ))}
             </ul>
           </div>
-          <div className="pt-3 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-primary)]">
+          <div className="pt-3 border-t border-[var(--border-subtle)] text-[13px] text-[var(--text-primary)]">
             Status: Deterministic, sub-second and memory-safe
           </div>
         </div>

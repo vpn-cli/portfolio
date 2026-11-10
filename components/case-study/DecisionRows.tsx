@@ -39,7 +39,7 @@ export function DecisionRows({ decisions }: DecisionRowsProps) {
               onClick={() => toggleRow(idx)}
               aria-expanded={isOpen}
               aria-controls={panelId}
-              className="w-full min-h-[52px] p-4 sm:p-5 text-left flex items-start sm:items-center justify-between gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+              className="w-full min-h-[52px] p-4 sm:p-5 text-left flex items-start sm:items-center justify-between gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
             >
               <div className="space-y-1 flex-1">
                 <div className="text-sm font-medium text-[var(--text-primary)]">
@@ -69,7 +69,7 @@ export function DecisionRows({ decisions }: DecisionRowsProps) {
                 className="px-5 pb-5 pt-2 border-t border-[var(--border-subtle)] space-y-4 text-xs animate-in fade-in duration-150"
               >
                 <div>
-                  <span className="text-[11px] font-medium text-[var(--text-tertiary)] block mb-1">
+                  <span className="text-[13px] font-medium text-[var(--text-tertiary)] block mb-1">
                     Problem faced:
                   </span>
                   <p className="text-[var(--text-secondary)] leading-relaxed">
@@ -78,7 +78,7 @@ export function DecisionRows({ decisions }: DecisionRowsProps) {
                 </div>
 
                 <div>
-                  <span className="text-[11px] font-medium text-[var(--text-tertiary)] block mb-1.5">
+                  <span className="text-[13px] font-medium text-[var(--text-tertiary)] block mb-1.5">
                     Options considered:
                   </span>
                   <ul className="space-y-1 pl-3 border-l border-[var(--border-subtle)]">
@@ -91,7 +91,7 @@ export function DecisionRows({ decisions }: DecisionRowsProps) {
                 </div>
 
                 <div>
-                  <span className="text-[11px] font-medium text-[var(--text-tertiary)] block mb-1">
+                  <span className="text-[13px] font-medium text-[var(--text-tertiary)] block mb-1">
                     Full trade-off & reasoning:
                   </span>
                   <p className="text-[var(--text-primary)] leading-relaxed bg-[var(--surface-tile)] p-3 rounded-lg border border-[var(--border-subtle)]">

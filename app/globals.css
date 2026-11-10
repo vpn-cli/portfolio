@@ -520,3 +520,81 @@ body::after {
     min-height: 160px;
   }
 }
+
+/* ━━━ ONE COLOR SYSTEM & ACCESSIBILITY INVARIANTS ━━━ */
+/* Primary action CTA: Exactly one primary style (accent fill, white text) */
+.btn-primary,
+[data-cta="primary"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--accent-color);
+  color: #FFFFFF !important;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  border: 1px solid transparent;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+.btn-primary:hover,
+[data-cta="primary"]:hover {
+  background-color: var(--accent-hover);
+}
+.btn-primary:active,
+[data-cta="primary"]:active {
+  transform: scale(0.97);
+}
+
+/* Secondary button: neutral surface with hairline border, primary text color */
+.btn-secondary,
+[data-cta="secondary"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--surface-tile);
+  color: var(--text-primary);
+  font-weight: 500;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-subtle);
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.625rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.btn-secondary:hover,
+[data-cta="secondary"]:hover {
+  background-color: var(--surface-tile-hover);
+  border-color: var(--border-hover);
+}
+.btn-secondary:active,
+[data-cta="secondary"]:active {
+  transform: scale(0.97);
+}
+
+/* Links: primary text color, accent on hover/focus */
+.text-link {
+  color: var(--text-primary);
+  transition: color 0.15s ease;
+}
+.text-link:hover,
+.text-link:focus-visible {
+  color: var(--accent-text);
+}
+
+/* Focus rings: accent, 2px, with offset */
+:focus-visible {
+  outline: 2px solid var(--border-focus) !important;
+  outline-offset: 2px !important;
+}
+
+/* Typography defaults */
+p {
+  line-height: 1.6;
+  max-width: 70ch;
+}

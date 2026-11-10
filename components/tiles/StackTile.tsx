@@ -275,7 +275,7 @@ export function StackTile({ className = "" }: { className?: string }) {
           <h2 className="text-[18px] sm:text-[20px] font-bold text-[var(--text-primary)] leading-tight tracking-tight">
             Stack I use
           </h2>
-          <span className="text-[12px] sm:text-[13px] text-[var(--text-tertiary)] font-medium">
+          <span className="text-[13px] text-[var(--text-tertiary)] font-medium">
             Core toolchain
           </span>
         </div>
@@ -321,12 +321,12 @@ export function StackTile({ className = "" }: { className?: string }) {
                         aria-hidden="true"
                       />
                     ) : (
-                      <span className="font-bold text-[12px]" style={{ color: styles.iconColor }}>
+                      <span className="font-bold text-[13px]" style={{ color: styles.iconColor }}>
                         {tech.name.slice(0, 2).toUpperCase()}
                       </span>
                     )}
                   </div>
-                  <span className="text-[10.5px] sm:text-[11px] font-medium text-[var(--text-tertiary)] text-center whitespace-nowrap overflow-visible max-w-[76px]">
+                  <span className="text-[13px] font-medium text-[var(--text-tertiary)] text-center whitespace-nowrap overflow-visible max-w-[76px]">
                     {tech.name}
                   </span>
                 </div>
@@ -383,7 +383,7 @@ export function StackTile({ className = "" }: { className?: string }) {
                     </div>
 
                     {/* Tech Name Label Under Icon */}
-                    <span className="text-[10.5px] sm:text-[11px] font-medium text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)] transition-colors text-center whitespace-nowrap overflow-visible max-w-[76px] select-none">
+                    <span className="text-[13px] font-medium text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)] transition-colors text-center whitespace-nowrap overflow-visible max-w-[76px] select-none">
                       {tech.name}
                     </span>
                   </div>

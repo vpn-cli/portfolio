@@ -25,18 +25,18 @@ export function ThemeToggleTile({ className = "" }: { className?: string }) {
       >
         {/* Top Eyebrow & Status */}
         <div className="flex items-center justify-between w-full">
-          <span className="text-[12px] sm:text-[13px] text-[var(--text-tertiary)] font-medium">
+          <span className="text-[13px] text-[var(--text-tertiary)] font-medium">
             Theme
           </span>
           <span
             suppressHydrationWarning
-            className="text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full bg-[var(--surface-tile-hover)] text-[var(--text-secondary)] border border-[var(--border-subtle)] transition-colors"
+            className="text-[13px] px-2.5 py-0.5 rounded-full bg-[var(--surface-tile-hover)] text-[var(--text-secondary)] border border-[var(--border-subtle)] transition-colors"
           >
             {isDark ? "Dark" : "Light"}
           </span>
         </div>
 
-        {/* Center Pill Switch */}
+        {/* Center Pill Switch: 44px min height, accent focus ring */}
         <div className="flex items-center justify-center my-auto py-2 sm:py-3">
           <button
             onClick={(e) => {
@@ -47,7 +47,7 @@ export function ThemeToggleTile({ className = "" }: { className?: string }) {
             suppressHydrationWarning
             aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
             title={`Switch to ${isDark ? "light" : "dark"} mode`}
-            className="relative w-20 h-11 rounded-full p-1.5 flex items-center bg-[var(--bg-canvas-subtle)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] shadow-inner transition-[background-color,border-color] duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40 active:scale-95 cursor-pointer"
+            className="relative w-20 h-11 rounded-full p-1.5 flex items-center bg-[var(--bg-canvas-subtle)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] shadow-inner transition-[background-color,border-color] duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] focus-visible:ring-offset-2 active:scale-95 cursor-pointer"
           >
             {/* Stationary In-Track Guide Icons */}
             <div
@@ -84,7 +84,7 @@ export function ThemeToggleTile({ className = "" }: { className?: string }) {
         </div>
 
         {/* Bottom Helper Bar on Desktop / Tablet */}
-        <div className="hidden sm:flex items-center justify-between text-[11px] text-[var(--text-secondary)]">
+        <div className="hidden sm:flex items-center justify-between text-[13px] text-[var(--text-secondary)]">
           <span>Appearance</span>
           <span suppressHydrationWarning>{isDark ? "Dark mode" : "Light default"}</span>
         </div>

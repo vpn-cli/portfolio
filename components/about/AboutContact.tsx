@@ -80,7 +80,6 @@ export function AboutContact() {
         document.body.appendChild(textarea);
         textarea.focus();
         textarea.select();
-        // Fallback for legacy environments without navigator.clipboard
         (document as any).execCommand?.("copy");
         document.body.removeChild(textarea);
         setCopied(true);
@@ -108,10 +107,10 @@ export function AboutContact() {
           I&apos;m looking for full-time software engineering roles starting after I graduate in April 2027. Email me if you want to talk about backend systems or design.
         </p>
 
-        {/* Local time line: smaller, neutral icons */}
-        <div className="flex flex-wrap items-center gap-4 text-xs text-[var(--text-tertiary)] min-h-[20px] pt-1 tabular-nums">
+        {/* Local time line */}
+        <div className="flex flex-wrap items-center gap-4 text-[13px] sm:text-sm text-[var(--text-tertiary)] min-h-[24px] pt-1 tabular-nums">
           <div className="flex items-center gap-1.5">
-            <MapPin className="w-3.5 h-3.5 text-[var(--text-tertiary)] shrink-0" aria-hidden="true" />
+            <MapPin className="w-4 h-4 text-[var(--text-tertiary)] shrink-0" aria-hidden="true" />
             <span>IIT Kharagpur</span>
           </div>
 
@@ -119,9 +118,9 @@ export function AboutContact() {
             {timeState ? (
               <>
                 {timeState.isSun ? (
-                  <Sun className="w-3.5 h-3.5 shrink-0 text-[var(--text-tertiary)]" aria-hidden="true" />
+                  <Sun className="w-4 h-4 shrink-0 text-[var(--text-tertiary)]" aria-hidden="true" />
                 ) : (
-                  <Moon className="w-3.5 h-3.5 shrink-0 text-[var(--text-tertiary)]" aria-hidden="true" />
+                  <Moon className="w-4 h-4 shrink-0 text-[var(--text-tertiary)]" aria-hidden="true" />
                 )}
                 <span>
                   {timeState.timeStr} in India, {timeState.statusText}
@@ -129,7 +128,7 @@ export function AboutContact() {
               </>
             ) : (
               <span className="invisible select-none inline-flex items-center gap-2" aria-hidden="true">
-                <span className="w-3.5 h-3.5 shrink-0 inline-block" />
+                <span className="w-4 h-4 shrink-0 inline-block" />
                 <span>9:27 AM in India, I usually reply within a day</span>
               </span>
             )}
@@ -143,36 +142,39 @@ export function AboutContact() {
           <button
             onClick={handleCopy}
             type="button"
-            className="text-left text-lg sm:text-2xl lg:text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-text)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] rounded-md cursor-pointer tracking-tight"
+            className="text-left text-lg sm:text-2xl lg:text-3xl font-medium text-[var(--text-primary)] hover:text-[var(--accent-text)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] rounded-md cursor-pointer tracking-tight min-h-[44px] flex items-center"
             title="Click to copy email address"
           >
             {email}
           </button>
 
+          {/* Secondary button: neutral surface with hairline border, primary text color */}
           <button
             onClick={handleCopy}
             type="button"
+            data-cta="secondary"
             data-ph-capture-attribute-location="about_contact"
             aria-label={copied ? "Email copied to clipboard" : "Copy email address"}
-            className="px-3 py-1.5 rounded-lg bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center justify-center gap-1.5 transition-colors cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)]"
+            className="btn-secondary text-[13px] sm:text-sm min-h-[44px] px-3.5"
           >
             {copied ? (
               <>
-                <Check className="w-3.5 h-3.5 text-[var(--accent-color)]" aria-hidden="true" />
-                <span className="text-[var(--accent-color)] font-bold">Copied</span>
+                <Check className="w-4 h-4 text-[var(--accent-color)]" aria-hidden="true" />
+                <span className="text-[var(--accent-color)] font-semibold">Copied</span>
               </>
             ) : (
               <>
-                <Copy className="w-3.5 h-3.5" aria-hidden="true" />
+                <Copy className="w-4 h-4" aria-hidden="true" />
                 <span>Copy</span>
               </>
             )}
           </button>
         </div>
 
-        {/* Primary CTA in accent color */}
+        {/* Primary CTA: Exactly one primary style (accent fill, white text) */}
         <a
           href={mailUrl}
+          data-cta="primary"
           data-ph-capture-attribute-location="about_contact"
           onClick={() =>
             trackEvent("outbound_click", {
@@ -182,11 +184,11 @@ export function AboutContact() {
               label: "Send mail",
             })
           }
-          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[var(--accent-color)] text-[var(--accent-contrast)] hover:bg-[var(--accent-hover)] text-sm font-semibold transition-all shadow-sm cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] self-start sm:self-auto shrink-0"
+          className="btn-primary text-sm sm:text-base self-start sm:self-auto shrink-0"
         >
-          <Mail className="w-4 h-4" aria-hidden="true" />
+          <Mail className="w-4 h-4 text-white" aria-hidden="true" />
           <span>Send email</span>
-          <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+          <ArrowUpRight className="w-4 h-4 text-white" aria-hidden="true" />
         </a>
       </div>
     </section>
