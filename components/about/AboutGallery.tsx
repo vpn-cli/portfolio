@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
-import { Award, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { artworks, type Artwork } from "@/content/artworks";
 import { useLenisInstance } from "@/components/motion/SmoothScrollProvider";
 import { trackEvent } from "@/lib/analytics";
@@ -257,7 +257,7 @@ export function AboutGallery() {
 
         /* Focus-visible ring on the image only for keyboard Tab users */
         .gallery-piece-btn:focus-visible .gallery-piece-img {
-          box-shadow: 0 0 0 3px var(--bg-canvas-subtle, transparent), 0 0 0 4.5px rgba(130, 130, 130, 0.45) !important;
+          box-shadow: 0 0 0 3px var(--bg-canvas-subtle, transparent), 0 0 0 4.5px var(--accent-color, #2B4EFF) !important;
         }
       `}</style>
 
@@ -270,8 +270,8 @@ export function AboutGallery() {
         </p>
       </div>
 
-      {/* Gallery grid: unadorned artwork with consistent radius and clean caption */}
-      <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 sm:gap-8">
+      {/* Gallery grid: runs wider than the text column so the art has more presence */}
+      <div className="-mx-2 sm:-mx-6 lg:-mx-10 columns-1 sm:columns-2 lg:columns-3 gap-6 sm:gap-8">
         {artworks.map((art, index) => (
           <figure
             key={art.slug}
@@ -313,30 +313,28 @@ export function AboutGallery() {
         ))}
       </div>
 
-      {/* Campus design roles and Competitions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-        <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface-tile)] space-y-3">
-          <h3 className="text-sm font-semibold text-[var(--text-tertiary)]">
+      {/* Campus design roles and Competitions: Compact two-column directory, NO cards, NO orange badges/dots */}
+      <div className="pt-8 border-t border-[var(--border-subtle)] grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start">
+        {/* Campus design roles */}
+        <div className="space-y-4">
+          <h3 className="text-sm font-semibold text-[var(--text-primary)] tracking-tight">
             Campus design roles
           </h3>
-          <ul className="space-y-4 text-sm" role="list">
+          <ul className="divide-y divide-[var(--border-subtle)] text-sm" role="list">
             {leadershipRoles.map((lead) => (
-              <li
-                key={lead.org}
-                className="space-y-0.5"
-              >
+              <li key={lead.org} className="py-3 first:pt-0 last:pb-0 space-y-1">
                 <div className="flex items-baseline justify-between gap-3">
-                  <span className="font-bold text-[var(--text-primary)]">
+                  <span className="font-normal text-[var(--text-primary)]">
                     {lead.role}
                   </span>
-                  <span className="text-sm text-[var(--text-tertiary)] tabular-nums shrink-0">
+                  <span className="text-xs text-[var(--text-tertiary)] tabular-nums shrink-0 font-normal">
                     {lead.period}
                   </span>
                 </div>
-                <p className="text-sm text-[var(--text-secondary)]">
+                <p className="text-xs text-[var(--text-secondary)]">
                   {lead.org}
                 </p>
-                <p className="text-sm text-[var(--text-tertiary)] leading-normal">
+                <p className="text-xs text-[var(--text-tertiary)] leading-relaxed">
                   {lead.scope}
                 </p>
               </li>
@@ -344,39 +342,31 @@ export function AboutGallery() {
           </ul>
         </div>
 
-        <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface-tile)] space-y-3 flex flex-col justify-between">
-          <div className="space-y-3">
-            <div className="flex items-center gap-1.5">
-              <Award className="w-4 h-4 text-amber-700 dark:text-amber-400" aria-hidden="true" />
-              <h3 className="text-sm font-semibold text-[var(--text-tertiary)]">
-                Competitions
-              </h3>
-            </div>
-            <ul className="space-y-4 text-sm" role="list">
-              {awards.map((award) => (
-                <li
-                  key={award.year}
-                  className="space-y-1"
-                >
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span className="font-bold text-[var(--text-primary)] flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-amber-600 dark:bg-amber-400" />
-                      {award.title}
-                    </span>
-                    <span className="text-sm text-[var(--text-tertiary)] tabular-nums">
-                      {award.year}
-                    </span>
-                  </div>
-                  <p className="text-sm text-[var(--text-secondary)]">
-                    {award.event}
-                  </p>
-                  <span className="inline-block px-2 py-0.5 rounded text-xs bg-amber-500/15 text-amber-900 dark:text-amber-300 font-medium">
-                    {award.badge}
+        {/* Competitions */}
+        <div className="space-y-4">
+          <h3 className="text-sm font-semibold text-[var(--text-primary)] tracking-tight">
+            Competitions
+          </h3>
+          <ul className="divide-y divide-[var(--border-subtle)] text-sm" role="list">
+            {awards.map((award) => (
+              <li key={award.year} className="py-3 first:pt-0 last:pb-0 space-y-1">
+                <div className="flex items-baseline justify-between gap-3">
+                  <span className="font-normal text-[var(--text-primary)]">
+                    {award.title}
                   </span>
-                </li>
-              ))}
-            </ul>
-          </div>
+                  <span className="text-xs text-[var(--text-tertiary)] tabular-nums shrink-0 font-normal">
+                    {award.year}
+                  </span>
+                </div>
+                <p className="text-xs text-[var(--text-secondary)]">
+                  {award.event}
+                </p>
+                <p className="text-xs text-[var(--text-tertiary)] font-normal">
+                  {award.badge}
+                </p>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 
