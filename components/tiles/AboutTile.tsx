@@ -23,18 +23,11 @@ export function AboutTile({ className = "" }: { className?: string }) {
           </p>
         </div>
 
-        <div className="pt-2 mt-auto flex items-end justify-between">
+        <div className="pt-2 mt-auto flex items-end">
           <span className="text-[13px] text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)] transition-colors py-1 inline-flex items-center gap-1 font-medium">
             <span>Read background</span>
             <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </span>
-
-          <div className="w-10 h-10 rounded-full bg-[var(--surface-tile)] group-hover:bg-[var(--surface-tile-hover)] border border-transparent group-hover:border-[var(--border-hover)] text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] flex items-center justify-center transition-colors duration-200">
-            <ArrowUpRight
-              className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5 motion-reduce:transform-none"
-              aria-hidden="true"
-            />
-          </div>
         </div>
       </TransitionLink>
     </BentoTile>
