@@ -530,7 +530,7 @@ body::after {
   justify-content: center;
   gap: 0.5rem;
   background-color: var(--accent-color);
-  color: #FFFFFF !important;
+  color: var(--accent-contrast) !important;
   font-weight: 600;
   border-radius: 0.75rem;
   border: 1px solid transparent;

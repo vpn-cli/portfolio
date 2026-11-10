@@ -18,6 +18,7 @@
   --color-accent: var(--accent-color);
   --color-accent-hover: var(--accent-hover);
   --color-accent-text: var(--accent-text);
+  --color-accent-contrast: var(--accent-contrast);
 
   --font-display: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-body: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -48,6 +49,9 @@
 }
 
 :root {
+  /* ━━━ PALETTE TINT HUE (Cobalt accent blue hue lock: 265) ━━━ */
+  --tint-hue: 265;
+
   /* ━━━ TYPE SCALE (Site-wide: 13 / 14 / 16 / 20 / 28 / 40 / 56px) ━━━ */
   --text-micro: 13px;
   --text-micro-lh: 1.4;
@@ -95,27 +99,27 @@
 html[data-theme="light"],
 html.light {
   color-scheme: light;
-  --bg-canvas: #F4F5F7;
-  --bg-canvas-subtle: #ECEEF2;
-  --surface-tile: #FAFAFC;
-  --surface-tile-hover: #F0F2F6;
-  --surface-tile-elevated: #E5E8EE;
-  --border-subtle: rgba(18, 20, 24, 0.08);
-  --border-hover: rgba(18, 20, 24, 0.16);
-  --border-focus: #2B4EFF;
-  --text-primary: #121417;
-  --text-secondary: #484E5B;
-  --text-tertiary: #525966;
-  --accent-color: #2B4EFF;
-  --accent-hover: #213ECC;
-  --accent-text: #2042E0;
-  --accent-contrast: #FAFAFC;
-  --selection-bg: rgba(43, 78, 255, 0.16);
-  --selection-color: #121417;
-  --scrollbar-thumb: rgba(18, 20, 24, 0.14);
-  --scrollbar-thumb-hover: rgba(18, 20, 24, 0.24);
+  --bg-canvas: oklch(0.975 0.006 var(--tint-hue));
+  --bg-canvas-subtle: oklch(0.950 0.007 var(--tint-hue));
+  --surface-tile: oklch(0.990 0.004 var(--tint-hue));
+  --surface-tile-hover: oklch(0.965 0.006 var(--tint-hue));
+  --surface-tile-elevated: oklch(0.940 0.008 var(--tint-hue));
+  --border-subtle: oklch(0.900 0.012 var(--tint-hue));
+  --border-hover: oklch(0.820 0.012 var(--tint-hue));
+  --border-focus: oklch(0.530 0.240 var(--tint-hue));
+  --text-primary: oklch(0.200 0.020 var(--tint-hue));
+  --text-secondary: oklch(0.420 0.020 var(--tint-hue));
+  --text-tertiary: oklch(0.460 0.018 var(--tint-hue));
+  --accent-color: oklch(0.530 0.240 var(--tint-hue));
+  --accent-hover: oklch(0.460 0.240 var(--tint-hue));
+  --accent-text: oklch(0.450 0.220 var(--tint-hue));
+  --accent-contrast: oklch(0.990 0.004 var(--tint-hue));
+  --selection-bg: oklch(0.530 0.240 var(--tint-hue) / 0.16);
+  --selection-color: var(--text-primary);
+  --scrollbar-thumb: oklch(0.200 0.020 var(--tint-hue) / 0.14);
+  --scrollbar-thumb-hover: oklch(0.200 0.020 var(--tint-hue) / 0.24);
   --card-shadow: none;
-  --card-shadow-hover: 0 4px 12px -2px rgba(0, 0, 0, 0.06);
+  --card-shadow-hover: 0 4px 12px -2px oklch(0.200 0.020 var(--tint-hue) / 0.08);
   --card-inner-bevel: none;
 
   /* Film Grain Overlay Tokens (Light Mode - LOCKED) */
@@ -126,27 +130,27 @@ html.light {
 html[data-theme="dark"],
 html.dark {
   color-scheme: dark;
-  --bg-canvas: #0D0F12;
-  --bg-canvas-subtle: #13161B;
-  --surface-tile: #181B21;
-  --surface-tile-hover: #20242D;
-  --surface-tile-elevated: #282D37;
-  --border-subtle: rgba(240, 242, 245, 0.08);
-  --border-hover: rgba(240, 242, 245, 0.16);
-  --border-focus: #5274FF;
-  --text-primary: #F0F2F5;
-  --text-secondary: #A6ACB8;
-  --text-tertiary: #989EA8;
-  --accent-color: #2B4EFF;
-  --accent-hover: #4567FF;
-  --accent-text: #6E8CFF;
-  --accent-contrast: #FFFFFF;
-  --selection-bg: rgba(110, 140, 255, 0.25);
-  --selection-color: #F0F2F5;
-  --scrollbar-thumb: rgba(240, 242, 245, 0.12);
-  --scrollbar-thumb-hover: rgba(240, 242, 245, 0.22);
+  --bg-canvas: oklch(0.170 0.015 var(--tint-hue));
+  --bg-canvas-subtle: oklch(0.145 0.015 var(--tint-hue));
+  --surface-tile: oklch(0.210 0.016 var(--tint-hue));
+  --surface-tile-hover: oklch(0.240 0.016 var(--tint-hue));
+  --surface-tile-elevated: oklch(0.270 0.017 var(--tint-hue));
+  --border-subtle: oklch(0.300 0.020 var(--tint-hue));
+  --border-hover: oklch(0.370 0.020 var(--tint-hue));
+  --border-focus: oklch(0.680 0.160 var(--tint-hue));
+  --text-primary: oklch(0.940 0.010 var(--tint-hue));
+  --text-secondary: oklch(0.740 0.015 var(--tint-hue));
+  --text-tertiary: oklch(0.680 0.015 var(--tint-hue));
+  --accent-color: oklch(0.680 0.160 var(--tint-hue));
+  --accent-hover: oklch(0.730 0.160 var(--tint-hue));
+  --accent-text: oklch(0.750 0.140 var(--tint-hue));
+  --accent-contrast: oklch(0.170 0.015 var(--tint-hue));
+  --selection-bg: oklch(0.680 0.160 var(--tint-hue) / 0.25);
+  --selection-color: var(--text-primary);
+  --scrollbar-thumb: oklch(0.940 0.010 var(--tint-hue) / 0.12);
+  --scrollbar-thumb-hover: oklch(0.940 0.010 var(--tint-hue) / 0.22);
   --card-shadow: none;
-  --card-shadow-hover: 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+  --card-shadow-hover: 0 4px 12px -2px oklch(0.100 0.015 var(--tint-hue) / 0.45);
   --card-inner-bevel: none;
 
   /* Film Grain Overlay Tokens (Dark Mode - LOCKED) */
