@@ -368,8 +368,8 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
             <section id="problem" aria-label="The problem" className="space-y-6">
               <div className="space-y-3">
-                <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-tertiary)]">
-                  The Problem
+                <span className="text-xs text-[var(--text-tertiary)] block">
+                  The problem
                 </span>
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
                   {project.problemClaim}
@@ -392,8 +392,8 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
             <section id="architecture" aria-label="Architecture and data flow" className="space-y-6">
               <div className="space-y-3">
-                <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-tertiary)]">
-                  How It Works
+                <span className="text-xs text-[var(--text-tertiary)] block">
+                  How it works
                 </span>
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
                   {project.architectureClaim}
@@ -411,8 +411,8 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
             <section id="decisions" aria-label="Key engineering decisions" className="space-y-6">
               <div className="space-y-2">
-                <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-tertiary)]">
-                  Decisions I Made
+                <span className="text-xs text-[var(--text-tertiary)] block">
+                  Decisions I made
                 </span>
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
                   {project.decisionsClaim}
@@ -427,8 +427,8 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
             <section id="bugs" aria-label="Bugs and fixes" className="space-y-6">
               <div className="space-y-2">
-                <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-tertiary)]">
-                  Bugs I Fixed
+                <span className="text-xs text-[var(--text-tertiary)] block">
+                  Bugs I fixed
                 </span>
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
                   {project.bugsClaim}
@@ -443,8 +443,8 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
             <section id="next" aria-label="Next steps and live verification" className="space-y-6">
               <div className="space-y-3">
-                <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-tertiary)]">
-                  Try It
+                <span className="text-xs text-[var(--text-tertiary)] block">
+                  Try it
                 </span>
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
                   {project.nextStepsClaim}

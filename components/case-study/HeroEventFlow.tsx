@@ -94,7 +94,7 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
               <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)] text-[10px] font-mono text-[var(--text-tertiary)] flex items-center gap-1.5">
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
-                    phase === 0 ? "bg-emerald-500 animate-pulse" : "bg-neutral-400"
+                    phase === 0 ? "bg-[var(--accent-color)] animate-pulse" : "bg-neutral-400"
                   }`}
                 />
                 <span>Payload validated</span>
@@ -122,7 +122,7 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
               <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)] text-[10px] font-mono text-[var(--text-tertiary)] flex items-center gap-1.5">
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
-                    phase === 1 ? "bg-emerald-500 animate-pulse" : "bg-neutral-400"
+                    phase === 1 ? "bg-[var(--accent-color)] animate-pulse" : "bg-neutral-400"
                   }`}
                 />
                 <span>State persisted</span>
@@ -150,7 +150,7 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
               <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)] text-[10px] font-mono text-[var(--text-tertiary)] flex items-center gap-1.5">
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
-                    phase === 2 ? "bg-emerald-500 animate-pulse" : "bg-neutral-400"
+                    phase === 2 ? "bg-[var(--accent-color)] animate-pulse" : "bg-neutral-400"
                   }`}
                 />
                 <span>O(k) targeted routing</span>
@@ -175,7 +175,7 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
                 <div className="flex items-center gap-1.5">
                   <span
                     className={`w-2 h-2 rounded-full ${
-                      phase === 3 ? "bg-emerald-500 animate-ping" : "bg-emerald-500"
+                      phase === 3 ? "bg-[var(--accent-color)] animate-ping" : "bg-[var(--accent-color)]"
                     }`}
                   />
                   <span className="font-mono font-medium text-[var(--text-primary)]">Client A (Match 1)</span>
@@ -190,7 +190,7 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
                 <div className="flex items-center gap-1.5">
                   <span
                     className={`w-2 h-2 rounded-full ${
-                      phase === 3 ? "bg-emerald-500 animate-ping" : "bg-emerald-500"
+                      phase === 3 ? "bg-[var(--accent-color)] animate-ping" : "bg-[var(--accent-color)]"
                     }`}
                   />
                   <span className="font-mono font-medium text-[var(--text-primary)]">Client B (Match 1)</span>
@@ -297,7 +297,7 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
               </div>
               <div className="flex items-center justify-between text-[10px] font-mono">
                 <span className="text-[var(--text-secondary)] truncate">Order & Analytics</span>
-                <span className="text-emerald-500 font-medium shrink-0">Done</span>
+                <span className="text-[var(--accent-text)] font-medium shrink-0">Done</span>
               </div>
             </div>
           </div>

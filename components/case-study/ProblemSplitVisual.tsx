@@ -75,7 +75,7 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
                     : "Unchecked HTML eval()"}
                 </h3>
               </div>
-              <span className="text-[11px] font-mono text-[var(--text-tertiary)] px-2 py-0.5 rounded bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)]">
+              <span className="text-xs text-[var(--text-tertiary)]">
                 {slug === "sockets"
                   ? step === 1
                     ? "2.1s Lag"
@@ -139,7 +139,7 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
                     : "Constrained AST Registry"}
                 </h3>
               </div>
-              <span className="text-[11px] font-mono text-emerald-500 px-2 py-0.5 rounded bg-[var(--surface-tile)] border border-[var(--border-subtle)] font-medium">
+              <span className="text-xs text-[var(--accent-text)] font-medium">
                 {slug === "sockets"
                   ? "Instant Push"
                   : slug === "stream-mart"
@@ -151,16 +151,16 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
             {/* Simulated Solution Display */}
             <div className="rounded-xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] p-4 space-y-2.5">
               <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-2 text-xs">
-                <span className="text-[var(--text-secondary)] font-mono">
+                <span className="text-[var(--text-secondary)]">
                   {slug === "sockets"
                     ? "Push Gateway"
                     : slug === "stream-mart"
                     ? "Kafka Consumer"
                     : "Zod Schema"}
                 </span>
-                <span className="font-mono text-[11px] text-emerald-500 font-medium">
+                <span className="text-xs text-[var(--text-secondary)] font-normal">
                   {slug === "sockets"
-                    ? "⚡ Push frame"
+                    ? "Push frame"
                     : slug === "stream-mart"
                     ? "Async decoupled"
                     : "Verified AST"}
@@ -168,7 +168,7 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
               </div>
 
               <div className="py-1">
-                <span className="text-xs text-emerald-500 font-mono block">
+                <span className="text-xs text-[var(--text-primary)] block">
                   {slug === "sockets"
                     ? "Push on database mutation"
                     : slug === "stream-mart"
@@ -187,7 +187,7 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
       </div>
 
       {/* Caption directly under visual (≤12 words) */}
-      <p className="text-xs text-[var(--text-tertiary)] font-mono text-center">
+      <p className="text-xs text-[var(--text-secondary)] text-center">
         {caption || "Architectural comparison: traditional approach versus targeted event delivery."}
       </p>
 
@@ -196,7 +196,7 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
         <button
           type="button"
           onClick={() => setShowDetails(!showDetails)}
-          className="min-h-[44px] px-5 py-2.5 rounded-full bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] inline-flex items-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 active:scale-95 shadow-sm"
+          className="min-h-[44px] px-5 py-2.5 rounded-lg bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] inline-flex items-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 active:scale-95 shadow-sm"
           aria-expanded={showDetails}
           aria-controls="problem-details-panel"
         >

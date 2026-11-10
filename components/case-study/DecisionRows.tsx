@@ -42,28 +42,21 @@ export function DecisionRows({ decisions }: DecisionRowsProps) {
               className="w-full min-h-[52px] p-4 sm:p-5 text-left flex items-start sm:items-center justify-between gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
             >
               <div className="space-y-1 flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs text-[var(--text-tertiary)]">
-                    0{idx + 1}
-                  </span>
-                  <span className="text-sm font-medium text-[var(--text-primary)]">
-                    {decision.chosenOver}
-                  </span>
+                <div className="text-sm font-medium text-[var(--text-primary)]">
+                  {decision.chosenOver}
                 </div>
-                <p className="text-xs text-[var(--text-secondary)] leading-relaxed pl-6">
+                <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
                   {decision.tradeoffSummary}
                 </p>
               </div>
 
               <div className="pt-0.5 sm:pt-0 shrink-0">
-                <div className="w-7 h-7 rounded-full bg-[var(--surface-tile)] border border-[var(--border-subtle)] flex items-center justify-center text-[var(--text-secondary)]">
-                  <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      isOpen ? "rotate-180 text-[var(--text-primary)]" : ""
-                    }`}
-                    aria-hidden="true"
-                  />
-                </div>
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform duration-200 text-[var(--text-secondary)] ${
+                    isOpen ? "rotate-180 text-[var(--text-primary)]" : ""
+                  }`}
+                  aria-hidden="true"
+                />
               </div>
             </button>
 

@@ -26,10 +26,10 @@ export function BugCards({ bugs }: BugCardsProps) {
             key={idx}
             className="rounded-[var(--card-radius)] bg-[var(--surface-tile)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] transition-colors p-4 sm:p-5 space-y-3 shadow-sm"
           >
-            {/* Top row: Bug Title + Real GitHub Commit Link Chip */}
+            {/* Top row: Bug Title + Real GitHub Commit Link */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[var(--border-subtle)] pb-2.5">
               <h3 className="text-xs sm:text-sm font-medium text-[var(--text-primary)]">
-                0{idx + 1}. {bug.title}
+                {bug.title}
               </h3>
 
               {bug.commitUrl && (
@@ -37,7 +37,7 @@ export function BugCards({ bugs }: BugCardsProps) {
                   href={bug.commitUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="min-h-[32px] inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-hover)] text-xs font-mono text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors self-start sm:self-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                  className="inline-flex items-center gap-1 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline transition-colors self-start sm:self-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
                   title={`View GitHub commit ${bug.commitHash}`}
                 >
                   <GitCommit className="w-3.5 h-3.5" aria-hidden="true" />
@@ -50,7 +50,7 @@ export function BugCards({ bugs }: BugCardsProps) {
             {/* ━━━ ONE-LINE EACH: SYMPTOM → CAUSE → FIX ━━━ */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 sm:gap-4 text-xs leading-relaxed">
               <div className="space-y-0.5">
-                <span className="text-[10px] font-mono text-[var(--text-tertiary)] uppercase tracking-wider block">
+                <span className="text-xs text-[var(--text-tertiary)] block">
                   Symptom
                 </span>
                 <p className="text-[var(--text-secondary)] truncate">
@@ -59,7 +59,7 @@ export function BugCards({ bugs }: BugCardsProps) {
               </div>
 
               <div className="space-y-0.5">
-                <span className="text-[10px] font-mono text-[var(--text-tertiary)] uppercase tracking-wider block">
+                <span className="text-xs text-[var(--text-tertiary)] block">
                   Cause
                 </span>
                 <p className="text-[var(--text-secondary)] truncate">
@@ -68,7 +68,7 @@ export function BugCards({ bugs }: BugCardsProps) {
               </div>
 
               <div className="space-y-0.5">
-                <span className="text-[10px] font-mono text-[var(--text-tertiary)] uppercase tracking-wider block">
+                <span className="text-xs text-[var(--text-tertiary)] block">
                   Fix
                 </span>
                 <p className="text-[var(--text-primary)] font-medium truncate">

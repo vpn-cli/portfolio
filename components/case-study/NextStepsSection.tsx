@@ -31,7 +31,7 @@ export function NextStepsSection({
       {/* ━━━ COMPACT NEXT STEPS CARD ━━━ */}
       <div className="rounded-[var(--card-radius)] bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] p-5 sm:p-6 space-y-4 shadow-sm">
         <div className="space-y-1.5">
-          <span className="text-xs font-mono text-[var(--text-tertiary)] uppercase tracking-wider block">
+          <span className="text-xs text-[var(--text-tertiary)] block">
             Roadmap
           </span>
           <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed max-w-[65ch]">
@@ -85,7 +85,7 @@ export function NextStepsSection({
           </div>
 
           {coldStartNote && (
-            <p className="text-[11px] text-[var(--text-tertiary)] font-mono">
+            <p className="text-xs text-[var(--text-tertiary)]">
               {coldStartNote}
             </p>
           )}
