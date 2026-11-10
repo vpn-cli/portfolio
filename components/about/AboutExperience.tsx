@@ -37,53 +37,50 @@ const experiences: ExperienceEntry[] = [
 
 export function AboutExperience() {
   return (
-    <section aria-labelledby="experience-heading" className="w-full space-y-6">
-      <div className="pb-2">
+    <section aria-labelledby="experience-heading" className="w-full space-y-8">
+      <div className="pb-2 border-b border-[var(--border-subtle)]">
         <h2 id="experience-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
           Experience
         </h2>
       </div>
 
-      <div className="space-y-4">
+      <div className="divide-y divide-[var(--border-subtle)]">
         {experiences.map((exp) => (
           <article
             key={exp.company}
-            className="p-6 sm:p-7 rounded-2xl bg-[var(--surface-tile)] hover:bg-[var(--surface-tile-elevated)] transition-colors duration-150 space-y-4"
+            className="py-8 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-start"
           >
-            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4 pb-1">
-              <div className="flex items-baseline gap-2 flex-wrap">
-                <h3 className="text-base sm:text-lg font-bold text-[var(--text-primary)]">
-                  {exp.role}
-                </h3>
-                <span className="text-sm sm:text-base font-semibold text-[var(--text-secondary)]">
-                  · {exp.company}
-                </span>
-                <span className="text-sm text-[var(--text-tertiary)]">
+            {/* Left Column: Sticky on desktop with role, company, type, dates */}
+            <div className="md:col-span-5 md:sticky md:top-24 space-y-1.5">
+              <h3 className="text-lg sm:text-xl font-bold text-[var(--text-primary)] leading-snug">
+                {exp.role}
+              </h3>
+              <div className="text-base font-medium text-[var(--text-secondary)]">
+                {exp.company}
+                <span className="text-sm text-[var(--text-tertiary)] block sm:inline sm:ml-1.5 font-normal">
                   ({exp.type})
                 </span>
               </div>
-              <time className="text-sm text-[var(--text-tertiary)] tabular-nums shrink-0">
+              <time className="text-sm text-[var(--text-tertiary)] tabular-nums block font-normal pt-0.5">
                 {exp.period}
               </time>
             </div>
 
-            <ul className="space-y-2 text-base text-[var(--text-secondary)]">
-              {exp.highlights.map((h, i) => (
-                <li key={i} className="leading-relaxed font-normal">
-                  {h}
-                </li>
-              ))}
-            </ul>
+            {/* Right Column: Bullets + plain muted stack text */}
+            <div className="md:col-span-7 space-y-4">
+              <ul className="space-y-2.5 text-base text-[var(--text-secondary)]">
+                {exp.highlights.map((h, i) => (
+                  <li key={i} className="leading-relaxed font-normal flex items-start gap-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--text-tertiary)] shrink-0 mt-2.5" aria-hidden="true" />
+                    <span>{h}</span>
+                  </li>
+                ))}
+              </ul>
 
-            <div className="pt-2 flex items-center gap-1.5 flex-wrap">
-              {exp.stack.map((t) => (
-                <span
-                  key={t}
-                  className="px-2.5 py-0.5 rounded-md text-sm bg-[var(--surface-tile-elevated)] text-[var(--text-secondary)]"
-                >
-                  {t}
-                </span>
-              ))}
+              <div className="pt-2 text-sm text-[var(--text-tertiary)] font-normal leading-relaxed">
+                <span className="text-[var(--text-secondary)] font-medium">Stack: </span>
+                {exp.stack.join(" · ")}
+              </div>
             </div>
           </article>
         ))}
