@@ -40,7 +40,7 @@ export function IntroTile({ className = "" }: { className?: string }) {
             className="w-11 h-11 rounded-full bg-[var(--surface-tile-elevated)] hover:bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] focus-visible:ring-offset-2 active:scale-95"
           >
             <Sun className="w-4 h-4 text-amber-400 hidden dark:block" aria-hidden="true" />
-            <Moon className="w-4 h-4 text-slate-700 block dark:hidden" aria-hidden="true" />
+            <Moon className="w-4 h-4 text-[var(--text-secondary)] block dark:hidden" aria-hidden="true" />
           </button>
         </div>
 

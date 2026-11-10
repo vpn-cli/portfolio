@@ -206,7 +206,7 @@ export function StreamMartDiagram({ active = true }: StreamMartDiagramProps) {
           <span className="shrink-0 flex items-center gap-1.5">
             <span
               className={`w-2 h-2 rounded-full ${
-                active && !reducedMotion ? "bg-emerald-500 motion-safe:animate-pulse" : "bg-neutral-400"
+                active && !reducedMotion ? "bg-emerald-500 motion-safe:animate-pulse" : "bg-[var(--text-tertiary)]"
               }`}
             />
             <span className="font-semibold text-[var(--text-primary)] uppercase text-[13px] tracking-wider">

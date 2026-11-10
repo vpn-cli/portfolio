@@ -64,7 +64,7 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <RefreshCw
-                  className="w-4 h-4 text-neutral-400 dark:text-neutral-500 animate-spin motion-reduce:animate-none"
+                  className="w-4 h-4 text-[var(--text-tertiary)] animate-spin motion-reduce:animate-none"
                   aria-hidden="true"
                 />
                 <h3 className="text-sm font-medium text-[var(--text-primary)]">
@@ -120,7 +120,7 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
           </div>
 
           <div className="pt-2 border-t border-[var(--border-subtle)] text-[13px] text-[var(--text-tertiary)] flex items-center gap-1.5 font-mono">
-            <XCircle className="w-3.5 h-3.5 text-neutral-400 dark:text-neutral-500 shrink-0" aria-hidden="true" />
+            <XCircle className="w-3.5 h-3.5 text-[var(--text-tertiary)] shrink-0" aria-hidden="true" />
             <span>High latency</span>
           </div>
         </div>

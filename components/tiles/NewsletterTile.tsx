@@ -28,7 +28,7 @@ export function NewsletterTile({ className = "" }: { className?: string }) {
         <form onSubmit={handleSubmit} className="mt-auto pt-4 w-full">
           {subscribed ? (
             <div className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-[var(--surface-tile-hover)] border border-[var(--border-subtle)] text-[var(--text-primary)] text-sm font-medium">
-              <Check className="w-4 h-4 text-emerald-600 dark:text-neutral-300" aria-hidden="true" />
+              <Check className="w-4 h-4 text-emerald-600 dark:text-[var(--text-primary)]" aria-hidden="true" />
               <span>Subscribed successfully.</span>
             </div>
           ) : (

@@ -164,8 +164,8 @@ export function BragVideoPlayer({
 
         {/* Poster / Reduced Motion Overlay fallback */}
         {(isReducedMotion || isSaveData) && !isPlaying && (
-          <div className="absolute inset-0 bg-neutral-950/80 flex flex-col items-center justify-center p-4 text-center">
-            <p className="text-xs text-neutral-200 mb-3">
+          <div className="absolute inset-0 bg-[oklch(0.12_0.015_var(--tint-hue)/0.85)] flex flex-col items-center justify-center p-4 text-center">
+            <p className="text-xs text-[oklch(0.92_0.01_var(--tint-hue))] mb-3">
               {isReducedMotion
                 ? "Autoplay paused (prefers-reduced-motion active)"
                 : "Autoplay paused (Save-Data mode active)"}
@@ -173,7 +173,7 @@ export function BragVideoPlayer({
             <button
               type="button"
               onClick={togglePlay}
-              className="min-h-[44px] min-w-[44px] px-5 py-2.5 rounded-full bg-white text-black font-medium text-xs sm:text-sm inline-flex items-center gap-2 shadow-lg hover:bg-neutral-200 transition-[background-color] duration-150 motion-safe:active:scale-95 motion-reduce:transform-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              className="min-h-[44px] min-w-[44px] px-5 py-2.5 rounded-full bg-[oklch(0.96_0.01_var(--tint-hue))] text-[oklch(0.17_0.015_var(--tint-hue))] font-medium text-xs sm:text-sm inline-flex items-center gap-2 shadow-lg hover:bg-[oklch(0.90_0.012_var(--tint-hue))] transition-[background-color] duration-150 motion-safe:active:scale-95 motion-reduce:transform-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)]"
               aria-label={`Play ${title} demo video`}
             >
               <Play className="w-4 h-4 fill-current" aria-hidden="true" />
@@ -183,10 +183,10 @@ export function BragVideoPlayer({
         )}
 
         {/* Video Overlay Controls (accessible, min-h 44px touch targets) */}
-        <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 bg-gradient-to-t from-black/85 via-black/45 to-transparent flex flex-col gap-2 opacity-90 transition-opacity duration-200 group-hover:opacity-100 focus-within:opacity-100">
+        <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 bg-gradient-to-t from-[oklch(0.10_0.015_var(--tint-hue)/0.9)] via-[oklch(0.10_0.015_var(--tint-hue)/0.5)] to-transparent flex flex-col gap-2 opacity-90 transition-opacity duration-200 group-hover:opacity-100 focus-within:opacity-100">
           {/* Subtle Progress Bar (transform scaleX for 60fps GPU acceleration) */}
           <div
-            className="w-full h-1 bg-white/20 rounded-full overflow-hidden cursor-pointer"
+            className="w-full h-1 bg-[oklch(0.94_0.01_var(--tint-hue)/0.25)] rounded-full overflow-hidden cursor-pointer"
             onClick={(e) => {
               const rect = e.currentTarget.getBoundingClientRect();
               const pos = (e.clientX - rect.left) / rect.width;
@@ -196,7 +196,7 @@ export function BragVideoPlayer({
             }}
           >
             <div
-              className="h-full w-full bg-white origin-left transition-transform duration-100 rounded-full"
+              className="h-full w-full bg-[oklch(0.94_0.01_var(--tint-hue))] origin-left transition-transform duration-100 rounded-full"
               style={{ transform: `scaleX(${progress / 100})` }}
             />
           </div>
@@ -208,7 +208,7 @@ export function BragVideoPlayer({
               <button
                 type="button"
                 onClick={togglePlay}
-                className="min-h-[44px] min-w-[44px] rounded-lg bg-black/40 hover:bg-black/70 text-white flex items-center justify-center transition-[background-color] duration-150 motion-safe:active:scale-95 motion-reduce:transform-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                className="min-h-[44px] min-w-[44px] rounded-lg bg-[oklch(0.15_0.015_var(--tint-hue)/0.5)] hover:bg-[oklch(0.15_0.015_var(--tint-hue)/0.8)] text-[oklch(0.94_0.01_var(--tint-hue))] flex items-center justify-center transition-[background-color] duration-150 motion-safe:active:scale-95 motion-reduce:transform-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)]"
                 aria-label={isPlaying ? "Pause video" : "Play video"}
               >
                 {isPlaying ? (
@@ -221,14 +221,14 @@ export function BragVideoPlayer({
               <button
                 type="button"
                 onClick={handleRestart}
-                className="min-h-[44px] min-w-[44px] rounded-lg bg-black/40 hover:bg-black/70 text-neutral-300 hover:text-white flex items-center justify-center transition-[background-color,color] duration-150 motion-safe:active:scale-95 motion-reduce:transform-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                className="min-h-[44px] min-w-[44px] rounded-lg bg-[oklch(0.15_0.015_var(--tint-hue)/0.5)] hover:bg-[oklch(0.15_0.015_var(--tint-hue)/0.8)] text-[oklch(0.74_0.015_var(--tint-hue))] hover:text-[oklch(0.94_0.01_var(--tint-hue))] flex items-center justify-center transition-[background-color,color] duration-150 motion-safe:active:scale-95 motion-reduce:transform-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)]"
                 aria-label="Restart video from beginning"
                 title="Restart"
               >
                 <RotateCcw className="w-4 h-4" aria-hidden="true" />
               </button>
 
-              <span className="text-xs text-neutral-300 px-2 hidden sm:inline">
+              <span className="text-xs text-[oklch(0.74_0.015_var(--tint-hue))] px-2 hidden sm:inline">
                 20s Demo
               </span>
             </div>
@@ -238,21 +238,21 @@ export function BragVideoPlayer({
               <button
                 type="button"
                 onClick={toggleMute}
-                className="min-h-[44px] min-w-[44px] px-3 rounded-lg bg-black/40 hover:bg-black/70 text-white flex items-center gap-2 transition-[background-color] duration-150 motion-safe:active:scale-95 motion-reduce:transform-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                className="min-h-[44px] min-w-[44px] px-3 rounded-lg bg-[oklch(0.15_0.015_var(--tint-hue)/0.5)] hover:bg-[oklch(0.15_0.015_var(--tint-hue)/0.8)] text-[oklch(0.94_0.01_var(--tint-hue))] flex items-center gap-2 transition-[background-color] duration-150 motion-safe:active:scale-95 motion-reduce:transform-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)]"
                 aria-label={isMuted ? "Unmute audio" : "Mute audio"}
                 title={isMuted ? "Unmute audio" : "Mute audio"}
               >
                 {isMuted ? (
                   <>
-                    <VolumeX className="w-4 h-4 text-neutral-300" aria-hidden="true" />
-                    <span className="text-xs text-neutral-300 hidden sm:inline">
+                    <VolumeX className="w-4 h-4 text-[oklch(0.74_0.015_var(--tint-hue))]" aria-hidden="true" />
+                    <span className="text-xs text-[oklch(0.74_0.015_var(--tint-hue))] hidden sm:inline">
                       Muted
                     </span>
                   </>
                 ) : (
                   <>
-                    <Volume2 className="w-4 h-4 text-white" aria-hidden="true" />
-                    <span className="text-xs text-white hidden sm:inline">
+                    <Volume2 className="w-4 h-4 text-[oklch(0.94_0.01_var(--tint-hue))]" aria-hidden="true" />
+                    <span className="text-xs text-[oklch(0.94_0.01_var(--tint-hue))] hidden sm:inline">
                       Sound on
                     </span>
                   </>

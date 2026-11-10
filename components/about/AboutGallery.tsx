@@ -270,7 +270,7 @@ export function AboutGallery() {
 
         /* Focus-visible ring on the image only for keyboard Tab users */
         .gallery-piece-btn:focus-visible .gallery-piece-img {
-          box-shadow: 0 0 0 2px var(--bg-canvas-subtle, transparent), 0 0 0 4px var(--accent-color, #2B4EFF) !important;
+          box-shadow: 0 0 0 2px var(--bg-canvas-subtle, transparent), 0 0 0 4px var(--border-focus) !important;
         }
       `}</style>
 
@@ -438,7 +438,7 @@ export function AboutGallery() {
             role="dialog"
             aria-modal="true"
             aria-label={`${currentArt.title} detailed view`}
-            className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/90 p-4 sm:p-8 backdrop-blur-sm select-none"
+            className="fixed inset-0 z-[10000] flex items-center justify-center bg-[oklch(0.12_0.015_var(--tint-hue)/0.92)] p-4 sm:p-8 backdrop-blur-sm select-none"
             onClick={handleBackdropClick}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
@@ -449,7 +449,7 @@ export function AboutGallery() {
                 ref={closeBtnRef}
                 type="button"
                 onClick={closeLightbox}
-                className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] active:scale-95"
+                className="w-11 h-11 rounded-full bg-[oklch(0.96_0.01_var(--tint-hue)/0.12)] hover:bg-[oklch(0.96_0.01_var(--tint-hue)/0.2)] text-[oklch(0.96_0.01_var(--tint-hue))] flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] active:scale-95"
                 aria-label="Close dialog (Escape)"
                 title="Close (Escape)"
               >
@@ -464,7 +464,7 @@ export function AboutGallery() {
                 e.stopPropagation();
                 showPrev();
               }}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-50 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] active:scale-95 hidden sm:flex"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-50 w-11 h-11 rounded-full bg-[oklch(0.96_0.01_var(--tint-hue)/0.12)] hover:bg-[oklch(0.96_0.01_var(--tint-hue)/0.2)] text-[oklch(0.96_0.01_var(--tint-hue))] flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] active:scale-95 hidden sm:flex"
               aria-label="Previous artwork (Left arrow)"
               title="Previous (Left arrow)"
             >
@@ -478,7 +478,7 @@ export function AboutGallery() {
                 e.stopPropagation();
                 showNext();
               }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-50 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] active:scale-95 hidden sm:flex"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-50 w-11 h-11 rounded-full bg-[oklch(0.96_0.01_var(--tint-hue)/0.12)] hover:bg-[oklch(0.96_0.01_var(--tint-hue)/0.2)] text-[oklch(0.96_0.01_var(--tint-hue))] flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] active:scale-95 hidden sm:flex"
               aria-label="Next artwork (Right arrow)"
               title="Next (Right arrow)"
             >
@@ -503,15 +503,15 @@ export function AboutGallery() {
               </div>
 
               {/* Caption */}
-              <div className="mt-3 text-center text-white space-y-1">
+              <div className="mt-3 text-center text-[oklch(0.96_0.01_var(--tint-hue))] space-y-1">
                 <h3 className="text-base sm:text-lg font-medium">
                   {currentArt.title}
                 </h3>
-                <p className="text-sm text-neutral-300">
+                <p className="text-sm text-[oklch(0.80_0.015_var(--tint-hue))]">
                   {currentArt.medium} ({currentArt.year})
                 </p>
                 {currentArt.note && (
-                  <p className="text-[13px] text-neutral-400 max-w-md mx-auto">
+                  <p className="text-[13px] text-[oklch(0.70_0.015_var(--tint-hue))] max-w-md mx-auto">
                     {currentArt.note}
                   </p>
                 )}

@@ -112,9 +112,9 @@ export function ProjectCardPreview({
       <div className="h-8 px-3.5 bg-[var(--surface-tile)] border-b border-[var(--border-subtle)] flex items-center justify-between shrink-0 select-none">
         {/* macOS Traffic Lights */}
         <div className="flex items-center gap-1.5" aria-hidden="true">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]/80 dark:bg-[#FF5F56]/60 border border-black/10" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]/80 dark:bg-[#FFBD2E]/60 border border-black/10" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#27C93F]/80 dark:bg-[#27C93F]/60 border border-black/10" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]/80 dark:bg-[#FF5F56]/60 border border-[var(--border-subtle)]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]/80 dark:bg-[#FFBD2E]/60 border border-[var(--border-subtle)]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#27C93F]/80 dark:bg-[#27C93F]/60 border border-[var(--border-subtle)]" />
         </div>
 
         {/* Quiet Window Title / Route */}

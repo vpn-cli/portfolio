@@ -10,7 +10,7 @@ const PrismScene = dynamic(() => import("./PrismScene"), {
         <div className="absolute inset-0 rounded-full border border-accent/30 motion-safe:animate-ping opacity-75" />
         <div className="w-12 h-12 rounded-2xl border border-accent/60 bg-accent/10 backdrop-blur-md motion-safe:animate-spin" />
       </div>
-      <p className="text-xs text-white/40">
+      <p className="text-xs text-[var(--text-tertiary)]">
         Initializing 3D Core…
       </p>
     </div>

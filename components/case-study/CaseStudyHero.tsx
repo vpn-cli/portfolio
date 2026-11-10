@@ -76,7 +76,7 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
 
   return (
     <div ref={containerRef} className="w-full space-y-2.5">
-      <div className="w-full aspect-[16/10] sm:aspect-[16/9] rounded-[var(--card-radius)] overflow-hidden bg-black border border-[var(--border-subtle)] relative shadow-lg group">
+      <div className="w-full aspect-[16/10] sm:aspect-[16/9] rounded-[var(--card-radius)] overflow-hidden bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] relative shadow-lg group">
         {reducedMotion ? (
           <div className="relative w-full h-full">
             <Image
@@ -108,13 +108,13 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
             <button
               type="button"
               onClick={togglePlayback}
-              className="absolute bottom-4 right-4 min-w-[44px] min-h-[44px] rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/20 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white shadow-md active:scale-95"
+              className="absolute bottom-4 right-4 min-w-[44px] min-h-[44px] rounded-full bg-[oklch(0.15_0.015_var(--tint-hue)/0.7)] hover:bg-[oklch(0.15_0.015_var(--tint-hue)/0.85)] backdrop-blur-md border border-[oklch(0.94_0.01_var(--tint-hue)/0.2)] text-[oklch(0.96_0.01_var(--tint-hue))] flex items-center justify-center opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] shadow-md active:scale-95"
               aria-label={isPlaying ? "Pause video" : "Play video"}
             >
               {isPlaying ? (
-                <Pause className="w-4 h-4 text-white" aria-hidden="true" />
+                <Pause className="w-4 h-4 text-current" aria-hidden="true" />
               ) : (
-                <Play className="w-4 h-4 text-white translate-x-0.5" aria-hidden="true" />
+                <Play className="w-4 h-4 text-current translate-x-0.5" aria-hidden="true" />
               )}
             </button>
           </>

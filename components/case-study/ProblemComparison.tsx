@@ -23,7 +23,7 @@ export function ProblemComparison({ before, after, coreChallenge }: ProblemCompa
         <div className="rounded-[var(--card-radius)] bg-[var(--surface-tile)] border border-[var(--border-subtle)] p-6 sm:p-7 flex flex-col justify-between space-y-4">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <XCircle className="w-4 h-4 text-neutral-400 dark:text-neutral-500 shrink-0" aria-hidden="true" />
+              <XCircle className="w-4 h-4 text-[var(--text-tertiary)] shrink-0" aria-hidden="true" />
               <h3 className="text-sm font-medium text-[var(--text-primary)]">
                 {before.title}
               </h3>
@@ -31,7 +31,7 @@ export function ProblemComparison({ before, after, coreChallenge }: ProblemCompa
             <ul className="space-y-2.5">
               {before.points.map((pt, idx) => (
                 <li key={idx} className="flex items-start gap-2.5 text-xs text-[var(--text-secondary)] leading-relaxed">
-                  <span className="w-1 h-1 rounded-full bg-neutral-400 dark:bg-neutral-600 mt-1.5 shrink-0" aria-hidden="true" />
+                  <span className="w-1 h-1 rounded-full bg-[var(--text-tertiary)] mt-1.5 shrink-0" aria-hidden="true" />
                   <span>{pt}</span>
                 </li>
               ))}

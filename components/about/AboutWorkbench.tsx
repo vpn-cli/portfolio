@@ -494,7 +494,7 @@ export function AboutWorkbench() {
                 {/* Animated marker: Data highlight in accent */}
                 <div
                   ref={markerRef}
-                  className="absolute top-1/2 -translate-y-1/2 pointer-events-none z-20 w-3 h-3 rounded-full bg-[var(--accent-color)] shadow-[0_0_8px_rgba(43,78,255,0.7)] opacity-0"
+                  className="absolute top-1/2 -translate-y-1/2 pointer-events-none z-20 w-3 h-3 rounded-full bg-[var(--accent-color)] shadow-[0_0_8px_var(--accent-color)] opacity-0"
                   aria-hidden="true"
                 />
               </div>

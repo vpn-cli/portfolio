@@ -22,7 +22,7 @@ export function ResumeDownloadButton() {
       }
       className="btn-primary flex-1 sm:flex-initial text-sm"
     >
-      <Download className="w-4 h-4 text-white" aria-hidden="true" />
+      <Download className="w-4 h-4 text-current" aria-hidden="true" />
       <span>Download Résumé</span>
     </a>
   );

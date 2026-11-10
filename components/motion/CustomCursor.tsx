@@ -68,7 +68,7 @@ export function CustomCursor() {
       <div
         ref={cursorRef}
         aria-hidden="true"
-        className="pointer-events-none fixed top-0 left-0 z-[9999] -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white mix-blend-difference transition-opacity duration-200"
+        className="pointer-events-none fixed top-0 left-0 z-[9999] -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[oklch(0.99_0.004_var(--tint-hue))] mix-blend-difference transition-opacity duration-200"
       />
 
       {/* Kinetic follower morph ring */}
@@ -77,12 +77,12 @@ export function CustomCursor() {
         aria-hidden="true"
         className={`pointer-events-none fixed top-0 left-0 z-[9998] -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center transition-opacity motion-safe:transition-transform motion-safe:duration-300 motion-reduce:transform-none ${
           isHovered
-            ? "w-12 h-12 bg-black/5 dark:bg-white/10 border border-black/30 dark:border-white/40 shadow-md scale-100"
-            : "w-7 h-7 border border-black/15 dark:border-white/20 scale-75 opacity-40"
+            ? "w-12 h-12 bg-[var(--text-primary)]/5 dark:bg-[var(--text-primary)]/10 border border-[var(--border-hover)] shadow-md scale-100"
+            : "w-7 h-7 border border-[var(--border-subtle)] scale-75 opacity-40"
         }`}
       >
         {cursorText && (
-          <span className="text-[13px] font-medium text-neutral-900 dark:text-white transition-opacity duration-200">
+          <span className="text-[13px] font-medium text-[var(--text-primary)] transition-opacity duration-200">
             {cursorText}
           </span>
         )}

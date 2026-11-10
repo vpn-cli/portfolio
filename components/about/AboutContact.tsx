@@ -186,9 +186,9 @@ export function AboutContact() {
           }
           className="btn-primary text-sm sm:text-base self-start sm:self-auto shrink-0"
         >
-          <Mail className="w-4 h-4 text-white" aria-hidden="true" />
+          <Mail className="w-4 h-4 text-current" aria-hidden="true" />
           <span>Send email</span>
-          <ArrowUpRight className="w-4 h-4 text-white" aria-hidden="true" />
+          <ArrowUpRight className="w-4 h-4 text-current" aria-hidden="true" />
         </a>
       </div>
     </section>

@@ -94,7 +94,7 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
               <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)] text-[13px] font-mono text-[var(--text-tertiary)] flex items-center gap-1.5">
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
-                    phase === 0 ? "bg-[var(--accent-color)] animate-pulse" : "bg-neutral-400"
+                    phase === 0 ? "bg-[var(--accent-color)] animate-pulse" : "bg-[var(--border-hover)]"
                   }`}
                 />
                 <span>Payload validated</span>
@@ -122,7 +122,7 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
               <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)] text-[13px] font-mono text-[var(--text-tertiary)] flex items-center gap-1.5">
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
-                    phase === 1 ? "bg-[var(--accent-color)] animate-pulse" : "bg-neutral-400"
+                    phase === 1 ? "bg-[var(--accent-color)] animate-pulse" : "bg-[var(--border-hover)]"
                   }`}
                 />
                 <span>State persisted</span>
@@ -150,7 +150,7 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
               <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)] text-[13px] font-mono text-[var(--text-tertiary)] flex items-center gap-1.5">
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
-                    phase === 2 ? "bg-[var(--accent-color)] animate-pulse" : "bg-neutral-400"
+                    phase === 2 ? "bg-[var(--accent-color)] animate-pulse" : "bg-[var(--border-hover)]"
                   }`}
                 />
                 <span>O(k) targeted routing</span>
@@ -203,7 +203,7 @@ export function HeroEventFlow({ slug, title }: HeroEventFlowProps) {
               {/* Idle Phone (Match 2) - Topic Isolation in Action */}
               <div className="flex items-center justify-between p-2 rounded-lg bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] text-[13px] opacity-60">
                 <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-neutral-400" />
+                  <span className="w-2 h-2 rounded-full bg-[var(--border-hover)]" />
                   <span className="font-mono text-[var(--text-tertiary)]">Client C (Match 2)</span>
                 </div>
                 <span className="font-mono text-[13px] text-[var(--text-tertiary)]">Idle</span>
