@@ -181,8 +181,7 @@ export function InteractiveArchitecture({ nodes }: InteractiveArchitectureProps)
                   filename={activeNode.codeSnippet.filename}
                   language={activeNode.codeSnippet.language}
                   code={activeNode.codeSnippet.code}
-                  description={activeNode.codeSnippet.description}
-                  contextUrl={activeNode.codeSnippet.githubUrl}
+                  explanation={activeNode.codeSnippet.explanation}
                 />
               )}
             </div>

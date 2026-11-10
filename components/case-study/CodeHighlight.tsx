@@ -8,12 +8,16 @@ interface CodeHighlightProps {
   language: string;
   code: string;
   explanation?: string;
+  description?: string;
+  contextUrl?: string;
 }
 
 export function CodeHighlight({
   filename,
   code,
   explanation,
+  description,
+  contextUrl,
 }: CodeHighlightProps) {
   const [copied, setCopied] = useState(false);
 
@@ -74,10 +78,23 @@ export function CodeHighlight({
         </table>
       </div>
 
-      {explanation && (
+      {(explanation || description) && (
         <p className="text-xs text-[var(--text-secondary)] px-1">
-          <span className="text-[var(--text-primary)] font-medium">Note:</span> {explanation}
+          <span className="text-[var(--text-primary)] font-medium">Note:</span> {explanation || description}
         </p>
+      )}
+      {contextUrl && (
+        <div className="px-1 pt-1">
+          <a
+            href={contextUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-link text-xs inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2"
+          >
+            <span>View source file on GitHub</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       )}
     </div>
   );

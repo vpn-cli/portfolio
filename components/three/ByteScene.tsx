@@ -1565,7 +1565,6 @@ export default function ByteScene({
       ref={containerRef}
       tabIndex={0}
       role="button"
-      aria-label="Pat Byte"
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}

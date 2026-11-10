@@ -64,7 +64,6 @@ export function LinksTile({ className = "" }: { className?: string }) {
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={item.ariaLabel}
             data-ph-capture-attribute-location="links_tile"
             onClick={() => {
               const destination =

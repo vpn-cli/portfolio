@@ -25,7 +25,7 @@ export function SocialTile({ className = "" }: { className?: string }) {
       label: ghConfig?.label || "GitHub",
       handle: ghConfig?.handle || "vpn-cli",
       url: ghConfig?.url || "https://github.com/vpn-cli",
-      ariaLabel: "GitHub profile",
+      ariaLabel: "GitHub: vpn-cli",
       cursorText: "GitHub",
       Icon: SiGithub,
     },
@@ -34,7 +34,7 @@ export function SocialTile({ className = "" }: { className?: string }) {
       label: liConfig?.label || "LinkedIn",
       handle: liConfig?.handle || "vpnk2003",
       url: liConfig?.url || "https://www.linkedin.com/in/vpnk2003",
-      ariaLabel: "LinkedIn profile",
+      ariaLabel: "LinkedIn: vpnk2003",
       cursorText: "LinkedIn",
       Icon: SiLinkedin,
     },
@@ -50,7 +50,6 @@ export function SocialTile({ className = "" }: { className?: string }) {
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            ariaLabel={item.ariaLabel}
             cursorText={item.cursorText}
             noPadding
             className="w-full h-full p-3.5 sm:p-4 2xl:p-5 flex flex-col justify-between"

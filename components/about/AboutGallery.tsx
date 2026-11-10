@@ -297,7 +297,6 @@ export function AboutGallery() {
               type="button"
               onClick={() => openLightbox(index)}
               className="gallery-piece-btn group w-full text-left cursor-pointer block select-none border-0 bg-transparent p-0 min-h-[44px]"
-              aria-label={`Open lightbox for ${art.title}, ${art.medium}`}
             >
               <div className="gallery-piece-img overflow-hidden rounded-xl transition-all duration-300">
                 <Image
