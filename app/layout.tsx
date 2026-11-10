@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import dynamic from "next/dynamic";
 import "./globals.css";
 import { siteConfig } from "@/content/site";
 import { SmoothScrollProvider } from "@/components/motion/SmoothScrollProvider";
