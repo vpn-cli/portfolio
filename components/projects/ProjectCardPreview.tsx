@@ -25,21 +25,25 @@ interface PreviewConfig {
 
 const PREVIEW_CONFIGS: Record<string, PreviewConfig> = {
   sockets: {
-    chromeTitle: "sportz.live — Live Score Telemetry",
+    chromeTitle: "sportz-rho.vercel.app — v2.0 Real-Time + AI",
     statusBadge: { label: "LIVE CONNECTED", isLive: true },
     videoMp4: "/projects/sockets/sportz-live-score-update.mp4",
     videoWebm: "/projects/sockets/sportz-live-score-update.webm",
     poster: "/projects/sockets/sportz-live-score-update-poster.webp",
   },
   "stream-mart": {
-    chromeTitle: "stream-mart — Event Outbox Pipeline",
+    chromeTitle: "stream-mart — Outbox & Outage Demo",
     statusBadge: { label: "Diagram", isDiagram: true },
-    poster: "/projects/stream-mart/stream-mart-event-flow.webp",
+    videoMp4: "/projects/stream-mart/stream-mart-demo.mp4",
+    videoWebm: "/projects/stream-mart/stream-mart-demo.webm",
+    poster: "/projects/stream-mart/stream-mart-diagram.webp",
     isDiagram: true,
   },
   appforge: {
-    chromeTitle: "appforge-studios.vercel.app",
-    statusBadge: { label: "READY" },
+    chromeTitle: "appforge-studios.vercel.app — Copilot Studio",
+    statusBadge: { label: "LIVE DEMO", isLive: true },
+    videoMp4: "/projects/appforge/appforge-copilot-demo.mp4",
+    videoWebm: "/projects/appforge/appforge-copilot-demo.webm",
     poster: "/projects/appforge/appforge-hero-redesign.webp",
   },
 };
@@ -54,6 +58,7 @@ export function ProjectCardPreview({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isInView, setIsInView] = useState(false);
   const [isReducedMotion, setIsReducedMotion] = useState(false);
+  const [streamMartTab, setStreamMartTab] = useState<"diagram" | "video">("diagram");
 
   const config = PREVIEW_CONFIGS[slug] || {
     chromeTitle: `${slug} preview`,
@@ -84,7 +89,7 @@ export function ProjectCardPreview({
         const video = videoRef.current;
         if (!video || !config.videoMp4) return;
 
-        if (inView && !isReducedMotion) {
+        if (inView && !isReducedMotion && (!config.isDiagram || streamMartTab === "video")) {
           video.play().catch(() => {
             // Autoplay policy fallback: muted video is standard
           });
@@ -99,12 +104,12 @@ export function ProjectCardPreview({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [config.videoMp4, isReducedMotion]);
+  }, [config.videoMp4, config.isDiagram, streamMartTab, isReducedMotion]);
 
   return (
     <div
       ref={containerRef}
-      className="w-full lg:w-[60%] shrink-0 rounded-xl overflow-hidden bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] group-hover:border-[var(--border-hover)] shadow-sm transition-[border-color,transform] duration-200 ease-out motion-safe:group-hover:scale-[1.01] flex flex-col"
+      className="relative z-20 pointer-events-none w-full lg:w-[60%] shrink-0 rounded-xl overflow-hidden bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] group-hover:border-[var(--border-hover)] shadow-sm transition-[border-color,transform] duration-200 ease-out motion-safe:group-hover:scale-[1.01] flex flex-col"
     >
       {/* Stageshow Window Chrome Header */}
       <div className="h-8 px-3.5 bg-[var(--surface-tile)] border-b border-[var(--border-subtle)] flex items-center justify-between shrink-0 select-none">
@@ -120,8 +125,21 @@ export function ProjectCardPreview({
           {config.chromeTitle}
         </span>
 
-        {/* Status Badge */}
-        <div className="flex items-center">
+        {/* Status Badge + StreamMart Diagram/Video Switch */}
+        <div className="flex items-center gap-1.5">
+          {config.isDiagram && config.videoMp4 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setStreamMartTab((prev) => (prev === "diagram" ? "video" : "diagram"));
+              }}
+              className="pointer-events-auto relative z-30 cursor-pointer text-[12px] font-mono px-2 py-0.5 rounded border border-[var(--border-subtle)] bg-[var(--surface-tile-elevated)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-hover)] transition-colors"
+            >
+              {streamMartTab === "diagram" ? "Play demo clip" : "Live diagram"}
+            </button>
+          )}
           <span
             className={`text-[13px] font-mono tracking-wider px-2 py-0.5 rounded border inline-flex items-center gap-1.5 ${
               config.statusBadge.isLive
@@ -141,7 +159,7 @@ export function ProjectCardPreview({
 
       {/* Main Preview Stage (Aspect 16/10) */}
       <div className="relative w-full aspect-[16/10] bg-[var(--bg-canvas-subtle)] overflow-hidden">
-        {config.isDiagram ? (
+        {config.isDiagram && streamMartTab === "diagram" ? (
           <StreamMartDiagram active={isInView} />
         ) : (
           <>
@@ -162,6 +180,7 @@ export function ProjectCardPreview({
                 playsInline
                 muted
                 loop
+                autoPlay={Boolean(config.isDiagram && streamMartTab === "video")}
                 preload={priority ? "auto" : "metadata"}
                 poster={config.poster}
                 className="absolute inset-0 w-full h-full object-cover object-top"

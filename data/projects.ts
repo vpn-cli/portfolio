@@ -226,11 +226,11 @@ export const projects: CaseStudy[] = [
       "Tailwind CSS v4",
     ],
     heroClip: {
-      mp4: "/projects/appforge/appforge-ask-ai-dashboard.mp4",
-      webm: "/projects/appforge/appforge-ask-ai-dashboard.webm",
+      mp4: "/projects/appforge/appforge-copilot-demo.mp4",
+      webm: "/projects/appforge/appforge-copilot-demo.webm",
       poster: "/projects/appforge/appforge-hero-redesign.webp",
       caption:
-        "Natural language streams into strict Zod-validated React components with zero eval().",
+        "Ask Copilot morphs into the JSON builder to stream Zod-validated components into live preview.",
     },
     problemVisualCaption:
       "Unchecked JSX eval() versus strict Zod AST validation and tenant-isolated DDL.",
@@ -530,9 +530,9 @@ void main(){
         subtitle: "Groq → Gemini Pipeline",
         tech: "AI SDK & Upstash Redis",
         role: "Normalizes cache & locks failover after chunk #1.",
-        screenshotUrl: "/projects/appforge/appforge-apps-dashboard.webp",
+        screenshotUrl: "/projects/appforge/appforge-prompt-input.webp",
         screenshotCaption:
-          "Canonical /apps workspace with prompt composer, live 16:10 thumbnails, and Recently Updated rail.",
+          "Ask Copilot floating pill morphing into the prompt composer over the Incident Command Center editor.",
         codeSnippet: {
           filename: "lib/copilot-pipeline.ts",
           language: "typescript",
@@ -578,6 +578,9 @@ hasSentChunks = true; // Failover window is now CLOSED`,
         subtitle: "Parameterized RPC",
         tech: "Supabase Postgres & RLS",
         role: "Creates tenant-isolated tables without DROP.",
+        screenshotUrl: "/projects/appforge/appforge-apps-dashboard.webp",
+        screenshotCaption:
+          "Canonical /apps workspace backed by tenant-isolated Postgres schemas and RLS policies.",
         codeSnippet: {
           filename: "actions/schema.ts",
           language: "typescript",
@@ -601,9 +604,9 @@ const { error: ddlError } = await supabase.rpc('execute_app_ddl', {
         subtitle: "Resizable Split & Motion",
         tech: "Monaco & motion/react",
         role: "Pairs Monaco editor with live container-query preview.",
-        screenshotUrl: "/projects/appforge/appforge-app-preview.webp",
+        screenshotUrl: "/projects/appforge/appforge-editor-view.webp",
         screenshotCaption:
-          "Live application runtime mounted from validated JSON AST with container-query responsiveness.",
+          "Split Monaco config editor with bottom-right Ask Copilot pill, validation log, and Incident Command Center preview.",
         codeSnippet: {
           filename: "app/api/copilot/route.ts",
           language: "typescript",
@@ -757,7 +760,7 @@ const normalizedKey = \`copilot_cache:\${normalizePromptForCache(prompt)}\`;`,
       webm: "/projects/sockets/sportz-live-score-update.webm",
       poster: "/projects/sockets/sportz-live-score-update-poster.webp",
       caption:
-        "Live score mutations, commentary, and emoji reactions delivered over persistent WebSockets.",
+        "Sportz v2.0 live commentary, Win Probability, Redis HINCRBY fan reactions, and Gemini 3.8 Flash AI Analyst.",
     },
     problemVisualCaption:
       "Isolated single-node polling/sockets versus horizontally scaled Redis Pub/Sub with gap replay.",
@@ -1027,6 +1030,9 @@ const normalizedKey = \`copilot_cache:\${normalizePromptForCache(prompt)}\`;`,
         subtitle: "football-data.org + REST",
         tech: "Express 5 & Zod",
         role: "Filters unchanged score polls & ingests match events.",
+        screenshotUrl: "/projects/sockets/sportz-match-list.webp",
+        screenshotCaption:
+          "Sportz v2.0 fixture feed filtering live Football, Cricket, and Basketball matches.",
         codeSnippet: {
           filename: "sportz-websockets-main/src/routes/matches.js",
           language: "javascript",
@@ -1072,7 +1078,7 @@ const normalizedKey = \`copilot_cache:\${normalizePromptForCache(prompt)}\`;`,
         role: "Syncs multi-instance channels & atomic reaction counts.",
         screenshotUrl: "/projects/sockets/sportz-connection-badge.webp",
         screenshotCaption:
-          "Live WebSocket connection status badge tracking persistent stream and reconnect state.",
+          "Sportz v2.0 telemetry bar with Auto-Sim Demo, Event Simulator, Gemini AI Analyst, and LIVE CONNECTED state.",
         codeSnippet: {
           filename: "sportz-websockets-main/src/ws/server.js",
           language: "javascript",
@@ -1090,6 +1096,9 @@ if (deltas[emoji] <= 0) delete deltas[emoji];`,
         subtitle: "500-Seq Ring & Coalescing",
         tech: "ws & Drizzle ORM",
         role: "Dedupes pause frames & coalesces gap-replay queries.",
+        screenshotUrl: "/projects/sockets/sportz-ai-analyst.webp",
+        screenshotCaption:
+          "Gemini 3.8 Flash AI Match Analyst surfacing tactical breakdown and momentum shift.",
         codeSnippet: {
           filename: "sportz-websockets-main/src/ws/server.js",
           language: "javascript",
@@ -1265,11 +1274,11 @@ if (activeClientReplaysCount >= maxConcurrentClientReplays) {
       "JWT",
     ],
     heroClip: {
-      mp4: "/videos/stream-mart/brag.mp4",
-      webm: "/videos/stream-mart/brag.webm",
+      mp4: "/projects/stream-mart/stream-mart-demo.mp4",
+      webm: "/projects/stream-mart/stream-mart-demo.webm",
       poster: "/projects/stream-mart/stream-mart-diagram.webp",
       caption:
-        "Shows the refactored checkout flow: SKIP LOCKED outbox relays, idempotent eachBatch consumers, and poison-pill DLQ isolation.",
+        "Diagram: Refactored SKIP LOCKED outbox relays, 20/20 Kafka outage recovery, eachBatch consumers, and .DLQ isolation.",
     },
     problemVisualCaption:
       "Sequential 1-message DB transactions versus SKIP LOCKED relays and single-transaction eachBatch consumers.",
