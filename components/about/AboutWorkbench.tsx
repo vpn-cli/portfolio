@@ -39,9 +39,9 @@ const PIPELINES: Record<SystemsSubTab, PipelineConfig> = {
     stages: [
       "Postgres transaction",
       "Outbox row",
-      "Debezium",
+      "SKIP LOCKED relay",
       "Kafka",
-      "Payment consumer",
+      "eachBatch consumer",
     ],
   },
   sockets: {
@@ -579,7 +579,7 @@ export function AboutWorkbench() {
                 Rooms in memory
               </h3>
               <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
-                Sportz keeps rooms in a <code className="font-mono text-[13px] bg-[var(--surface-tile)] text-[var(--text-primary)] px-1.5 py-0.5 rounded border border-[var(--border-subtle)]">Map&lt;string, Set&lt;Client&gt;&gt;</code> inside the Node process, so broadcasting to a room needs no Redis call.
+                Sportz keeps per-instance rooms in a <code className="font-mono text-[13px] bg-[var(--surface-tile)] text-[var(--text-primary)] px-1.5 py-0.5 rounded border border-[var(--border-subtle)]">Map&lt;matchId, Set&lt;WebSocket&gt;&gt;</code> and syncs across nodes over Redis 7 Pub/Sub with a 500-seq dedupe ring.
               </p>
             </div>
             <div className="pt-2 text-[13px] text-[var(--text-tertiary)] font-normal">
@@ -596,7 +596,7 @@ export function AboutWorkbench() {
                 Orders and events in one transaction
               </h3>
               <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
-                StreamMart writes the order and its outbox event in the same Postgres transaction. Debezium reads the outbox and publishes to Kafka, so an order can&apos;t exist without its event.
+                StreamMart writes the order and its outbox event in the same Postgres transaction. A <code className="font-mono text-[13px] bg-[var(--surface-tile)] text-[var(--text-primary)] px-1.5 py-0.5 rounded border border-[var(--border-subtle)]">SKIP LOCKED</code> relay batches events to Kafka for idempotent <code className="font-mono text-[13px] bg-[var(--surface-tile)] text-[var(--text-primary)] px-1.5 py-0.5 rounded border border-[var(--border-subtle)]">eachBatch</code> consumers.
               </p>
             </div>
             <div className="pt-2 text-[13px] text-[var(--text-tertiary)] font-normal">
@@ -613,7 +613,7 @@ export function AboutWorkbench() {
                 Validate before rendering
               </h3>
               <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
-                AppForge checks model output against a JSON schema and a Babel AST pass before building React components. It never calls eval().
+                AppForge checks model output against strict per-component Zod schemas before mounting registered React primitives. It never calls eval().
               </p>
             </div>
             <div className="pt-2 text-[13px] text-[var(--text-tertiary)] font-normal">

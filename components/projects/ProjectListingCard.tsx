@@ -19,6 +19,7 @@ interface ProjectListingCardProps {
 
 export function ProjectListingCard({ project, idx, meta, dataReveal }: ProjectListingCardProps) {
   const sourceUrl = project.links?.repo || project.githubUrl;
+  const verifiedMetrics = (project.metrics || []).filter((m) => !m.isTodo && !m.isConfig).slice(0, 3);
 
   const handleSourceClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -73,6 +74,24 @@ export function ProjectListingCard({ project, idx, meta, dataReveal }: ProjectLi
           {meta.description}
         </p>
 
+        {verifiedMetrics.length > 0 && (
+          <div className="grid grid-cols-3 gap-2 pt-1">
+            {verifiedMetrics.map((m) => (
+              <div
+                key={m.label}
+                className="rounded-xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] px-3 py-2"
+              >
+                <div className="font-mono text-sm font-medium text-[var(--text-primary)] tabular-nums truncate">
+                  {m.value}
+                </div>
+                <div className="text-[13px] text-[var(--text-tertiary)] truncate">
+                  {m.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
         <div className="pt-2 flex items-center gap-3 relative z-20">
           <TransitionLink
             href={`/work/${project.slug}`}
@@ -80,7 +99,7 @@ export function ProjectListingCard({ project, idx, meta, dataReveal }: ProjectLi
             trackLabel={`Read case study: ${project.title}`}
             className="btn-primary min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-medium text-xs sm:text-sm transition-opacity shadow-sm active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--accent-color)]"
           >
-            <span>Read case study</span>
+            <span>STAR case study</span>
             <ArrowUpRight
               className="w-3.5 h-3.5 transition-transform motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
               aria-hidden="true"

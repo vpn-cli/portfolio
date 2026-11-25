@@ -40,9 +40,7 @@ const PREVIEW_CONFIGS: Record<string, PreviewConfig> = {
   appforge: {
     chromeTitle: "appforge-studios.vercel.app",
     statusBadge: { label: "READY" },
-    videoMp4: "/projects/appforge/appforge-ask-ai-dashboard.mp4",
-    videoWebm: "/projects/appforge/appforge-ask-ai-dashboard.webm",
-    poster: "/projects/appforge/appforge-ask-ai-dashboard-poster.webp",
+    poster: "/projects/appforge/appforge-hero-redesign.webp",
   },
 };
 

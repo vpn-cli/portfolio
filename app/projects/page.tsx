@@ -19,21 +19,21 @@ const PROJECT_WORK_META: Record<
 > = {
   appforge: {
     index: "01",
-    stackLine: "Next.js · React · Groq",
+    stackLine: "Next.js 16 · Zod AST · Groq / Gemini",
     description:
-      "Describe an app in plain English and get a working React UI.",
+      "AI app builder with pre-first-chunk failover, strict Zod AST validation (81.4% eval pass rate, 92.8% valid nodes), and parameterized Postgres DDL.",
   },
   sockets: {
     index: "02",
-    stackLine: "Node.js · WebSockets · PostgreSQL",
+    stackLine: "Node.js · WebSockets · Redis 7",
     description:
-      "A push server broadcasting live match scores and commentary to connected spectators over WebSockets.",
+      "Horizontally scaled WebSocket sports cluster verified across 625,000 deliveries (0 lost, 98.649% ≤ 400ms) with 500-seq pause dedupe and coalesced replay.",
   },
   "stream-mart": {
     index: "03",
-    stackLine: "Node.js · Apache Kafka · PostgreSQL",
+    stackLine: "Kafka KRaft · PostgreSQL · SKIP LOCKED",
     description:
-      "An event-driven backend using Apache Kafka and the transactional outbox pattern to decouple store services.",
+      "Event-driven backend with SKIP LOCKED outbox relays and idempotent eachBatch consumers delivering 375.75 checkouts/s (+7.76×) at zero lag.",
   },
 };
 

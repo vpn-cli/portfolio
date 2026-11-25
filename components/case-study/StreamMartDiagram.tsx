@@ -23,45 +23,45 @@ const PHASES: Phase[] = [
     activeBoxes: ["client", "gateway"],
     activeArrows: ["client->gateway"],
     description:
-      "Next.js UI posts checkout payload to API Gateway with JWT Bearer authentication.",
+      "Load/Client posts checkout with JWT Bearer auth over keep-alive HTTP connections.",
     sourceUrl:
-      "https://github.com/vpn-cli/StreamMart/blob/master/client/src/app/page.jsx#L11-L20",
+      "https://github.com/vpn-cli/streammart/blob/master/api-gateway/config.js",
   },
   {
     step: 2,
     activeBoxes: ["gateway", "payment"],
     activeArrows: ["gateway->payment"],
     description:
-      "API Gateway verifies JWT and proxies checkout request to Payment Service on port 8000.",
+      "API Gateway verifies 32+ char JWT_SECRET and proxies to Payment Service (/health stays 200 even during Kafka outages).",
     sourceUrl:
-      "https://github.com/vpn-cli/StreamMart/blob/master/api-gateway/index.js#L13-L24",
+      "https://github.com/vpn-cli/streammart/blob/master/api-gateway/index.js",
   },
   {
     step: 3,
     activeBoxes: ["payment", "outbox"],
     activeArrows: ["payment->outbox"],
     description:
-      "Payment Service commits payment record and outbox event in one atomic database transaction.",
+      "Payment Service commits payment record and outbox_events row (with eventId & correlationId) in one atomic SQL transaction.",
     sourceUrl:
-      "https://github.com/vpn-cli/StreamMart/blob/master/payment-service/index.js#L45-L57",
+      "https://github.com/vpn-cli/streammart/blob/master/payment-service/index.js",
   },
   {
     step: 4,
     activeBoxes: ["outbox", "worker", "kafka"],
     activeArrows: ["outbox->worker", "worker->kafka"],
     description:
-      "Background relay worker polls unpublished events every 5 seconds and publishes to Kafka.",
+      "Relay worker claims up to 50 rows with FOR UPDATE SKIP LOCKED, batch-publishes to KRaft Kafka, and prunes old rows.",
     sourceUrl:
-      "https://github.com/vpn-cli/StreamMart/blob/master/payment-service/worker.js#L28-L56",
+      "https://github.com/vpn-cli/streammart/blob/master/payment-service/worker.js",
   },
   {
     step: 5,
     activeBoxes: ["kafka", "order", "analytics"],
     activeArrows: ["kafka->order", "kafka->analytics"],
     description:
-      "Order Service and Analytics Service consume the payment-successful topic asynchronously.",
+      "Idempotent eachBatch consumers commit 1 SQL tx/batch via processed_events, routing poison pills to payment-successful.DLQ.",
     sourceUrl:
-      "https://github.com/vpn-cli/StreamMart/blob/master/order-service/index.js#L25-L54",
+      "https://github.com/vpn-cli/streammart/blob/master/order-service/consumer-processor.js",
   },
 ];
 
@@ -233,7 +233,7 @@ export function StreamMartDiagram() {
           </div>
           <DiagramBox
             title="Relay Worker"
-            subline="Polls every 5s"
+            subline="SKIP LOCKED + Batched"
             isActive={activeBoxes.has("worker")}
           />
         </div>
@@ -246,8 +246,8 @@ export function StreamMartDiagram() {
         </div>
 
         <DiagramBox
-          title="Kafka Broker"
-          subline="Topic: payment-successful"
+          title="Kafka 3.7 (KRaft)"
+          subline="payment-successful + .DLQ"
           isActive={activeBoxes.has("kafka")}
         />
 
@@ -263,7 +263,7 @@ export function StreamMartDiagram() {
 
         <DiagramBox
           title="Order Service"
-          subline="Consumer"
+          subline="eachBatch + DLQ Fallback"
           isActive={activeBoxes.has("order")}
         />
 
@@ -275,8 +275,8 @@ export function StreamMartDiagram() {
         </div>
 
         <DiagramBox
-          title="Analytics Service"
-          subline="Consumer"
+          title="Email & Analytic"
+          subline="eachBatch · 0 lag"
           isActive={activeBoxes.has("analytics")}
         />
       </div>
@@ -335,7 +335,7 @@ export function StreamMartDiagram() {
             />
             <DiagramBox
               title="Relay Worker"
-              subline="Polls every 5s"
+              subline="SKIP LOCKED + Batched"
               isActive={activeBoxes.has("worker")}
             />
           </div>
@@ -352,8 +352,8 @@ export function StreamMartDiagram() {
         {/* Row 3: Kafka Broker */}
         <div className="max-w-md mx-auto w-full">
           <DiagramBox
-            title="Kafka Broker"
-            subline="Topic: payment-successful"
+            title="Kafka 3.7 (KRaft)"
+            subline="Topic: payment-successful + .DLQ"
             isActive={activeBoxes.has("kafka")}
           />
         </div>
@@ -373,12 +373,12 @@ export function StreamMartDiagram() {
         <div className="grid grid-cols-2 gap-4 max-w-xl mx-auto w-full">
           <DiagramBox
             title="Order Service"
-            subline="Consumer"
+            subline="eachBatch + DLQ Fallback"
             isActive={activeBoxes.has("order")}
           />
           <DiagramBox
-            title="Analytics Service"
-            subline="Consumer"
+            title="Email & Analytic"
+            subline="eachBatch · 0 lag"
             isActive={activeBoxes.has("analytics")}
           />
         </div>

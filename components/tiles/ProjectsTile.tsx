@@ -25,7 +25,7 @@ const projectsList: TeaserProject[] = [
     id: "appforge",
     slug: "appforge",
     title: "AppForge",
-    teaserLine: "Apps from a sentence",
+    teaserLine: "Zod-validated apps from prompts",
     // Crop of actual generated-app UI (2x WebP)
     image: "/projects/teaser-appforge.webp",
     repoUrl: "https://github.com/vpn-cli/appforge",
@@ -35,21 +35,21 @@ const projectsList: TeaserProject[] = [
     id: "sportz",
     slug: "sockets",
     title: "Sportz",
-    teaserLine: "Live scores, zero refresh",
+    teaserLine: "625k WS msgs, 0 lost over Redis",
     // Live dashboard UI telemetry & score cards (2x WebP)
     image: "/projects/teaser-sportz.webp",
-    repoUrl: "https://github.com/vpn-cli/sockets",
+    repoUrl: "https://github.com/vpn-cli/sportz",
     liveUrl: "https://sportz-rho.vercel.app",
   },
   {
     id: "stream-mart",
     slug: "stream-mart",
     title: "StreamMart",
-    teaserLine: "Orders over Kafka",
+    teaserLine: "375/s Kafka outbox, zero lag",
     // Intentional event flow visual: Order → Kafka → Payment services (2x WebP)
     image: "/projects/teaser-stream-mart.webp",
-    repoUrl: "https://github.com/vpn-cli/StreamMart",
-    liveUrl: "https://github.com/vpn-cli/StreamMart#architecture--workflow",
+    repoUrl: "https://github.com/vpn-cli/streammart",
+    liveUrl: "https://github.com/vpn-cli/streammart#verified-benchmarks-full-drain-results-only",
   },
 ];
 

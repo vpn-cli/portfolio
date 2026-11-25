@@ -191,7 +191,7 @@ export function AboutPrinciples() {
 
             <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-[var(--border-subtle)]">
               <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
-                Sportz keeps every room in a Node.js Map, with no Redis.
+                Sportz started with an in-memory Node.js Map and scaled to two instances with Redis 7 Pub/Sub and a 500-seq dedupe ring.
               </p>
               <TransitionLink
                 href="/work/sockets#decisions"
@@ -298,7 +298,7 @@ export function AboutPrinciples() {
                 </p>
                 <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
                   {p3Mode === "ast"
-                    ? "Checked against the JSON schema, parsed into a Babel AST, and compiled into safe React JSX nodes. Zero direct string evaluation."
+                    ? "Checked against per-component .strict() Zod schemas and mounted into a typed React component registry. Zero direct string evaluation."
                     : "Executes whatever arbitrary JavaScript strings the model generated, creating severe security vulnerabilities and runtime failures."}
                 </p>
               </div>
