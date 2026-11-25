@@ -3,6 +3,9 @@
 import { useEffect, useRef, createContext, useContext, useState } from "react";
 import Lenis from "lenis";
 
+export const LENIS_EXPO_EASING = (t: number) =>
+  t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+
 interface LenisContextValue {
   lenis: Lenis | null;
 }
@@ -16,43 +19,61 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    // Respect user's reduced-motion preference
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) {
       return;
     }
 
-    let timer: ReturnType<typeof setTimeout> | null = null;
-    let idleId: number | null = null;
+    const lenis = new Lenis({
+      duration: 1.25,
+      easing: LENIS_EXPO_EASING,
+      orientation: "vertical",
+      gestureOrientation: "vertical",
+      smoothWheel: true,
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.4,
+      autoRaf: true,
+    });
 
-    const initLenis = () => {
-      if (lenisRef.current) return;
-      const lenis = new Lenis({
-        duration: 1.15,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        orientation: "vertical",
-        gestureOrientation: "vertical",
-        smoothWheel: true,
-        wheelMultiplier: 1.0,
-        touchMultiplier: 1.5,
-        autoRaf: true,
+    lenisRef.current = lenis;
+    setLenisInstance(lenis);
+
+    // Keep Lenis scroll bounds accurate as case-study accordions/tabs expand or collapse
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined" && document.body) {
+      resizeObserver = new ResizeObserver(() => {
+        lenis.resize();
       });
-
-      lenisRef.current = lenis;
-      setLenisInstance(lenis);
-    };
-
-    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
-      idleId = (window as unknown as { requestIdleCallback: (cb: () => void, opts: { timeout: number }) => number })
-        .requestIdleCallback(initLenis, { timeout: 2500 });
-    } else {
-      timer = setTimeout(initLenis, 600);
+      resizeObserver.observe(document.body);
     }
 
+    // Intercept in-page #anchor links so they glide with Lenis inertia
+    const handleAnchorClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const anchor = (e.target as HTMLElement | null)?.closest<HTMLAnchorElement>('a[href^="#"]');
+      if (!anchor) return;
+      const hash = anchor.getAttribute("href");
+      if (!hash || hash === "#") return;
+      const target = document.getElementById(hash.slice(1));
+      if (!target) return;
+
+      e.preventDefault();
+      lenis.scrollTo(target, {
+        offset: -32,
+        duration: 1.25,
+        easing: LENIS_EXPO_EASING,
+      });
+      if (window.location.hash !== hash) {
+        window.history.pushState(null, "", hash);
+      }
+    };
+
+    document.addEventListener("click", handleAnchorClick);
+
     return () => {
-      if (timer) clearTimeout(timer);
-      if (idleId !== null && typeof window !== "undefined" && "cancelIdleCallback" in window) {
-        (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(idleId);
+      document.removeEventListener("click", handleAnchorClick);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
       }
       if (lenisRef.current) {
         lenisRef.current.destroy();

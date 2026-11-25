@@ -1,15 +1,27 @@
 "use client";
 
-import { createContext, useContext, useEffect, useRef, useState, useTransition } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { useLenisInstance } from "./SmoothScrollProvider";
+import { useLenisInstance, LENIS_EXPO_EASING } from "./SmoothScrollProvider";
 import { siteConfig } from "@/content/site";
-import { trackEvent, OutboundDestination, getReferrerDomain, getOutboundDestination } from "@/lib/analytics";
+import {
+  trackEvent,
+  OutboundDestination,
+  getReferrerDomain,
+  getOutboundDestination,
+} from "@/lib/analytics";
 
-const WIPE_IN = 0.16;
-const WIPE_OUT = 0.22;
-export const MIN_VISIBLE: number = 0.42;
+const LENIS_CURVE = "cubic-bezier(0.16, 1, 0.3, 1)";
+export const MIN_VISIBLE: number = 0.48;
 
 const isDebugEnabled = () => {
   if (typeof window === "undefined") return false;
@@ -25,8 +37,8 @@ interface TransitionContextType {
 }
 
 const TransitionContext = createContext<TransitionContextType>({
-  navigateWithWipe: () => { },
-  prefetch: () => { },
+  navigateWithWipe: () => {},
+  prefetch: () => {},
   isPending: false,
   previousPath: null,
   getPreviousPath: () => null,
@@ -59,6 +71,55 @@ export function getRouteLabel(path: string): string {
   return "Loading";
 }
 
+function animateVisiblePageReveals(
+  revealAnimationsRef: React.MutableRefObject<Animation[]>,
+  durationMs = 780
+) {
+  const allReveals = Array.from(document.querySelectorAll<HTMLElement>("main [data-reveal]"));
+  const windowH = window.innerHeight;
+  const rects = allReveals.map((el) => ({
+    el,
+    top: el.getBoundingClientRect().top,
+    order: el.getAttribute("data-reveal-order"),
+  }));
+
+  const visible = rects.filter((item) => item.top < windowH);
+
+  visible.sort((a, b) => {
+    if (a.order !== null && b.order !== null) {
+      return parseFloat(a.order) - parseFloat(b.order);
+    }
+    if (a.order !== null) return -1;
+    if (b.order !== null) return 1;
+    return 0;
+  });
+
+  const toAnimate = visible.slice(0, 8);
+
+  revealAnimationsRef.current.forEach((anim) => {
+    try {
+      anim.cancel();
+    } catch {}
+  });
+  revealAnimationsRef.current = [];
+
+  toAnimate.forEach((item, i) => {
+    const anim = item.el.animate(
+      [
+        { opacity: 0, transform: "translate3d(0, 20px, 0)" },
+        { opacity: 1, transform: "translate3d(0, 0, 0)" },
+      ],
+      {
+        duration: durationMs,
+        delay: 40 + i * 55,
+        easing: LENIS_CURVE,
+        fill: "backwards",
+      }
+    );
+    revealAnimationsRef.current.push(anim);
+  });
+}
+
 export function RouteTransitionProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -83,6 +144,18 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     lenisRef.current = lenis;
   }, [lenis]);
 
+  // Initial load curtain refs
+  const initOverlayRef = useRef<HTMLDivElement>(null);
+  const initInnerRef = useRef<HTMLDivElement>(null);
+  const initTitleRef = useRef<HTMLSpanElement>(null);
+  const initSubRef = useRef<HTMLSpanElement>(null);
+  const initFillRef = useRef<HTMLDivElement>(null);
+  const initPctRef = useRef<HTMLSpanElement>(null);
+  const initAnimationsRef = useRef<Animation[]>([]);
+  const initRafRef = useRef<number | null>(null);
+  const initDoneRef = useRef(false);
+
+  // Route transition wipe refs
   const overlayRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
@@ -100,7 +173,6 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const minVisibleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // WAAPI animation refs
   const wipeInAnimationRef = useRef<Animation | null>(null);
   const innerAnimationRef = useRef<Animation | null>(null);
   const labelAnimationRef = useRef<Animation | null>(null);
@@ -112,13 +184,205 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
 
   const marksRef = useRef<{ name: string; time: number }[]>([]);
 
+  const cancelInitialLoader = () => {
+    initDoneRef.current = true;
+    if (initRafRef.current !== null) {
+      cancelAnimationFrame(initRafRef.current);
+      initRafRef.current = null;
+    }
+    initAnimationsRef.current.forEach((a) => {
+      try {
+        a.cancel();
+      } catch {}
+    });
+    initAnimationsRef.current = [];
+    if (initOverlayRef.current) {
+      initOverlayRef.current.style.display = "none";
+      initOverlayRef.current.style.willChange = "";
+    }
+    if (initInnerRef.current) {
+      initInnerRef.current.style.willChange = "";
+    }
+  };
+
+  // Initial page-load animation with smooth Lenis-like exponential glide
+  useLayoutEffect(() => {
+    const overlay = initOverlayRef.current;
+    const inner = initInnerRef.current;
+    const titleEl = initTitleRef.current;
+    const subEl = initSubRef.current;
+    const fillEl = initFillRef.current;
+    const pctEl = initPctRef.current;
+
+    if (!overlay || !inner) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+      cancelInitialLoader();
+      return;
+    }
+
+    let cancelled = false;
+    const routeText = getRouteLabel(pathname);
+    if (subEl) {
+      subEl.textContent = routeText === "Home" ? "Portfolio" : routeText;
+    }
+
+    overlay.style.willChange = "transform";
+    inner.style.willChange = "transform, opacity";
+
+    if (lenisRef.current) {
+      lenisRef.current.stop();
+    }
+
+    // Keep wordmark immediately legible on first paint with a subtle settle
+    if (titleEl) {
+      const titleAnim = titleEl.animate(
+        [
+          { transform: "translate3d(0, 10px, 0)", opacity: 0.92 },
+          { transform: "translate3d(0, 0, 0)", opacity: 1 },
+        ],
+        { duration: 480, easing: LENIS_CURVE, fill: "forwards" }
+      );
+      initAnimationsRef.current.push(titleAnim);
+    }
+
+    if (subEl) {
+      const subAnim = subEl.animate(
+        [
+          { transform: "translate3d(0, 8px, 0)", opacity: 0.85 },
+          { transform: "translate3d(0, 0, 0)", opacity: 1 },
+        ],
+        { duration: 480, easing: LENIS_CURVE, fill: "forwards" }
+      );
+      initAnimationsRef.current.push(subAnim);
+    }
+
+    // Progress hairline + tabular percentage anchored to first visual rAF frame
+    const FILL_DURATION = 580;
+    let startTime: number | null = null;
+    let progressFinished = false;
+
+    const stepProgress = (now: number) => {
+      if (cancelled || initDoneRef.current) return;
+      if (startTime === null) {
+        startTime = now;
+      }
+      const rawT = Math.min(1, (now - startTime) / FILL_DURATION);
+      const eased = LENIS_EXPO_EASING(rawT);
+
+      if (fillEl) {
+        fillEl.style.transform = `scaleX(${eased})`;
+      }
+      if (pctEl) {
+        pctEl.textContent = `${Math.round(eased * 100)}%`;
+      }
+
+      if (rawT < 1) {
+        initRafRef.current = requestAnimationFrame(stepProgress);
+      } else if (!progressFinished) {
+        progressFinished = true;
+        initRafRef.current = null;
+        onProgressComplete();
+      }
+    };
+
+    const fontsReady =
+      typeof document !== "undefined" && "fonts" in document
+        ? Promise.race([
+            document.fonts.ready.then(() => undefined),
+            new Promise<void>((resolve) => setTimeout(resolve, 640)),
+          ])
+        : Promise.resolve();
+
+    const onProgressComplete = () => {
+      fontsReady.then(launchExitGlide);
+    };
+
+    initRafRef.current = requestAnimationFrame(stepProgress);
+
+    const launchExitGlide = () => {
+      if (cancelled || initDoneRef.current) return;
+      initDoneRef.current = true;
+
+      if (fillEl) fillEl.style.transform = "scaleX(1)";
+      if (pctEl) pctEl.textContent = "100%";
+
+      // Allow scrolling & clicking immediately as the curtain glides away
+      overlay.style.pointerEvents = "none";
+      if (lenisRef.current) {
+        lenisRef.current.start();
+      }
+
+      requestAnimationFrame(() => {
+        if (cancelled) return;
+
+        animateVisiblePageReveals(revealAnimationsRef, 820);
+
+        const outerExit = overlay.animate(
+          [
+            { transform: "translate3d(0, 0, 0)" },
+            { transform: "translate3d(0, -100%, 0)" },
+          ],
+          { duration: 740, easing: LENIS_CURVE, fill: "forwards" }
+        );
+        initAnimationsRef.current.push(outerExit);
+
+        const innerExit = inner.animate(
+          [
+            { transform: "translate3d(0, 0, 0)", opacity: 1 },
+            { transform: "translate3d(0, 28%, 0)", opacity: 0 },
+          ],
+          { duration: 600, easing: LENIS_CURVE, fill: "forwards" }
+        );
+        initAnimationsRef.current.push(innerExit);
+
+        outerExit.finished
+          .then(() => {
+            if (!cancelled) {
+              cancelInitialLoader();
+            }
+          })
+          .catch(() => {});
+      });
+    };
+
+    const safetyHide = setTimeout(() => {
+      if (!cancelled) {
+        cancelInitialLoader();
+        if (lenisRef.current) lenisRef.current.start();
+      }
+    }, 1850);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(safetyHide);
+      if (initRafRef.current !== null) {
+        cancelAnimationFrame(initRafRef.current);
+        initRafRef.current = null;
+      }
+      if (!initDoneRef.current) {
+        initAnimationsRef.current.forEach((a) => {
+          try {
+            a.cancel();
+          } catch {}
+        });
+        initAnimationsRef.current = [];
+      }
+    };
+    // Run once on initial mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const markTransition = (name: string) => {
     try {
       performance.mark(name);
-    } catch { }
+    } catch {}
     marksRef.current.push({ name, time: performance.now() });
     if (isDebugEnabled()) {
-      console.log(`[RouteTransition Mark] ${name} (+${(performance.now() - navStartRef.current).toFixed(1)}ms)`);
+      console.log(
+        `[RouteTransition Mark] ${name} (+${(performance.now() - navStartRef.current).toFixed(1)}ms)`
+      );
     }
   };
 
@@ -145,33 +409,22 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
   };
 
   const cancelCurtainAnimations = () => {
-    if (wipeInAnimationRef.current) {
-      try { wipeInAnimationRef.current.cancel(); } catch { }
-      wipeInAnimationRef.current = null;
-    }
-    if (innerAnimationRef.current) {
-      try { innerAnimationRef.current.cancel(); } catch { }
-      innerAnimationRef.current = null;
-    }
-    if (labelAnimationRef.current) {
-      try { labelAnimationRef.current.cancel(); } catch { }
-      labelAnimationRef.current = null;
-    }
-    if (fillAnimationRef.current) {
-      try { fillAnimationRef.current.cancel(); } catch { }
-      fillAnimationRef.current = null;
-    }
-    if (trackAnimationRef.current) {
-      try { trackAnimationRef.current.cancel(); } catch { }
-      trackAnimationRef.current = null;
-    }
-    if (wipeOutAnimationRef.current) {
-      try { wipeOutAnimationRef.current.cancel(); } catch { }
-      wipeOutAnimationRef.current = null;
-    }
-    if (wipeOutInnerAnimationRef.current) {
-      try { wipeOutInnerAnimationRef.current.cancel(); } catch { }
-      wipeOutInnerAnimationRef.current = null;
+    const refs = [
+      wipeInAnimationRef,
+      innerAnimationRef,
+      labelAnimationRef,
+      fillAnimationRef,
+      trackAnimationRef,
+      wipeOutAnimationRef,
+      wipeOutInnerAnimationRef,
+    ];
+    for (const ref of refs) {
+      if (ref.current) {
+        try {
+          ref.current.cancel();
+        } catch {}
+        ref.current = null;
+      }
     }
   };
 
@@ -199,22 +452,25 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
 
     if (interrupted) {
       revealAnimationsRef.current.forEach((anim) => {
-        try { anim.cancel(); } catch { }
+        try {
+          anim.cancel();
+        } catch {}
       });
       revealAnimationsRef.current = [];
     }
 
     if (overlayRef.current) {
       overlayRef.current.style.display = "none";
+      overlayRef.current.style.pointerEvents = "auto";
       overlayRef.current.style.willChange = "";
-      overlayRef.current.style.transform = "translateY(-100%)";
+      overlayRef.current.style.transform = "translate3d(0, -100%, 0)";
     }
     if (innerRef.current) {
       innerRef.current.style.willChange = "";
-      innerRef.current.style.transform = "translateY(100%)";
+      innerRef.current.style.transform = "translate3d(0, 40%, 0)";
     }
     if (labelRef.current) {
-      labelRef.current.style.transform = "translateY(100%)";
+      labelRef.current.style.transform = "translate3d(0, 100%, 0)";
       labelRef.current.style.opacity = "1";
     }
     if (fillRef.current) {
@@ -258,11 +514,9 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
       return;
     }
 
-    // 1 frame for DOM paint & scroll reset
     requestAnimationFrame(() => {
       markTransition("wipe-out start");
 
-      // Scroll reset
       const activeLenis = lenisRef.current;
       const targetHash = targetHashRef.current;
       const targetElement = targetHash ? document.getElementById(targetHash) : null;
@@ -284,64 +538,20 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
         }
       }
 
-      // Content reveal on arrival
-      // FIRST read all rects of "main [data-reveal]" in one loop (no style writes in between),
-      // filter to above the fold, sort by data-reveal-order, cap at 7. THEN create animations.
-      const allReveals = Array.from(document.querySelectorAll<HTMLElement>("main [data-reveal]"));
-      const windowH = window.innerHeight;
-      const rects = allReveals.map((el) => ({
-        el,
-        top: el.getBoundingClientRect().top,
-        order: el.getAttribute("data-reveal-order"),
-      }));
+      // Reveal incoming content smoothly with Lenis curve
+      animateVisiblePageReveals(revealAnimationsRef, 760);
 
-      const visible = rects.filter((item) => item.top < windowH);
+      // Allow immediate interaction as curtain glides out
+      overlay.style.pointerEvents = "none";
 
-      visible.sort((a, b) => {
-        if (a.order !== null && b.order !== null) {
-          return parseFloat(a.order) - parseFloat(b.order);
-        }
-        if (a.order !== null) return -1;
-        if (b.order !== null) return 1;
-        return 0;
-      });
-
-      const toAnimate = visible.slice(0, 7);
-
-      // Cancel previous reveal animations if any
-      revealAnimationsRef.current.forEach((anim) => {
-        try { anim.cancel(); } catch { }
-      });
-      revealAnimationsRef.current = [];
-
-      // Create reveal animations in the same frame the wipe-out starts
-      toAnimate.forEach((item, i) => {
-        const anim = item.el.animate(
-          [
-            { opacity: 0, translate: "0 12px" },
-            { opacity: 1, translate: "0 0" },
-          ],
-          {
-            duration: 500,
-            delay: 50 + i * 50,
-            easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-            fill: "backwards",
-          }
-        );
-        revealAnimationsRef.current.push(anim);
-      });
-
-      // Curtain Wipe-out:
-      // outer translateY(0) -> translateY(100%), inner translateY(0) -> translateY(-100%).
-      // 220ms, easing cubic-bezier(0.65, 0, 0.35, 1), fill "forwards".
       const outerOut = overlay.animate(
         [
-          { transform: "translateY(0)" },
-          { transform: "translateY(100%)" },
+          { transform: "translate3d(0, 0, 0)" },
+          { transform: "translate3d(0, 100%, 0)" },
         ],
         {
-          duration: 220,
-          easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+          duration: 620,
+          easing: LENIS_CURVE,
           fill: "forwards",
         }
       );
@@ -349,48 +559,39 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
 
       const innerOut = inner.animate(
         [
-          { transform: "translateY(0)" },
-          { transform: "translateY(-100%)" },
+          { transform: "translate3d(0, 0, 0)" },
+          { transform: "translate3d(0, -32%, 0)" },
         ],
         {
-          duration: 220,
-          easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+          duration: 620,
+          easing: LENIS_CURVE,
           fill: "forwards",
         }
       );
       wipeOutInnerAnimationRef.current = innerOut;
 
-      // Label: translateY(0) -> translateY(-100%) plus opacity 1 -> 0, 200ms, easing cubic-bezier(0.55, 0, 1, 0.45)
       if (label) {
         labelAnimationRef.current = label.animate(
           [
-            { transform: "translateY(0)", opacity: 1 },
-            { transform: "translateY(-100%)", opacity: 0 },
+            { transform: "translate3d(0, 0, 0)", opacity: 1 },
+            { transform: "translate3d(0, -100%, 0)", opacity: 0 },
           ],
           {
-            duration: 200,
-            easing: "cubic-bezier(0.55, 0, 1, 0.45)",
+            duration: 380,
+            easing: LENIS_CURVE,
             fill: "forwards",
           }
         );
       }
 
-      // Track: opacity 1 -> 0, 200ms
       if (track) {
-        trackAnimationRef.current = track.animate(
-          [
-            { opacity: 1 },
-            { opacity: 0 },
-          ],
-          {
-            duration: 200,
-            easing: "cubic-bezier(0.55, 0, 1, 0.45)",
-            fill: "forwards",
-          }
-        );
+        trackAnimationRef.current = track.animate([{ opacity: 1 }, { opacity: 0 }], {
+          duration: 340,
+          easing: LENIS_CURVE,
+          fill: "forwards",
+        });
       }
 
-      // On finish: hide overlay, cancel its animations, reset
       outerOut.finished
         .then(() => {
           markTransition("wipe-out end");
@@ -412,7 +613,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
 
           resetState(false);
         })
-        .catch(() => { });
+        .catch(() => {});
     });
   };
 
@@ -441,41 +642,43 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     }
   };
 
-  // Synchronize: listen for the incoming route to mount before revealing
   useEffect(() => {
     if (!isTransitioningRef.current) return;
 
     const currentNormalized = normalizePath(pathname);
     if (isDebugEnabled()) {
-      console.log(`[pathname effect] pathname=${pathname}, target=${targetPathRef.current}, routeCommitted=${routeCommittedRef.current}`);
+      console.log(
+        `[pathname effect] pathname=${pathname}, target=${targetPathRef.current}, routeCommitted=${routeCommittedRef.current}`
+      );
     }
     if (targetPathRef.current && currentNormalized === targetPathRef.current) {
       markTransition("pathname committed");
       routeCommittedRef.current = true;
 
-      // When the route is ready: commitStyles(), cancel(), then animate to scaleX(1) over 120ms. It must never gate the wipe-out.
       if (fillRef.current && fillAnimationRef.current) {
         try {
           fillAnimationRef.current.commitStyles();
-        } catch { }
+        } catch {}
         fillAnimationRef.current.cancel();
-        fillAnimationRef.current = fillRef.current.animate(
-          [{ transform: "scaleX(1)" }],
-          { duration: 120, fill: "forwards", easing: "ease-out" }
-        );
+        fillAnimationRef.current = fillRef.current.animate([{ transform: "scaleX(1)" }], {
+          duration: 180,
+          fill: "forwards",
+          easing: LENIS_CURVE,
+        });
       }
 
       checkTriggerWipeOut();
     }
   }, [pathname]);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       if (minVisibleTimeoutRef.current) clearTimeout(minVisibleTimeoutRef.current);
       revealAnimationsRef.current.forEach((anim) => {
-        try { anim.cancel(); } catch { }
+        try {
+          anim.cancel();
+        } catch {}
       });
       revealAnimationsRef.current = [];
       cancelCurtainAnimations();
@@ -490,7 +693,6 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
       return;
     }
 
-    // Check reduced motion
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       router.push(href);
       return;
@@ -504,7 +706,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
       return;
     }
 
-    // Clean any residual props from a previous interrupted navigation
+    cancelInitialLoader();
     resetState(true);
 
     isTransitioningRef.current = true;
@@ -524,12 +726,10 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     marksRef.current = [];
     markTransition("click");
 
-    // Step 4: Stop Lenis when wipe-in starts
     if (lenisRef.current) {
       lenisRef.current.stop();
     }
 
-    // Prefetch immediately so chunks are ready during wipe animation
     prefetch(href);
 
     const overlay = overlayRef.current;
@@ -544,11 +744,10 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
       return;
     }
 
-    // Set destination label text BEFORE the wipe-in starts
     const labelText = getRouteLabel(href);
     if (label) {
       label.textContent = labelText;
-      label.style.transform = "translateY(100%)";
+      label.style.transform = "translate3d(0, 100%, 0)";
       label.style.opacity = "1";
     }
 
@@ -560,27 +759,25 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
     }
 
     overlay.style.display = "block";
+    overlay.style.pointerEvents = "auto";
     overlay.style.willChange = "transform";
     inner.style.willChange = "transform";
 
-    // Safety timeout: if route doesn't swap within 1.5s, force wipe out so UI never blocks
     timeoutRef.current = setTimeout(() => {
       if (isTransitioningRef.current && !wipeOutStartedRef.current) {
-        markTransition("safety timeout fired (1500ms)");
+        markTransition("safety timeout fired (1800ms)");
         completeWipeOut();
       }
-    }, 1500);
+    }, 1800);
 
-    // Wipe-in: outer translateY(-100%) -> translateY(0) while inner translateY(100%) -> translateY(0) (counter-transform, so label stays still on screen).
-    // 160ms, easing cubic-bezier(0.33, 1, 0.68, 1), fill "forwards"
     const outerAnim = overlay.animate(
       [
-        { transform: "translateY(-100%)" },
-        { transform: "translateY(0)" },
+        { transform: "translate3d(0, -100%, 0)" },
+        { transform: "translate3d(0, 0, 0)" },
       ],
       {
-        duration: 160,
-        easing: "cubic-bezier(0.33, 1, 0.68, 1)",
+        duration: 320,
+        easing: LENIS_CURVE,
         fill: "forwards",
       }
     );
@@ -588,43 +785,41 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
 
     innerAnimationRef.current = inner.animate(
       [
-        { transform: "translateY(100%)" },
-        { transform: "translateY(0)" },
+        { transform: "translate3d(0, 40%, 0)" },
+        { transform: "translate3d(0, 0, 0)" },
       ],
       {
-        duration: 160,
-        easing: "cubic-bezier(0.33, 1, 0.68, 1)",
+        duration: 320,
+        easing: LENIS_CURVE,
         fill: "forwards",
       }
     );
 
-    // Label: in an overflow-hidden wrapper, the span animates translateY(100%) -> 0, 320ms, delay 60ms, easing cubic-bezier(0.22, 1, 0.36, 1)
     if (label) {
       labelAnimationRef.current = label.animate(
         [
-          { transform: "translateY(100%)" },
-          { transform: "translateY(0)" },
+          { transform: "translate3d(0, 100%, 0)" },
+          { transform: "translate3d(0, 0, 0)" },
         ],
         {
-          duration: 320,
-          delay: 60,
-          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-          fill: "forwards",
+          duration: 440,
+          delay: 70,
+          easing: LENIS_CURVE,
+          fill: "both",
         }
       );
     }
 
-    // Progress line: one animation on the fill with keyframes
-    // [{ transform: "scaleX(0)" }, { transform: "scaleX(0.7)", offset: 0.23 }, { transform: "scaleX(0.9)" }], 2600ms, fill "forwards"
     if (fill) {
       fillAnimationRef.current = fill.animate(
         [
           { transform: "scaleX(0)" },
-          { transform: "scaleX(0.7)", offset: 0.23 },
-          { transform: "scaleX(0.9)" },
+          { transform: "scaleX(0.72)", offset: 0.28 },
+          { transform: "scaleX(0.92)" },
         ],
         {
-          duration: 2600,
+          duration: 2400,
+          easing: LENIS_CURVE,
           fill: "forwards",
         }
       );
@@ -643,7 +838,7 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
 
         checkTriggerWipeOut();
       })
-      .catch(() => { });
+      .catch(() => {});
   };
 
   return (
@@ -656,17 +851,84 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
         getPreviousPath: () => previousPathRef.current,
       }}
     >
-      {/* Wipe overlay */}
+      {/* Initial Page Loading Curtain (smooth Lenis exponential reveal) */}
+      <div
+        ref={initOverlayRef}
+        id="initial-loader"
+        aria-hidden="true"
+        className="pointer-events-auto fixed inset-0 z-[10001] overflow-hidden bg-[var(--bg-canvas)] border-b border-[var(--border-subtle)] flex items-center justify-center"
+      >
+        <div
+          ref={initInnerRef}
+          className="flex flex-col items-center justify-center px-6 text-center"
+        >
+          {/* Minimal V-mark emblem */}
+          <div className="mb-5 w-9 h-9 rounded-xl bg-[var(--surface-tile)] border border-[var(--border-subtle)] flex items-center justify-center shadow-sm">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+              className="text-[var(--accent-color)]"
+            >
+              <path
+                d="M4.5 5.5L12 19L19.5 5.5"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+
+          <div className="py-0.5">
+            <span
+              ref={initTitleRef}
+              className="block font-display font-medium tracking-tight text-[var(--text-primary)] text-[clamp(1.75rem,4.5vw,2.75rem)] leading-snug select-none"
+            >
+              {siteConfig.name}
+            </span>
+          </div>
+
+          <div className="py-0.5 mt-0.5">
+            <span
+              ref={initSubRef}
+              className="block text-sm leading-normal text-[var(--text-secondary)] select-none"
+            >
+              Portfolio
+            </span>
+          </div>
+
+          <div className="mt-6 flex items-center gap-3">
+            <div className="h-[2px] w-[140px] rounded-full bg-[var(--border-subtle)] overflow-hidden">
+              <div
+                ref={initFillRef}
+                className="h-full w-full bg-[var(--accent-color)] origin-left"
+                style={{ transform: "scaleX(0)" }}
+              />
+            </div>
+            <span
+              ref={initPctRef}
+              className="w-9 text-right text-[13px] font-mono text-[var(--text-tertiary)] tabular-nums select-none"
+            >
+              0%
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Route-to-Route Wipe Curtain */}
       <div
         ref={overlayRef}
         aria-hidden="true"
         className="pointer-events-auto fixed inset-0 z-[10000] hidden overflow-hidden bg-[var(--bg-canvas)] border-b border-[var(--border-subtle)]"
-        style={{ transform: "translateY(-100%)", display: "none" }}
+        style={{ transform: "translate3d(0, -100%, 0)", display: "none" }}
       >
         <div
           ref={innerRef}
           className="absolute inset-0 flex flex-col items-center justify-center"
-          style={{ transform: "translateY(100%)" }}
+          style={{ transform: "translate3d(0, 40%, 0)" }}
         >
           <div className="overflow-hidden">
             <span
@@ -678,11 +940,11 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
           </div>
           <div
             ref={trackRef}
-            className="mt-6 h-[1px] w-[120px] bg-[var(--border-subtle)] overflow-hidden"
+            className="mt-6 h-[1.5px] w-[140px] rounded-full bg-[var(--border-subtle)] overflow-hidden"
           >
             <div
               ref={fillRef}
-              className="h-full w-full bg-[var(--text-primary)] origin-left"
+              className="h-full w-full bg-[var(--accent-color)] origin-left"
               style={{ transform: "scaleX(0)" }}
             />
           </div>
@@ -695,31 +957,22 @@ export function RouteTransitionProvider({ children }: { children: React.ReactNod
 
 export { getOutboundDestination };
 
-/**
- * Resolves link label strictly by order of precedence:
- * trackLabel -> aria-label -> title -> text of first heading -> first text node only -> textContent (max 60 chars)
- */
 export function resolveLinkLabel(el: HTMLElement, explicitTrackLabel?: string): string {
-  // 1. trackLabel
   if (explicitTrackLabel && explicitTrackLabel.trim()) {
     return explicitTrackLabel.trim().slice(0, 60);
   }
-  // 2. aria-label
   const ariaLabel = el.getAttribute("aria-label");
   if (ariaLabel && ariaLabel.trim()) {
     return ariaLabel.trim().slice(0, 60);
   }
-  // 3. title
   const title = el.getAttribute("title");
   if (title && title.trim()) {
     return title.trim().slice(0, 60);
   }
-  // 4. the text of the first heading (h1-h6) or first text node only
   const heading = el.querySelector("h1, h2, h3, h4, h5, h6");
   if (heading && heading.textContent && heading.textContent.trim()) {
     return heading.textContent.trim().slice(0, 60);
   }
-  // First non-empty text node
   if (typeof document !== "undefined") {
     const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
     let node = walker.nextNode();
@@ -819,7 +1072,6 @@ export function TransitionLink({
         if (onPointerDown) onPointerDown(e);
       }}
       onClick={(e) => {
-        // Allow default behavior for modifier clicks (cmd/ctrl click to new tab)
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
           return;
         }
@@ -839,9 +1091,14 @@ export function TransitionLink({
 
         navigateWithWipe(href);
 
-        // Performance guardrail: defer nav_click capture after navigateWithWipe starts
         queueMicrotask(() => {
-          const payload: { from_path: string; to_path: string; location: string; label: string; referrer_domain?: string } = {
+          const payload: {
+            from_path: string;
+            to_path: string;
+            location: string;
+            label: string;
+            referrer_domain?: string;
+          } = {
             from_path,
             to_path,
             location,

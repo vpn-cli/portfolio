@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLenisInstance, LENIS_EXPO_EASING } from "@/components/motion/SmoothScrollProvider";
 
 export interface TocItem {
   id: string;
@@ -54,9 +55,19 @@ export function TableOfContents() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const { lenis } = useLenisInstance();
+
   const scrollTo = (id: string) => {
     const target = document.getElementById(id);
     if (!target) return;
+    if (lenis) {
+      lenis.scrollTo(target, {
+        offset: -80,
+        duration: 1.25,
+        easing: LENIS_EXPO_EASING,
+      });
+      return;
+    }
     const top = target.getBoundingClientRect().top + window.scrollY - 80;
     window.scrollTo({
       top,
