@@ -69,20 +69,20 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
                 />
                 <h3 className="text-sm font-medium text-[var(--text-primary)]">
                   {slug === "sockets"
-                    ? "Client HTTP Polling"
+                    ? "Single-Node Map & Uncoalesced Replay"
                     : slug === "stream-mart"
-                    ? "Synchronous HTTP Chaining"
-                    : "Unchecked HTML eval()"}
+                    ? "Per-Message eachMessage Commits"
+                    : "Unchecked JSX eval() & Legacy DDL"}
                 </h3>
               </div>
               <span className="text-xs text-[var(--text-tertiary)]">
                 {slug === "sockets"
                   ? step === 1
-                    ? "2.1s Lag"
-                    : "2s Interval"
+                    ? "N DB Queries"
+                    : "Isolated State"
                   : slug === "stream-mart"
-                  ? "504 Timeout"
-                  : "Syntax Crash"}
+                  ? "48.42 /s Cap"
+                  : "Syntax & SQL Risk"}
               </span>
             </div>
 
@@ -91,29 +91,29 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
               <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-2 text-xs">
                 <span className="text-[var(--text-secondary)] font-mono">
                   {slug === "sockets"
-                    ? "Score Telemetry"
+                    ? "Reconnect & Outage"
                     : slug === "stream-mart"
-                    ? "Checkout Pipeline"
-                    : "Copilot Canvas"}
+                    ? "Consumer Pipeline"
+                    : "Copilot & Schema"}
                 </span>
                 <span className="font-mono text-[13px] text-[var(--text-tertiary)]">
                   {slug === "sockets"
                     ? step === 2
-                      ? "Updated late"
-                      : "Stale data"
+                      ? "Duplicate Echo"
+                      : "Stampede"
                     : slug === "stream-mart"
-                    ? "Cascading delay"
-                    : "Unchecked JSX"}
+                    ? "7,420 Lag @ 30s"
+                    : "Unchecked AST"}
                 </span>
               </div>
 
               <div className="py-1">
                 <span className="text-xs text-[var(--text-secondary)] font-mono block">
                   {slug === "sockets"
-                    ? "90% identical responses"
+                    ? "1,000 clients = 1,000 Postgres queries"
                     : slug === "stream-mart"
-                    ? "Uncommitted order write"
-                    : "Unchecked script execution"}
+                    ? "24.22ms/msg (99.7% Postgres I/O)"
+                    : "Unvalidated JSX + raw SQL strings"}
                 </span>
               </div>
             </div>
@@ -121,7 +121,13 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
 
           <div className="pt-2 border-t border-[var(--border-subtle)] text-[13px] text-[var(--text-tertiary)] flex items-center gap-1.5 font-mono">
             <XCircle className="w-3.5 h-3.5 text-[var(--text-tertiary)] shrink-0" aria-hidden="true" />
-            <span>High latency</span>
+            <span>
+              {slug === "sockets"
+                ? "Single-instance bottleneck"
+                : slug === "stream-mart"
+                ? "154.33s lag catch-up"
+                : "Fragile generation & DDL"}
+            </span>
           </div>
         </div>
 
@@ -133,18 +139,18 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
                 <Zap className="w-4 h-4 text-[var(--text-primary)] shrink-0" aria-hidden="true" />
                 <h3 className="text-sm font-medium text-[var(--text-primary)]">
                   {slug === "sockets"
-                    ? "Targeted WebSocket Push"
+                    ? "Redis 7 Cluster & Coalesced Replay"
                     : slug === "stream-mart"
-                    ? "Transactional Outbox & Kafka"
-                    : "Constrained AST Registry"}
+                    ? "SKIP LOCKED & eachBatch + DLQ"
+                    : "Strict Zod AST & Parameterized DDL"}
                 </h3>
               </div>
               <span className="text-xs text-[var(--accent-text)] font-medium">
                 {slug === "sockets"
-                  ? "Instant Push"
+                  ? "0 / 625k Lost"
                   : slug === "stream-mart"
-                  ? "Atomic Commit"
-                  : "Zero eval()"}
+                  ? "375.75 /s (+7.76×)"
+                  : "81.4% Eval Pass"}
               </span>
             </div>
 
@@ -153,27 +159,27 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
               <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-2 text-xs">
                 <span className="text-[var(--text-secondary)]">
                   {slug === "sockets"
-                    ? "Push Gateway"
+                    ? "500-Seq Dedupe + Coalescing"
                     : slug === "stream-mart"
-                    ? "Kafka Consumer"
-                    : "Zod Schema"}
+                    ? "1 SQL Tx / Batch"
+                    : "Pre-Chunk Failover"}
                 </span>
                 <span className="text-xs text-[var(--text-secondary)] font-normal">
                   {slug === "sockets"
-                    ? "Push frame"
+                    ? "98.649% ≤ 400ms"
                     : slug === "stream-mart"
-                    ? "Async decoupled"
-                    : "Verified AST"}
+                    ? "0 msgs lag @ 30s"
+                    : "92.8% valid nodes"}
                 </span>
               </div>
 
               <div className="py-1">
                 <span className="text-xs text-[var(--text-primary)] block">
                   {slug === "sockets"
-                    ? "Push on database mutation"
+                    ? "1,000 gap requests = 1 Postgres query"
                     : slug === "stream-mart"
-                    ? "Atomic SQL transaction"
-                    : "Typed JSON to React AST"}
+                    ? "Poison pills isolated to payment-successful.DLQ"
+                    : "format('%I') DDL + Clerk RLS (192 tests)"}
                 </span>
               </div>
             </div>
@@ -181,7 +187,13 @@ export function ProblemSplitVisual({ before, after, slug, caption }: ProblemSpli
 
           <div className="pt-2 border-t border-[var(--border-subtle)] text-[13px] text-[var(--text-primary)] flex items-center gap-1.5 font-mono">
             <CheckCircle2 className="w-3.5 h-3.5 text-[var(--text-primary)] shrink-0" aria-hidden="true" />
-            <span>Sub-second delivery</span>
+            <span>
+              {slug === "sockets"
+                ? "0.0ms server event-loop lag"
+                : slug === "stream-mart"
+                ? "0.31s catch-up · 4/4 CI tests"
+                : "Zero eval() · Lighthouse 91"}
+            </span>
           </div>
         </div>
       </div>

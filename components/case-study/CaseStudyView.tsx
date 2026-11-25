@@ -13,6 +13,8 @@ import {
   FileText,
   Mail,
   HelpCircle,
+  Target,
+  CheckCircle2,
 } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 import { trackEvent, getReferrerDomain, getOutboundDestination } from "@/lib/analytics";
@@ -21,16 +23,28 @@ import { TableOfContents } from "./TableOfContents";
 import { CaseStudyHero } from "./CaseStudyHero";
 import { ProblemSplitVisual } from "./ProblemSplitVisual";
 import { InteractiveArchitecture } from "./InteractiveArchitecture";
+import { CaseStudyFigures } from "./CaseStudyFigures";
 import { DecisionRows } from "./DecisionRows";
 import { BugCards } from "./BugCards";
 import { NextStepsSection } from "./NextStepsSection";
+
+function StarBadge({ letter, label }: { letter: "S" | "T" | "A" | "R"; label: string }) {
+  return (
+    <div className="inline-flex items-center gap-2">
+      <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-[var(--accent-color)] text-[var(--accent-contrast)] text-[13px] font-medium">
+        {letter}
+      </span>
+      <span className="text-[13px] font-medium text-[var(--text-secondary)]">
+        {label}
+      </span>
+    </div>
+  );
+}
 
 export function CaseStudyView({ project }: { project: CaseStudy }) {
   const router = useRouter();
   const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
 
-  // Filter out all TODO (unsourced) metrics and configuration values.
-  // Only verified outcome/result metrics render. If none exist, render no metric row.
   const verifiedMetrics = (project.metrics || []).filter(
     (m) => !m.isTodo && !m.isConfig
   );
@@ -49,7 +63,6 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
     trackEvent("project_open", payload);
   }, [project.slug, previousPath, getPreviousPath]);
 
-  // Track case study reading depth on exit (>25% scroll)
   useEffect(() => {
     let maxScrollPct = 0;
 
@@ -86,7 +99,6 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
     };
   }, [project.slug]);
 
-  // Esc key navigates back to /projects
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -97,7 +109,6 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [router]);
 
-  // Compute Prev & Next projects from siteConfig
   const currentIndex = siteConfig.projects.findIndex((p) => p.slug === project.slug);
   const prevProject =
     siteConfig.projects[(currentIndex - 1 + siteConfig.projects.length) % siteConfig.projects.length];
@@ -110,13 +121,12 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
   return (
     <main className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-primary)] px-4 sm:px-6 lg:px-8 py-6 sm:py-10 flex flex-col items-center">
       <div className="w-full max-w-[var(--layout-max-width)] space-y-10 sm:space-y-12">
-        {/* ━━━ TOP BAR NAVIGATION ━━━ */}
+        {/* Top bar navigation */}
         <nav
           data-reveal
           aria-label="Case study navigation"
           className="w-full flex items-center justify-between py-3 border-b border-[var(--border-subtle)]"
         >
-          {/* Left: ← All work + Category Badge */}
           <div className="flex items-center gap-3">
             <TransitionLink
               href="/projects"
@@ -140,7 +150,6 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
             </span>
           </div>
 
-          {/* Right: Prev / Next project links */}
           <div className="flex items-center gap-3 sm:gap-5 text-sm">
             <TransitionLink
               href={`/work/${prevProject.slug}`}
@@ -170,44 +179,47 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
           </div>
         </nav>
 
-        {/* ━━━ MAIN GRID: STICKY TOC (DESKTOP) + 6 STORY SECTIONS (RIGHT) ━━━ */}
+        {/* Main grid: Sticky TOC + STAR Story */}
         <div className="w-full flex flex-col lg:flex-row gap-10 lg:gap-14 items-start">
           <TableOfContents />
 
-          <div className="flex-1 min-w-0 w-full space-y-20 sm:space-y-28">
+          <div className="flex-1 min-w-0 w-full space-y-20 sm:space-y-24">
             {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                1. HOOK (REPLACES TL;DR + CONTEXT + RESULTS)
+                OVERVIEW
                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
             <section id="hook" aria-label="Project overview" className="space-y-8">
-              {/* Plain Title & One Sentence Pitch (≤20 words, first-person, no résumé verbs) */}
               <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono text-[var(--text-tertiary)]">
-                    {project.year}
-                  </span>
+                <div className="flex flex-wrap items-center gap-2 text-xs text-[var(--text-secondary)]">
+                  <span>{project.year}</span>
                   <span className="text-[var(--border-subtle)]" aria-hidden="true">
                     ·
                   </span>
-                  <span className="text-xs text-[var(--text-secondary)]">
-                    {project.category}
+                  <span>{project.category}</span>
+                  <span className="text-[var(--border-subtle)]" aria-hidden="true">
+                    ·
                   </span>
+                  <span>STAR Case Study</span>
                 </div>
 
-                <h1 data-reveal className="type-h1 font-display font-medium text-[var(--text-primary)] tracking-tight">
+                <h1
+                  data-reveal
+                  className="type-h1 font-display font-medium text-[var(--text-primary)] tracking-tight"
+                >
                   {project.title}
                 </h1>
 
-                <p data-reveal className="type-body2 text-[var(--text-primary)] font-medium leading-relaxed max-w-[65ch]">
+                <p
+                  data-reveal
+                  className="type-body2 text-[var(--text-primary)] font-medium leading-relaxed max-w-[65ch]"
+                >
                   {project.hookPitch}
                 </p>
               </div>
 
-              {/* Hero Visual: Real Application Clip / Pipeline (Dominates >50% Viewport) */}
               <div data-reveal className="w-full">
                 <CaseStudyHero project={project} />
               </div>
 
-              {/* Metric Chips with Measurement Tooltips (only verified result metrics; no row if empty) */}
               {verifiedMetrics.length > 0 && (
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {verifiedMetrics.slice(0, 3).map((metric, idx) => (
@@ -216,13 +228,10 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                       className="relative rounded-xl p-4 bg-[var(--surface-tile)] border border-[var(--border-subtle)] flex flex-col justify-between"
                     >
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-lg sm:text-xl font-medium text-[var(--text-primary)]">
-                            {metric.value}
-                          </span>
-                        </div>
+                        <span className="font-mono text-lg sm:text-xl font-medium text-[var(--text-primary)] tabular-nums">
+                          {metric.value}
+                        </span>
 
-                        {/* Tooltip trigger button */}
                         <button
                           type="button"
                           onClick={() => setActiveTooltip(activeTooltip === idx ? null : idx)}
@@ -239,7 +248,6 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                         {metric.label}
                       </span>
 
-                      {/* Measurement Tooltip Box */}
                       {activeTooltip === idx && (
                         <div className="absolute left-2 right-2 bottom-full mb-2 p-3 rounded-lg bg-[var(--surface-tile-elevated)] border border-[var(--border-hover)] text-[13px] text-[var(--text-secondary)] shadow-lg z-30 animate-in fade-in duration-150">
                           <span className="font-medium text-[var(--text-primary)] block mb-0.5">
@@ -253,20 +261,18 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
                 </div>
               )}
 
-              {/* Meta Row: Role · Timeline · Stack */}
               <div className="pt-3 border-t border-[var(--border-subtle)] text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-y-1 gap-x-4">
                 <div className="flex items-center gap-2 text-[var(--text-secondary)] shrink-0">
                   <span className="font-medium text-[var(--text-primary)]">{project.role}</span>
-                  <span className="text-[var(--border-subtle)]" aria-hidden="true">·</span>
+                  <span className="text-[var(--border-subtle)]" aria-hidden="true">
+                    ·
+                  </span>
                   <span>{project.timeline}</span>
                 </div>
 
-                <p className="text-xs text-[var(--text-secondary)]">
-                  {project.stack.join(", ")}
-                </p>
+                <p className="text-xs text-[var(--text-secondary)]">{project.stack.join(", ")}</p>
               </div>
 
-              {/* CTAs on ONE row + Cold Start Note */}
               <div className="space-y-2 pt-2 border-t border-[var(--border-subtle)]">
                 <div className="flex flex-wrap items-center gap-3">
                   {isDemoOnGithub ? (
@@ -364,19 +370,33 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
             </section>
 
             {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                2. THE PROBLEM (CLAIM + ≤50 WORDS + SPLIT VISUAL)
+                S — SITUATION
                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
-            <section id="problem" aria-label="The problem" className="space-y-6">
-              <div className="space-y-3">
-                <span className="text-xs text-[var(--text-tertiary)] block">
-                  The problem
-                </span>
+            <section id="situation" aria-label="Situation" className="space-y-6">
+              <div id="problem" className="space-y-3">
+                <StarBadge letter="S" label="Situation" />
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
-                  {project.problemClaim}
+                  {project.situation.heading}
                 </h2>
                 <p className="type-body4 text-[var(--text-secondary)] leading-relaxed max-w-[65ch]">
-                  {project.problemText}
+                  {project.situation.summary}
                 </p>
+              </div>
+
+              <div className="rounded-[var(--card-radius)] bg-[var(--surface-tile)] border border-[var(--border-subtle)] p-5 sm:p-6 space-y-3">
+                <span className="text-[13px] font-medium text-[var(--text-primary)] block">
+                  Baseline constraints before the refactor
+                </span>
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {project.situation.constraints.map((constraint, idx) => (
+                    <li
+                      key={idx}
+                      className="rounded-xl bg-[var(--surface-tile-elevated)] border border-[var(--border-subtle)] p-3.5 text-[13px] text-[var(--text-secondary)] leading-relaxed"
+                    >
+                      {constraint}
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               <ProblemSplitVisual
@@ -388,31 +408,80 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
             </section>
 
             {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                3. HOW IT WORKS (CLAIM + ≤50 WORDS + INTERACTIVE ARCHITECTURE)
+                T — TASK
                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
-            <section id="architecture" aria-label="Architecture and data flow" className="space-y-6">
+            <section id="task" aria-label="Task" className="space-y-6">
               <div className="space-y-3">
-                <span className="text-xs text-[var(--text-tertiary)] block">
-                  How it works
-                </span>
+                <StarBadge letter="T" label="Task" />
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
-                  {project.architectureClaim}
+                  {project.task.heading}
                 </h2>
                 <p className="type-body4 text-[var(--text-secondary)] leading-relaxed max-w-[65ch]">
-                  {project.architectureText}
+                  {project.task.summary}
                 </p>
               </div>
 
-              <InteractiveArchitecture nodes={project.architectureNodes} />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {project.task.objectives.map((obj) => (
+                  <div
+                    key={obj.title}
+                    className="rounded-[var(--card-radius)] bg-[var(--surface-tile)] border border-[var(--border-subtle)] p-5 flex flex-col justify-between space-y-3"
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-[var(--accent-text)]">
+                        <Target className="w-4 h-4 shrink-0" aria-hidden="true" />
+                        <span className="text-[13px] font-medium">{obj.target}</span>
+                      </div>
+                      <h3 className="text-base font-medium text-[var(--text-primary)]">
+                        {obj.title}
+                      </h3>
+                      <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed">
+                        {obj.detail}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </section>
 
             {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                4. DECISIONS I MADE (CLAIM + 4 COMPACT ROWS)
+                A — ACTION (ARCHITECTURE + FIGURES + DECISIONS + BUGS)
                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+            <section id="action" aria-label="Action and architecture" className="space-y-12">
+              <div id="architecture" className="space-y-6">
+                <div className="space-y-3">
+                  <StarBadge letter="A" label="Action · Architecture & Implementation" />
+                  <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
+                    {project.architectureClaim}
+                  </h2>
+                  <p className="type-body4 text-[var(--text-secondary)] leading-relaxed max-w-[65ch]">
+                    {project.architectureText}
+                  </p>
+                </div>
+
+                <InteractiveArchitecture nodes={project.architectureNodes} />
+              </div>
+
+              {/* Explanatory Figures */}
+              <div id="figures" className="space-y-5">
+                <div className="space-y-2">
+                  <span className="text-[13px] font-medium text-[var(--text-tertiary)] block">
+                    Explanatory figures & telemetry
+                  </span>
+                  <h3 className="type-h3 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
+                    Measured system behavior across benchmarks and fault injections
+                  </h3>
+                </div>
+
+                <CaseStudyFigures figures={project.figures} />
+              </div>
+            </section>
+
+            {/* Decisions */}
             <section id="decisions" aria-label="Key engineering decisions" className="space-y-6">
               <div className="space-y-2">
                 <span className="text-xs text-[var(--text-tertiary)] block">
-                  Decisions I made
+                  Action · Trade-offs
                 </span>
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
                   {project.decisionsClaim}
@@ -422,13 +491,11 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
               <DecisionRows decisions={project.decisions} />
             </section>
 
-            {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                5. BUGS I HIT (CLAIM + 3 COMPACT CARDS WITH COMMITS)
-                ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+            {/* Bugs Fixed */}
             <section id="bugs" aria-label="Bugs and fixes" className="space-y-6">
               <div className="space-y-2">
                 <span className="text-xs text-[var(--text-tertiary)] block">
-                  Bugs I fixed
+                  Action · Bugs fixed
                 </span>
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
                   {project.bugsClaim}
@@ -439,16 +506,54 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
             </section>
 
             {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                6. WHAT I'D DO NEXT + TRY IT (FOLDED LEARNING + DEMO CTA)
+                R — RESULT
                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
-            <section id="next" aria-label="Next steps and live verification" className="space-y-6">
-              <div className="space-y-3">
-                <span className="text-xs text-[var(--text-tertiary)] block">
-                  Try it
-                </span>
+            <section id="result" aria-label="Result and verification" className="space-y-6">
+              <div id="next" className="space-y-3">
+                <StarBadge letter="R" label="Result" />
                 <h2 className="type-h2 font-display font-medium text-[var(--text-primary)] tracking-tight max-w-[65ch]">
-                  {project.nextStepsClaim}
+                  {project.result.heading}
                 </h2>
+                <p className="type-body4 text-[var(--text-secondary)] leading-relaxed max-w-[65ch]">
+                  {project.result.summary}
+                </p>
+              </div>
+
+              {/* Verified Before vs After Outcomes */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {project.result.outcomes.map((outcome) => (
+                  <div
+                    key={outcome.metric}
+                    className="rounded-[var(--card-radius)] bg-[var(--surface-tile)] border border-[var(--border-subtle)] p-5 flex flex-col justify-between space-y-4"
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-center gap-2 text-[var(--text-primary)] font-medium text-sm">
+                        <CheckCircle2
+                          className="w-4 h-4 text-[var(--accent-text)] shrink-0"
+                          aria-hidden="true"
+                        />
+                        <span>{outcome.metric}</span>
+                      </div>
+
+                      <div className="space-y-1.5 text-[13px]">
+                        <div className="rounded-lg bg-[var(--bg-canvas-subtle)] border border-[var(--border-subtle)] p-2.5 text-[var(--text-tertiary)]">
+                          <span className="font-medium text-[var(--text-secondary)] block">
+                            Before:
+                          </span>
+                          {outcome.before}
+                        </div>
+                        <div className="rounded-lg bg-[var(--surface-tile-elevated)] border border-[var(--border-hover)] p-2.5 text-[var(--text-primary)] font-medium">
+                          <span className="text-[var(--accent-text)] block">After:</span>
+                          {outcome.after}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-2 border-t border-[var(--border-subtle)] text-[13px] font-mono text-[var(--text-tertiary)]">
+                      {outcome.source}
+                    </div>
+                  </div>
+                ))}
               </div>
 
               <NextStepsSection
@@ -462,7 +567,7 @@ export function CaseStudyView({ project }: { project: CaseStudy }) {
               />
             </section>
 
-            {/* ━━━ FOOTER: NEXT PROJECT + CONTACT ━━━ */}
+            {/* Footer: Next Project + Contact */}
             <footer className="space-y-8 pt-10 border-t border-[var(--border-subtle)]">
               <TransitionLink
                 href={`/work/${nextProject.slug}`}

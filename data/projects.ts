@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 export interface CaseStudyMetricChip {
   value: string;
   label: string;
@@ -42,6 +40,110 @@ export interface ArchitectureNode {
   };
 }
 
+export interface CaseStudyStarSituation {
+  heading: string;
+  summary: string;
+  constraints: string[];
+}
+
+export interface CaseStudyStarTask {
+  heading: string;
+  summary: string;
+  objectives: {
+    title: string;
+    target: string;
+    detail: string;
+  }[];
+}
+
+export interface CaseStudyStarResultOutcome {
+  metric: string;
+  before: string;
+  after: string;
+  source: string;
+}
+
+export interface CaseStudyStarResult {
+  heading: string;
+  summary: string;
+  outcomes: CaseStudyStarResultOutcome[];
+}
+
+export type CaseStudyFigure =
+  | {
+      id: string;
+      kind: "bar-comparison";
+      figureNumber: string;
+      title: string;
+      caption: string;
+      source: string;
+      unit: string;
+      seriesLabels: string[];
+      groups: {
+        label: string;
+        sublabel?: string;
+        tiers?: {
+          tierLabel: string;
+          bars: {
+            label: string;
+            value: number;
+            displayValue: string;
+            note?: string;
+            highlight?: boolean;
+          }[];
+        }[];
+        bars?: {
+          label: string;
+          value: number;
+          displayValue: string;
+          note?: string;
+          highlight?: boolean;
+        }[];
+      }[];
+    }
+  | {
+      id: string;
+      kind: "latency-anatomy";
+      figureNumber: string;
+      title: string;
+      caption: string;
+      source: string;
+      totalLabel: string;
+      totalValue: string;
+      segments: {
+        label: string;
+        valueDisplay: string;
+        sharePct: number;
+        detail: string;
+        tone: "accent" | "secondary" | "muted";
+      }[];
+      callouts: {
+        label: string;
+        value: string;
+        detail: string;
+      }[];
+    }
+  | {
+      id: string;
+      kind: "flow-diagram";
+      figureNumber: string;
+      title: string;
+      caption: string;
+      source: string;
+      lanes: {
+        stage: string;
+        component: string;
+        mechanism: string;
+        guarantee: string;
+        highlight?: boolean;
+      }[];
+      branchNote?: {
+        trigger: string;
+        fallback: string;
+        outcome: string;
+      };
+    };
+
 export interface CaseStudy {
   slug: string;
   title: string;
@@ -66,6 +168,12 @@ export interface CaseStudy {
     coldStartNote?: string;
   };
   metrics: CaseStudyMetricChip[];
+  // STAR sections
+  situation: CaseStudyStarSituation;
+  task: CaseStudyStarTask;
+  figures: CaseStudyFigure[];
+  result: CaseStudyStarResult;
+  // Supporting narrative & interactive inspector fields
   problemClaim: string;
   problemText: string;
   problemComparison: {
@@ -98,31 +206,34 @@ export const projects: CaseStudy[] = [
     slug: "appforge",
     title: "AppForge",
     hookPitch:
-      "I built an AI app builder that turns natural language prompts into typed React interfaces and database schemas.",
+      "I built an AI app builder that compiles natural-language prompts into strict Zod-validated React component trees and isolated Postgres tables.",
     tagline:
-      "An AI app builder that turns natural language prompts into typed React interfaces and database schemas.",
+      "A metadata-driven AI app builder compiling prompts into strict Zod-validated React interfaces and dynamic PostgreSQL schemas.",
     category: "Generative AI & App Engine",
     year: "2026",
     role: "Full-Stack Architect",
-    timeline: "May 2026 to Aug 2026",
+    timeline: "May 2026 to Nov 2026",
     stack: [
-      "Next.js 15",
+      "Next.js 16",
+      "React 19",
       "TypeScript",
-      "Llama-3.3-70B",
-      "Groq LPU",
+      "Groq / Gemini AI SDK",
       "Upstash Redis",
-      "Upstash Kafka",
-      "Supabase",
+      "Supabase PostgreSQL",
       "Clerk",
-      "Tailwind CSS",
+      "Motion",
+      "Sentry",
+      "Tailwind CSS v4",
     ],
     heroClip: {
       mp4: "/projects/appforge/appforge-ask-ai-dashboard.mp4",
       webm: "/projects/appforge/appforge-ask-ai-dashboard.webm",
-      poster: "/projects/appforge/appforge-ask-ai-dashboard-poster.webp",
-      caption: "Prompt streams into verified React components with zero eval.",
+      poster: "/projects/appforge/appforge-hero-redesign.webp",
+      caption:
+        "Natural language streams into strict Zod-validated React components with zero eval().",
     },
-    problemVisualCaption: "Prompt input versus validated component tree generation.",
+    problemVisualCaption:
+      "Unchecked JSX eval() versus strict Zod AST validation and tenant-isolated DDL.",
     links: {
       demo: "https://appforge-studios.vercel.app",
       repo: "https://github.com/vpn-cli/appforge",
@@ -130,258 +241,488 @@ export const projects: CaseStudy[] = [
     },
     metrics: [
       {
-        value: "0",
-        label: "Arbitrary eval() risks",
-        howMeasured: "Strict AST component registry maps nodes directly to React primitives with zero eval()",
-        isConfig: true,
+        value: "81.4%",
+        label: "Full layout pass rate",
+        howMeasured:
+          "EVALS.md: 48/59 completed non-429 prompts passed all 3 layout criteria on Groq openai/gpt-oss-120b (100% on Dashboards 19/19 & CRUD 18/18).",
       },
       {
-        value: "<800ms",
-        label: "Prompt-to-layout",
-        howMeasured: "TODO: Marked as placeholder. Sourced from résumé Groq LPU benchmark; needs automated test in repo.",
-        isTodo: true,
+        value: "92.8%",
+        label: "Component node validity",
+        howMeasured:
+          "EVALS.md: 141 of 152 evaluated AST component nodes passed per-component Zod schema validation via validateComponentNode().",
       },
       {
-        value: "68%",
-        label: "Token cost savings",
-        howMeasured: "TODO: Marked as placeholder. Sourced from semantic cache hit rate telemetry; needs test script.",
-        isTodo: true,
+        value: "91",
+        label: "Lighthouse perf median",
+        howMeasured:
+          "context/progress-tracker.md: 3-run production Lighthouse benchmark (runs: 94, 91, 90; LCP 1.2s, CLS 0) vs 88 baseline on origin/master.",
       },
     ],
-    problemClaim: "Unchecked code generation crashes and risks script injection",
+    situation: {
+      heading: "Raw LLM code generation breaks UIs and multi-tenant isolation",
+      summary:
+        "Streaming raw JSX from an LLM into an iframe fails on minor syntax hallucinations, exposes cross-site scripting risks, and stalls when primary inference keys hit rate limits. Earlier iterations also shipped unvalidated DDL helpers, an unused Upstash Kafka dependency, and a third-party shader library that inflated landing bundle weight.",
+      constraints: [
+        "Executing model-written JSX with eval() causes white-screen crashes on malformed syntax",
+        "Mid-stream fallback between two LLMs corrupts JSON output by concatenating tokens from different models",
+        "Dynamic schema sync must never allow DROP TABLE, SQL injection, or cross-tenant table reads",
+        "Client bundle and main-thread motion must stay responsive under 50ms task budgets",
+      ],
+    },
+    task: {
+      heading: "Build a deterministic AST pipeline, harden multi-tenancy, and benchmark every layer",
+      summary:
+        "Redesign AppForge into a production-hardened runtime: enforce per-component Zod validation, guarantee atomic single-provider streams, lock down dynamic Postgres DDL and RLS, and measure reliability with an automated 100-prompt evaluation suite and 192 tests.",
+      objectives: [
+        {
+          title: "Strict AST & Fallback Boundary",
+          target: "0 eval() calls + safe node fallback",
+          detail:
+            "Validate every Header, Statistic, DataTable, Card, Grid, and ButtonAction node with .strict() Zod schemas and isolate malformed nodes in InvalidNodeFallback.",
+        },
+        {
+          title: "Pre-First-Chunk Multi-Provider Failover",
+          target: "Groq primary → Gemini fallback",
+          detail:
+            "Allow provider failover only before chunk #1 leaves the stream; lock the stream once committed and normalize cache keys in Upstash Redis.",
+        },
+        {
+          title: "Parameterized DDL & Tenant RLS",
+          target: "192 tests (148 unit + 44 DB)",
+          detail:
+            "Replace raw SQL string building with format('%I') identifiers, a strict column-type whitelist, removed DROP TABLE, and Clerk sub RLS policies.",
+        },
+      ],
+    },
+    figures: [
+      {
+        id: "appforge-evals",
+        kind: "bar-comparison",
+        figureNumber: "Figure 1",
+        title: "Copilot 100-Prompt Evaluation Suite (Groq openai/gpt-oss-120b)",
+        caption:
+          "Per-category full layout pass rates excluding HTTP 429 rate-limited prompts (59 completed of 67 attempted; 141/152 valid nodes overall). Source: EVALS.md.",
+        source: "EVALS.md · scripts/run-evals.mjs",
+        unit: "%",
+        seriesLabels: ["Full Layout Pass % (Completed)", "Node Validity %"],
+        groups: [
+          {
+            label: "Category Pass Rates (Completed Prompts)",
+            bars: [
+              {
+                label: "Dashboards (19/19)",
+                value: 100,
+                displayValue: "100.0%",
+                note: "48/48 valid nodes · 1 prompt 429-limited",
+                highlight: true,
+              },
+              {
+                label: "CRUD Interfaces (18/18)",
+                value: 100,
+                displayValue: "100.0%",
+                note: "46/46 valid nodes · 2 prompts 429-limited",
+                highlight: true,
+              },
+              {
+                label: "Overall Non-429 (48/59)",
+                value: 81.4,
+                displayValue: "81.4%",
+                note: "141/152 valid nodes (92.8% node validity)",
+                highlight: true,
+              },
+              {
+                label: "Forms (10/20)",
+                value: 50,
+                displayValue: "50.0%",
+                note: "41/50 valid nodes · includes 2 safety refusals",
+              },
+              {
+                label: "Settings (1/2)",
+                value: 50,
+                displayValue: "50.0%",
+                note: "6/8 valid nodes · 5 prompts 429-limited",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "appforge-failover-flow",
+        kind: "flow-diagram",
+        figureNumber: "Figure 2",
+        title: "Pre-First-Chunk Failover & Strict Schema/DDL Gate",
+        caption:
+          "How Copilot prevents mixed-model JSON corruption while isolating per-node errors and securing dynamic Postgres table creation.",
+        source: "lib/copilot-pipeline.ts · actions/schema.ts",
+        lanes: [
+          {
+            stage: "1. Ingress",
+            component: "POST /api/copilot",
+            mechanism: "x-real-ip guest quota + Upstash normalized cache lookup",
+            guarantee: "Instant stream on cache hit (7-day TTL)",
+          },
+          {
+            stage: "2. Stream Gate",
+            component: "createCopilotStream()",
+            mechanism: "Groq primary → Gemini 2.5 Flash failover ONLY pre-chunk #1",
+            guarantee: "Zero cross-model token concatenation",
+            highlight: true,
+          },
+          {
+            stage: "3. AST Check",
+            component: "lib/validation.ts (.strict())",
+            mechanism: "Per-component Zod parse + InvalidNodeFallback wrapper",
+            guarantee: "92.8% valid nodes; 0 white-screen crashes",
+            highlight: true,
+          },
+          {
+            stage: "4. Schema Sync",
+            component: "execute_app_ddl RPC",
+            mechanism: "format('%I') + type whitelist + (select auth.jwt()->>'sub') RLS",
+            guarantee: "No DROP TABLE; strict tenant isolation",
+          },
+        ],
+        branchNote: {
+          trigger: "Mid-stream socket drop after chunk #1",
+          fallback: "Lock out remaining providers & emit terminal error event",
+          outcome: "Client retries cleanly instead of parsing hybrid JSON",
+        },
+      },
+      {
+        id: "appforge-perf-anatomy",
+        kind: "latency-anatomy",
+        figureNumber: "Figure 3",
+        title: "UX Polish & Gate (b) Native Shader Performance Budget",
+        caption:
+          "Measured client runtime numbers after consolidating onto motion/react, removing framer-motion, and replacing @paper-design/shaders-react with NativeMeshShader.",
+        source: "context/progress-tracker.md · Gate (b) & Lighthouse runs",
+        totalLabel: "Production Lighthouse Median (vs 88 baseline)",
+        totalValue: "91 / 100",
+        segments: [
+          {
+            label: "Lighthouse Performance (3-run median: 94, 91, 90)",
+            valueDisplay: "91 score",
+            sharePct: 91,
+            detail: "LCP 1.2s · CLS 0 · TBT 290ms (down from 340ms)",
+            tone: "accent",
+          },
+          {
+            label: "NativeMeshShader Control Delta (10-run median)",
+            valueDisplay: "1.00ms",
+            sharePct: 5,
+            detail: "Domain-warped FBM fragment shader + KHR_parallel_shader_compile",
+            tone: "secondary",
+          },
+          {
+            label: "Copilot Morph Max Main-Thread Task",
+            valueDisplay: "23.98ms",
+            sharePct: 4,
+            detail: "0 long tasks > 50ms during layoutId pill-to-panel morph",
+            tone: "muted",
+          },
+        ],
+        callouts: [
+          {
+            label: "Dependencies Removed",
+            value: "3 packages",
+            detail: "Dropped framer-motion, @paper-design/shaders-react, and Upstash Kafka.",
+          },
+          {
+            label: "Test Coverage",
+            value: "192 tests",
+            detail: "148 unit tests + 44 real Postgres RLS & cross-tenant isolation tests.",
+          },
+          {
+            label: "Logo & Theme Contrast",
+            value: ">15:1",
+            detail: "Inverted solid tile mark + View Transitions 450ms circular theme ripple.",
+          },
+        ],
+      },
+    ],
+    result: {
+      heading: "Verified 81.4% layout reliability, 192 passing tests, and 91 Lighthouse performance",
+      summary:
+        "AppForge ships a hardened generative pipeline with measurable eval benchmarks, zero-dependency WebGL shaders, strict tenant database isolation, and verified UI polish across light and dark modes.",
+      outcomes: [
+        {
+          metric: "Copilot Layout Accuracy",
+          before: "Unchecked JSX strings + legacy type-only check",
+          after: "81.4% full layout pass (100% Dashboards/CRUD) · 92.8% node validity",
+          source: "EVALS.md (Groq 120b)",
+        },
+        {
+          metric: "Multi-Tenant Security",
+          before: "Raw DDL strings & unguarded dev cookie bypass",
+          after: "format('%I') whitelist DDL + Clerk RLS + 44 DB tests passing",
+          source: "vitest --project database",
+        },
+        {
+          metric: "Frontend Performance",
+          before: "88 Lighthouse median + 340ms TBT + PolyForm shader dep",
+          after: "91 Lighthouse median + 290ms TBT + 1.00ms NativeMeshShader",
+          source: "context/progress-tracker.md",
+        },
+      ],
+    },
+    problemClaim: "Unchecked code generation crashes UIs and leaks tenant boundaries",
     problemText:
-      "Generating raw JSX in iframes breaks on subtle syntax hallucinations and risks script injection, causing blank screens and runtime crashes.",
+      "Streaming raw JSX into iframes breaks on minor syntax hallucinations, risks script injection, and fails silently when LLM quotas trip or dynamic SQL helpers accept unsanitized identifiers.",
     problemComparison: {
       before: {
-        title: "Unrestricted Code eval()",
+        title: "Unrestricted JSX eval() & Legacy DDL",
         points: [
           "LLM outputs raw JSX strings executed in an iframe",
-          "Syntax hallucinations cause blank-screen runtime crashes",
-          "Arbitrary script execution risks client security",
-          "Manual boilerplate required for backend database setup",
+          "Mid-stream model failover concatenates broken JSON fragments",
+          "Third-party shader and dual animation libs inflate bundle size",
+          "Unparameterized DDL helpers expose table-drop and tenant risks",
         ],
       },
       after: {
-        title: "Constrained AST Registry",
+        title: "Strict Zod AST + Pre-Chunk Failover + Hardened DDL",
         points: [
-          "Model emits structured JSON AST, never raw executable code",
-          "Zod schema validates tree boundaries and attribute types",
-          "Zero eval(): registry maps tokens to verified React components",
-          "Dynamic DDL provisions real PostgreSQL tables in Supabase",
+          "Model emits structured JSON validated by .strict() Zod schemas",
+          "Invalid nodes render isolated InvalidNodeFallback without crashing",
+          "Groq → Gemini failover locked strictly before first streamed chunk",
+          "Parameterized execute_app_ddl enforces column whitelists & RLS",
         ],
       },
     },
-    architectureClaim: "Prompts stream into validated trees without arbitrary eval",
+    architectureClaim: "Prompts stream into strict Zod trees and isolated Postgres schemas",
     architectureText:
-      "Prompts stream to Groq LPUs emitting structured JSON ASTs. Next.js validates the tree with Zod and mounts registered React components safely.",
+      "Copilot normalizes prompts in Upstash Redis, streams through pre-first-chunk Groq/Gemini failover, validates every node against strict Zod schemas, and syncs tables via parameterized Supabase RPCs.",
     architectureNodes: [
       {
-        id: "prompt",
-        title: "Prompt Ingestion",
-        subtitle: "Next.js Edge Route",
-        tech: "Next.js 15 & Vercel Edge",
-        role: "Streams prompt chunks to edge.",
-        screenshotUrl: "/projects/appforge/appforge-prompt-input.webp",
-        screenshotCaption: "AI Copilot prompt modal with live canvas generation workspace.",
+        id: "landing",
+        title: "Hero & Native Shader",
+        subtitle: "Zero-Dep WebGL2 FBM",
+        tech: "Next.js 16 & WebGL",
+        role: "Renders domain-warped mesh & live config demo.",
+        screenshotUrl: "/projects/appforge/appforge-hero-redesign.webp",
+        screenshotCaption:
+          "Redesigned AppForge landing hero with NativeMeshShader and live config-to-UI reactive preview.",
         codeSnippet: {
-          filename: "app/api/copilot/route.ts",
+          filename: "components/home/NativeMeshShader.tsx",
           language: "typescript",
-          code: `export const runtime = "edge";
-export async function POST(req: Request) {
-  const { prompt } = await req.json();
-  const stream = await groq.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
-    messages: [
-      { role: "system", content: SYSTEM_PROMPT },
-      { role: "user", content: prompt }
-    ],
-    stream: true,
-  });
-  return new Response(stream.toReadableStream());
+          code: `// Full-screen triangle covering NDC [-1, 1] in 1 draw call
+const TRIANGLE_VERTICES = new Float32Array([
+  -1, -1,
+   3, -1,
+  -1,  3,
+]);
+// Domain-warped 5-octave FBM fragment shader with theme palette uniforms
+void main(){
+  vec2 uv=gl_FragCoord.xy/r;
+  vec2 p=uv; p.x*=r.x/r.y;
+  vec2 q=vec2(fb(p*1.4+t*.06),fb(p*1.4+vec2(5.2,1.3)-t*.05));
+  float k=fb(p*1.1+q*1.9+t*.04);
+  vec3 col=mix(c0,c1,smoothstep(.25,.65,k));
+  gl_FragColor=vec4(col,1.);
 }`,
-          explanation: "Next.js edge runtime endpoint streams generation tokens with native ReadableStream.",
+          explanation:
+            "Replaced @paper-design/shaders-react with a custom single-draw-call GLSL shader using KHR_parallel_shader_compile.",
         },
       },
       {
-        id: "groq",
-        title: "Groq LPU Engine",
-        subtitle: "Llama-3.3-70B",
-        tech: "Groq LPU Inference",
-        role: "Generates structured JSON UI trees.",
+        id: "copilot",
+        title: "Failover Streamer",
+        subtitle: "Groq → Gemini Pipeline",
+        tech: "AI SDK & Upstash Redis",
+        role: "Normalizes cache & locks failover after chunk #1.",
+        screenshotUrl: "/projects/appforge/appforge-apps-dashboard.webp",
+        screenshotCaption:
+          "Canonical /apps workspace with prompt composer, live 16:10 thumbnails, and Recently Updated rail.",
         codeSnippet: {
-          filename: "lib/ai/prompts.ts",
+          filename: "lib/copilot-pipeline.ts",
           language: "typescript",
-          code: `export const SYSTEM_PROMPT = \`You are an AST UI generator. Output valid JSON only matching the schema:
-{
-  "layout": "kanban" | "dashboard" | "form",
-  "components": [{ "type": "card", "props": { ... } }]
+          code: `// Failover is permitted ONLY before the first chunk is sent.
+const firstResult = await iterator.next();
+if (firstResult.done) {
+  throw new Error(\`Provider '\${currentProvider.name}' produced an empty token stream.\`);
 }
-Do not wrap in markdown code fences.\`;`,
-          explanation: "Structured prompt forcing the model into strict JSON schema output format.",
-        },
-      },
-      {
-        id: "cache",
-        title: "Semantic Cache",
-        subtitle: "Vector Lookup",
-        tech: "Upstash Redis",
-        role: "Vector cache for repeated prompts.",
-        codeSnippet: {
-          filename: "lib/cache/redis.ts",
-          language: "typescript",
-          code: `export async function getCachedLayout(promptHash: string) {
-  const cached = await redis.get(\`ast:\${promptHash}\`);
-  if (cached) return JSON.parse(cached);
-  return null;
-}`,
-          explanation: "Semantic vector caching retrieves cached JSON ASTs without invoking the model.",
+controller.enqueue(encoder.encode(firstResult.value));
+streamTextAccumulator += firstResult.value;
+hasSentChunks = true; // Failover window is now CLOSED`,
+          explanation:
+            "Prevents hybrid malformed JSON by refusing cross-model failover once token streaming begins.",
         },
       },
       {
         id: "validator",
-        title: "Zod AST Validator",
-        subtitle: "Boundary Checking",
-        tech: "Zod Schemas",
-        role: "Validates AST against Zod schemas.",
-        screenshotUrl: "/projects/appforge/appforge-editor-view.webp",
-        screenshotCaption: "Validated JSON AST displayed in code editor panel.",
+        title: "Strict Zod Validator",
+        subtitle: "Per-Component .strict()",
+        tech: "Zod v4 & Error Isolation",
+        role: "Rejects unknown props & isolates broken nodes.",
+        screenshotUrl: "/projects/appforge/appforge-renderer-states.webp",
+        screenshotCaption:
+          "Verified component renderer states (loading, loaded, empty, scoped error) from /dev/renderers.",
         codeSnippet: {
-          filename: "lib/schema/astSchema.ts",
+          filename: "lib/validation.ts",
           language: "typescript",
-          code: `export const AstTreeSchema = z.object({
-  version: z.literal("1.0"),
-  root: z.object({
-    component: z.enum(["Container", "Grid", "Card", "Table", "Form"]),
-    children: z.array(z.lazy(() => AstNodeSchema))
-  })
-});`,
-          explanation: "Validates AST tree boundaries and attribute types before sending to the DOM registry.",
+          code: `export const StatisticSchema = z.object({
+  type: z.literal("Statistic"),
+  label: z.string().optional(),
+  value: z.union([z.string(), z.number()]).optional().default("0"),
+  valueSuffix: z.string().optional(),
+  trend: StatisticTrendSchema.optional(),
+  variant: z.enum(["default", "panel", "gradient"]).optional(),
+}).strict();`,
+          explanation:
+            "Strict schemas reject hallucinated attributes while InvalidNodeFallback keeps the rest of the canvas alive.",
         },
       },
       {
-        id: "registry",
-        title: "React Registry",
-        subtitle: "Safe Component Mount",
-        tech: "React 19 Registry",
-        role: "Maps verified JSON to React primitives.",
-        screenshotUrl: "/projects/appforge/appforge-app-preview.webp",
-        screenshotCaption: "Rendered interface mounted from registered React components.",
+        id: "schema",
+        title: "Hardened DDL Sync",
+        subtitle: "Parameterized RPC",
+        tech: "Supabase Postgres & RLS",
+        role: "Creates tenant-isolated tables without DROP.",
         codeSnippet: {
-          filename: "registry/component-registry.tsx",
+          filename: "actions/schema.ts",
           language: "typescript",
-          code: `const COMPONENT_MAP = { Card, Button, Input, Table };
-export function AstRenderer({ node }: { node: AstNode }) {
-  const Component = COMPONENT_MAP[node.type];
-  if (!Component) return <FallbackNode type={node.type} />;
-  return (
-    <Component {...node.props}>
-      {node.children?.map(c => <AstRenderer key={c.id} node={c} />)}
-    </Component>
-  );
-}`,
-          explanation: "Maps verified AST tokens directly to React DOM primitives without executing arbitrary scripts.",
+          code: `const COLUMN_TYPE_WHITELIST: Record<string, string> = {
+  string: "TEXT", text: "TEXT",
+  number: "NUMERIC", numeric: "NUMERIC",
+  boolean: "BOOLEAN", date: "TIMESTAMPTZ", timestamptz: "TIMESTAMPTZ",
+};
+const { error: ddlError } = await supabase.rpc('execute_app_ddl', {
+  app_id: appId,
+  entity_name: validEntityName,
+  fields: sanitizedFields,
+});`,
+          explanation:
+            "Enforces 22-char entity identifiers, column collision checks, whitelisted Postgres types, and service_role-only DDL.",
+        },
+      },
+      {
+        id: "builder",
+        title: "Builder & Morph UI",
+        subtitle: "Resizable Split & Motion",
+        tech: "Monaco & motion/react",
+        role: "Pairs Monaco editor with live container-query preview.",
+        screenshotUrl: "/projects/appforge/appforge-app-preview.webp",
+        screenshotCaption:
+          "Live application runtime mounted from validated JSON AST with container-query responsiveness.",
+        codeSnippet: {
+          filename: "app/api/copilot/route.ts",
+          language: "typescript",
+          code: `// Resolve client IP strictly via x-real-ip; enforce guest quota
+const clientIp = resolveClientIp(req);
+if (!userId) {
+  const guestCheck = await checkGuestCopilotLimit(clientIp);
+  if (!guestCheck.success) return NextResponse.json({ code: "AUTH_REQUIRED" }, { status: 429 });
+}
+const normalizedKey = \`copilot_cache:\${normalizePromptForCache(prompt)}\`;`,
+          explanation:
+            "Normalizes whitespace/punctuation in cache keys and protects LLM quotas with Upstash sliding windows.",
         },
       },
     ],
-    decisionsClaim: "Four design choices that kept rendering safe",
+    decisionsClaim: "Four architectural choices that hardened reliability and speed",
     decisionsText:
-      "Every design choice prioritized rendering safety and sub-second generation over unconstrained raw code output.",
+      "Every decision removed unnecessary runtime weight or closed a concrete security and evaluation failure mode.",
     decisions: [
       {
-        chosenOver: "Chose constrained AST registry over arbitrary code execution (eval)",
+        chosenOver: "Removed Upstash Kafka in favor of direct transactional state in Supabase",
         tradeoffSummary:
-          "Zero injection risk, but limits layouts to registered components.",
+          "Eliminated an unused external broker with zero loss of publish/validation telemetry.",
         optionsConsidered: [
-          "Unrestricted JSX eval() in an iframe",
-          "Sandboxed web worker execution",
-          "AST JSON component registry",
+          "Keep Upstash Kafka producer/consumer hooks for publish events",
+          "Direct Postgres state in apps & validation_logs + Sentry",
         ],
         problemFaced:
-          "Executing raw AI-generated code causes frequent syntax crashes and exposes user sessions to cross-site scripting.",
+          "Maintaining an external Kafka topic for low-volume publish metadata added dependency surface and failure modes.",
         fullReasoning:
-          "Constraining model output to a known JSON schema mapped to tested React components ensures deterministic rendering safety.",
+          "Tracking publish state via apps.published_config, apps.updated_at, and validation_logs inside Supabase gave honest 'Recently updated' semantics with zero extra infrastructure.",
       },
       {
-        chosenOver: "Chose Groq LPUs over standard OpenAI endpoints",
+        chosenOver: "Chose pre-first-chunk failover over mid-stream model fallback",
         tradeoffSummary:
-          "Sub-second token streaming, but requires strict prompt schemas.",
+          "Guarantees valid single-model JSON, but mid-stream disconnects trigger a clean client retry.",
         optionsConsidered: [
-          "OpenAI GPT-4o API",
-          "Anthropic Claude 3.5 Sonnet",
-          "Groq LPU running Llama-3.3-70B",
+          "Mid-stream provider switch appending tokens to partial JSON",
+          "Pre-first-chunk failover (Groq → Gemini 2.5 Flash)",
         ],
         problemFaced:
-          "Standard LLM API calls take 3 to 5 seconds, breaking the interactive feedback loop while designing interfaces.",
+          "Switching models mid-stream concatenates incompatible JSON structures, breaking the parser.",
         fullReasoning:
-          "Groq LPU hardware streams tokens at 250+ tokens/second, completing multi-card layout generation rapidly.",
+          "Once iterator.next() yields chunk #1, createCopilotStream() commits exclusively to that provider; failures before chunk #1 fail over seamlessly.",
       },
       {
-        chosenOver: "Chose Upstash Redis semantic caching over repetitive generation",
+        chosenOver: "Replaced Paper Shaders with custom zero-dependency NativeMeshShader",
         tradeoffSummary:
-          "Reduces token costs, but requires vector matching overhead.",
+          "Removed PolyForm Shield license dependency and cut landing main-thread cost to 1.00ms median.",
         optionsConsidered: [
-          "Always call LLM directly",
-          "Exact string cache matching",
-          "Vector semantic similarity caching",
+          "Keep @paper-design/shaders-react (0.0.82)",
+          "Pre-rendered WebM video loop",
+          "Custom WebGL FBM shader with KHR_parallel_shader_compile",
         ],
         problemFaced:
-          "Users frequently test similar prompts ('kanban board', 'todo list'), incurring repetitive API costs.",
+          "A 10-run control benchmark showed shader library hydration/compile overhead and introduced a restrictive third-party license.",
         fullReasoning:
-          "Vector caching returns pre-validated AST trees instantly for common prompts while reserving LPU cycles for novel layouts.",
+          "Writing a 1-draw-call full-screen triangle shader in WebGL reading CSS theme tokens removed the dependency and kept desktop Lighthouse at 91.",
       },
       {
-        chosenOver: "Chose dynamic Supabase DDL execution over mock state",
+        chosenOver: "Replaced raw SQL DDL concatenation with structured execute_app_ddl RPC",
         tradeoffSummary:
-          "Provisions real Postgres tables, but requires sanitized table names.",
+          "Eliminates SQL injection & DROP TABLE risk, while constraining entities to 22-char identifiers.",
         optionsConsidered: [
-          "In-memory React mock state",
-          "LocalStorage client persistence",
-          "Dynamic PostgreSQL table provisioning",
+          "String blacklist filtering on SQL DDL statements",
+          "Structured RPC with format('%I'), column whitelist, and RLS",
         ],
         problemFaced:
-          "Mock data fails when users expect generated CRUD apps to persist data across page reloads.",
+          "Regex blacklists on raw DDL strings are fragile and Postgres truncates identifiers past 63 bytes.",
         fullReasoning:
-          "Executing sanitized DDL statements on Supabase creates real tables with foreign key constraints, turning layouts into usable apps.",
+          "Accepting structured JSON field maps in execute_app_ddl, enforcing a 22-char entity cap, and wrapping RLS with Clerk auth.jwt() guarantees tenant isolation.",
       },
     ],
-    bugsClaim: "Three parser bugs and how I fixed them",
+    bugsClaim: "Four production bugs fixed during UX polish and hardening",
     bugsText:
-      "Three bugs hit while building the streaming copilot and AST compiler, with links to commits.",
+      "Real bugs caught by Playwright, Lighthouse, and workspace verification, with links to commits.",
     bugs: [
       {
-        title: "Markdown code fencing broke JSON parser",
-        symptom: "Copilot threw unexpected token syntax errors.",
-        cause: "Model wrapped JSON in markdown fences.",
-        fix: "Stripped markdown fences before Zod parsing.",
-        commitHash: "4272697",
-        commitUrl: "https://github.com/vpn-cli/appforge/commit/4272697",
+        title: "Copilot floating panel collapsed to 28px inside Monaco container",
+        symptom: "Opening Copilot collapsed the dialog into an invisible 28px box clipped by overflow.",
+        cause: "Panel used calc(100% - 32px) inside a 0-width containing block with overflow: hidden.",
+        fix: "Moved CopilotFloatingPill to workspace root and sized with min(480px, calc(100vw - 32px)).",
+        commitHash: "7043f88",
+        commitUrl: "https://github.com/vpn-cli/appforge/commit/7043f88",
       },
       {
-        title: "Serverless functions buffered edge streams",
-        symptom: "Copilot streamed only after generation finished.",
-        cause: "Serverless runtime buffered HTTP chunks.",
-        fix: "Exported edge runtime on copilot route.",
-        commitHash: "05c4cc8",
-        commitUrl: "https://github.com/vpn-cli/appforge/commit/05c4cc8",
+        title: "Motion bundle inflated landing page JS overhead",
+        symptom: "Landing route shipped full Motion runtime solely for nav pill transitions.",
+        cause: "Shared Navbar imported Motion primitives directly on the public landing page.",
+        fix: "Replaced landing nav indicator with pure CSS sliding indicator and consolidated on motion/react.",
+        commitHash: "36e5b12",
+        commitUrl: "https://github.com/vpn-cli/appforge/commit/36e5b12",
       },
       {
-        title: "Auth middleware masked server action errors",
-        symptom: "Public demo visitors saw cryptic 500 errors.",
-        cause: "Auth middleware blocked public server actions.",
-        fix: "Configured route matchers for public sandbox.",
-        commitHash: "bf7b018",
-        commitUrl: "https://github.com/vpn-cli/appforge/commit/bf7b018",
+        title: "Monaco swallowed pointer events during split-pane resize",
+        symptom: "Dragging the builder divider stalled whenever the cursor crossed the Monaco iframe/canvas.",
+        cause: "Custom divider lacked pointer capture isolation over Monaco and preview panes.",
+        fix: "Migrated to react-resizable-panels with drag-state body cursor lock and transparent overlay.",
+        commitHash: "b5507ee",
+        commitUrl: "https://github.com/vpn-cli/appforge/commit/b5507ee",
+      },
+      {
+        title: "Third-party Paper Shaders added compile overhead and license coupling",
+        symptom: "Landing hero carried external shader bundle and PolyForm Shield notice.",
+        cause: "Third-party React wrapper bundled extra shader plumbing on mount.",
+        fix: "Implemented zero-dep NativeMeshShader with async parallel shader compilation (1.00ms median).",
+        commitHash: "1bcf981",
+        commitUrl: "https://github.com/vpn-cli/appforge/commit/1bcf981",
       },
     ],
     nextStepsClaim: "What I would build next and live demo",
     nextStepsText:
-      "Add automated foreign key relationship generation and direct Next.js project export.",
+      "Introduce a strict Tailwind utility className sanitizer for public /apps/[appId] routes and re-run the 100-prompt eval suite under v1.4.0 .strict() schemas.",
     learningStatement:
-      "Constrained metadata abstract syntax trees beat unrestricted raw code generation for reliable interface builders.",
+      "Deterministic AST boundaries, measurable eval harnesses, and strict tenant SQL isolation matter far more than unconstrained prompt magic.",
     tryItSteps: [
-      "Open the live demo at appforge-studios.vercel.app in your browser.",
-      "Type a prompt like 'Project tracker with status columns and task cards' in the builder input.",
-      "Watch the model stream and mount typed React components into the canvas with zero eval().",
+      "Open the live demo at appforge-studios.vercel.app.",
+      "Inspect the reactive config-to-UI demo on the hero or launch the builder sandbox.",
+      "Submit a dashboard or CRUD prompt and inspect the validated JSON AST mounted live with zero eval().",
     ],
     image: "/projects/appforge.jpg",
     videoUrl: "/videos/appforge/brag.mp4",
@@ -391,634 +732,1061 @@ export function AstRenderer({ node }: { node: AstNode }) {
   },
   {
     slug: "sockets",
-    title: "Sportz Sockets Engine",
+    title: "Sportz",
     hookPitch:
-      "I built a push-based sports broadcasting server that delivers live score updates to subscribed clients over WebSockets.",
+      "I scaled a WebSocket sports engine across multiple Node.js instances with Redis 7 Pub/Sub, zero-duplicate Docker-pause recovery, and stampede-coalesced gap replay.",
     tagline:
-      "A push-based sports broadcasting server that delivers live score updates and commentary over WebSockets.",
+      "A horizontally scaled WebSocket sports broadcasting engine verified across 625,000 deliveries with Redis 7 Pub/Sub and stampede-coalesced replay.",
     category: "Distributed Systems & Real-Time",
     year: "2026",
     role: "Backend & Systems Engineer",
-    timeline: "Mar 2025 to Oct 2026",
+    timeline: "Mar 2025 to Nov 2026",
     stack: [
-      "Node.js",
-      "Express",
+      "Node.js 24",
+      "Express 5",
       "ws",
+      "Redis 7 (Pub/Sub & Hashes)",
       "PostgreSQL (Neon)",
       "Drizzle ORM",
       "Arcjet",
       "React 19",
-      "Vite",
-      "Docker",
+      "Vite 6",
     ],
     heroClip: {
       mp4: "/projects/sockets/sportz-live-score-update.mp4",
       webm: "/projects/sockets/sportz-live-score-update.webm",
       poster: "/projects/sockets/sportz-live-score-update-poster.webp",
-      caption: "Live score updates and win probability broadcasted over WebSockets.",
+      caption:
+        "Live score mutations, commentary, and emoji reactions delivered over persistent WebSockets.",
     },
-    problemVisualCaption: "Client polling versus instant WebSocket push delivery.",
+    problemVisualCaption:
+      "Isolated single-node polling/sockets versus horizontally scaled Redis Pub/Sub with gap replay.",
     links: {
       demo: "https://sportz-rho.vercel.app",
-      repo: "https://github.com/vpn-cli/sockets",
-      readme: "https://github.com/vpn-cli/sockets#readme",
-      coldStartNote: "First load can take ~30s (Render free tier).",
+      repo: "https://github.com/vpn-cli/sportz",
+      readme: "https://github.com/vpn-cli/sportz#readme",
+      coldStartNote: "First load can take ~30s (Render free tier idle sleep).",
     },
     metrics: [
       {
-        value: "30s",
-        label: "Heartbeat sweep",
-        howMeasured: "Configured in ws server dead socket sweep timer (src/ws/server.js)",
-        isConfig: true,
+        value: "0 / 625k",
+        label: "Undelivered messages",
+        howMeasured:
+          "README.md 5-run benchmark: 2 instances × 5,000 WebSocket clients × 25 rounds × 5 runs = 625,000 expected deliveries; 0 missed within 2.0s window.",
       },
       {
-        value: "<80ms",
-        label: "Broadcast latency",
-        howMeasured: "TODO: Marked as placeholder. No automated latency benchmark script found in repo.",
-        isTodo: true,
+        value: "98.649%",
+        label: "Deliveries ≤ 400ms SLA",
+        howMeasured:
+          "README.md: 616,554 of 625,000 deliveries arrived within 400ms across 5 runs (Runs 4 & 5: 100.0%; p50 ≈ 26ms; 0.0ms server event-loop lag).",
       },
       {
-        value: "$0/mo",
-        label: "Hosting cost",
-        howMeasured: "Render free web service tier + Neon PostgreSQL serverless tier",
-        isConfig: true,
+        value: "1 / 1,000",
+        label: "Gap replay DB coalescing",
+        howMeasured:
+          "sportz-websockets-main/src/ws/server.js: inFlightReplayQueries deduplicates concurrent (matchId, lastSeq) requests so 1,000 clients trigger 1 Postgres query.",
       },
     ],
-    problemClaim: "Polling wastes server resources and delays live scores",
+    situation: {
+      heading: "Single-instance WebSockets cannot scale horizontally or survive broker hiccups cleanly",
+      summary:
+        "While replacing HTTP polling with native WebSockets solved single-node latency, keeping room state solely in one Node.js Map meant adding a second backend instance split spectators across isolated hubs. Moreover, Redis pauses, dropped mobile connections, and synchronized reconnects could trigger duplicate broadcasts, lost reaction deltas, or database stampedes.",
+      constraints: [
+        "Two backend instances must fan out match commentary, score updates, and reactions to 5,000+ sockets consistently",
+        "If Redis disconnects or pauses (`docker pause`), local sockets must keep receiving updates without duplicates on unpause",
+        "1,000 clients detecting a sequence gap simultaneously cannot fire 1,000 identical PostgreSQL replay queries",
+        "Third-party Arcjet security blips must never take down live match streaming in production",
+      ],
+    },
+    task: {
+      heading: "Architect multi-instance Redis fanout, stampede-safe recovery, and 5k-socket benchmarks",
+      summary:
+        "Connect backend nodes over Redis 7 Pub/Sub and atomic reaction hashes, engineer sequence-based deduplication and coalesced Postgres gap replay, harden Arcjet fail-open telemetry, and verify delivery at 5,000 concurrent connections.",
+      objectives: [
+        {
+          title: "Horizontal Redis 7 Backplane",
+          target: "2 instances × 2,500 clients",
+          detail:
+            "Await Redis channel subscription before acking subscribed, fan out via sportz:match:id & sportz:global, and sync reactions with atomic HINCRBY.",
+        },
+        {
+          title: "Zero-Duplicate Degraded & Gap Replay",
+          target: "500-seq FIFO ring + 1-query coalescing",
+          detail:
+            "Fall back to local broadcast during Redis outages, dedupe returning Redis frames via recentlyBroadcastSeq, and coalesce concurrent gap-replay DB queries.",
+        },
+        {
+          title: "Fail-Open Perimeter & Live Ingestion",
+          target: "TRUST_PROXY + arcjetErrors metric",
+          detail:
+            "Resolve client IPs from rightmost X-Forwarded-For hop, refuse BENCHMARK_BYPASS_ARCJET in production, and surface Arcjet error counts on GET /health.",
+        },
+      ],
+    },
+    figures: [
+      {
+        id: "sportz-5run-sla",
+        kind: "bar-comparison",
+        figureNumber: "Figure 1",
+        title: "5-Run Horizontal Scale Benchmark (2 Instances × 5,000 Clients = 625,000 Deliveries)",
+        caption:
+          "On-time deliveries within the ≤400ms SLA across 5 consecutive benchmark runs (125,000 deliveries/run across 5 match rooms). Zero messages (>2000ms) were lost in any run.",
+        source: "vpn-cli/sportz README.md · measure-undelivered-distribution.js",
+        unit: "%",
+        seriesLabels: ["On-Time (≤400ms SLA)", "Undelivered (>2000ms): 0.000%"],
+        groups: [
+          {
+            label: "Per-Run SLA Compliance (125,000 msgs/run)",
+            bars: [
+              {
+                label: "Run 1 (124,546 / 125k)",
+                value: 99.637,
+                displayValue: "99.637%",
+                note: "454 in 400–500ms · 0 undelivered",
+                highlight: true,
+              },
+              {
+                label: "Run 2 (122,579 / 125k)",
+                value: 98.063,
+                displayValue: "98.063%",
+                note: "2,421 in 400–600ms · 0 undelivered",
+              },
+              {
+                label: "Run 3 (119,429 / 125k)",
+                value: 95.543,
+                displayValue: "95.543%",
+                note: "5,571 in 400–800ms (max 639ms) · 0 undelivered",
+              },
+              {
+                label: "Run 4 (125,000 / 125k)",
+                value: 100,
+                displayValue: "100.000%",
+                note: "0 missed SLA · 0 undelivered",
+                highlight: true,
+              },
+              {
+                label: "Run 5 (125,000 / 125k)",
+                value: 100,
+                displayValue: "100.000%",
+                note: "0 missed SLA · 0 undelivered",
+                highlight: true,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "sportz-cluster-flow",
+        kind: "flow-diagram",
+        figureNumber: "Figure 2",
+        title: "Multi-Instance Redis Pub/Sub, Pause Dedupe & Gap-Replay Coalescing",
+        caption:
+          "How two Sportz backend nodes coordinate broadcasts, survive docker pause without duplicate frames, and coalesce concurrent client gap replays.",
+        source: "sportz-websockets-main/src/ws/server.js",
+        lanes: [
+          {
+            stage: "1. Perimeter",
+            component: "Arcjet HTTP Upgrade",
+            mechanism: "TRUST_PROXY rightmost IP + slidingWindow(30/10s)",
+            guarantee: "Fails open on Arcjet ERROR + logs /health arcjetErrors",
+          },
+          {
+            stage: "2. Backplane",
+            component: "Redis 7 Pub/Sub + HINCRBY",
+            mechanism: "sportz:match:id + sportz:global + awaited subscribe ack",
+            guarantee: "2,500 sockets per instance stay synchronized",
+            highlight: true,
+          },
+          {
+            stage: "3. Pause Shield",
+            component: "recentlyBroadcastSeq (500 FIFO)",
+            mechanism: "Degrades to local broadcast; skips returning Redis seqs",
+            guarantee: "0 duplicates across 2 instances on docker unpause",
+            highlight: true,
+          },
+          {
+            stage: "4. Gap Recovery",
+            component: "inFlightReplayQueries Map",
+            mechanism: "Coalesces concurrent (matchId, lastSeq) queries; >200 → snapshot",
+            guarantee: "1,000 reconnecting clients = 1 Postgres query",
+          },
+        ],
+        branchNote: {
+          trigger: "Finished match private replay requested",
+          fallback: "Streams 1x/10x directly to requesting socket with 3s cooldown",
+          outcome: "Bounded by MAX_CONCURRENT_CLIENT_REPLAYS=5 per instance",
+        },
+      },
+      {
+        id: "sportz-latency-split",
+        kind: "latency-anatomy",
+        figureNumber: "Figure 3",
+        title: "625,000-Delivery Latency Buckets & Server Event-Loop Telemetry",
+        caption:
+          "Distribution of all 625,000 deliveries across the 2.0-second window on a single Ryzen 7 6800H host running 2 server instances, Redis 7, and 5,000 sockets.",
+        source: "vpn-cli/sportz README.md · perf_hooks.monitorEventLoopDelay",
+        totalLabel: "Aggregate ≤400ms SLA (616,554 / 625,000)",
+        totalValue: "98.649%",
+        segments: [
+          {
+            label: "≤ 400ms On-Time SLA (p50 ≈ 26ms)",
+            valueDisplay: "616,554 msgs",
+            sharePct: 98.65,
+            detail: "Delivered cleanly within 400ms target across all 5 runs",
+            tone: "accent",
+          },
+          {
+            label: "400–600ms Tail Bucket",
+            valueDisplay: "7,705 msgs",
+            sharePct: 1.23,
+            detail: "4,932 (400–500ms) + 2,773 (500–600ms), symmetric across I1/I2",
+            tone: "secondary",
+          },
+          {
+            label: "600–800ms Tail Bucket (Max 639ms)",
+            valueDisplay: "741 msgs",
+            sharePct: 0.12,
+            detail: "0 msgs in 800–2000ms and 0 undelivered (>2000ms)",
+            tone: "muted",
+          },
+        ],
+        callouts: [
+          {
+            label: "Server Event-Loop Lag",
+            value: "0.0ms",
+            detail: "Pre-serialized JSON frames kept libuv lag <0.5ms on both servers.",
+          },
+          {
+            label: "Instance Tail Split",
+            value: "49% / 51%",
+            detail: "4,141 (I1) vs 4,305 (I2) late deliveries — single-process client bottleneck.",
+          },
+          {
+            label: "Reaction Sync Safety",
+            value: "Atomic HINCRBY",
+            detail: "Local deltas deleted only after HINCRBY succeeds; broadcasts snapshot.",
+          },
+        ],
+      },
+    ],
+    result: {
+      heading: "Zero dropped messages across 625,000 deliveries and horizontally scaled resilience",
+      summary:
+        "Sportz evolved from a single-process WebSocket server into a multi-instance Redis-backed cluster with proven 5,000-client delivery, zero-duplicate pause recovery, and stampede-proof replay.",
+      outcomes: [
+        {
+          metric: "Horizontal Delivery Reliability",
+          before: "Single Node.js Map isolated to 1 instance",
+          after: "0 / 625,000 dropped across 2 instances × 5,000 clients (98.649% ≤400ms)",
+          source: "5-run benchmark (README.md)",
+        },
+        {
+          metric: "Gap-Replay DB Load",
+          before: "N reconnecting clients = N Postgres queries",
+          after: "1,000 concurrent gap requests coalesced into 1 Postgres query",
+          source: "inFlightReplayQueries (server.js)",
+        },
+        {
+          metric: "Outage & Security Posture",
+          before: "Redis drop or Arcjet error risked blind spots",
+          after: "500-seq FIFO dedupe (0 dups on unpause) + fail-open arcjetErrors",
+          source: "vitest & outage suite",
+        },
+      ],
+    },
+    problemClaim: "Single-node WebSockets split rooms and risk stampedes on reconnect",
     problemText:
-      "Polling wastes server bandwidth on unchanged responses. During bursts, requests queue up and live score cards lag by seconds.",
+      "Keeping room subscribers in a single process blocks horizontal scaling. Under cluster pauses or synchronized client reconnects, naive brokers drop frames, duplicate broadcasts, or hammer Postgres with thousands of identical replay queries.",
     problemComparison: {
       before: {
-        title: "HTTP Client Polling",
+        title: "Single-Instance Sockets & Naive Reconnects",
         points: [
-          "Each client sends recurring GET requests every 2 seconds",
-          "90%+ of polling queries return identical, un-mutated data",
-          "Database connection pool exhausts during scoring bursts",
-          "Scores lag 2 to 4 seconds behind real-time events",
+          "In-memory Map<matchId, Set> isolates rooms to one server process",
+          "Replaying missed commentary fires one DB query per reconnecting client",
+          "Docker pause/unpause can replay stale TCP-buffered Redis frames",
+          "Arcjet upstream API blips can disrupt WebSocket upgrades",
         ],
       },
       after: {
-        title: "Targeted WebSocket Push",
+        title: "Redis 7 Cluster, 500-Seq Dedupe & Coalesced Replay",
         points: [
-          "Single persistent TCP connection per spectator",
-          "Server dispatches packets only when scores mutate",
-          "Topic map isolates broadcasts strictly to match listeners",
-          "Sub-second delivery with minimal bandwidth overhead",
+          "Redis 7 Pub/Sub syncs match rooms & atomic HINCRBY reactions across nodes",
+          "500-seq FIFO ring buffer discards duplicate frames after local fallback",
+          "inFlightReplayQueries coalesces 1,000 concurrent gap replays into 1 query",
+          "Arcjet fails open with TRUST_PROXY IP parsing and /health arcjetErrors",
         ],
       },
     },
-    architectureClaim: "Score events stream straight to subscribed client sockets",
+    architectureClaim: "Two Node instances fan out over Redis 7 with coalesced Postgres replay",
     architectureText:
-      "Score mutations update PostgreSQL via Drizzle ORM and signal the gateway. The gateway broadcasts frames strictly to subscribers watching that match.",
+      "Match mutations commit to Neon PostgreSQL and publish to Redis 7 channels. Both WebSocket instances stream pre-serialized frames to 5,000 subscribed sockets while coalescing any client gap replays.",
     architectureNodes: [
       {
         id: "ingestion",
-        title: "REST Ingestion",
-        subtitle: "POST /matches/:id/score",
-        tech: "Express & Zod",
-        role: "Validates score webhook payload.",
+        title: "Live & Webhook Ingest",
+        subtitle: "football-data.org + REST",
+        tech: "Express 5 & Zod",
+        role: "Filters unchanged score polls & ingests match events.",
         codeSnippet: {
           filename: "sportz-websockets-main/src/routes/matches.js",
           language: "javascript",
           code: `router.post('/:id/score', async (req, res) => {
   const matchId = parseInt(req.params.id);
   const { homeScore, awayScore } = scoreSchema.parse(req.body);
-
-  // Commit mutation to Neon PostgreSQL
   await db.update(matches)
     .set({ homeScore, awayScore, updatedAt: new Date() })
     .where(eq(matches.id, matchId));
-
-  // Trigger targeted broadcast
   broadcastScoreUpdate(matchId, { homeScore, awayScore });
   res.json({ success: true });
 });`,
-          explanation: "Ingests external webhook payloads with strict Zod schema validation before database commit.",
-        },
-      },
-      {
-        id: "postgres",
-        title: "Postgres Commit",
-        subtitle: "Drizzle ORM Update",
-        tech: "Neon PostgreSQL",
-        role: "Commits match state via Drizzle.",
-        codeSnippet: {
-          filename: "sportz-websockets-main/src/db/schema.js",
-          language: "javascript",
-          code: `export const commentary = pgTable("commentary", {
-  id: serial("id").primaryKey(),
-  matchId: integer("match_id").references(() => matches.id),
-  minute: integer("minute").notNull(),
-  eventType: varchar("event_type", { length: 50 }).notNull(),
-  message: text("message").notNull(),
-  createdAt: timestamp("created_at").defaultNow()
-});`,
-          explanation: "Drizzle ORM schema provides compile-time type safety and atomic transaction commits.",
+          explanation:
+            "Validates incoming score updates and triggers global cluster fanout; automated ingestor deduplicates unchanged scores.",
         },
       },
       {
         id: "arcjet",
-        title: "Arcjet Perimeter",
-        subtitle: "Upgrade Rate Limit",
-        tech: "Arcjet Edge",
-        role: "Shields HTTP upgrade against scrapers.",
+        title: "Arcjet Fail-Open Edge",
+        subtitle: "TRUST_PROXY & /health",
+        tech: "Arcjet @arcjet/node",
+        role: "Inspects rightmost XFF IP; fails open on API errors.",
         codeSnippet: {
-          filename: "sportz-websockets-main/src/security/arcjet.js",
+          filename: "sportz-websockets-main/src/arcjet.js",
           language: "javascript",
-          code: `const aj = arcjet({
-  key: process.env.ARCJET_KEY,
-  rules: [
-    shield({ mode: "LIVE" }),
-    detectBot({ mode: "LIVE", allow: [] }),
-    tokenBucket({ mode: "LIVE", refillRate: 5, interval: 10, capacity: 10 })
-  ]
-});`,
-          explanation: "Blocks automated scrapers and rate-limits WebSocket connection attempts at the HTTP boundary.",
+          code: `export function buildProtectOptions(clientIp, logger = console) {
+  const normalized = normalizeIp(clientIp);
+  if (normalized && net.isIP(normalized) !== 0) {
+    return { ipSrc: normalized };
+  }
+  return {};
+}
+// Production refuses BENCHMARK_BYPASS_ARCJET; ERROR decisions increment arcjetErrors on /health`,
+          explanation:
+            "Resolves real client IPs behind reverse proxies, blocks prod bypass flags, and tracks Arcjet errors without dropping live streams.",
+        },
+      },
+      {
+        id: "redis",
+        title: "Redis 7 Backplane",
+        subtitle: "Pub/Sub & HINCRBY",
+        tech: "Redis 7 & ioredis",
+        role: "Syncs multi-instance channels & atomic reaction counts.",
+        screenshotUrl: "/projects/sockets/sportz-connection-badge.webp",
+        screenshotCaption:
+          "Live WebSocket connection status badge tracking persistent stream and reconnect state.",
+        codeSnippet: {
+          filename: "sportz-websockets-main/src/ws/server.js",
+          language: "javascript",
+          code: `// Delete local reaction delta ONLY after its own HINCRBY succeeds
+await activePub.hincrby(key, emoji, count);
+deltas[emoji] -= count;
+if (deltas[emoji] <= 0) delete deltas[emoji];`,
+          explanation:
+            "Prevents reaction loss during Redis disconnects by holding per-match deltas until Redis confirms HINCRBY.",
         },
       },
       {
         id: "gateway",
-        title: "ws Gateway",
-        subtitle: "Topic Fanout Hub",
-        tech: "ws library",
-        role: "Routes frames to subscribers in O(k) time.",
-        screenshotUrl: "/projects/sockets/sportz-connection-badge.webp",
-        screenshotCaption: "Live WebSocket connection status badge and heartbeat monitor.",
+        title: "ws Cluster & Dedupe",
+        subtitle: "500-Seq Ring & Coalescing",
+        tech: "ws & Drizzle ORM",
+        role: "Dedupes pause frames & coalesces gap-replay queries.",
         codeSnippet: {
           filename: "sportz-websockets-main/src/ws/server.js",
           language: "javascript",
-          code: `// Targeted channel fanout: only send payloads to match subscribers
-function broadcastToMatch(matchId, payload) {
-  const subscribers = matchSubscribers.get(matchId);
-  if (!subscribers || subscribers.size === 0) return;
-
-  const message = JSON.stringify(payload);
-  for (const client of subscribers) {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(message);
-    }
-  }
+          code: `// 1,000 concurrent clients requesting the same (matchId, lastSeq) join 1 Promise
+let queryPromise = inFlightReplayQueries.get(replayKey);
+if (!queryPromise) {
+  queryPromise = (async () => {
+    gapReplayDbQueryCount++;
+    return await db.select().from(commentary)
+      .where(and(eq(commentary.matchId, matchId), gt(commentary.sequence, lastSeq)))
+      .orderBy(asc(commentary.sequence)).limit(201);
+  })().finally(() => inFlightReplayQueries.delete(replayKey));
+  inFlightReplayQueries.set(replayKey, queryPromise);
 }`,
-          explanation: "O(k) targeted fanout delivering topic isolation without unnecessary broadcasts to unrelated listeners.",
+          explanation:
+            "Coalesces concurrent gap-replay requests by (matchId, lastSeq) and switches to a 50-item snapshot when gaps exceed 200 events.",
         },
       },
       {
         id: "client",
-        title: "React Client",
-        subtitle: "useWebSocket Hook",
-        tech: "React 19 & Vite",
-        role: "Hydrates scoreboard from WebSocket frames.",
+        title: "React 19 Live Client",
+        subtitle: "Gap Detection & Replay",
+        tech: "React 19 & Vite 6",
+        role: "Detects seq gaps over open socket & streams 1x/10x replays.",
         screenshotUrl: "/projects/sockets/sportz-live-match.webp",
-        screenshotCaption: "Client scoreboard and win probability hydrated directly by push frames.",
+        screenshotCaption:
+          "Live scoreboard, commentary highlights, and simulator controls hydrated by push frames.",
         codeSnippet: {
-          filename: "sportz-client/src/hooks/useWebSocket.js",
+          filename: "sportz-websockets-main/src/ws/server.js",
           language: "javascript",
-          code: `export function useWebSocket(matchId) {
-  const [match, setMatch] = useState(null);
-  useEffect(() => {
-    let ws = new WebSocket(\`\${WS_URL}?match=\${matchId}\`);
-    ws.onmessage = (e) => setMatch(JSON.parse(e.data));
-    return () => {
-      ws.close();
-    };
-  }, [matchId]);
-  return match;
+          code: `// Per-client finished-match replay capped by concurrency & 3s socket cooldown
+if (activeClientReplaysCount >= maxConcurrentClientReplays) {
+  sendJson(socket, { type: 'error', code: 'replay_concurrency_limit' });
+  return;
 }`,
-          explanation: "Client hook receives real-time frame payloads and updates match cards without page reloads.",
+          explanation:
+            "Streams finished matches privately from Postgres at 1x or 10x speed without mutating global server state.",
         },
       },
     ],
-    decisionsClaim: "Four technical choices that kept memory usage low",
+    decisionsClaim: "Four distributed-systems choices that survived 5,000-client load",
     decisionsText:
-      "Every technical choice balanced memory constraints against delivery speed on free-tier infrastructure.",
+      "Each choice balanced cluster consistency, database protection, and predictable memory usage under contention.",
     decisions: [
       {
-        chosenOver: "Chose native ws over Socket.io",
+        chosenOver: "Chose Redis 7 Pub/Sub + 500-seq FIFO ring buffer over single-node isolation",
         tradeoffSummary:
-          "Low memory footprint, but required custom heartbeat sweeps.",
+          "Scales across multiple Node instances with 0 duplicates on unpause, within a 500-seq outage window.",
         optionsConsidered: [
-          "Socket.io with fallback transports",
-          "Server-Sent Events (SSE)",
-          "Native ws RFC 6455 server",
+          "Single-instance in-memory Map only",
+          "Redis Pub/Sub with unguarded local fallback",
+          "Redis 7 Pub/Sub + disabled offline queue + 500-seq FIFO deduplication",
         ],
         problemFaced:
-          "Socket.io introduces unnecessary bundle size and polling fallbacks that burn memory on small container instances.",
+          "During docker pause, ioredis writes PUBLISH into the OS TCP socket buffer; on unpause those delayed frames arrive back at the node that already broadcast locally.",
         fullReasoning:
-          "Native ws gave direct control over byte frames, eliminating abstractions while running reliably within 512MB RAM constraints on Render.",
+          "Maintaining a bounded 500-sequence Set per match room lets each instance serve local sockets immediately during outages and drop duplicate Redis echoes upon recovery.",
       },
       {
-        chosenOver: "Chose in-memory topic maps over global broadcasts",
+        chosenOver: "Chose in-flight Promise coalescing over unguarded per-socket gap queries",
         tradeoffSummary:
-          "Fast O(k) routing, but bounds state to one instance.",
+          "Reduces 1,000 concurrent gap-replay DB queries to 1, with 1s short-lived cache cleanup.",
         optionsConsidered: [
-          "Iterating all connections on every event",
-          "In-memory Map<matchId, Set<WebSocket>>",
-          "External Redis pub/sub broker",
+          "Query Postgres independently for every reconnecting socket",
+          "Force full WebSocket disconnect/reconnect on missed sequence",
+          "Non-reconnecting gap replay coalesced by (matchId, lastSeq)",
         ],
         problemFaced:
-          "Broadcasting every event to every socket causes high CPU fanout and leaks events to spectators watching different games.",
+          "A brief network hiccup across 1,000 spectators watching one match would trigger 1,000 simultaneous Postgres queries.",
         fullReasoning:
-          "A Map keyed by match ID ensures only relevant sockets receive messages. Adding an external broker on free tiers added latency and cost, so in-memory isolation was the optimal starting point.",
+          "Sharing an in-flight Promise keyed by `${matchId}:${lastSeq}` plus a 1-second recentReplayCache eliminates thundering-herd DB load.",
       },
       {
-        chosenOver: "Chose Arcjet upgrade filtering over post-connection auth",
+        chosenOver: "Chose Arcjet fail-open on ERROR decisions over hard 503 blocking",
         tradeoffSummary:
-          "Zero memory waste, but couples handshake to edge.",
+          "Keeps live broadcasts online during third-party API blips, relying on /health arcjetErrors alerts.",
         optionsConsidered: [
-          "Application-level JSON auth message after handshake",
-          "Reverse proxy rate limiting",
-          "Arcjet HTTP upgrade inspection",
+          "Block all upgrades with 503 if Arcjet Decide API errors",
+          "Fail open with redacted console.error logging and /health arcjetErrors counter",
         ],
         problemFaced:
-          "Allocating WebSockets before validating clients allows malicious actors to exhaust memory with half-open handshakes.",
+          "An upstream Arcjet outage or missing User-Agent header should not take down live match delivery for legitimate spectators.",
         fullReasoning:
-          "Inspecting upgrade headers at the HTTP boundary stops unauthenticated traffic before TCP socket memory is allocated.",
+          "Logging non-ALLOW/ERROR decisions loudly while incrementing arcjetErrors on GET /health keeps availability at 100% while preserving observability.",
       },
       {
-        chosenOver: "Chose exponential backoff with jitter over immediate reconnection",
+        chosenOver: "Chose pre-serialized broadcast buffers over per-client JSON.stringify",
         tradeoffSummary:
-          "Prevents thundering herd, but reconnects take up to 10s.",
+          "Keeps server event-loop lag at 0.0ms across 5,000 sockets, requiring uniform frame envelopes.",
         optionsConsidered: [
-          "Immediate while(true) reconnect loops",
-          "Fixed 5s retry timer",
-          "Randomized exponential backoff jitter",
+          "Serialize JSON individually inside the ws.clients loop",
+          "Serialize once per broadcast and stream identical string buffer",
         ],
         problemFaced:
-          "When a free-tier backend sleeps or boots, hundreds of reconnecting clients can overwhelm and re-crash the instance.",
+          "Calling JSON.stringify 5,000 times per event saturates the Node event loop during scoring bursts.",
         fullReasoning:
-          "Randomized jitter spaces client reconnects over a 1 to 10s window, allowing reviving backend instances to settle cleanly.",
+          "Serializing once before iterating subscribers kept libuv event-loop lag at 0.0ms across all 625,000 benchmark deliveries.",
       },
     ],
-    bugsClaim: "Three production bugs and how I fixed them",
+    bugsClaim: "Four concurrency and security bugs caught in testing",
     bugsText:
-      "Three bugs hit during deployment and stress testing, with links to fixing commits.",
+      "Real bugs uncovered during Redis pause tests, reverse-proxy IP inspection, and CI pipeline runs.",
     bugs: [
       {
-        title: "Zombie sockets on dropped mobile connection",
-        symptom: "Ghost sockets persisted after signal drops.",
-        cause: "Mobile OS suspends radio without TCP FIN.",
-        fix: "Added 30s server-side ping sweep to prune.",
-        commitHash: "39e86d4",
-        commitUrl: "https://github.com/vpn-cli/sockets/commit/39e86d4",
+        title: "Subscribed ack fired before Redis channel subscription completed",
+        symptom: "Fast clients missed the first commentary event emitted right after subscribing.",
+        cause: "Server sent { type: 'subscribed' } synchronously while activeSub.subscribe() was still in flight.",
+        fix: "Awaited activeSub.subscribe() (with a 200ms race guard) before sending subscribed ack.",
+        commitHash: "494fd0c",
+        commitUrl: "https://github.com/vpn-cli/sportz/commit/494fd0c",
       },
       {
-        title: "Missing environment keys crashed production boot",
-        symptom: "Server boot crashed and clients got 403.",
-        cause: "Unset Arcjet key and missing CORS headers.",
-        fix: "Added defensive config fallbacks and CORS.",
-        commitHash: "b483272",
-        commitUrl: "https://github.com/vpn-cli/sockets/commit/b483272",
+        title: "Docker unpause delivered duplicate events across 2 instances",
+        symptom: "Clients received events twice after Redis recovered from container pause.",
+        cause: "Degraded local fallback sent events locally, then OS-buffered Redis PUBLISH frames echoed back.",
+        fix: "Disabled offline queue and added 500-seq FIFO recentlyBroadcastSeq deduplication.",
+        commitHash: "7c698d9",
+        commitUrl: "https://github.com/vpn-cli/sportz/commit/7c698d9",
       },
       {
-        title: "Client build omitted API base URLs",
-        symptom: "Frontend compiled with undefined WebSocket host.",
-        cause: "Docker build omitted VITE_ build arguments.",
-        fix: "Passed WS and API args in build stage.",
-        commitHash: "3d8559e",
-        commitUrl: "https://github.com/vpn-cli/sockets/commit/3d8559e",
+        title: "Arcjet lacked resolved client IP behind reverse proxy",
+        symptom: "Rate limits bucketed proxy hops instead of client IPs and silent errors hid denials.",
+        cause: "TRUST_PROXY X-Forwarded-For IP wasn't passed via ipSrc to wsArcjet/httpArcjet.",
+        fix: "Extracted rightmost trusted IP into buildProtectOptions({ ipSrc }) and added DEBUG_IP logging.",
+        commitHash: "511ed6d",
+        commitUrl: "https://github.com/vpn-cli/sportz/commit/511ed6d",
+      },
+      {
+        title: "Test/benchmark scripts risked targeting remote Postgres",
+        symptom: "Missing local DB overrides could accidentally hit non-local connection strings.",
+        cause: "Benchmark and Vitest harnesses lacked an explicit localhost hostname guard.",
+        fix: "Added localhost-only DB guard and dedicated CI Postgres 5433 test service.",
+        commitHash: "af97a52",
+        commitUrl: "https://github.com/vpn-cli/sportz/commit/af97a52",
       },
     ],
     nextStepsClaim: "What I would build next and live verification",
     nextStepsText:
-      "Add Redis Pub/Sub for horizontal socket scaling and automated load testing.",
+      "Separate the load generator onto a dedicated host outside the server CPU budget to isolate the client-side 639ms tail and validate multi-node network hops.",
     learningStatement:
-      "Building a stateful real-time server on free-tier hosting taught me that connection hygiene and graceful teardown matter more than connection setup.",
+      "Scaling WebSockets horizontally is less about raw socket throughput and more about bounding failure modes: pause deduplication, stampede coalescing, and fail-open observability.",
     tryItSteps: [
-      "Open the live demo in two separate browser windows side by side.",
-      "In Window 1, select an active match and post a score update or commentary event.",
-      "Watch Window 2 update its score and commentary instantly without refreshing the page.",
+      "Open the live demo at sportz-rho.vercel.app in two browser windows side by side.",
+      "Click Simulate Event in Window 1 and broadcast a Goal or Wicket.",
+      "Watch Window 2 update score, commentary, and reactions instantaneously without refreshing.",
     ],
     image: "/projects/sockets.jpg",
     videoUrl: "/videos/sockets/brag.mp4",
     videoPoster: "/videos/sockets/brag.jpg",
-    githubUrl: "https://github.com/vpn-cli/sockets",
+    githubUrl: "https://github.com/vpn-cli/sportz",
     liveUrl: "https://sportz-rho.vercel.app",
   },
   {
     slug: "stream-mart",
     title: "StreamMart",
     hookPitch:
-      "I built an event-driven e-commerce backend using Apache Kafka and the transactional outbox pattern to decouple services.",
+      "I refactored an event-driven e-commerce backend with SKIP LOCKED outbox relays and idempotent eachBatch consumers, boosting throughput 7.76× to 375.75 checkouts/s at zero lag.",
     tagline:
-      "An event-driven e-commerce backend using Apache Kafka and the transactional outbox pattern to decouple services.",
+      "An event-driven microservices backend using SKIP LOCKED transactional outbox relays, idempotent eachBatch consumers, and DLQ poison-pill isolation.",
     category: "Distributed Systems & Microservices",
     year: "2026",
     role: "Backend Systems Engineer",
-    timeline: "Aug 2026 to Sep 2026",
+    timeline: "Aug 2026 to Nov 2026",
     stack: [
       "Node.js",
-      "Express",
-      "Apache Kafka",
-      "PostgreSQL (Neon)",
+      "Express 5",
+      "Apache Kafka 3.7 (KRaft)",
+      "KafkaJS",
+      "PostgreSQL 16",
       "Drizzle ORM",
-      "Docker",
+      "Docker Compose",
+      "k6",
       "JWT",
     ],
     heroClip: {
       mp4: "/videos/stream-mart/brag.mp4",
       webm: "/videos/stream-mart/brag.webm",
       poster: "/projects/stream-mart/stream-mart-diagram.webp",
-      caption: "Shows the checkout flow through the transactional outbox. Other Kafka publishers are left out.",
+      caption:
+        "Shows the refactored checkout flow: SKIP LOCKED outbox relays, idempotent eachBatch consumers, and poison-pill DLQ isolation.",
     },
-    problemVisualCaption: "Synchronous HTTP cascades versus asynchronous Kafka outbox events.",
+    problemVisualCaption:
+      "Sequential 1-message DB transactions versus SKIP LOCKED relays and single-transaction eachBatch consumers.",
     links: {
-      demo: "https://github.com/vpn-cli/StreamMart#architecture--workflow",
-      repo: "https://github.com/vpn-cli/StreamMart",
-      readme: "https://github.com/vpn-cli/StreamMart#readme",
+      demo: "https://github.com/vpn-cli/streammart#verified-benchmarks-full-drain-results-only",
+      repo: "https://github.com/vpn-cli/streammart",
+      readme: "https://github.com/vpn-cli/streammart#readme",
     },
     metrics: [
       {
-        value: "5",
-        label: "Docker Compose services",
-        howMeasured: "docker-compose.yml lines 4-54: payment-service, order-service, email-service, analytic-service, client",
-        isConfig: true,
+        value: "375.75/s",
+        label: "Completed checkouts (100 VUs)",
+        howMeasured:
+          "PHASE1-BENCHMARKS.md (fix_b, 3-run mean at 100 VUs, full drain to lag=0): up 7.76× from 48.42/s baseline_consumer.",
       },
       {
-        value: "3",
-        label: "Kafka event topics",
-        howMeasured: "kafka/admin.js lines 13-17: payment-successful, order-successful, email-successful",
-        isConfig: true,
+        value: "0 msgs",
+        label: "Full-pipeline lag @ 30s",
+        howMeasured:
+          "README.md & PHASE1-BENCHMARKS.md: Order, Email, and Analytic consumer lag @ 30s dropped from 7,420 / 5,050 / 20,480 msgs to 0 msgs (0.00s catch-up) at 100 VUs.",
       },
       {
-        value: "At-least-once",
-        label: "Delivery guarantee",
-        howMeasured: "README.md line 51 & payment-service/worker.js: atomic SQL outbox commit with persistent background polling and retry",
-        isConfig: true,
+        value: "500 / 500",
+        label: "Kafka outage zero-loss recovery",
+        howMeasured:
+          "scripts/test-outbox-outage.js (CI): 500 checkouts returned HTTP 200 in 2.21s while Kafka was stopped; 500/500 orders fulfilled in 31.1s after restart with 0 duplicates.",
       },
     ],
-    problemClaim: "Dual-write inconsistency between database commits and broker dispatch",
+    situation: {
+      heading: "Per-message Postgres transactions capped consumer throughput at 48/s and piled up lag",
+      summary:
+        "While the original Transactional Outbox avoided dual writes, profiling revealed that sequential `eachMessage` consumers spent 98.2%–99.7% of their time on per-message PostgreSQL round trips—capping 100-VU fulfillment at 48.42 checkouts/s with 7,420 messages of lag (154.33s catch-up). Meanwhile, shared `outbox_events` lacked partial indexes for order/email topics, a single poison message could stall an entire partition, and the API Gateway opened a new TCP socket on every proxied request.",
+      constraints: [
+        "Baseline `eachMessage` order consumer took 24.22ms/msg under load (91.2% atomic SQL tx + 8.4% idempotency SELECT)",
+        "API Gateway without HTTP keep-alive opened 4,405 TCP connections for 4,396 proxied requests (141.57 opens/s)",
+        "Published rows for order-successful and email-successful accumulated unbounded (>93k rows) without topic-scoped indexes/pruning",
+        "Checkouts must keep succeeding (HTTP 200) even when Kafka is completely down",
+      ],
+    },
+    task: {
+      heading: "Eliminate consumer lag, isolate poison pills, and prove resilience in CI",
+      summary:
+        "Instrument and remove the Postgres transaction bottleneck across all downstream consumers, add SKIP LOCKED batched outbox relays with topic-scoped pruners, implement 1-by-1 poison-pill DLQ fallback, split liveness from relay readiness, and verify every failure mode in GitHub Actions.",
+      objectives: [
+        {
+          title: "Batch Consumer & Relay Pipeline",
+          target: "0 lag across all 3 services",
+          detail:
+            "Convert order, email, and analytic consumers to idempotent eachBatch (1 SQL tx per batch via processed_events) and batch KafkaJS outbox sends with SKIP LOCKED.",
+        },
+        {
+          title: "Poison-Pill & Crash Fault Isolation",
+          target: "4 automated CI fault tests",
+          detail:
+            "Roll back failed batches cleanly, replay 1-by-1 in offset order, route only poison payloads to payment-successful.DLQ after 3 retries, and survive mid-batch SIGKILL.",
+        },
+        {
+          title: "Ingress Keep-Alive & Split Health",
+          target: "HTTP 200 during Kafka outage",
+          detail:
+            "Enable HTTP keep-alive in api-gateway, enforce 32+ char JWT_SECRET startup validation, and separate GET /health (200) from GET /relay-status (503).",
+        },
+      ],
+    },
+    figures: [
+      {
+        id: "streammart-bottleneck-anatomy",
+        kind: "latency-anatomy",
+        figureNumber: "Figure 1",
+        title: "Why Single-Partition eachMessage Plateaued: Per-Message Latency Anatomy",
+        caption:
+          "High-resolution performance.now() breakdown inside order-service eachMessage (N=500 under load). 99.7% of processing time was PostgreSQL I/O, not Node.js CPU.",
+        source: "PHASE1-BENCHMARKS.md · benchmarks/measure-consumer-breakdown.mjs",
+        totalLabel: "Total Per-Message Latency (Under Load)",
+        totalValue: "24.22 ms",
+        segments: [
+          {
+            label: "Atomic DB Transaction (orders + processed_events + outbox)",
+            valueDisplay: "22.10 ms",
+            sharePct: 91.2,
+            detail: "p50 17.14ms · p95 50.54ms (commit + WAL fsync per message)",
+            tone: "accent",
+          },
+          {
+            label: "Idempotency SELECT (processed_events lookup)",
+            valueDisplay: "2.04 ms",
+            sharePct: 8.4,
+            detail: "p50 1.62ms · p95 3.35ms",
+            tone: "secondary",
+          },
+          {
+            label: "CPU / JSON Parse / JS Overhead",
+            valueDisplay: "0.08 ms",
+            sharePct: 0.3,
+            detail: "p50 0.08ms · p95 0.12ms (JWT verify separately measured at 21.9 µs)",
+            tone: "muted",
+          },
+        ],
+        callouts: [
+          {
+            label: "Implied 1-Part Ceiling",
+            value: "41.3 – 51.8 /s",
+            detail: "Matches measured baseline_consumer 100-VU rate of 48.42 completed/s.",
+          },
+          {
+            label: "Master Gateway TCP Probe",
+            value: "4,405 opens",
+            detail: "4,396 reqs opened 4,405 TCP sockets (1:1) before enabling HTTP keep-alive.",
+          },
+          {
+            label: "Low-Contention Baseline",
+            value: "13.42 ms/msg",
+            detail: "Even idle, 10.77ms DB tx + 2.40ms SELECT capped 1 partition at ~75–90/s.",
+          },
+        ],
+      },
+      {
+        id: "streammart-throughput-comparison",
+        kind: "bar-comparison",
+        figureNumber: "Figure 2",
+        title: "Full-Drain Consumer Optimization: Completed Checkouts/s & Lag @ 30s",
+        caption:
+          "3-run mean across 20, 50, and 100 k6 VUs (1,000 distinct JWTs) drained completely to consumer lag = 0 on Ryzen 7 6800H / Docker WSL2.",
+        source: "PHASE1-BENCHMARKS.md · summary-experiment-{baseline_consumer,fix_a,fix_b}.json",
+        unit: "checkouts/s",
+        seriesLabels: ["True Completed Checkouts/s (Mean across 3 full-drain runs)"],
+        groups: [
+          {
+            label: "Throughput Comparison by VU Tier",
+            tiers: [
+              {
+                tierLabel: "100 VUs",
+                bars: [
+                  {
+                    label: "baseline_consumer (1 part, eachMessage)",
+                    value: 48.42,
+                    displayValue: "48.42 /s",
+                    note: "7,420 lag @ 30s · 154.33s catch-up · p50 245.14ms",
+                  },
+                  {
+                    label: "fix_a (6 parts, concurrency=6)",
+                    value: 87.88,
+                    displayValue: "87.88 /s (+1.81×)",
+                    note: "7,912 lag @ 30s · 97.92s catch-up · p50 205.64ms",
+                  },
+                  {
+                    label: "fix_b (1 part, eachBatch 1-tx/batch)",
+                    value: 375.75,
+                    displayValue: "375.75 /s (+7.76×)",
+                    note: "0 lag @ 30s · 0.31s catch-up · p50 178.47ms",
+                    highlight: true,
+                  },
+                ],
+              },
+              {
+                tierLabel: "50 VUs",
+                bars: [
+                  {
+                    label: "baseline_consumer (1 part, eachMessage)",
+                    value: 56.23,
+                    displayValue: "56.23 /s",
+                    note: "5,645 lag @ 30s · 96.11s catch-up · p50 135.36ms",
+                  },
+                  {
+                    label: "fix_a (6 parts, concurrency=6)",
+                    value: 90.74,
+                    displayValue: "90.74 /s (+1.61×)",
+                    note: "5,858 lag @ 30s · 63.70s catch-up · p50 111.33ms",
+                  },
+                  {
+                    label: "fix_b (1 part, eachBatch 1-tx/batch)",
+                    value: 368.92,
+                    displayValue: "368.92 /s (+6.56×)",
+                    note: "0 lag @ 30s · 0.27s catch-up · p50 74.00ms",
+                    highlight: true,
+                  },
+                ],
+              },
+              {
+                tierLabel: "20 VUs",
+                bars: [
+                  {
+                    label: "baseline_consumer (1 part, eachMessage)",
+                    value: 71.37,
+                    displayValue: "71.37 /s",
+                    note: "3,984 lag @ 30s · 57.57s catch-up · p50 41.49ms",
+                  },
+                  {
+                    label: "fix_a (6 parts, concurrency=6)",
+                    value: 152.24,
+                    displayValue: "152.24 /s (+2.13×)",
+                    note: "2,142 lag @ 30s · 14.06s catch-up · p50 33.44ms",
+                  },
+                  {
+                    label: "fix_b (1 part, eachBatch 1-tx/batch)",
+                    value: 251.17,
+                    displayValue: "251.17 /s (+3.52×)",
+                    note: "0 lag @ 30s · 0.24s catch-up · p50 21.77ms",
+                    highlight: true,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "streammart-batch-dlq-flow",
+        kind: "flow-diagram",
+        figureNumber: "Figure 3",
+        title: "eachBatch Atomic Commit & 1-by-1 Poison-Pill DLQ Fallback",
+        caption:
+          "Verified in CI by test-poison-batch.js (49 valid + 1 null-userId + follow-up #51) and test-mid-batch-crash.js (SIGKILL before offset commit).",
+        source: "order-service/consumer-processor.js · .github/workflows/ci.yml",
+        lanes: [
+          {
+            stage: "1. Bulk Dedupe",
+            component: "processed_events IN query",
+            mechanism: "Single inArray() lookup + within-batch Set filter",
+            guarantee: "Skips redeliveries cleanly after SIGKILL",
+          },
+          {
+            stage: "2. Batch Commit",
+            component: "db.transaction() (1 per batch)",
+            mechanism: "Bulk INSERT orders + processed_events + outbox_events",
+            guarantee: "375.75 checkouts/s on 1 partition (FIFO preserved)",
+            highlight: true,
+          },
+          {
+            stage: "3. Poison Fallback",
+            component: "processSingleOrderMessage()",
+            mechanism: "If batch tx fails, rolls back & replays 1-by-1 in offset order",
+            guarantee: "49/49 valid orders commit without halting",
+            highlight: true,
+          },
+          {
+            stage: "4. DLQ Isolation",
+            component: "payment-successful.DLQ",
+            mechanism: "After 3 retries, sends only poison payload with error headers",
+            guarantee: "Follow-up msg #51 processes; Kafka lag = 0",
+          },
+        ],
+        branchNote: {
+          trigger: "SIGKILL after DB batch tx commit, before Kafka resolveOffset()",
+          fallback: "Partition redelivers 50 messages on container restart",
+          outcome: "processed_events PK skips all 50; 0 duplicates, lag = 0",
+        },
+      },
+    ],
+    result: {
+      heading: "7.76× higher completed throughput, zero consumer lag, and 4/4 CI fault tests passing",
+      summary:
+        "Batching PostgreSQL writes inside idempotent Kafka consumers eliminated downstream lag across Order, Email, and Analytic services while surviving broker outages, mid-batch crashes, and poison payloads.",
+      outcomes: [
+        {
+          metric: "100-VU Completed Checkouts",
+          before: "48.42 /s · 7,420 lag @ 30s · 154.33s catch-up",
+          after: "375.75 /s (+7.76×) · 0 lag @ 30s · 0.31s catch-up",
+          source: "fix_b (PHASE1-BENCHMARKS.md)",
+        },
+        {
+          metric: "Email & Analytic Lag (100 VUs)",
+          before: "5,050 email msgs (44s) + 20,480 analytic msgs (97s)",
+          after: "0 msgs / 0.00s catch-up across all 3 downstream services",
+          source: "Full-pipeline benchmark",
+        },
+        {
+          metric: "CI Fault-Tolerance Matrix",
+          before: "Unverified crash recovery & un-isolated bad payloads",
+          after: "4/4 live Docker Compose resilience scripts green in GitHub Actions",
+          source: ".github/workflows/ci.yml",
+        },
+      ],
+    },
+    problemClaim: "Per-message commits bottlenecked consumers and stalled on poison payloads",
     problemText:
-      "When payment commits to PostgreSQL but publishing to Kafka fails due to network partitions, downstream services never receive the event. Chaining synchronous HTTP calls across microservices causes cascading 504 timeouts and unfulfilled paid orders.",
+      "Even with a transactional outbox, running one Postgres transaction per Kafka message capped single-partition fulfillment at 48.42 checkouts/s under 100 VUs, piled up >20,000 downstream analytic events, and risked halting partitions on malformed messages.",
     problemComparison: {
       before: {
-        title: "Synchronous Microservices",
+        title: "Sequential eachMessage & Unindexed Shared Outbox",
         points: [
-          "Checkout chains HTTP calls across Payment, Order, and Notification services sequentially",
-          "Downstream network spikes or service restarts cause cascading gateway timeouts",
-          "Dual-write hazard: database record persists but subsequent broker publish crashes",
-          "Tight runtime coupling halts checkout when any downstream dependency lags",
+          "Every Kafka message opened a separate Postgres tx (24.22ms/msg under load)",
+          "API Gateway opened 4,405 TCP connections for 4,396 HTTP requests",
+          "Order/Email outbox rows lacked partial indexes and retention pruning",
+          "Poison payloads or Kafka restarts lacked automated CI resilience proofs",
         ],
       },
       after: {
-        title: "Transactional Outbox & Kafka",
+        title: "SKIP LOCKED Relays, eachBatch & DLQ Isolation",
         points: [
-          "Payment service inserts payment record and outbox_events in one atomic SQL transaction",
-          "Background worker polls outbox table every 5s and reliably publishes to Kafka",
-          "Order, Analytic, and Email consumers process events asynchronously with zero blocking",
-          "Independent failure domains guarantee at-least-once message delivery",
+          "Single SQL tx per Kafka batch hits 375.75/s with 0 lag across 3 services",
+          "Gateway HTTP keep-alive & 32+ char JWT_SECRET validation at boot",
+          "Topic-scoped partial indexes + pruners keep outbox scans O(unpublished)",
+          "1-by-1 fallback routes poison pills to .DLQ; /health stays 200 during outages",
         ],
       },
     },
-    architectureClaim: "Atomic outbox transactions decouple payment from order fulfillment",
+    architectureClaim: "SKIP LOCKED relays and eachBatch consumers guarantee zero-loss throughput",
     architectureText:
-      "Checkout requests commit payment records and outbox events in one SQL transaction. A worker polls the outbox and streams events to Kafka.",
+      "API Gateway validates JWTs over keep-alive connections into Payment Service, which commits payments and outbox rows atomically. SKIP LOCKED relays batch-publish to KRaft Kafka, feeding idempotent eachBatch consumers with DLQ isolation.",
     architectureNodes: [
       {
         id: "gateway",
-        title: "API Gateway",
-        subtitle: "API gateway (JWT auth)",
-        tech: "Express 5 & http-proxy-middleware",
-        role: "Validates bearer token and reverse-proxies requests on port 8080.",
+        title: "Keep-Alive Gateway",
+        subtitle: "Port 8085 · Strict JWT",
+        tech: "Express 5 & HTTP Keep-Alive",
+        role: "Enforces 32+ char JWT_SECRET & reuses backend TCP sockets.",
         codeSnippet: {
-          filename: "api-gateway/index.js",
+          filename: "api-gateway/config.js",
           language: "javascript",
-          code: `// api-gateway/index.js (lines 13-24)
-app.use(
-  "/api/payment",
-  verifyToken, 
-  createProxyMiddleware({
-    target: process.env.PAYMENT_SERVICE_URL || "http://localhost:8000",
-    changeOrigin: true,
-    pathRewrite: {
-      "^/api/payment": "/", 
-    },
-  })
-);`,
-          explanation: "Source: api-gateway/index.js lines 13-24. Validates JWT authorization header and reverse-proxies to internal payment service.",
+          code: `const MIN_JWT_SECRET_LENGTH = 32;
+const secret = process.env.JWT_SECRET;
+if (typeof secret !== "string" || secret.trim().length < MIN_JWT_SECRET_LENGTH) {
+  throw new Error(
+    \`Missing or invalid JWT_SECRET: must be set and at least \${MIN_JWT_SECRET_LENGTH} characters long\`
+  );
+}
+export const JWT_SECRET = secret;`,
+          explanation:
+            "Fails fast on startup if JWT_SECRET is missing or short—eliminating insecure hardcoded defaults across gateway and CI.",
         },
       },
       {
-        id: "postgres",
-        title: "Transactional Outbox",
-        subtitle: "Atomic SQL Transaction",
-        tech: "Neon PostgreSQL & Drizzle ORM",
-        role: "Atomically commits payment and outbox event in single database transaction.",
+        id: "payment",
+        title: "Payment & Split Health",
+        subtitle: "/health vs /relay-status",
+        tech: "PostgreSQL 16 & Drizzle",
+        role: "Commits payment + outbox atomically; stays 200 if Kafka drops.",
         codeSnippet: {
           filename: "payment-service/index.js",
           language: "javascript",
-          code: `// payment-service/index.js (lines 45-61)
+          code: `// GET /health -> 200 OK (process liveness so checkouts keep succeeding to Postgres)
+// GET /relay-status -> 503 when Kafka relay is down + outbox pruner telemetry
 await db.transaction(async (tx) => {
-  await tx.insert(payments).values({
-    userId: userId,
-    amount: String(amount),
-    status: "completed"
-  });
-  
+  await tx.insert(payments).values({ userId, amount: String(amount), status: "completed" });
   await tx.insert(outboxEvents).values({
-    topic: "payment-successful",
-    payload: { userId, cart },
-    published: false 
+    id: eventId, topic: "payment-successful",
+    payload: { eventId, correlationId: eventId, causationId: eventId, userId, cart },
+    published: false,
   });
 });`,
-          explanation: "Source: payment-service/index.js lines 45-61. Guarantees atomic consistency between business record and event log with zero message loss.",
+          explanation:
+            "Splits container liveness (/health) from broker readiness (/relay-status) so Docker never restarts checkout ingress during Kafka outages.",
         },
       },
       {
         id: "outbox",
-        title: "Outbox Relay Worker",
-        subtitle: "Poll & Reliable Publish",
-        tech: "Node.js & KafkaJS Producer",
-        role: "Polls pending events every 5s and reliably dispatches to Apache Kafka.",
+        title: "SKIP LOCKED Relay",
+        subtitle: "Batched Send & Pruner",
+        tech: "FOR UPDATE SKIP LOCKED",
+        role: "Claims 50 rows lock-free, batch-sends to Kafka, prunes old rows.",
         codeSnippet: {
           filename: "payment-service/worker.js",
           language: "javascript",
-          code: `// payment-service/worker.js (lines 29-53)
-setInterval(async () => {
-  const events = await db
-    .select()
-    .from(outboxEvents)
-    .where(eq(outboxEvents.published, false))
-    .limit(50); // Batch limit
-
-  for (const event of events) {
-    try {
-      await producer.send({
-        topic: event.topic,
-        messages: [{ value: JSON.stringify(event.payload) }],
-      });
-
-      await db
-        .update(outboxEvents)
-        .set({ published: true })
-        .where(eq(outboxEvents.id, event.id));
-    } catch (err) {
-      console.error("Worker publish failed; retrying next cycle:", err);
-    }
+          code: `const rows = await tx.execute(
+  sql\`SELECT id, topic, payload, created_at FROM outbox_events
+       WHERE published = false AND topic = 'payment-successful'
+       ORDER BY created_at ASC LIMIT 50 FOR UPDATE SKIP LOCKED\`
+);
+if (process.env.RELAY_BATCH_SEND === "true") {
+  for (const [topic, messages] of messagesByTopic.entries()) {
+    await producer.send({ topic, messages });
   }
-}, 5000);`,
-          explanation: "Source: payment-service/worker.js lines 29-53. Polling relay worker with retry loop guarantees at-least-once Kafka publication.",
-        },
-      },
-      {
-        id: "kafka",
-        title: "Kafka Cluster",
-        subtitle: "Topic Declaration",
-        tech: "Apache Kafka & KafkaJS Admin",
-        role: "Declares partitioned message topics connecting distributed microservices.",
-        codeSnippet: {
-          filename: "kafka/admin.js",
-          language: "javascript",
-          code: `// kafka/admin.js (lines 10-19)
-const run = async () => {
-  await admin.connect();
-  await admin.createTopics({
-    topics: [
-      { topic: "payment-successful" },
-      { topic: "order-successful" },
-      { topic: "email-successful" },
-    ],
-  });
-};
-
-run();`,
-          explanation: "Source: kafka/admin.js lines 10-19. Central topic topology connecting payment, order, analytic, and email services.",
+}`,
+          explanation:
+            "Allows concurrent relay workers without duplicate publishes while topic-scoped partial indexes and pruners bound table growth.",
         },
       },
       {
         id: "order",
-        title: "Order Consumer",
-        subtitle: "Async Fulfillment",
-        tech: "KafkaJS Consumer & Drizzle ORM",
-        role: "Consumes payment events, creates orders in Postgres, and produces order-successful.",
+        title: "Order eachBatch + DLQ",
+        subtitle: "Idempotent Batch Tx",
+        tech: "KafkaJS eachBatch & Drizzle",
+        role: "1 SQL tx per batch; 1-by-1 fallback isolates poison pills to DLQ.",
         codeSnippet: {
-          filename: "order-service/index.js",
+          filename: "order-service/consumer-processor.js",
           language: "javascript",
-          code: `// order-service/index.js (lines 25-60)
-await consumer.subscribe({
-  topic: "payment-successful",
-  fromBeginning: true,
-});
-
-await consumer.run({
-  eachMessage: async ({ message }) => {
-    const { userId, cart } = JSON.parse(message.value.toString());
-    const data = await db.insert(orders).values({
-      userId, items: cart, status: "processing"
-    }).returning();
-
-    await producer.send({
-      topic: "order-successful",
-      messages: [{ value: JSON.stringify({ userId, orderId: data[0].id }) }],
-    });
-  },
-});`,
-          explanation: "Source: order-service/index.js lines 25-60. Consumes payment events independently and propagates fulfillment downstream.",
+          code: `// 1. Bulk idempotency check via inArray(processedEvents.eventId, eventIds)
+// 2. Single atomic db.transaction() for orders + processed_events + outbox_events
+// 3. On batch failure: clean rollback -> 1-by-1 offset replay -> payment-successful.DLQ
+if (batchFailed) {
+  for (const message of batch.messages) {
+    const res = await processSingleOrderMessage({ message, db, producer, tables });
+    resolveOffset(message.offset);
+  }
+}`,
+          explanation:
+            "Preserves per-user FIFO order on 1 partition while reaching 375.75 completed checkouts/s and isolating poison messages.",
+        },
+      },
+      {
+        id: "downstream",
+        title: "Email & Analytic Batch",
+        subtitle: "Zero-Lag Downstream",
+        tech: "eachBatch & ON CONFLICT",
+        role: "Drains 3x cross-topic events with zero leftover lag.",
+        codeSnippet: {
+          filename: "analytic-service/index.js",
+          language: "javascript",
+          code: `// Consumes payment-successful, order-successful, and email-successful via eachBatch
+// Bulk inserts into processed_events with ON CONFLICT DO NOTHING
+// Result at 100 VUs: 0 msgs lag @ 30s (down from 20,480 msgs / 97.15s catch-up)`,
+          explanation:
+            "Applying eachBatch and batched relays across email-service and analytic-service reduced full-pipeline lag to 0.",
         },
       },
     ],
-    decisionsClaim: "Four architectural choices that protected data consistency",
+    decisionsClaim: "Four architectural choices that delivered 7.76× throughput",
     decisionsText:
-      "Every technical choice prioritized data consistency and fault isolation across service boundaries.",
+      "Every optimization was guided by empirical profiling and verified by full-drain k6 benchmarks.",
     decisions: [
       {
-        chosenOver: "Chose Transactional Outbox over dual-write HTTP calls",
+        chosenOver: "Chose 1-partition eachBatch (1 tx/batch) over 6-partition concurrent eachMessage",
         tradeoffSummary:
-          "Eliminates dual-write inconsistency, but requires polling worker.",
+          "375.75/s vs 87.88/s at 100 VUs while preserving strict per-user FIFO order, with batch fallback complexity.",
         optionsConsidered: [
-          "Direct synchronous HTTP post-commit calls",
-          "Two-phase commit (2PC) distributed locks",
-          "Transactional Outbox Pattern",
+          "1-partition sequential eachMessage (48.42/s)",
+          "6 partitions + partitionsConsumedConcurrently=6 (87.88/s)",
+          "1-partition eachBatch with 1 atomic SQL tx per batch (375.75/s)",
         ],
         problemFaced:
-          "Committing to PostgreSQL and then making an HTTP call to Kafka can fail halfway, causing permanent state divergence.",
+          "Even with 6 concurrent partitions, per-message Postgres commits (22.10ms tx + WAL fsync) created write contention that capped throughput below 100/s.",
         fullReasoning:
-          "Saving the event in the same local database transaction as the business entity ensures that events are only published if the database write succeeded.",
+          "Collapsing dozens of per-message transactions into one SQL transaction per Kafka batch eliminated Postgres write contention, raising both consumer fulfillment (+7.76×) and accepted ingress (+32.9%).",
       },
       {
-        chosenOver: "Chose Apache Kafka over direct REST microservice calls",
+        chosenOver: "Chose 1-by-1 offset fallback + DLQ over halting partition or dropping failed batches",
         tradeoffSummary:
-          "Decouples checkout latency, but adds Kafka cluster overhead.",
+          "Valid messages in a poisoned batch still commit cleanly; only the bad payload goes to .DLQ.",
         optionsConsidered: [
-          "REST HTTP chaining",
-          "RabbitMQ message queue",
-          "Apache Kafka event bus",
+          "Fail and retry entire batch indefinitely (head-of-line blocking)",
+          "Skip entire batch on error (data loss)",
+          "Rollback batch → replay 1-by-1 in offset order → DLQ after 3 retries",
         ],
         problemFaced:
-          "Chaining REST calls causes cascading timeouts when any downstream service delays or restarts.",
+          "A single malformed or constraint-violating message inside a 50-message batch rolls back the entire SQL transaction.",
         fullReasoning:
-          "Kafka topics provide replayable event streams and isolate producer throughput from consumer processing speed.",
+          "Falling back to per-message execution after a batch rollback guarantees 49/49 valid orders commit while isolating only the poison message to payment-successful.DLQ.",
       },
       {
-        chosenOver: "Chose Drizzle ORM over Prisma",
+        chosenOver: "Chose shared outbox_events with per-topic partial indexes over separate DBs in Phase 1",
         tradeoffSummary:
-          "Low memory overhead, but requires manual schema discipline.",
+          "O(unpublished) index scans and atomic local transactions today; easy to split per service later.",
         optionsConsidered: [
-          "Prisma ORM with Rust binary engine",
-          "Raw pg SQL queries",
-          "Drizzle ORM",
+          "Unindexed shared table (grew to >93k rows per topic)",
+          "Separate PostgreSQL instances per microservice",
+          "Shared outbox_events with 3 topic-scoped partial indexes & scoped pruners",
         ],
         problemFaced:
-          "Prisma's heavyweight engine increases container cold start times and consumes unnecessary memory in microservices.",
+          "Only payment-successful had a partial index and pruner, causing full table scans for order and email relays.",
         fullReasoning:
-          "Drizzle provides TypeScript schema validation with zero runtime binary overhead, ideal for lightweight microservices containers.",
+          "Adding idx_outbox_events_{payment,order,email}_unpublished partial indexes and strictly topic-scoped DELETE pruners kept atomic local transactions while bounding table growth.",
       },
       {
-        chosenOver: "Chose API Gateway reverse proxy over direct client routing",
+        chosenOver: "Chose split /health & /relay-status over combined Kafka-coupled healthcheck",
         tradeoffSummary:
-          "Centralizes auth tokens, but creates a single entry point.",
+          "Checkouts keep returning HTTP 200 during broker outages while ops probes see 503 on /relay-status.",
         optionsConsidered: [
-          "Direct client-to-service port routing",
-          "Reverse proxy API Gateway",
-          "GraphQL federation gateway",
+          "Single /health returning 503 whenever Kafka is disconnected",
+          "Separate liveness (/health = 200) and relay readiness (/relay-status = 503)",
         ],
         problemFaced:
-          "Exposing individual microservice ports forces every service to duplicate authentication and CORS logic.",
+          "Coupling Docker's restart healthcheck to Kafka caused container restarts and blocked HTTP checkouts during broker downtime.",
         fullReasoning:
-          "A lightweight reverse proxy terminates external traffic, validates tokens once, and routes requests across internal container ports.",
+          "Decoupling liveness from broker readiness lets payment-service queue 500/500 checkouts into Postgres safely while /relay-status alerts on Kafka disconnect or pruner errors.",
       },
     ],
-    bugsClaim: "Three distributed system bugs and their fixes",
+    bugsClaim: "Four production & benchmark bugs caught and fixed",
     bugsText:
-      "Three bugs hit while orchestrating microservices, with links to fixing commits.",
+      "Critical bugs uncovered by container effective-config auditing, keep-alive probes, and outage drills.",
     bugs: [
       {
-        title: "Payment and order service orchestration route mismatch",
-        symptom: "Gateway proxied checkout requests to payment service but hit 404 handler.",
-        cause: "Express handler was bound to '/payment-service' while API Gateway pathRewrite routed to '/'.",
-        fix: "Realigned payment route to '/' and injected x-user-id header in auth middleware.",
-        commitHash: "81b4778",
-        commitUrl: "https://github.com/vpn-cli/StreamMart/commit/81b4778318836f3ed66491dbb9241d690b9690b2",
+        title: "Five consumer and relay env vars silently defaulted inside Docker",
+        symptom: "Benchmarks showed sequential sends even when RELAY_BATCH_SEND=true was set on the host.",
+        cause: "docker-compose.yml omitted RELAY_BATCH_SEND, CONSUMER_MODE, and OUTBOX_RETENTION_HOURS; payment pruner also passed raw JS Date to SQL.",
+        fix: "Wired all env vars through Compose, fixed pruner SQL, and logged [EFFECTIVE CONFIG] at container boot.",
+        commitHash: "5c7f584",
+        commitUrl: "https://github.com/vpn-cli/streammart/commit/5c7f584",
       },
       {
-        title: "Broker connectivity in distributed container cluster",
-        symptom: "Microservices failed to resolve Kafka brokers across container boundaries.",
-        cause: "Hardcoded localhost:9094 broker ports failed inside Docker networks and cloud clusters.",
-        fix: "Configured dynamic KAFKA_BROKERS, added SASL/SSL credentials, and mounted ca.pem certificate.",
-        commitHash: "204ba26",
-        commitUrl: "https://github.com/vpn-cli/StreamMart/commit/204ba26eeb957e834e6a1155b1a5098ab99b18eb",
+        title: "Hardcoded JWT_SECRET fallbacks risked running insecure container defaults",
+        symptom: "Gateway booted with fallback secrets when environment variables were unset.",
+        cause: "Token signing and verification used inline || fallback strings across files.",
+        fix: "Centralized 32+ char JWT_SECRET startup validation in api-gateway/config.js and auto-generated ephemeral CI secrets.",
+        commitHash: "d7069ab",
+        commitUrl: "https://github.com/vpn-cli/streammart/commit/d7069ab",
       },
       {
-        title: "Proprietary Supabase client SDK runtime coupling",
-        symptom: "Services lacked standard SQL migration workflows and transactional pooling.",
-        cause: "Supabase client abstraction bypassed transactional SQL session primitives needed for outbox commits.",
-        fix: "Migrated persistence layer to Neon Serverless Postgres and Drizzle ORM schemas.",
-        commitHash: "a50d3a9",
-        commitUrl: "https://github.com/vpn-cli/StreamMart/commit/a50d3a9ef5ccbc9481b39360f1b9eaf89715854b",
+        title: "API Gateway opened a new TCP socket for every proxied request",
+        symptom: "20-VU probe recorded 4,405 TCP ActiveOpens for 4,396 HTTP requests (141.57 opens/s).",
+        cause: "Omitting an HTTP Agent in http-proxy-middleware defaulted to agent: false.",
+        fix: "Configured persistent HTTP keep-alive agent, raising 50–100 VU ingress throughput past 370 req/s.",
+        commitHash: "51cc87c",
+        commitUrl: "https://github.com/vpn-cli/streammart/commit/51cc87c",
+      },
+      {
+        title: "Kafka outage caused healthcheck failures during startup",
+        symptom: "payment-service failed health checks if booted while Kafka was offline.",
+        cause: "Producer connection failure stalled startup instead of retrying with backoff behind split health endpoints.",
+        fix: "Added exponential Kafka connect backoff and separated /health (200) from /relay-status (503).",
+        commitHash: "77e9b9c",
+        commitUrl: "https://github.com/vpn-cli/streammart/commit/77e9b9c",
       },
     ],
     nextStepsClaim: "What I would build next and test steps",
     nextStepsText:
-      "Add Redis idempotency key deduplication on consumers and Dead Letter Queues (DLQ) for failed message handling.",
+      "Split `outbox_events` into isolated per-service database schemas for independent horizontal DB scaling and run isolated causal measurements on `RELAY_BUSY_PAUSE_MS`.",
     learningStatement:
-      "Distributed consistency is an architectural pattern, not a database feature.",
+      "Empirical profiling before scaling partitions turned a 48/s database commit bottleneck into a 375.75/s zero-lag pipeline on a single partition.",
     tryItSteps: [
-      "Clone the repository: git clone https://github.com/vpn-cli/StreamMart.git",
-      "In payment-service and order-service directories, execute database migrations: npx drizzle-kit push",
-      "Spin up the architecture cluster: docker-compose up --build -d",
-      "Send a POST request to API Gateway at http://localhost:8080/api/payment with Bearer token: mock.jwt.token",
+      "Clone the repository: git clone https://github.com/vpn-cli/streammart.git",
+      "Boot the full KRaft Kafka + Postgres 16 + 5-service stack: npm run stack:up",
+      "Run the narrated Kafka outage survival demo: npm run demo:outage",
+      "Execute the 4 live fault-injection harnesses (poison batch, SIGKILL crash, Kafka outage, order crash).",
     ],
     image: "/projects/stream-mart.png",
-    githubUrl: "https://github.com/vpn-cli/StreamMart",
-    liveUrl: "https://github.com/vpn-cli/StreamMart#architecture--workflow",
+    githubUrl: "https://github.com/vpn-cli/streammart",
+    liveUrl: "https://github.com/vpn-cli/streammart#verified-benchmarks-full-drain-results-only",
   },
 ];

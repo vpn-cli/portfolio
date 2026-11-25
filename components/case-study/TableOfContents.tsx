@@ -8,12 +8,13 @@ export interface TocItem {
 }
 
 export const TOC_SECTIONS: TocItem[] = [
-  { id: "hook", label: "Hook" },
-  { id: "problem", label: "The problem" },
-  { id: "architecture", label: "How it works" },
-  { id: "decisions", label: "Decisions" },
-  { id: "bugs", label: "Bugs I fixed" },
-  { id: "next", label: "Try it" },
+  { id: "hook", label: "Overview" },
+  { id: "situation", label: "S · Situation" },
+  { id: "task", label: "T · Task" },
+  { id: "action", label: "A · Action & Figures" },
+  { id: "decisions", label: "Trade-offs" },
+  { id: "bugs", label: "Bugs Fixed" },
+  { id: "result", label: "R · Result" },
 ];
 
 export function TableOfContents() {
@@ -26,18 +27,13 @@ export function TableOfContents() {
       const scrollY = window.scrollY;
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
 
-      if (scrollY > 20) {
-        setHasScrolled(true);
-      } else {
-        setHasScrolled(false);
-      }
+      setHasScrolled(scrollY > 20);
 
       if (totalScroll > 0) {
         const currentProgress = Math.min(100, Math.max(0, (scrollY / totalScroll) * 100));
         setProgress(currentProgress);
       }
 
-      // Track active section using scroll offset
       const offsets = TOC_SECTIONS.map((sec) => {
         const el = document.getElementById(sec.id);
         if (!el) return { id: sec.id, top: Infinity };
@@ -45,7 +41,6 @@ export function TableOfContents() {
         return { id: sec.id, top: rect.top };
       });
 
-      // Find the last section whose top is <= 240px
       const inView = offsets.filter((o) => o.top <= 240);
       if (inView.length > 0) {
         setActiveId(inView[inView.length - 1].id);
@@ -69,17 +64,17 @@ export function TableOfContents() {
     });
   };
 
-  const activeLabel = TOC_SECTIONS.find((s) => s.id === activeId)?.label || "Hook";
+  const activeLabel = TOC_SECTIONS.find((s) => s.id === activeId)?.label || "Overview";
   const scaleValue = progress / 100;
 
   return (
     <>
-      {/* ━━━ MOBILE COLLAPSED STICKY TOP PROGRESS BAR ━━━ */}
+      {/* Mobile collapsed sticky top progress bar */}
       <div className="lg:hidden sticky top-0 z-40 w-full bg-[var(--bg-canvas)]/90 backdrop-blur-md border-b border-[var(--border-subtle)] px-4 py-2 flex flex-col gap-1.5 shadow-sm">
         <div className="flex items-center justify-between text-xs">
           <span className="font-medium text-[var(--text-primary)]">{activeLabel}</span>
           {hasScrolled && progress > 0 && (
-            <span className="text-[13px] font-mono text-[var(--text-tertiary)]">
+            <span className="text-[13px] font-mono text-[var(--text-tertiary)] tabular-nums">
               {Math.round(progress)}% read
             </span>
           )}
@@ -93,18 +88,17 @@ export function TableOfContents() {
         </div>
       </div>
 
-      {/* ━━━ DESKTOP STICKY SIDEBAR TOC ━━━ */}
+      {/* Desktop sticky sidebar TOC */}
       <aside
-        aria-label="Table of contents"
+        aria-label="STAR case study table of contents"
         className="hidden lg:block w-52 shrink-0 sticky top-12 self-start space-y-6"
       >
-        {/* Progress bar (Hides "0% read" until scrolled) */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-[var(--text-tertiary)] h-4">
-            <span className="text-xs font-normal">Case study</span>
+            <span className="text-xs font-normal">STAR Case Study</span>
             {hasScrolled && progress > 0 ? (
-              <span className="text-xs font-mono text-[var(--text-tertiary)]">
-                {Math.round(progress)}% read
+              <span className="text-xs font-mono text-[var(--text-tertiary)] tabular-nums">
+                {Math.round(progress)}%
               </span>
             ) : null}
           </div>
@@ -116,20 +110,20 @@ export function TableOfContents() {
           </div>
         </div>
 
-        {/* 6 Sections List */}
         <nav>
           <ul className="space-y-1 relative border-l border-[var(--border-subtle)] pl-3">
-            {TOC_SECTIONS.map((sec, idx) => {
+            {TOC_SECTIONS.map((sec) => {
               const isActive = activeId === sec.id;
               return (
                 <li key={sec.id} className="relative">
                   <button
                     type="button"
                     onClick={() => scrollTo(sec.id)}
-                    className={`block w-full text-left py-1.5 text-xs transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2 ${isActive
-                      ? "font-medium text-[var(--text-primary)] translate-x-1"
-                      : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-                      }`}
+                    className={`block w-full text-left py-1.5 text-xs transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2 ${
+                      isActive
+                        ? "font-medium text-[var(--text-primary)] translate-x-1"
+                        : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                    }`}
                   >
                     <span>{sec.label}</span>
                   </button>
